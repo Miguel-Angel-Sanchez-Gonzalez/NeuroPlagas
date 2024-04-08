@@ -1,6 +1,8 @@
-import Home from '../Home/Home.jsx';
-import Login from '../Login/Login.jsx'
 import React from 'react';
+import HomeAdmin from '../HomeAdmin/HomeAdmin.jsx';
+import HomeFarmer from '../HomeFarmer/HomeFarmer.jsx';
+import HomeWorker from '../HomeWorker/HomeWorker.jsx';
+import Login from '../Login/Login.jsx';
 
 // Función para decodificar el JWT Token
 function parseJwt(token) {
@@ -22,15 +24,37 @@ function parseJwt(token) {
 const Main = () => {
   // Obtiene el token del almacenamiento local
   const token = localStorage.getItem('token');
-  
+  console.log("El token de este user desde el Main es:" );
+  console.log(token);
+
   // Valida si el token existe y si no está vacío
   const tokenExistAndNotEmpty = token && token !== '';
 
   // Valida si el token es válido
   const tokenIsValid = tokenExistAndNotEmpty && parseJwt(token).exp * 1000 > Date.now();
 
-  // Retorna Home si el token es válido, de lo contrario retorna Login
-  return <>{tokenIsValid ? <Home /> : <Login />}</>;
+  // Extrae el rolUsuario del token si el token es válido
+  let rolUsuario = null;
+  if (tokenIsValid) {
+    const decodedToken = parseJwt(token);
+    rolUsuario = decodedToken.rolUsuario;
+  }
+
+  // Retorna el componente correspondiente según el rol del usuario
+  if (tokenIsValid) {
+    switch (rolUsuario) {
+      case 'admin':
+        return <HomeAdmin />;
+      case 'farmer':
+        return <HomeFarmer />;
+      case 'worker':
+        return <HomeWorker />;
+      default:
+        return <Login />;
+    }
+  } else {
+    return <Login />;
+  }
 };
 
 export default Main;

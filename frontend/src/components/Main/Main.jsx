@@ -1,7 +1,7 @@
 import React from 'react';
-import HomeAdmin from '../HomeAdmin/HomeAdmin.jsx';
-import HomeFarmer from '../HomeFarmer/HomeFarmer.jsx';
-import HomeWorker from '../HomeWorker/HomeWorker.jsx';
+import HomeAdmin from '../Admin/HomeAdmin/HomeAdmin.jsx';
+import HomeFarmer from '../Farmer/HomeFarmer/HomeFarmer.jsx';
+import HomeWorker from '../Worker/HomeWorker/HomeWorker.jsx';
 import Login from '../Login/Login.jsx';
 
 // Función para decodificar el JWT Token

@@ -1,0 +1,44 @@
+
+.header-table{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: aliceblue;
+  
+}
+
+.search {
+  font-size: 20px;
+  transition: 0.5s ease-in-out;
+  color: #c62426;
+  align-items: right;
+}
+  
+.icon:hover{
+  transform: scale(1.5,1.5);
+   cursor: pointer;
+}
+  
+.buttonAgricultor{
+  padding: 10px 15px;
+  color: white;
+  background-color: #c62426;
+  border: 2px solid #c62426;
+  border-radius: 10px;
+}
+
+input{
+  padding: 10px 20px;
+  margin: 0 10px;
+  outline: none;
+  border-radius: 6px;
+  color: #c62426;
+}
+
+
+::placeholder{
+  color: #c62426;
+}
+
+

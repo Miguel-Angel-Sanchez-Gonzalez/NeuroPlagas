@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './Login.css'; // Asegúrate de tener el nombre correcto del archivo CSS
-import HomeAdmin from '../HomeAdmin/HomeAdmin';
-import HomeFarmer from '../HomeFarmer/HomeFarmer';
-import HomeWorker from '../HomeWorker/HomeWorker';
+import HomeAdmin from '../Admin/HomeAdmin/HomeAdmin';
+import HomeFarmer from '../Farmer/HomeFarmer/HomeFarmer';
+import HomeWorker from '../Worker/HomeWorker/HomeWorker';
 import LoginNotification from '../LoginNotifications/LoginNotifications'; // Importa el componente de notificación
 
 const Login = () => {

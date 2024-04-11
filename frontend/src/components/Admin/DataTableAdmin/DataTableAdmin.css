@@ -4,7 +4,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: aliceblue;
+  background-color: #fff;
   
 }
 
@@ -33,12 +33,12 @@ input{
   margin: 0 10px;
   outline: none;
   border-radius: 6px;
-  color: #c62426;
+  color: black;
 }
 
 
 ::placeholder{
-  color: #c62426;
+  color: black;
 }
 
 

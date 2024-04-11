@@ -55,15 +55,6 @@ const DataTableWorker = () => {
             correo: 'lizeth2_intel@gmail.com',
             usuario: 'zeti',
             contrasenia: '123',
-        },{
-            id: 2,
-            nombre: 'migue',
-            primerApellido: 'sanchez',
-            segundoApellido: 'gonzalez',
-            telefono: '9512488426',
-            correo: '1492@gmail.com',
-            usuario: 'migue',
-            contrasenia: '1492',
         }
     ];
 

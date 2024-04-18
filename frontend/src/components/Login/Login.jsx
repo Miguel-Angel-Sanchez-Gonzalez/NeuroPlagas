@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
-import './Login.css'; // Asegúrate de tener el nombre correcto del archivo CSS
+import './Login.css';
 import HomeAdmin from '../Admin/HomeAdmin/HomeAdmin';
 import HomeFarmer from '../Farmer/HomeFarmer/HomeFarmer';
 import HomeWorker from '../Worker/HomeWorker/HomeWorker';
 import LoginNotification from '../LoginNotifications/LoginNotifications'; // Importa el componente de notificación
+import PasswordRecovery from '../LoginRecoveryPassword/PasswordRecovery/PasswordRecovery'; // Importa el componente de recuperación de contraseña
+
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginSuccessfull, setLoginSuccessfull] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
+  const [showRecovery, setShowRecovery] = useState(false); // Estado para controlar la visibilidad del componente de recuperación de contraseña
+  
   const handdleLogin = (e) => {
     e.preventDefault();
     
@@ -43,6 +46,13 @@ const Login = () => {
       });
   };
 
+
+  const handleRecoveryClick = () => {
+    setShowRecovery(true); // Mostrar el componente de recuperación de contraseña cuando se hace clic en el enlace
+  };
+
+
+
   // Función para renderizar el componente Home según el rol
   const renderHomeByRole = () => {
     const userRole = localStorage.getItem('userRole');
@@ -66,8 +76,8 @@ const Login = () => {
       ) : (
         // Si el inicio de sesión no es exitoso, mostramos el formulario de inicio de sesión
         <div className="login-container">
-          <img src="/images/farmedwithfruit3d.png" className="img-fruit" />
-          <img src="/images/womenfarmer.png" className="img-women" />
+          <img src="/images/farmedwithfruit3d.png" alt="Fruit farm" className="img-fruit" />
+          <img src="/images/womenfarmer.png" alt="Woman farmer" className="img-women" />
           <form className="login-form">
             <label className="login-label">Bienvenido de nuevo</label>
             <label className="login-label1">Iniciar sesión</label>
@@ -79,7 +89,7 @@ const Login = () => {
               <input onChange={(event) => { setPassword(event.target.value) }} type="password" required></input>
               <label>Contraseña</label>
             </div>
-            <label className="login-label3">Olvidé mi contraseña</label>
+            <label className="login-label3" onClick={handleRecoveryClick}>Olvidé mi contraseña</label> {/* Agregamos el evento onClick para mostrar el componente de recuperación de contraseña */}
             <button className="login-button" onClick={handdleLogin}>Iniciar sesión</button>
             <label className="login-abajo">¿Sin una cuenta?</label>
             <label className="login-invitado">Iniciar como invitado</label>
@@ -87,9 +97,9 @@ const Login = () => {
           </form>
         </div>
       )}
+      {showRecovery && <PasswordRecovery onClose={() => setShowRecovery(false)} />} {/* Mostrar el componente de recuperación de contraseña cuando showRecovery es true */}
     </>
   );
-  
 };
 
 export default Login;

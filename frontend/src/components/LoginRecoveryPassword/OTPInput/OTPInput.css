@@ -1,0 +1,135 @@
+/* OTPInput.css */
+
+.otp-input-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  width: 450px;
+  height: 550px; /* Mismo tamaño que login-container */
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 2; /* Asegura que el componente esté frente al formulario de inicio de sesión */
+}
+
+.login-label1 {
+  font-size: 45px;
+  font-family: 'Roboto', sans-serif;
+  display: block;
+  margin-bottom: 20px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.login-label {
+  font-family: 'Roboto', sans-serif;
+  display: block;
+  margin-bottom: 10px;
+  font-size: 20px;
+  margin-left: 10px;
+}
+
+.input-otp {
+  width: 100%;
+  height: 40px;
+  font-size: 20px;
+  margin-top: 20px;
+  margin-left: 10px;
+  border-radius: 6px;
+  padding: 0px 10px;
+  border: 2px solid #E5D8C8;
+  background: transparent;
+  color: #000000;
+  outline: none;
+}
+
+.otp-input-button {
+  width: calc(100% - 20px); /* Ten en cuenta el padding del contenedor */
+  padding: 12px;
+  margin: 10px;
+  background-color: #c62426;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.otp-input-button:hover {
+  background-color: #c62426;
+  border-bottom: 1px rgba(0, 0, 0, 0.2) solid;
+  box-shadow:
+   0 10px 15px -3px rgb(0, 0, 0/ 0.1),
+   0 4px 6px -4px rgb(0, 0, 0/ 0.1);
+}
+
+.error-message {
+  font-size: 16px;
+  color: #c62426;
+  margin-top: 10px;
+}
+
+
+/* Estilos para el contenedor del spinner de carga */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /*background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+  backdrop-filter: blur(5px); /* Aplicar desenfoque al fondo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Estilos para el spinner de carga */
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #333; /* Color del spinner */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite; /* Animación */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.resend-info {
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  color: #c62426; /* Color rojo de base */
+  margin-top: 10px;
+  text-align: center; /* Alineación centrada */
+}
+
+.time-left {
+  font-size: 24px; /* Tamaño de fuente más grande */
+  color: #c62426; /* Color rojo de base */
+  margin-top: 5px;
+}
+
+/* Animación para el contador de tiempo */
+.time-left {
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}

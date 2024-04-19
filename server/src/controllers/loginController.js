@@ -16,7 +16,6 @@ module.exports.login = (req, res) => {
 
       if(result.length > 0){ //Si hay un user con esas credenciales en la BD
 
-
         try { // Consulta para saber el Rol del usuario
           const consultGetRol = 'SELECT rol FROM usuario WHERE nombre_usuario = ? AND contrasenia = ?';
           connection.query(consultGetRol, [username, password], (err, result) => {
@@ -30,10 +29,8 @@ module.exports.login = (req, res) => {
               // Aquí puedes manejar la variable rolUsuario como desees
               // Por ejemplo, enviarla en la respuesta de la solicitud HTTP
               //console.log(`El Rol encontrado es: ${rolUsuario}`);
-
-
               const token = jwt.sign({username, rolUsuario}, "Stack", {
-                expiresIn: '3m'
+                expiresIn: '50m'
               });
       
               res.send({ result, token });

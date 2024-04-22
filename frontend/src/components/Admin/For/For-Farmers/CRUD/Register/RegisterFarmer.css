@@ -1,0 +1,107 @@
+/* Estilos base */
+.register-farmer-form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  max-width: 100%; /* Para hacerlo responsivo */
+  display: flex;
+  flex-direction: column;
+}
+
+.h4register {
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
+
+.h5register {
+  text-align: right;
+  padding-bottom: 10px;
+  color: #c62426;
+}
+
+.label-register-farmer {
+  font-size: 16px; /* Asegura consistencia de tamaño */
+  margin-left: 15px;
+  margin-bottom: 10px;
+  font-weight: bold; /* Hace que el texto sea negrita */
+}
+
+
+.inputs-register-farmer{
+  margin-top: 5px;
+  width: 80%; /* Ajusta el ancho a 80% como solicitado */
+  padding: 10px;
+  border: 2px solid #d4d0d0;
+  margin-left: auto; /* Centra los inputs */
+  margin-right: auto; /* Centra los inputs */
+}
+
+.inputs-register-farmer2 {
+  margin-top: 5px;
+  margin-left: 0px;
+  width: 80%;
+  padding: 10px;
+  border: 2px solid #d4d0d0;
+}
+
+.inputs-register-farmer:focus,
+.inputs-register-farmer2:focus{
+  border: 2px solid #c62426;
+}
+
+.form-section-farmer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* Distribuye los elementos horizontalmente */
+  margin-bottom: 10px;
+  padding-left: 15px;
+}
+
+.column-admin-register {
+  flex: 1; /* Ocupa el espacio disponible */
+  margin-right: 10px; /* Espacio entre las columnas */
+  margin-top: 10px;
+}
+
+.password-rules-farmer label {
+  display: block;
+  padding-top: 4px;
+  margin-left: 10px;
+}
+
+.button-container-admin {
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between; /* Distribuye el espacio entre los botones */
+  align-items: center; /* Centra verticalmente los botones */
+}
+
+.button-admin, .button-cancel-admin {
+  width: 150px;
+  padding: 12px;
+  color: white;
+  background-color: #c62426;
+  border: 2px solid #c62426;
+  border-radius: 10px;
+}
+
+.button-admin {
+  margin-left: 20px;
+}
+
+.button-cancel-admin {
+  margin-right: 20px;
+}
+
+/* Estilos adicionales para el botón */
+button {
+  transform: scale(1, 1);
+  cursor: pointer;
+}

@@ -71,21 +71,22 @@ const PasswordRecovery = ({ onClose }) => {
       {isPasswordRecoveryOpen && (
         <div className="password-recovery-container">
           <h2 className="password-recovery-title">Recuperación de Contraseña</h2>
-          <h4>Ingrese el correo asociado a su cuenta</h4>
-          <div className='input-field'>
+          <h4 className='label-correo-asociado'>Ingrese el correo asociado a su cuenta, para recuperar su contraseña.</h4>
+          <div className='contenedor-correo'>
           <input
-            className="password-recovery-input" 
+            placeholder='ejemplo@gmail.com'
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <label>Ingresa tu correo electrónico</label>
           </div>
-          <button className="password-recovery-button" onClick={sendRecoveryEmail}>
-            {isLoading ? 'Enviando..' : 'Enviar'}
-          </button> 
-          <button className="password-recovery-button" onClick={onClose}>Cerrar</button> 
+          <div className='button-container-recovery'>
+            <button className="password-recovery-button" onClick={sendRecoveryEmail}>
+              {isLoading ? 'Enviando..' : 'Enviar'}
+            </button> 
+            <button className="password-recovery-button" onClick={onClose}>Cerrar</button> 
+          </div>
           <p>{errorMessage}</p>
         </div>
       )}

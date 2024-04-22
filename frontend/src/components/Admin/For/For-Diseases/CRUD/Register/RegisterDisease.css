@@ -1,0 +1,120 @@
+/* Estilos base */
+.register-disease-form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  max-width: 100%; /* Para hacerlo responsivo */
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.centrar-disease{
+  margin-right: 10px;
+}
+
+.h4register{
+  padding-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.h5register{
+  text-align: right;
+  padding-bottom: 10px;
+  color: #c62426;
+  margin-right: 20px;
+}
+
+.label-datos-disease{
+  font-weight: bold;
+  padding-left: 15px;
+}
+
+.label-disease{
+  font-size: 15px;
+}
+
+.inputs-register-disease {
+  margin-top: 5px;
+  margin-left: 0px;
+  width: 88%;
+  padding: 10px;
+  border: 2px solid #d4d0d0;
+}
+
+.input-description-register{
+  height: 100px;
+  margin-top: 5px;
+  margin-left: 0px;
+  width: 88%;
+  padding: 10px;
+  border: 2px solid #d4d0d0;
+  border-radius: 10px;
+}
+
+.input-description-register2{
+  height: 80px;
+  margin-top: 5px;
+  margin-left: 0px;
+  width: 95%;
+  padding: 10px;
+  border: 2px solid #d4d0d0;
+  border-radius: 10px;
+}
+
+.input-description-register:focus,
+.input-description-register2:focus,
+.inputs-register-disease:focus {
+  border: 2px solid #c62426;
+}
+
+.form-section-disease {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* Distribuye los elementos horizontalmente */
+  margin-bottom: 10px;
+  padding-left: 15px;
+}
+
+.column-admin-register {
+  margin-right: 10px; /* Espacio entre las columnas */
+  margin-top: 10px;
+}
+
+.password-rules label {
+  display: block;
+  padding-top: 4px;
+}
+
+
+.button-container-admin {
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between; /* Distribuye el espacio entre los botones */
+  align-items: center; /* Centra verticalmente los botones */
+}
+
+.btncan-register-disease  {
+  width: 150px;
+  padding: 12px;
+  color: white;
+  background-color: #c62426;
+  border: 2px solid #c62426;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+
+/* Estilos adicionales para el botón */
+button {
+  transform: scale(1, 1);
+  cursor: pointer;
+}

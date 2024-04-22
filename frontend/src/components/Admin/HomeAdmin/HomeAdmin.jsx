@@ -1,10 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './HomeAdmin.css';
-import SidebarAdmin from '../SidebarAdmin/SidebarAdmin';
-import NavbarAdmin from '../NavbarAdmin/NavbarAdmin';
-import DataTableAdmin from '../DataTableAdmin/DataTableAdmin';
+import NavbarAdmin from '../NavSideProfileAdmin/NavbarAdmin/NavbarAdmin';
+import SidebarAdmin from '../NavSideProfileAdmin/SidebarAdmin/SidebarAdmin';
+import DTableDiseases from '../For/For-Diseases/DTableDiseases/DTableDiseases';
+import DTableFarmers from '../For/For-Farmers/DTableFarmers/DTableFarmers';
+import ProfileAdmin from '../NavSideProfileAdmin/ProfileAdmin/ProfileAdmin';
+import DTableGreenhouses from '../For/For-Greenhouses/DTableGreenhouses/DTableGreenhouses';
+import DTablePlagues from '../For/For-Plagues/DTablePlagues/DTablePlagues';
+import DTableWorkers from '../For/For-Workers/DTableWorkers/DTableWorkers';
 
 const HomeAdmin = () => {
+  const [showProfileAdmin, setshowProfileAdmin] = useState(false);
+  const [activeTable, setActiveTable] = useState('farmers');
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -21,20 +28,33 @@ const HomeAdmin = () => {
     };
   }, []);
 
+  const handleConfigureProfileClick = () => {
+    setshowProfileAdmin(true);
+  };
+
+  const handleProfileFormCancel = () => {
+    setshowProfileAdmin(false);
+  };
+
   return (
     <div>
-      <NavbarAdmin />
-      <div className='dashboard'>
-          <SidebarAdmin />
-        <div className='table-container'>
-          <div className='space'>
-          <h2>Bienvenido <span className='rol'>administrador</span></h2>
+      <NavbarAdmin onConfigureProfileClick={handleConfigureProfileClick} />
+      <div className='dashboard-admin'>
+          <SidebarAdmin setActiveTable={setActiveTable} />
+        <div className='table-container-admin'>
+          <div className='space-admin'>
+          <h2 className='h2admin'>Bienvenido <span className='rol-admin'>administrador</span></h2>
+            {activeTable === 'farmers' && <DTableFarmers />}
+            {activeTable === 'greenhouses' && <DTableGreenhouses />}
+            {activeTable === 'plagues' && <DTablePlagues />}
+            {activeTable === 'diseases' && <DTableDiseases />}
+            {activeTable === 'workers' && <DTableWorkers />}
           </div>
-          <DataTableAdmin/>
         </div>
       </div>
+      {showProfileAdmin && <ProfileAdmin onCancelClick={handleProfileFormCancel} />}
     </div>
   );
 };
 
-export default HomeAdmin; 
+export default HomeAdmin;

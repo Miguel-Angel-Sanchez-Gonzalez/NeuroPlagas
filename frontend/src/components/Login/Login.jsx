@@ -81,18 +81,17 @@ const Login = () => {
           <form className="login-form">
             <label className="login-label">Bienvenido de nuevo</label>
             <label className="login-label1">Iniciar sesión</label>
-            <div className="input-field"> 
+            <div className="input-datos"> 
               <input onChange={(event) => { setUsername(event.target.value) }} type="text" required></input>
               <label>Ingresa tu nombre de usuario</label>
             </div>
-            <div className="input-field"> 
+            <div className="input-datos"> 
               <input onChange={(event) => { setPassword(event.target.value) }} type="password" required></input>
               <label>Contraseña</label>
             </div>
             <label className="login-label3" onClick={handleRecoveryClick}>Olvidé mi contraseña</label> {/* Agregamos el evento onClick para mostrar el componente de recuperación de contraseña */}
             <button className="login-button" onClick={handdleLogin}>Iniciar sesión</button>
             <label className="login-abajo">¿Sin una cuenta?</label>
-            <label className="login-invitado">Iniciar como invitado</label>
             {errorMessage && <LoginNotification message={errorMessage} onClose={() => setErrorMessage('')} />}
           </form>
         </div>

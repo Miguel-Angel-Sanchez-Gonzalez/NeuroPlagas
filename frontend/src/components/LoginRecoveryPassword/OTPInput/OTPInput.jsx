@@ -86,28 +86,56 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
       )}
       {!isOTPVerified ? (
         <>
-          <h2 className="login-label1">Verificación de Email</h2>
-          <p className="login-label">Ingresa el código OTP enviado a tu correo electrónico:</p>
-          <input
-            type="text"
-            maxLength="4"
-            value={otpInput}
-            onChange={(e) => setOTPInput(e.target.value)}
-            className="input-field input-otp"
-          />
-          <button onClick={handleVerifyOTP} className="login-button otp-input-button">Verificar</button>
-          <button
-            onClick={handleResendOTP}
-            className={`login-button otp-input-button ${isResendButtonDisabled ? 'disabled' : ''}`}
-            disabled={isResendButtonDisabled}
-          >
-            {isLoading ? 'Reenviando...' : 'Reenviar Código'}
-          </button>
-          <button onClick={handleClose} className="login-button otp-input-button">Cancelar</button>
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
-          {isResendButtonDisabled && (
-            <p className="resend-info">Por favor, espera un momento para volver a enviar el código. Tiempo restante: {Math.floor(timeLeft / 60)}:{timeLeft % 60 < 10 ? '0' : ''}{timeLeft % 60}</p>
-          )}
+          <div>
+            <h2 className="otp-input-title">Verificación de email</h2>
+            <p className="indicaciones">Ingresa el código OTP enviado a tu correo electrónico:</p>
+            <div className="formulario">
+            <div className="inputs-otp">
+              <input
+                type="text"
+                maxLength="1"
+                value={otpInput[0]}
+                onChange={(e) => setOTPInput(otpInput.substring(0, 0) + e.target.value + otpInput.substring(1))}
+              />
+              <input
+                type="text"
+                maxLength="1"
+                value={otpInput[1]}
+                onChange={(e) => setOTPInput(otpInput.substring(0, 1) + e.target.value + otpInput.substring(2))}
+              />
+              <input
+                type="text"
+                maxLength="1"
+                value={otpInput[2]}
+                onChange={(e) => setOTPInput(otpInput.substring(0, 2) + e.target.value + otpInput.substring(3))}
+              />
+              <input
+                type="text"
+                maxLength="1"
+                value={otpInput[3]}
+                onChange={(e) => setOTPInput(otpInput.substring(0, 3) + e.target.value)}
+              />
+            </div>
+
+              <button onClick={handleVerifyOTP} className="button-otp-verify">Verificar</button>
+            </div>
+          
+            <div className="button-container-opt">
+              <button
+                onClick={handleResendOTP}
+                className={`button-otp ${isResendButtonDisabled ? 'disabled' : ''}`}
+                disabled={isResendButtonDisabled}
+              >
+                {isLoading ? 'Reenviando...' : 'Reenviar código'}
+              </button>
+              <button onClick={handleClose} className="button-otp">Cancelar</button>
+            </div>
+          
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {isResendButtonDisabled && (
+        <p className="resend-info">Por favor, espera un momento para volver a enviar el código. Tiempo restante: {Math.floor(timeLeft / 60)}:{timeLeft % 60 < 10 ? '0' : ''}{timeLeft % 60}</p>
+      )}
+        </div>
         </>
       ) : (
         <Reset onClose={onClose} email={email}/>

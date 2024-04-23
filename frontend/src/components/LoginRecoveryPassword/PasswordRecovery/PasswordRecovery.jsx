@@ -21,7 +21,7 @@ const PasswordRecovery = ({ onClose }) => {
     if (validateEmail(email)) {
       setIsLoading(true);
       // la ruta del nuevo endpoint que creamos para verificar si el correo electrónico existe en la base de datos
-      axios.post("http://localhost:3000/check_email_existence", { email }) //La función axios.post envía los datos necesarios al servidor. En este caso, se envía un objeto JSON que contiene el correo electrónico proporcionado por el usuario.
+      axios.post("http://localhost:3000/login/check_email_existence", { email }) //La función axios.post envía los datos necesarios al servidor. En este caso, se envía un objeto JSON que contiene el correo electrónico proporcionado por el usuario.
       .then((response) => {
         if (response.data.exists) {
           // El correo existe en la base de datos, continuar con el envío del correo de recuperación
@@ -29,7 +29,7 @@ const PasswordRecovery = ({ onClose }) => {
           console.log("El código OTP generado es:", OTP);
           setGeneratedOTP(OTP);
 
-          axios.post("http://localhost:3000/send_recovery_email", {
+          axios.post("http://localhost:3000/login/send_recovery_email", {
             OTP,
             recipient_email: email,
           })
@@ -87,7 +87,7 @@ const PasswordRecovery = ({ onClose }) => {
             </button> 
             <button className="password-recovery-button" onClick={onClose}>Cerrar</button> 
           </div>
-          <p>{errorMessage}</p>
+          <p className='errorMessage'>{errorMessage}</p>
         </div>
       )}
       {isOTPInputOpen && (

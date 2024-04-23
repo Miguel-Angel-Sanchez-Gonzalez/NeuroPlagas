@@ -59,7 +59,7 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
     setOTPGenerationTime(Date.now()); // Registrar el momento en que se generó el nuevo código OTP
 
     axios
-      .post("http://localhost:3000/send_recovery_email", {
+      .post("http://localhost:3000/login/send_recovery_email", {
         OTP,
         recipient_email: email,
       })

@@ -33,7 +33,7 @@ const Login = () => {
       .then(result => {
         if (result.token) {
           localStorage.setItem('token', result.token);
-          localStorage.setItem('userRole', result.userRole); // Guardamos el rol del usuario en el almacenamiento local
+          localStorage.setItem('userRole', result.rol); // Guardamos el rol del usuario en el almacenamiento local
           setLoginSuccessfull(true);
           window.location.reload(); // Recargar la página
         } else {

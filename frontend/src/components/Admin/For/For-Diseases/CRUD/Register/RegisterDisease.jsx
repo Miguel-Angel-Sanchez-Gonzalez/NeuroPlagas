@@ -1,23 +1,81 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './RegisterDisease.css';
 
 const RegisterDisease = ({ onCancelClick }) => {
+  const [enfermedades, setEnfermedades] = useState([]);
 
   const [values, setValues] = useState({
-    nombrePlaga: "",
+    nombreEnfermedad: "",
     nombreCientifico: "",
     descripcion: "",
     recomendaciones: "",
-    accionesTomar: ""
+    acciones: ""
   });
 
-  const handdleInputChange = (event) => {
-    const { name, value } = event.target;
-    setValues({
+   useEffect(()=>{
+    updateDisease();
+  },[])
+
+async function updateDisease(){
+  const response = await fetch(`http://localhost:3000/disease`)
+  const data = await response.json()
+  setEnfermedades(data);
+  console.log(enfermedades)
+} 
+
+
+  const handleInputChange = (e) =>{
+    const { name, value } = e.target;
+    setValues(values => ({
       ...values,
       [name]: value,
-    });
+    }));
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const data = {
+      name: values.nombreEnfermedad,
+      nameScientific: values.nombreCientifico,
+      description: values.descripcion,
+      recommendations: values.recomendaciones,
+      actions: values.acciones
+    };
+
+      const response = await fetch('http://localhost:3000/disease', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json())
+        .then(result => {
+          if (response.ok) {
+            // Éxito, la enfermedad ha sido registrada
+            console.log('Enfermedad registrada correctamente');
+            // Actualizar lista de enfermedades después de crear una nueva
+            updateDisease();
+            window.location.reload();
+            // Reiniciar valores del formulario después de que la solicitud se haya completado
+            // setValues({
+            //   nombreEnfermedad: "",
+            //   nombreCientifico: "",
+            //   descripcion: "",
+            //   recomendaciones: "",
+            //   acciones: ""
+            // });
+          } else {
+            // Error al registrar la enfermedad
+            console.error('Error al registrar la enfermedad');
+          }
+        })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  
 
 
   return (
@@ -35,7 +93,8 @@ const RegisterDisease = ({ onCancelClick }) => {
             required
             name="nombreEnfermedad"
             placeholder="Ingrese el nombre de la enfermedad"
-            onChange={handdleInputChange}
+            value={values.nombreEnfermedad}
+            onChange={handleInputChange}
           />
         </div>
         <div className="column-admin-register">
@@ -46,7 +105,8 @@ const RegisterDisease = ({ onCancelClick }) => {
             required
             name="nombreCientifico"
             placeholder="Ingrese el nombre científico"
-            onChange={handdleInputChange}
+            value={values.nombreCientifico}
+            onChange={handleInputChange}
           />
         </div>
       </div>
@@ -59,7 +119,8 @@ const RegisterDisease = ({ onCancelClick }) => {
             required
             name="descripcion"
             placeholder="Escriba una pequeña descripción"
-            onChange={handdleInputChange}
+            value={values.descripcion}
+            onChange={handleInputChange}
           />
         </div>
         <div className="column-admin-register">
@@ -70,7 +131,8 @@ const RegisterDisease = ({ onCancelClick }) => {
             required
             name="recomendaciones"
             placeholder="Ingrese las recomendaciones"
-            onChange={handdleInputChange}
+            value={values.recomendaciones}
+            onChange={handleInputChange}
           />
         </div>
       </div>
@@ -83,12 +145,13 @@ const RegisterDisease = ({ onCancelClick }) => {
             required
             name="acciones"
             placeholder="Mencione las acciones a tomar"
-            onChange={handdleInputChange}
+            value={values.acciones}
+            onChange={handleInputChange}
           />
         </div>
       </div>
       <div className='button-container-admin'>
-          <button className='button-admin' type="submit" >Guardar</button>
+          <button className='button-admin' type="submit" onClick={handleSubmit} >Guardar</button>
           <button className='btncan-register-disease' onClick={onCancelClick}>Cancelar</button>
         </div>
     </div>

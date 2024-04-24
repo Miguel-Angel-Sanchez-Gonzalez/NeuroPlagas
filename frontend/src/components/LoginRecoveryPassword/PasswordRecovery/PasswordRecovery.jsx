@@ -87,7 +87,7 @@ const PasswordRecovery = ({ onClose }) => {
             </button> 
             <button className="password-recovery-button" onClick={onClose}>Cerrar</button> 
           </div>
-          <p>{errorMessage}</p>
+          <p className='errorMessage'>{errorMessage}</p>
         </div>
       )}
       {isOTPInputOpen && (

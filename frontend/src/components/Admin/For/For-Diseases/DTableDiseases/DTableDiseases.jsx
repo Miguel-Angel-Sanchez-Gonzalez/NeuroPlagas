@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -10,20 +10,21 @@ import DeleteDisease from '../CRUD/Delete/DeleteDisease';
 /*Enfermedad*/
 
 const DTableDiseases = () => {
+
     const columns = [
         {
             name: 'ID',
-            selector: row => row.id,
+            selector: row => row.id_enfermedad,
             sortable: true
         },
         {
             name: 'Nombre de la enfermedad',
-            selector: row => row.nombreEnfermedad,
+            selector: row => row.nombre,
             sortable: true
         },
         {
             name: 'Nombre científico',
-            selector: row => row.nombreCientifico,
+            selector: row => row.nombre_cientifico,
             sortable: true
         },
         {
@@ -61,17 +62,30 @@ const DTableDiseases = () => {
             acciones: 'Retirar maleza',
         }
     ];
-
-    const [records, setRecords] = useState(data);
+    
+    // const [records, setRecords] = useState(data);
     const [showRegisterDisease, setShowRegisterDisease] = useState(false); //Form de register
     const [showEditDisease, setShowEditDisease] = useState(false); //Form de edicion
     const [showDeleteDisease, setShowDeleteDisease] = useState(false); //Form de eliminacion
+    const [diseases,setDiseases] = useState([])
+    
+    useEffect(()=>{
+        getDiseases();
+    },[])
+
+    /*FUNCIONES*/
+    async function getDiseases(){
+        const response = await fetch(`http://localhost:3000/disease`)
+        const data = await response.json()
+        setDiseases(data);
+        console.log(diseases)
+    } 
+
 
     const handleFilter = (event) => {
         const newData = data.filter(row => {
             return row.nombre.toLowerCase().includes(event.target.value.toLowerCase());
         });
-        setRecords(newData);
     };
 
     const handleRegisterClick = () => {
@@ -103,9 +117,9 @@ const DTableDiseases = () => {
     return (
         <div className='table-disease-admin'>
           <DataTable 
-            title={<div>Enfemedades<label className='description'>Lista de enfermedades en los invernaderos</label></div>}
+            title={<div>Enfermedades<label className='description'>Lista de enfermedades en los invernaderos</label></div>}
             columns={columns}
-            data={records}
+            data={diseases}
             responsive={true}
             selectableRows
             fixedHeader

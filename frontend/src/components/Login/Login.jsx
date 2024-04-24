@@ -52,7 +52,6 @@ const Login = () => {
   };
 
 
-
   // Función para renderizar el componente Home según el rol
   const renderHomeByRole = () => {
     const userRole = localStorage.getItem('userRole');

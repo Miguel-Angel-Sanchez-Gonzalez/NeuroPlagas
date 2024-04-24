@@ -13,20 +13,20 @@ const HomeAdmin = () => {
   const [showProfileAdmin, setshowProfileAdmin] = useState(false);
   const [activeTable, setActiveTable] = useState('farmers');
 
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        // Eliminar el token cuando la pestaña se vuelve invisible
-        localStorage.removeItem('token');
-      }
-    };
+  // useEffect(() => {
+  //   const handleVisibilityChange = () => {
+  //     if (document.visibilityState === 'hidden') {
+  //       // Eliminar el token cuando la pestaña se vuelve invisible
+  //       localStorage.removeItem('token');
+  //     }
+  //   };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+  //   document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener('visibilitychange', handleVisibilityChange);
+  //   };
+  // }, []);
 
   const handleConfigureProfileClick = () => {
     setshowProfileAdmin(true);

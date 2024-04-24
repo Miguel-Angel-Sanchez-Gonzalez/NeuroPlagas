@@ -15,12 +15,15 @@ const DTableDiseases = () => {
         {
             name: 'ID',
             selector: row => row.id_enfermedad,
-            sortable: true
+            sortable: true,
+            width:'65px',
+            
         },
         {
             name: 'Nombre de la enfermedad',
             selector: row => row.nombre,
-            sortable: true
+            sortable: true,
+            width:'200px'
         },
         {
             name: 'Nombre científico',
@@ -30,16 +33,20 @@ const DTableDiseases = () => {
         {
             name: 'Descripción',
             selector: row => row.descripcion,
-            sortable: true
+            sortable: true,
+            width:'300px'
         },
         {
             name: 'Recomendaciones',
             selector: row => row.recomendaciones,
-            sortable: true
+            sortable: true,
+            width:'300px'
         },
         {
             name: 'Acciones a tomar',
-            selector: row => row.acciones
+            selector: row => row.acciones,
+            width:'300px'
+            
         },
         {
             name: 'Acciones',

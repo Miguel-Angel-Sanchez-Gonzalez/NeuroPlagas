@@ -9,10 +9,11 @@
 .dashboard-admin {
     display: flex;
     gap: 20px;
+    width: 100%;
 }
 
 .table-container-admin {
-    width: 60%;
+    width: 70%;
     margin-top: 20px;
 }
 

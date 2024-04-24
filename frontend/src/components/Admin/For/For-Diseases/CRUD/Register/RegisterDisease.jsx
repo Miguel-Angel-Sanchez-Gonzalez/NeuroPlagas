@@ -3,6 +3,7 @@ import './RegisterDisease.css';
 
 const RegisterDisease = ({ onCancelClick }) => {
   const [enfermedades, setEnfermedades] = useState([]);
+  const [message, setMessage] = useState('');
 
   const [values, setValues] = useState({
     nombreEnfermedad: "",
@@ -12,16 +13,16 @@ const RegisterDisease = ({ onCancelClick }) => {
     acciones: ""
   });
 
-   useEffect(()=>{
-    updateDisease();
-  },[])
+//    useEffect(()=>{
+//     updateDisease();
+//   },[])
 
-async function updateDisease(){
-  const response = await fetch(`http://localhost:3000/disease`)
-  const data = await response.json()
-  setEnfermedades(data);
-  console.log(enfermedades)
-} 
+// async function updateDisease(){
+//   const response = await fetch(`http://localhost:3000/disease`)
+//   const data = await response.json()
+//   setEnfermedades(data);
+//   console.log(enfermedades)
+// } 
 
 
   const handleInputChange = (e) =>{
@@ -43,37 +44,19 @@ async function updateDisease(){
       actions: values.acciones
     };
 
+    //Se esta haciendo la promesa
       const response = await fetch('http://localhost:3000/disease', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-      })
-        .then(response => response.json())
-        .then(result => {
-          if (response.ok) {
-            // Éxito, la enfermedad ha sido registrada
-            console.log('Enfermedad registrada correctamente');
-            // Actualizar lista de enfermedades después de crear una nueva
-            updateDisease();
-            window.location.reload();
-            // Reiniciar valores del formulario después de que la solicitud se haya completado
-            // setValues({
-            //   nombreEnfermedad: "",
-            //   nombreCientifico: "",
-            //   descripcion: "",
-            //   recomendaciones: "",
-            //   acciones: ""
-            // });
-          } else {
-            // Error al registrar la enfermedad
-            console.error('Error al registrar la enfermedad');
-          }
-        })
-      .catch(error => {
-        console.log(error);
-      });
+      }) 
+        if (response){
+          setMessage('Se ha agregado correctamente la enfermedad.');
+          //updateDisease();
+          window.location.reload();
+        }
   };
   
 

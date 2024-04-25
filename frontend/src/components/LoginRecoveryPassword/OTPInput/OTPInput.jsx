@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./OTPInput.css";
 import Reset from "../Reset/Reset"; // Asegúrate de importar el componente Reset desde el archivo correcto
+import LoginNotification from '../../LoginNotifications/LoginNotifications';
 
 const OTPInput = ({ onClose, generatedOTP, email }) => {
   //const [otpInput, setOTPInput] = useState("");
@@ -14,6 +15,8 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
   const [otpGenerationTime, setOTPGenerationTime] = useState(Date.now()); // Momento en que se generó el código OTP
   const [otpInput, setOTPInput] = useState(["", "", "", ""]);
   const inputRefs = useRef([]);
+  const [alertMessage, setAlertMessage] = useState('');
+  
 
   useEffect(() => {
     inputRefs.current[0].focus();
@@ -76,11 +79,13 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
       })
       .then(() => {
         setIsLoading(false);
-        alert("Código reenviado correctamente");
+        //alert("Código reenviado correctamente");
+        setAlertMessage('Se ha reenviado un nuevo código correctamente');
       })
       .catch((error) => {
         setIsLoading(false);
         console.error("Error al enviar el nuevo código OTP:", error);
+        setAlertMessage('Error al enviar el nuevo código OTP, asegurate que el correo sea vigente');
       });
   };
 
@@ -138,6 +143,7 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
       ) : (
         <Reset onClose={onClose} email={email}/>
       )}
+      {alertMessage && <LoginNotification message={alertMessage} onClose={() => setAlertMessage('')} />}
     </div>
   );
 };

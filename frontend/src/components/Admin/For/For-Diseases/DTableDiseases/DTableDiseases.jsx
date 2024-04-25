@@ -15,12 +15,15 @@ const DTableDiseases = () => {
         {
             name: 'ID',
             selector: row => row.id_enfermedad,
-            sortable: true
+            sortable: true,
+            width:'65px',
+            
         },
         {
             name: 'Nombre de la enfermedad',
             selector: row => row.nombre,
-            sortable: true
+            sortable: true,
+            width:'200px'
         },
         {
             name: 'Nombre científico',
@@ -30,16 +33,20 @@ const DTableDiseases = () => {
         {
             name: 'Descripción',
             selector: row => row.descripcion,
-            sortable: true
+            sortable: true,
+            width:'300px'
         },
         {
             name: 'Recomendaciones',
             selector: row => row.recomendaciones,
-            sortable: true
+            sortable: true,
+            width:'300px'
         },
         {
             name: 'Acciones a tomar',
-            selector: row => row.acciones
+            selector: row => row.acciones,
+            width:'300px'
+            
         },
         {
             name: 'Acciones',
@@ -63,11 +70,11 @@ const DTableDiseases = () => {
         }
     ];
     
-    // const [records, setRecords] = useState(data);
     const [showRegisterDisease, setShowRegisterDisease] = useState(false); //Form de register
     const [showEditDisease, setShowEditDisease] = useState(false); //Form de edicion
     const [showDeleteDisease, setShowDeleteDisease] = useState(false); //Form de eliminacion
-    const [diseases,setDiseases] = useState([])
+    const [diseases,setDiseases] = useState(data)
+
     
     useEffect(()=>{
         getDiseases();
@@ -83,10 +90,12 @@ const DTableDiseases = () => {
 
 
     const handleFilter = (event) => {
-        const newData = data.filter(row => {
+        const newData = diseases.filter(row => {
             return row.nombre.toLowerCase().includes(event.target.value.toLowerCase());
         });
+        setDiseases(newData);
     };
+    
 
     const handleRegisterClick = () => {
         setShowRegisterDisease(true);

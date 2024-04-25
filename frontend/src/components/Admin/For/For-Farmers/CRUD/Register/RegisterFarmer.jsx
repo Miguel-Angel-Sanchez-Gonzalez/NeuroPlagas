@@ -13,12 +13,12 @@ const RegisterFarmer = ({ onCancelClick }) => {
     contrasenia:""
   });
 
-  const handdleInputChange = (event) => {
-    const { name, value } = event.target;
-    setValues({
+  const handleInputChange = (e) =>{
+    const { name, value } = e.target;
+    setValues(values => ({
       ...values,
       [name]: value,
-    });
+    }));
   };
 
 
@@ -37,7 +37,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
             required
             name="nombre"
             placeholder="Ingrese su nombre"
-            onChange={handdleInputChange}
+            onChange={handleInputChange}
           />
         </div>
         <div className="column-admin-register">
@@ -48,7 +48,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
             required
             name="primerApellido"
             placeholder="Ingrese su primer apellido"
-            onChange={handdleInputChange}
+            onChange={handleInputChange}
           />
         </div>
         <div className="column-admin-register">
@@ -59,7 +59,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
             required
             name="segundoApellido"
             placeholder="Ingrese su segundo apellido"
-            onChange={handdleInputChange}
+            onChange={handleInputChange}
           />
         </div>
       </div>
@@ -72,7 +72,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
             required
             name="correo"
             placeholder="ejemplo@gmail.com"
-            onChange={handdleInputChange}
+            onChange={handleInputChange}
           />
         </div>
         <div className="column-admin-register">
@@ -83,7 +83,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
             required
             name="telefono"
             placeholder="Ingrese su número telefónico"
-            onChange={handdleInputChange}
+            onChange={handleInputChange}
           />
         </div>
         <div></div>
@@ -99,7 +99,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
             required
             name="nombreUsuario"
             placeholder="Ingrese su nombre de usuario"
-            onChange={handdleInputChange}
+            onChange={handleInputChange}
           />
         </div>
         <div className="column-admin-register">
@@ -110,7 +110,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
             required
             name="contrasenia"
             placeholder="Contraseña"
-            onChange={handdleInputChange}
+            onChange={handleInputChange}
           />
         </div>
       </div>

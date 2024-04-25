@@ -52,12 +52,15 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
   const handleChange = (index, event) => {
     const { value } = event.target;
     if (isNaN(value)) return; // Solo aceptar números
-
+  
     const newOTPInput = [...otpInput];
     newOTPInput[index] = value;
     setOTPInput(newOTPInput);
-
-    if (value !== "" && index < 3) {
+  
+    if (value === "" && index > 0) {
+      // Si se borra un dígito y no es el primer input, mover al input anterior
+      inputRefs.current[index - 1].focus();
+    } else if (value !== "" && index < 3) {
       // Si se ingresa un dígito y no es el último input, pasar al siguiente
       inputRefs.current[index + 1].focus();
     }

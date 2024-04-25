@@ -115,7 +115,7 @@ const RegisterDisease = ({ onCancelClick }) => {
             <label className={`label-disease ${isFormSubmitted && !values.descripcion && 'red-label'}`}>
               Descripción*
             </label>
-          <input
+          <textarea
             className= {`input-description-register ${isFormSubmitted && !values.descripcion && 'red-input'}`}
             type="text"
             required
@@ -131,7 +131,7 @@ const RegisterDisease = ({ onCancelClick }) => {
             <label className={`label-disease ${isFormSubmitted && !values.recomendaciones && 'red-label'}`}>
               Recomendaciones*
             </label>
-          <input
+          <textarea
             className= {`input-description-register ${isFormSubmitted && !values.recomendaciones && 'red-input'}`}
             type="text"
             required
@@ -149,7 +149,7 @@ const RegisterDisease = ({ onCancelClick }) => {
             <label className={`label-disease ${isFormSubmitted && !values.acciones && 'red-label'}`}>
               Acciones*
             </label>
-          <input
+          <textarea
             className= { `input-description-register2 ${isFormSubmitted && !values.acciones && 'red-input'}`}
             type="text"
             required

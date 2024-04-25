@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import "./Reset.css";
+import LoginNotification from '../../LoginNotifications/LoginNotifications';
 
 const Reset = ({ onClose, email }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState('');
+  //const [message, setMessage] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleClose = () => {
     onClose();
@@ -13,9 +16,36 @@ const Reset = ({ onClose, email }) => {
 
   const handleChangePassword = () => {
     if (password === confirmPassword) {
-      setMessage('Las contraseñas coinciden.');
+
+      const data = {
+        email: String(email).trim(),
+        newPassword: password
+      };
+
+      fetch('http://localhost:3000/login/changePassword',{
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json())
+        .then(result => {
+          if (result) {
+            console.log('Actualización de la contraseña del user correcta');
+            setSuccessMessage('Se ha cambiado la contraseña correctamente.');
+            //handleClose();
+          } else {
+            console.log('Error al actualizar la contraseña del user');
+            setAlertMessage('Error al cambiar la contraseña.');
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
     } else {
-      setMessage('Las contraseñas no coinciden. Por favor, inténtalo de nuevo.');
+      setAlertMessage('Las contraseñas no coinciden. Por favor, inténtalo de nuevo.');
     }
   };
 
@@ -60,7 +90,9 @@ const Reset = ({ onClose, email }) => {
         <button onClick={handleChangePassword} className="reset-button ">Cambiar contraseña</button>
         <button onClick={handleClose} className="reset-button ">Cancelar</button>
       </div>
-      {message && <p className='error-message'>{message}</p>}
+      {/* {message && <p className='error-message'>{message}</p>} */}
+      {alertMessage && <LoginNotification message={alertMessage} onClose={() => setAlertMessage('')} />}
+      {successMessage && <LoginNotification message={successMessage} onClose={() => handleClose()} />}
     </div>
   );
 }

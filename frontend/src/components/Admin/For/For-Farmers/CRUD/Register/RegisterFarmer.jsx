@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import './RegisterFarmer.css';
 
 const RegisterFarmer = ({ onCancelClick }) => {
+  const [records, setRecords] = useState('');
+  const [isInputFocused, setIsInputFocused] = useState(false); // Nuevo estado para controlar el enfoque en los inputs
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Nuevo estado para rastrear si el formulario se ha enviado
 
   const [values, setValues] = useState({
     nombre: "",
@@ -19,6 +22,54 @@ const RegisterFarmer = ({ onCancelClick }) => {
       ...values,
       [name]: value,
     }));
+  };
+
+  const handleInputFocus = () => {
+    setIsInputFocused(true); // Actualiza el estado cuando un input recibe enfoque
+    setRecords(''); // Borra el mensaje de error
+  };
+
+  const handleInputBlur = () => {
+    setIsInputFocused(false); // Actualiza el estado cuando un input pierde el enfoque
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsFormSubmitted(true); 
+    
+
+    const data = {
+      name: values.nombre,
+      surname: values.primerApellido,
+      description: values.segundoApellido,
+      recommendations: values.telefono,
+      actions: values.correo,
+      actions: values.nombreUsuario,
+      actions: values.contrasenia
+    };
+
+    for (const key in values) {
+      if (values[key] === "") {
+        setRecords('Por favor complete todos los campos.');
+        return;
+      }
+    }
+
+    //Se esta haciendo la promesa
+      const response = await fetch('http://localhost:3000/disease', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }) 
+        if (response){
+          alert('Se ha agregado correctamente la enfermedad.');
+          window.location.reload();
+        } else {
+          setRecords('Hubo un problema al agregar la enfermedad. Por favor, inténtelo de nuevo más tarde.');
+        }
+        
   };
 
 

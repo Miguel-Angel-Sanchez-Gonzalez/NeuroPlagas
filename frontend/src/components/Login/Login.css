@@ -71,16 +71,6 @@ body, html {
   margin-top: 30px;
 }
 
-.login-label3{
-  font-size: 15px;
-  font-family: 'Roboto', sans-serif;
-  display: block;
-  text-align: right;
-  color: #c62426;
-  margin-top: -3px;
-  margin-right: 20px;
-  cursor: pointer;
-}
 
 .login-abajo{
   font-family: 'Roboto', sans-serif;
@@ -88,6 +78,7 @@ body, html {
   margin-top: 20px;
   font-size: 20px;
   text-align: center;
+  color: #c62426;
 }
 
 

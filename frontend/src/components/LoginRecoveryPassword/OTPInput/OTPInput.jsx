@@ -5,7 +5,6 @@ import Reset from "../Reset/Reset"; // Asegúrate de importar el componente Rese
 import LoginNotification from '../../LoginNotifications/LoginNotifications';
 
 const OTPInput = ({ onClose, generatedOTP, email }) => {
-  //const [otpInput, setOTPInput] = useState("");
   const [otpGenerated, setOTPGenerated] = useState(String(generatedOTP).trim());
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);

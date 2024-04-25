@@ -88,9 +88,8 @@ const Login = () => {
               <input onChange={(event) => { setPassword(event.target.value) }} type="password" required></input>
               <label>Contraseña</label>
             </div>
-            <label className="login-label3" onClick={handleRecoveryClick}>Olvidé mi contraseña</label> {/* Agregamos el evento onClick para mostrar el componente de recuperación de contraseña */}
             <button className="login-button" onClick={handdleLogin}>Iniciar sesión</button>
-            <label className="login-abajo">¿Sin una cuenta?</label>
+            <label className="login-abajo" onClick={handleRecoveryClick}>Olvidé mi contraseña</label> 
             {errorMessage && <LoginNotification message={errorMessage} onClose={() => setErrorMessage('')} />}
           </form>
         </div>

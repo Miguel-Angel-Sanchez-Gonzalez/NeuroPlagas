@@ -70,11 +70,11 @@ const DTableDiseases = () => {
         }
     ];
     
-    // const [records, setRecords] = useState(data);
     const [showRegisterDisease, setShowRegisterDisease] = useState(false); //Form de register
     const [showEditDisease, setShowEditDisease] = useState(false); //Form de edicion
     const [showDeleteDisease, setShowDeleteDisease] = useState(false); //Form de eliminacion
-    const [diseases,setDiseases] = useState([])
+    const [diseases,setDiseases] = useState(data)
+
     
     useEffect(()=>{
         getDiseases();
@@ -90,10 +90,12 @@ const DTableDiseases = () => {
 
 
     const handleFilter = (event) => {
-        const newData = data.filter(row => {
+        const newData = diseases.filter(row => {
             return row.nombre.toLowerCase().includes(event.target.value.toLowerCase());
         });
+        setDiseases(newData);
     };
+    
 
     const handleRegisterClick = () => {
         setShowRegisterDisease(true);

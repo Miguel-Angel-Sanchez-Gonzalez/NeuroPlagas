@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./OTPInput.css";
 import Reset from "../Reset/Reset"; // Asegúrate de importar el componente Reset desde el archivo correcto
 
 const OTPInput = ({ onClose, generatedOTP, email }) => {
-  const [otpInput, setOTPInput] = useState("");
+  //const [otpInput, setOTPInput] = useState("");
   const [otpGenerated, setOTPGenerated] = useState(String(generatedOTP).trim());
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -12,8 +12,11 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
   const [isResendButtonDisabled, setIsResendButtonDisabled] = useState(false);
   const [timeLeft, setTimeLeft] = useState(120); // Tiempo restante en segundos (120 segundos = 2 minutos)
   const [otpGenerationTime, setOTPGenerationTime] = useState(Date.now()); // Momento en que se generó el código OTP
+  const [otpInput, setOTPInput] = useState(["", "", "", ""]);
+  const inputRefs = useRef([]);
 
   useEffect(() => {
+    inputRefs.current[0].focus();
     // Si el botón de reenvío está deshabilitado, comienza la cuenta regresiva
     if (isResendButtonDisabled) {
       const timer = setInterval(() => {
@@ -32,20 +35,28 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
   }, [isResendButtonDisabled]);
 
   const handleVerifyOTP = () => {
-    const cleanedOtpInput = otpInput.trim();
-    const cleanedGeneratedOTP = otpGenerated.trim();
+    const cleanedOtpInput = otpInput.join("").trim();
+    const cleanedGeneratedOTP = String(generatedOTP).trim();
 
     if (cleanedOtpInput === cleanedGeneratedOTP) {
-      // Verificar si el código aún es válido (dentro de los 2 minutos)
-      const currentTime = Date.now();
-      if (currentTime - otpGenerationTime > 120000) { // 120000 milisegundos = 2 minutos
-        setErrorMessage("El código OTP ha expirado. Por favor, solicita uno nuevo.");
-      } else {
-        setIsOTPVerified(true);
-        setErrorMessage("");
-      }
+      setIsOTPVerified(true);
+      setErrorMessage("");
     } else {
       setErrorMessage("El código OTP ingresado es incorrecto");
+    }
+  };
+
+  const handleChange = (index, event) => {
+    const { value } = event.target;
+    if (isNaN(value)) return; // Solo aceptar números
+
+    const newOTPInput = [...otpInput];
+    newOTPInput[index] = value;
+    setOTPInput(newOTPInput);
+
+    if (value !== "" && index < 3) {
+      // Si se ingresa un dígito y no es el último input, pasar al siguiente
+      inputRefs.current[index + 1].focus();
     }
   };
 
@@ -90,34 +101,21 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
             <h2 className="otp-input-title">Verificación de email</h2>
             <p className="indicaciones">Ingresa el código OTP enviado a tu correo electrónico:</p>
             <div className="formulario">
-            <div className="inputs-otp">
-              <input
-                type="text"
-                maxLength="1"
-                value={otpInput[0]}
-                onChange={(e) => setOTPInput(otpInput.substring(0, 0) + e.target.value + otpInput.substring(1))}
-              />
-              <input
-                type="text"
-                maxLength="1"
-                value={otpInput[1]}
-                onChange={(e) => setOTPInput(otpInput.substring(0, 1) + e.target.value + otpInput.substring(2))}
-              />
-              <input
-                type="text"
-                maxLength="1"
-                value={otpInput[2]}
-                onChange={(e) => setOTPInput(otpInput.substring(0, 2) + e.target.value + otpInput.substring(3))}
-              />
-              <input
-                type="text"
-                maxLength="1"
-                value={otpInput[3]}
-                onChange={(e) => setOTPInput(otpInput.substring(0, 3) + e.target.value)}
-              />
-            </div>
-
-              <button onClick={handleVerifyOTP} className="button-otp-verify">Verificar</button>
+              <div className="inputs-otp">
+                {otpInput.map((digit, index) => (
+                  <input
+                    key={index}
+                    ref={(ref) => (inputRefs.current[index] = ref)}
+                    type="text"
+                    maxLength="1"
+                    value={digit}
+                    onChange={(e) => handleChange(index, e)}
+                  />
+                ))}
+              </div>
+                <button onClick={handleVerifyOTP} className="button-otp-verify">
+                  Verificar
+                </button>
             </div>
           
             <div className="button-container-opt">

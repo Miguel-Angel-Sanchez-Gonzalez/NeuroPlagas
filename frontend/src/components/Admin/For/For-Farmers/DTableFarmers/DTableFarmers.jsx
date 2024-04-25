@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -13,7 +13,7 @@ const DTableFarmers = () => {
     const columns = [
         {
             name: 'ID',
-            selector: row => row.id,
+            selector: row => row.id_agricultor,
             sortable: true
         },
         {
@@ -23,12 +23,12 @@ const DTableFarmers = () => {
         },
         {
             name: 'Primer apellido',
-            selector: row => row.primerApellido,
+            selector: row => row.primer_apellido,
             sortable: true
         },
         {
             name: 'Segundo apellido',
-            selector: row => row.segundoApellido,
+            selector: row => row.segundo_apellido,
             sortable: true
         },
         {
@@ -37,11 +37,11 @@ const DTableFarmers = () => {
         },
         {
             name: 'Correo electrónico',
-            selector: row => row.correo
+            selector: row => row.correo_electronico
         },
         {
             name: 'Usuario',
-            selector: row => row.usuario,
+            selector: row => row.nombre_usuario,
             sortable: true
         },
         {
@@ -60,28 +60,30 @@ const DTableFarmers = () => {
     ];
 
     const data = [
-        {
-            id: 1,
-            nombre: 'lizeth',
-            primerApellido: 'Antonio',
-            segundoApellido: 'López',
-            telefono: '9512488426',
-            correo: 'lizeth2_intel@gmail.com',
-            usuario: 'zeti',
-            contrasenia: '123',
-        }
     ];
 
-    const [records, setRecords] = useState(data);
     const [showRegisterFarmer, setShowRegisterFarmer] = useState(false); //Form de register
     const [showEditFarmer, setShowEditFarmer] = useState(false); //Form de edicion
     const [showDeleteFarmer, setshowDeleteFarmer] = useState(false); //Form de eliminacion
+    const [farmers, setFarmers] = useState(data);
+
+    useEffect(()=>{
+        getFarmers();
+    },[])
+
+    /*FUNCIONES*/
+    async function getFarmers(){
+        const response = await fetch(`http://localhost:3000/farmer/`)
+        const data = await response.json()
+        setFarmers(data);
+        console.log(farmers)
+    } 
     
     const handleFilter = (event) => {
-        const newData = data.filter(row => {
+        const newData = farmers.filter(row => {
             return row.nombre.toLowerCase().includes(event.target.value.toLowerCase());
         });
-        setRecords(newData);
+        setFarmers(newData);
     };
 
     const handleRegisterClick = () => {
@@ -115,7 +117,7 @@ const DTableFarmers = () => {
           <DataTable 
             title={<div>Agricultores<label className='description-farmer'>Lista de todos los agricultores que existen en el sistema</label></div>}
             columns={columns}
-            data={records}
+            data={farmers}
             responsive={true}
             selectableRows
             fixedHeader

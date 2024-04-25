@@ -66,7 +66,7 @@ const Reset = ({ onClose, email }) => {
         <div className='inputs-contraseñas'>
           <input
             type="password"
-            placeholder="••••••••"
+            placeholder="•••••"
             value={password}
             onChange={(e) => handlePasswordChange(e.target.value)}
           />
@@ -76,7 +76,7 @@ const Reset = ({ onClose, email }) => {
         <div className='inputs-contraseñas'>
           <input
             type="password"
-            placeholder="••••••••"
+            placeholder="•••••"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />

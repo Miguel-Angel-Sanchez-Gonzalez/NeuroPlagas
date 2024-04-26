@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import './PasswordRecovery.css';
 import OTPInput from '../OTPInput/OTPInput';
 import LoginNotification from '../../LoginNotifications/LoginNotifications';

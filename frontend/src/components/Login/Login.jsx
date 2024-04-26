@@ -35,7 +35,6 @@ const Login = () => {
           localStorage.setItem('token', result.token);
           localStorage.setItem('userRole', result.rol); // Guardamos el rol del usuario en el almacenamiento local
           setLoginSuccessfull(true);
-          window.location.reload(); // Recargar la página
         } else {
           setErrorMessage('Las credenciales proporcionadas son inválidas. Por favor, verifica tu nombre de usuario y contraseña');
           setLoginSuccessfull(false);

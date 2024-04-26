@@ -105,3 +105,29 @@ button {
   transform: scale(1, 1);
   cursor: pointer;
 }
+
+.error-message{
+  margin-left: 20px;
+  margin-right: 20px;
+  text-align: justify;
+  color: #c62426;
+  font-size: medium;
+}
+
+.red-label {
+  border-color: #c62426; /* Cambia el color del borde a rojo */
+  color: #c62426; /* Cambia el color del texto a rojo */
+}
+
+/* Estilo específico para resaltar el borde del input */
+.red-input {
+  border-color: #c62426; /* Cambia el color del borde a rojo */
+}
+
+.email-exists{
+  margin-top: 5px;
+  margin-right: 10px;
+  text-align: justify;
+  color: #c62426;
+  font-size: medium;
+}

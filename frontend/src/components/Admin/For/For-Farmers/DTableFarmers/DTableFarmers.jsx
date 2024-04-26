@@ -14,39 +14,47 @@ const DTableFarmers = () => {
         {
             name: 'ID',
             selector: row => row.id_agricultor,
-            sortable: true
+            sortable: true,
+            width:'65px'
         },
         {
             name: 'Nombre',
             selector: row => row.nombre,
-            sortable: true
+            sortable: true,
+            width:'100px',
         },
         {
             name: 'Primer apellido',
             selector: row => row.primer_apellido,
-            sortable: true
+            sortable: true,
+            width:'140px'
         },
         {
             name: 'Segundo apellido',
             selector: row => row.segundo_apellido,
-            sortable: true
+            sortable: true,
+            width:'150px'
         },
         {
             name: 'Teléfono',
-            selector: row => row.telefono
+            selector: row => row.telefono,
+            width:'110px'
         },
         {
             name: 'Correo electrónico',
-            selector: row => row.correo_electronico
+            selector: row => row.correo_electronico,
+            width:'220px'
         },
         {
             name: 'Usuario',
             selector: row => row.nombre_usuario,
-            sortable: true
+            sortable: true,
+            width:'95px'
         },
         {
             name: 'Contraseña',
-            selector: row => '********'
+            selector: row => '********',
+            width:'110px'
         },
         {
             name: 'Acciones',
@@ -55,7 +63,8 @@ const DTableFarmers = () => {
                     <FontAwesomeIcon icon={faPencilAlt} onClick={() => handleEditClick(row)} className='edit-icon' size='lg'/>
                     <FontAwesomeIcon icon={faTrash} onClick={() => handleDeleteClick(row)} className='delete-icon' size='lg' />
                 </div>
-            )
+            ),
+            width:'90px'
         }
     ];
 

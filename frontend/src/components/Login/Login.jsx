@@ -56,7 +56,7 @@ const Login = () => {
     const userRole = localStorage.getItem('userRole');
     switch (userRole) {
       case 'admin':
-        return <HomeAdmin />;
+        return <HomeAdmin username = {username} />;
       case 'farmer':
         return <HomeFarmer />;
       case 'worker':

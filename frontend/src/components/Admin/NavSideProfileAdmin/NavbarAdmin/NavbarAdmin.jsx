@@ -3,7 +3,7 @@ import { RiAdminFill } from "react-icons/ri";
 import './NavbarAdmin.css';
 import ProfileAdmin from '../ProfileAdmin/ProfileAdmin';
 
-const NavbarAdmin = ({onConfigureProfileClick}) => {
+const NavbarAdmin = ({onConfigureProfileClick, username}) => {
   const [showProfileAdmin, setshowProfileAdmin] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRef = useRef(null);
@@ -49,7 +49,7 @@ const NavbarAdmin = ({onConfigureProfileClick}) => {
             )}
         </div>
         <div className='user-info-admin'>
-          <label>Lizeth Antonio</label>
+          <label>{username}</label>
           <br />
           <label>1916@gmail.com</label>
         </div>

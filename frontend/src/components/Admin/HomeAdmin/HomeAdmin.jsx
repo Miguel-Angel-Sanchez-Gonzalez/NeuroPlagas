@@ -9,7 +9,8 @@ import DTableGreenhouses from '../For/For-Greenhouses/DTableGreenhouses/DTableGr
 import DTablePlagues from '../For/For-Plagues/DTablePlagues/DTablePlagues';
 import DTableWorkers from '../For/For-Workers/DTableWorkers/DTableWorkers';
 
-const HomeAdmin = () => {
+const HomeAdmin = ({username}) => {
+  console.log(String(username));
   const [showProfileAdmin, setshowProfileAdmin] = useState(false);
   const [activeTable, setActiveTable] = useState('farmers');
 
@@ -38,7 +39,7 @@ const HomeAdmin = () => {
 
   return (
     <div>
-      <NavbarAdmin onConfigureProfileClick={handleConfigureProfileClick} />
+      <NavbarAdmin onConfigureProfileClick={handleConfigureProfileClick} username={username}/>
       <div className='dashboard-admin'>
           <SidebarAdmin setActiveTable={setActiveTable} />
         <div className='table-container-admin'>

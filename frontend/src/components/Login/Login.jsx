@@ -35,6 +35,31 @@ const Login = () => {
           localStorage.setItem('token', result.token);
           localStorage.setItem('userRole', result.rol); // Guardamos el rol del usuario en el almacenamiento local
           setLoginSuccessfull(true);
+
+
+          const data2 = {
+            username: username,
+            password: password,
+            role:result.rol
+          };
+
+          fetch('http://localhost:3000/login/getDataByUsername',{
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data2)
+          })
+            .then(response => response.json())
+            .then(result => {
+              if (result) {
+                console.log("Objeto con los datos del user");
+                console.log(result[0]);
+              }else{
+                console.log("Objeto sin data");
+              }
+            })
+            
         } else {
           setErrorMessage('Las credenciales proporcionadas son inválidas. Por favor, verifica tu nombre de usuario y contraseña');
           setLoginSuccessfull(false);

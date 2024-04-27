@@ -59,6 +59,9 @@ const Login = () => {
                 console.log("Objeto sin data");
               }
             })
+            .catch(error => {
+              console.log(error);
+            });
             
         } else {
           setErrorMessage('Las credenciales proporcionadas son inválidas. Por favor, verifica tu nombre de usuario y contraseña');

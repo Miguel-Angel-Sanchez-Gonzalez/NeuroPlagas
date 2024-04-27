@@ -1,8 +1,8 @@
 import React from 'react';
+import Login from '../Login/Login.jsx';
 import HomeAdmin from '../Admin/HomeAdmin/HomeAdmin.jsx';
 import HomeFarmer from '../Farmer/HomeFarmer/HomeFarmer.jsx';
 import HomeWorker from '../Worker/HomeWorker/HomeWorker.jsx';
-import Login from '../Login/Login.jsx';
 
 // Función para decodificar el JWT Token
 function parseJwt(token) {
@@ -48,7 +48,7 @@ const Main = () => {
       case 'farmer':
         return <HomeFarmer />;
       case 'worker':
-        return <HomeWorker />;
+        return <HomeWorker/>;
       default:
         return <Login />;
     }

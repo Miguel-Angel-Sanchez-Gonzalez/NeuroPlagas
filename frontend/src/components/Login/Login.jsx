@@ -33,9 +33,33 @@ const Login = () => {
       .then(result => {
         if (result.token) {
           localStorage.setItem('token', result.token);
-          localStorage.setItem('userRole', result.userRole); // Guardamos el rol del usuario en el almacenamiento local
+          localStorage.setItem('userRole', result.rol); // Guardamos el rol del usuario en el almacenamiento local
           setLoginSuccessfull(true);
-          window.location.reload(); // Recargar la página
+
+
+          const data2 = {
+            username: username,
+            password: password,
+            role:result.rol
+          };
+
+          fetch('http://localhost:3000/login/getDataByUsername',{
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data2)
+          })
+            .then(response => response.json())
+            .then(result => {
+              if (result) {
+                console.log("Objeto con los datos del user");
+                console.log(result[0]);
+              }else{
+                console.log("Objeto sin data");
+              }
+            })
+            
         } else {
           setErrorMessage('Las credenciales proporcionadas son inválidas. Por favor, verifica tu nombre de usuario y contraseña');
           setLoginSuccessfull(false);
@@ -52,13 +76,12 @@ const Login = () => {
   };
 
 
-
   // Función para renderizar el componente Home según el rol
   const renderHomeByRole = () => {
     const userRole = localStorage.getItem('userRole');
     switch (userRole) {
       case 'admin':
-        return <HomeAdmin />;
+        return <HomeAdmin username = {username} />;
       case 'farmer':
         return <HomeFarmer />;
       case 'worker':
@@ -81,18 +104,16 @@ const Login = () => {
           <form className="login-form">
             <label className="login-label">Bienvenido de nuevo</label>
             <label className="login-label1">Iniciar sesión</label>
-            <div className="input-field"> 
+            <div className="input-datos"> 
               <input onChange={(event) => { setUsername(event.target.value) }} type="text" required></input>
               <label>Ingresa tu nombre de usuario</label>
             </div>
-            <div className="input-field"> 
+            <div className="input-datos"> 
               <input onChange={(event) => { setPassword(event.target.value) }} type="password" required></input>
               <label>Contraseña</label>
             </div>
-            <label className="login-label3" onClick={handleRecoveryClick}>Olvidé mi contraseña</label> {/* Agregamos el evento onClick para mostrar el componente de recuperación de contraseña */}
             <button className="login-button" onClick={handdleLogin}>Iniciar sesión</button>
-            <label className="login-abajo">¿Sin una cuenta?</label>
-            <label className="login-invitado">Iniciar como invitado</label>
+            <label className="login-abajo" onClick={handleRecoveryClick}>Olvidé mi contraseña</label> 
             {errorMessage && <LoginNotification message={errorMessage} onClose={() => setErrorMessage('')} />}
           </form>
         </div>

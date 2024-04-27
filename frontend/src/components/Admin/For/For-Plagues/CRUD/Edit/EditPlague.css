@@ -1,0 +1,120 @@
+/* Estilos base */
+.edit-plague-form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  max-width: 100%; /* Para hacerlo responsivo */
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.centrar-plague{
+  margin-right: 10px;
+}
+
+.h4edit{
+  padding-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.h5edit{
+  text-align: right;
+  padding-bottom: 10px;
+  color: #c62426;
+  margin-right: 20px;
+}
+
+.label-datos-plague{
+  font-weight: bold;
+  padding-left: 15px;
+}
+
+.label-plague{
+  font-size: 15px;
+}
+
+.inputs-edit-plague {
+  margin-top: 5px;
+  margin-left: 0px;
+  width: 88%;
+  padding: 10px;
+  border: 2px solid #d4d0d0;
+}
+
+.input-description-edit{
+  height: 100px;
+  margin-top: 5px;
+  margin-left: 0px;
+  width: 88%;
+  padding: 10px;
+  border: 2px solid #d4d0d0;
+  border-radius: 10px;
+}
+
+.input-description-edit2{
+  height: 80px;
+  margin-top: 5px;
+  margin-left: 0px;
+  width: 95%;
+  padding: 10px;
+  border: 2px solid #d4d0d0;
+  border-radius: 10px;
+}
+
+.input-description-edit:focus,
+.input-description-edit2:focus,
+.inputs-edit-plague:focus {
+  border: 2px solid #c62426;
+}
+
+.form-section-plague {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* Distribuye los elementos horizontalmente */
+  margin-bottom: 10px;
+  padding-left: 15px;
+}
+
+.column-admin-edit {
+  margin-right: 10px; /* Espacio entre las columnas */
+  margin-top: 10px;
+}
+
+.password-rules label {
+  display: block;
+  padding-top: 4px;
+}
+
+
+.button-container-admin {
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between; /* Distribuye el espacio entre los botones */
+  align-items: center; /* Centra verticalmente los botones */
+}
+
+.btncan-edit-plague  {
+  width: 150px;
+  padding: 12px;
+  color: white;
+  background-color: #c62426;
+  border: 2px solid #c62426;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+
+/* Estilos adicionales para el botón */
+button {
+  transform: scale(1, 1);
+  cursor: pointer;
+}

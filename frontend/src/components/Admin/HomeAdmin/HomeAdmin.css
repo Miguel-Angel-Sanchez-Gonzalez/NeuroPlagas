@@ -6,20 +6,26 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-.dashboard {
+.dashboard-admin {
     display: flex;
     gap: 20px;
+    width: 100%;
 }
 
-.table-container {
-    width: 65%;
+.table-container-admin {
+    width: 70%;
     margin-top: 20px;
 }
 
-.rol{
+.h2admin{
+    margin-left: 15px;
+    margin-bottom: 20px;
+}
+
+.rol-admin{
     color: #c62426;
 }
 
-.space{
+.space-admin{
     padding: 15px;
 }

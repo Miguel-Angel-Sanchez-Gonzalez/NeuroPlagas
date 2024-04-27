@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import './RegisterFarmer.css';
+import LoginNotification from '../../../../../LoginNotifications/LoginNotifications';
 
 const RegisterFarmer = ({ onCancelClick }) => {
   const [records, setRecords] = useState('');
   const [emailExists, setEmailExists] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false); // Nuevo estado para controlar el enfoque en los inputs
   const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Nuevo estado para rastrear si el formulario se ha enviado
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('');
 
   const [values, setValues] = useState({
     nombre: "",
@@ -66,6 +69,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsFormSubmitted(true); 
+
     
     for (const key in values) {
       if (values[key] === "") {
@@ -87,11 +91,13 @@ const RegisterFarmer = ({ onCancelClick }) => {
       return;
     }
     
-    const phoneValidate = validatePhone(values.telefono);
-    if(!phoneValidate){
-      setRecords('El teléfono ingresado no es válido')
+    // const phoneValidate = validatePhone(values.telefono);
+    if (!validatePhone(values.telefono)) {
+      setRecords('Teléfono no válido (10 dígitos).');
+      return;
     }
 
+    setIsLoading(true);
     const data = {
       name: values.nombre,
       surname: values.primerApellido,
@@ -99,10 +105,12 @@ const RegisterFarmer = ({ onCancelClick }) => {
       phone: values.telefono,
       email: values.correo,
       nameUser: values.nombreUsuario,
-      password: values.contrasenia
+      password: values.contrasenia,
+      role: "farmer"
     };
 
     //Se esta haciendo la promesa
+    //Post para insertar los datos de un agricultor
       const response = await fetch('http://localhost:3000/farmer/', {
         method: 'POST',
         headers: {
@@ -111,156 +119,188 @@ const RegisterFarmer = ({ onCancelClick }) => {
         body: JSON.stringify(data)
       }) 
         if (response){
-          alert('Se ha agregado correctamente el agricultor.');
-          window.location.reload();
+          const responseData = await response.json();
+          const { id } = responseData; // Obtiene el ID del agricultor del backend
+          setIsLoading(false);
+          setLoadingMessage('Se ha agregado correctamente el agricultor.');
+          setTimeout(() => {
+            setLoadingMessage(''); // Oculta el mensaje después de unos segundos
+            window.location.reload();
+          }, 3000); // Mostrar el mensaje durante 3 segundos
         } else {
           setRecords('Por favor, inténtelo de nuevo más tarde.');
+          setIsLoading(false); // Agregar para detener la pantalla de carga
         }
-      
   };
 
 
   return (
-    <div className="register-farmer-form">
-      <div className='centrar-farmer'>
-      <h4 className='h4register'>Registrar agricultor</h4>
-      <h5 className='h5register'>*Campos requeridos</h5>
-      <label className='label-register-farmer'>Registre sus datos personales</label>
-      <div className="form-section-farmer">
-        <div className="column-admin-register">
-            <label className={`label-farmer ${isFormSubmitted && !values.nombre && 'red-label'}`}>
-              Nombre*
-            </label>
-          <input
-            className={`inputs-register-farmer ${isFormSubmitted && !values.nombre && 'red-input'}`}
-            type="text"
-            required
-            name="nombre"
-            placeholder="Ingrese su nombre"
-            onChange={handleInputChange}
-            onFocus={handleInputFocus} // Nuevo evento de enfoque
-            onBlur={handleInputBlur}   // Nuevo evento de desenfoque
-          />
+    <div>
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
         </div>
-        <div className="column-admin-register">
-            <label className={`label-farmer ${isFormSubmitted && !values.primerApellido && 'red-label'}`}>
-              Primer apellido*
-            </label>
-          <input
-            className={`inputs-register-farmer ${isFormSubmitted && !values.primerApellido && 'red-input'}`}
-            type="text"
-            required
-            name="primerApellido"
-            placeholder="Ingrese su primer apellido"
-            onChange={handleInputChange}
-            onFocus={handleInputFocus} // Nuevo evento de enfoque
-            onBlur={handleInputBlur}   // Nuevo evento de desenfoque
-          />
-        </div>
-        <div className="column-admin-register">
-            <label className={`label-farmer ${isFormSubmitted && !values.segundoApellido && 'red-label'}`}>
-              Segundo apellido*
-            </label>
-          <input
-            className={`inputs-register-farmer ${isFormSubmitted && !values.segundoApellido && 'red-input'}`}
-            type="text"
-            required
-            name="segundoApellido"
-            placeholder="Ingrese su segundo apellido"
-            onChange={handleInputChange}
-            onFocus={handleInputFocus} // Nuevo evento de enfoque
-            onBlur={handleInputBlur}   // Nuevo evento de desenfoque
-          />
-        </div>
-      </div>
-      <div className="form-section-farmer">
-        <div className="column-admin-register">
-            <label className={`label-farmer ${isFormSubmitted && !values.correo && 'red-label'}`}>
-              Correo*
-            </label>
-          <input
-            className={`inputs-register-farmer ${isFormSubmitted && !values.correo ? 'red-input' : ''}`}
-            type="email" // Utiliza el tipo email
-              required
-              name="correo"
-              placeholder="ejemplo@gmail.com"
-              onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              onBlur={async () => {
-                handleInputBlur();
-                if (values.correo && validateEmail(values.correo)) {
-                  const emailExists = await checkEmailExists(values.correo);
-                  setEmailExists(emailExists);
-                }
-              }}
-              
-            />
-            {emailExists && <p className="email-exists">Correo ya existente.</p>}
-        </div>
-        <div className="column-admin-register">
-            <label className={`label-farmer ${isFormSubmitted && !values.telefono && 'red-label'}`}>
-              Teléfono*
-            </label>
-          <input
-            className={`inputs-register-farmer ${isFormSubmitted && !values.telefono && 'red-input'}`}
-            type="text"
-            required
-            name="telefono"
-            placeholder="Ingrese su número telefónico"
-            onChange={handleInputChange}
-            onFocus={handleInputFocus} // Nuevo evento de enfoque
-            onBlur={handleInputBlur}   // Nuevo evento de desenfoque
-          />
-        </div>
-        <div></div>
-      </div>
+      )}
+        <div className="register-farmer-form">
+          <div className='centrar-farmer'>
+          <h4 className='h4register'>Registrar agricultor</h4>
+          <h5 className='h5register'>*Campos requeridos</h5>
+          <label className='label-register-farmer'>Registre sus datos personales</label>
+          <div className="form-section-farmer">
+            <div className="column-admin-register">
+                <label className={`label-farmer ${isFormSubmitted && !values.nombre && 'red-label'}`}>
+                  Nombre*
+                </label>
+              <input
+                className={`inputs-register-farmer ${isFormSubmitted && !values.nombre && 'red-input'}`}
+                type="text"
+                required
+                name="nombre"
+                placeholder="Ingrese su nombre"
+                value={values.nombre}
+                onChange={handleInputChange}
+                onFocus={handleInputFocus} // Nuevo evento de enfoque
+                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
+              />
+            </div>
+            <div className="column-admin-register">
+                <label className={`label-farmer ${isFormSubmitted && !values.primerApellido && 'red-label'}`}>
+                  Primer apellido*
+                </label>
+              <input
+                className={`inputs-register-farmer ${isFormSubmitted && !values.primerApellido && 'red-input'}`}
+                type="text"
+                required
+                name="primerApellido"
+                placeholder="Ingrese su primer apellido"
+                value={values.primerApellido}
+                onChange={handleInputChange}
+                onFocus={handleInputFocus} // Nuevo evento de enfoque
+                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
+              />
+            </div>
+            <div className="column-admin-register">
+                <label className={`label-farmer ${isFormSubmitted && !values.segundoApellido && 'red-label'}`}>
+                  Segundo apellido*
+                </label>
+              <input
+                className={`inputs-register-farmer ${isFormSubmitted && !values.segundoApellido && 'red-input'}`}
+                type="text"
+                required
+                name="segundoApellido"
+                placeholder="Ingrese su segundo apellido"
+                value={values.segundoApellido}
+                onChange={handleInputChange}
+                onFocus={handleInputFocus} // Nuevo evento de enfoque
+                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
+              />
+            </div>
+          </div>
+          <div className="form-section-farmer">
+            <div className="column-admin-register">
+                <label className={`label-farmer ${isFormSubmitted && !values.correo && 'red-label'}`}>
+                  Correo*
+                </label>
+              <input
+                className={`inputs-register-farmer ${isFormSubmitted && !values.correo ? 'red-input' : ''}`}
+                type="email" // Utiliza el tipo email
+                  required
+                  name="correo"
+                  placeholder="ejemplo@gmail.com"
+                  value={values.correo}
+                  onChange={handleInputChange}
+                  onFocus={handleInputFocus}
+                  onBlur={async () => {
+                    handleInputBlur();
+                    if (values.correo && validateEmail(values.correo)) {
+                      const emailExists = await checkEmailExists(values.correo);
+                      setEmailExists(emailExists);
+                    }
+                  }}
+                  
+                />
+                {emailExists && <p className="email-exists">El correo ya existe.</p>}
+            </div>
+            <div className="column-admin-register">
+                <label className={`label-farmer ${isFormSubmitted && !values.telefono && 'red-label'}`}>
+                  Teléfono*
+                </label>
+              <input
+                className={`inputs-register-farmer ${isFormSubmitted && !values.telefono && 'red-input'}`}
+                type="text"
+                required
+                name="telefono"
+                maxLength="10"
+                placeholder="Ingrese su número telefónico"
+                value={values.telefono}
+                onFocus={handleInputFocus} // Nuevo evento de enfoque
+                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
+                onChange={(e) => {
+                  // Filtra solo dígitos y limita a 10 caracteres
+                  const phoneNumber = e.target.value.replace(/\D/g, '').slice(0, 10);
+                  setValues(prevState => ({
+                    ...prevState,
+                    telefono: phoneNumber,
+                  }));
+                }}
+              />
+            </div>
+            <div></div>
+          </div>
 
-      <label className='label-register-farmer'>Registre sus datos de inicio de sesión</label>
-      <div className="form-section-farmer">
-        <div className="column-admin-register">
-            <label className={`label-farmer ${isFormSubmitted && !values.nombreUsuario && 'red-label'}`}>
-              Nombre de usuario*
-            </label>
-          <input
-            className={`inputs-register-farmer2 ${isFormSubmitted && !values.nombreUsuario && 'red-input'}`}
-            type="text"
-            required
-            name="nombreUsuario"
-            placeholder="Ingrese su nombre de usuario"
-            onChange={handleInputChange}
-            onFocus={handleInputFocus} // Nuevo evento de enfoque
-            onBlur={handleInputBlur}   // Nuevo evento de desenfoque
-          />
+          <label className='label-register-farmer'>Registre sus datos de inicio de sesión</label>
+          <div className="form-section-farmer">
+            <div className="column-admin-register">
+                <label className={`label-farmer ${isFormSubmitted && !values.nombreUsuario && 'red-label'}`}>
+                  Nombre de usuario*
+                </label>
+              <input
+                className={`inputs-register-farmer2 ${isFormSubmitted && !values.nombreUsuario && 'red-input'}`}
+                type="text"
+                required
+                name="nombreUsuario"
+                placeholder="Ingrese su nombre de usuario"
+                value={values.nombreUsuario}
+                onChange={handleInputChange}
+                onFocus={handleInputFocus} // Nuevo evento de enfoque
+                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
+              />
+            </div>
+            <div className="column-admin-register">
+                <label className={`label-farmer ${isFormSubmitted && !values.contrasenia && 'red-label'}`}>
+                  Contraseña*
+                </label>
+              <input
+                className={`inputs-register-farmer2 ${isFormSubmitted && !values.contrasenia && 'red-input'}`}
+                type="password"
+                required
+                name="contrasenia"
+                placeholder="Contraseña"
+                value={values.contrasenia}
+                onChange={handleInputChange}
+                onFocus={handleInputFocus} // Nuevo evento de enfoque
+                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
+              />
+            </div>
+          </div>
+          <div className="password-rules-farmer">
+            <label>*La contraseña debe ser mínimo de 8 caracteres.</label>
+            <label>*Debes de incluir letras mayúsculas y minúsculas</label>
+            <label>*Debes de incluir al menos un número y un símbolo (Todos son válidos).</label>
+          </div>
+            <div className='button-container-admin'>
+              <button className='button-admin' type="submit" onClick={handleSubmit}>Guardar</button>
+              {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
+              <button className='button-cancel-admin ' onClick={onCancelClick}>Cancelar</button>
+            </div>
+            {records && !isInputFocused && <p className='error-message'>{records}</p>}
         </div>
-        <div className="column-admin-register">
-            <label className={`label-farmer ${isFormSubmitted && !values.contrasenia && 'red-label'}`}>
-              Contraseña*
-            </label>
-          <input
-            className={`inputs-register-farmer2 ${isFormSubmitted && !values.contrasenia && 'red-input'}`}
-            type="password"
-            required
-            name="contrasenia"
-            placeholder="Contraseña"
-            onChange={handleInputChange}
-            onFocus={handleInputFocus} // Nuevo evento de enfoque
-            onBlur={handleInputBlur}   // Nuevo evento de desenfoque
-          />
+        {loadingMessage && (
+        <LoginNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification"/>
+      )}
         </div>
       </div>
-      <div className="password-rules-farmer">
-        <label>*La contraseña debe ser mínimo de 8 caracteres.</label>
-        <label>*Debes de incluir letras mayúsculas y minúsculas</label>
-        <label>*Debes de incluir al menos un número y un símbolo (Todos son válidos).</label>
-      </div>
-        <div className='button-container-admin'>
-          <button className='button-admin' type="submit" onClick={handleSubmit}>Guardar</button>
-          <button className='button-cancel-admin ' onClick={onCancelClick}>Cancelar</button>
-        </div>
-        {records && !isInputFocused && <p className='error-message'>{records}</p>}
-    </div>
-    </div>
-  );
-};
+    );
+  };
 
 export default RegisterFarmer;

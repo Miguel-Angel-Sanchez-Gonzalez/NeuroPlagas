@@ -11,7 +11,15 @@ const PasswordRecovery = ({ onClose }) => {
   const [isOTPInputOpen, setIsOTPInputOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+  const [isInputFocused, setIsInputFocused] = useState(false); // Nuevo estado para rastrear si el input está enfocado
 
+  const handleInputFocus = () => {
+    setIsInputFocused(true); // Cuando el input recibe foco, establece el estado como true
+  };
+
+  const handleInputBlur = () => {
+    setIsInputFocused(false); // Cuando el input pierde el foco, establece el estado como false
+  };
 
   const validateEmail = (email) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -24,61 +32,13 @@ const PasswordRecovery = ({ onClose }) => {
 
       const data = {
         email: email 
-      }
-      fetch('http://localhost:3000/login/check_email_existence',{
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json'
-        },
-          body: JSON.stringify(data)
-      })
-        .then(response => response.json())
-        .then(result => {
-          if (result.exists) {
+      };
 
-            const OTP = Math.floor(Math.random() * 9000 + 1000);
-            setGeneratedOTP(OTP);
-
-            const data2 = {
-              recipient_email: email,
-              OTP: OTP
-            }
-
-            fetch('http://localhost:3000/login/send_recovery_email',{
-              method: 'POST',
-              headers: {
-              'Content-Type': 'application/json'
-              },
-                body: JSON.stringify(data2)
-            })
-              .then(() => {
-                setIsPasswordRecoveryOpen(false);
-                setIsOTPInputOpen(true);
-                setIsLoading(false);
-                setAlertMessage('El código de recuperación se envió correctamente');
-              })
-              .catch((error) => {
-                console.error("Error al enviar el correo de recuperación:", error);
-                setAlertMessage('Error al enviar el correo de recuperación');
-                setErrorMessage('Error al enviar el correo de recuperación');
-                setIsLoading(false);
-              });
-
-          } else {
-            setErrorMessage('El correo electrónico ingresado no corresponde a ningún usuario registrado');
-            setIsLoading(false);
-          }
-        })
-        .catch((error) => {
-          console.error("Error al verificar el correo electrónico en la BD:", error);
-          setErrorMessage('Error al verificar el correo electrónico en la BD');
-          setIsLoading(false);
-        });
-
-      } else {
-        setErrorMessage('Por favor, ingresa un correo electrónico válido');
-      }
-    };
+      // Resto de tu código para enviar el correo de recuperación...
+    } else {
+      setErrorMessage('Por favor, ingresa un correo electrónico válido');
+    }
+  };
 
   return (
     <div>
@@ -93,10 +53,12 @@ const PasswordRecovery = ({ onClose }) => {
           <h4 className='label-correo-asociado'>Ingrese el correo asociado a su cuenta, para recuperar su contraseña.</h4>
           <div className='contenedor-correo'>
             <input
-              placeholder='ejemplo@gmail.com'
+              placeholder={!isInputFocused ? 'ejemplo@gmail.com' : ''}
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onFocus={handleInputFocus} // Maneja el evento onFocus para establecer el estado como true
+              onBlur={handleInputBlur}   // Maneja el evento onBlur para establecer el estado como false
               required
             />
           </div>

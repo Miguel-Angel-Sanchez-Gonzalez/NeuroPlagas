@@ -45,11 +45,11 @@ const HomeAdmin = ({username}) => {
         <div className='table-container-admin'>
           <div className='space-admin'>
           <h2 className='h2admin'>Bienvenido <span className='rol-admin'>administrador</span></h2>
-            {activeTable === 'farmers' && <DTableFarmers />}
-            {activeTable === 'greenhouses' && <DTableGreenhouses />}
-            {activeTable === 'plagues' && <DTablePlagues />}
-            {activeTable === 'diseases' && <DTableDiseases />}
-            {activeTable === 'workers' && <DTableWorkers />}
+            {activeTable === 'farmers' && <DTableFarmers className="table-active" />}
+            {activeTable === 'greenhouses' && <DTableGreenhouses className="table-active" />}
+            {activeTable === 'plagues' && <DTablePlagues className="table-active" />}
+            {activeTable === 'diseases' && <DTableDiseases className="table-active" />}
+            {activeTable === 'workers' && <DTableWorkers className="table-active" />}
           </div>
         </div>
       </div>

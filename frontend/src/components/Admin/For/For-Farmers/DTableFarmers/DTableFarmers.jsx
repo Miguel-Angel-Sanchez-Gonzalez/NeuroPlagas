@@ -10,6 +10,9 @@ import DeleteFarmer from '../CRUD/Delete/DeleteFarmer';
 /*AGricultores*/
 
 const DTableFarmers = () => {
+    const [inputValue, setInputValue] = useState("");
+    const [filteredFarmers, setFilteredFarmers] = useState([]); 
+
     const columns = [
         {
             name: 'ID',
@@ -84,15 +87,30 @@ const DTableFarmers = () => {
     async function getFarmers(){
         const response = await fetch(`http://localhost:3000/farmer/`)
         const data = await response.json()
+        //se están cargando los datos
         setFarmers(data);
+        setFilteredFarmers(data);
         console.log(farmers)
     } 
     
     const handleFilter = (event) => {
-        const newData = farmers.filter(row => {
-            return row.nombre.toLowerCase().includes(event.target.value.toLowerCase());
-        });
-        setFarmers(newData);
+        const value = event.target.value.toLowerCase();
+        setInputValue(value);
+        if (value) {
+            //dividir el texto para separar los valores de búsqueda
+            const searchValue = value.split(' ');
+            const filtered = farmers.filter(farmer =>{
+                return searchValue.every(value =>
+                    farmer.nombre.toLowerCase().includes(value) ||
+                    farmer.primer_apellido.toLowerCase().includes(value) ||
+                    farmer.segundo_apellido.toLowerCase().includes(value)
+                )}
+            );
+            //muestra los agricultores filtrados
+            setFilteredFarmers(filtered);
+        } else {
+            setFilteredFarmers(farmers); 
+        }
     };
 
     const handleRegisterClick = () => {
@@ -126,7 +144,8 @@ const DTableFarmers = () => {
           <DataTable 
             title={<div>Agricultores<label className='description-farmer'>Lista de todos los agricultores que existen en el sistema</label></div>}
             columns={columns}
-            data={farmers}
+            //se está considerando el filtro
+            data={filteredFarmers}
             responsive={true}
             selectableRows
             fixedHeader
@@ -135,12 +154,12 @@ const DTableFarmers = () => {
             actions={
                 <div className='header-table-farmer'>
                 <FontAwesomeIcon icon={faSearch} className='search' />
-                <input type="text" placeholder='Buscar...' onChange={handleFilter} />
+                <input type="text" placeholder='Buscar...' value={inputValue} onChange={handleFilter} className='searchFarmer' />
                 <button type="button" className='buttonAgricultor' onClick={handleRegisterClick}>Registrar agricultor</button>
               </div>
             }
           />
-          {showRegisterFarmer && <RegisterFarmer onCancelClick={handleCancelClick} />} {}
+          {showRegisterFarmer && <RegisterFarmer onCancelClick={handleCancelClick} />} 
           {showEditFarmer && <EditFarmer onCancelClick={handleCancelClick} />}
           {showDeleteFarmer && <DeleteFarmer onCancelClick={handleCancelClick} />}
           

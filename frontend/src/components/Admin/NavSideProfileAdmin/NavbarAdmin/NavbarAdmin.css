@@ -40,7 +40,7 @@
   padding: 10px;
   color: #333; /* Color del texto */
   z-index: 999; /* Asegura que el menú esté por encima de otros elementos */
-  right: -50%;
+
 }
 
 .menu-options-admin p {
@@ -48,6 +48,7 @@
   padding: 8px; /* Añade espacio alrededor del texto */
   cursor: pointer; /* Cambia el cursor al pasar sobre las opciones */
   transition: background-color 0.3s ease; /* Transición suave para el cambio de color de fondo */
+  left: 50%;
 }
 
 .menu-options-admin p:hover {
@@ -62,7 +63,7 @@
 
 .user-info-admin {
   position: absolute;
-  margin-left: 50%; /* Centra horizontalmente */
-  transform: translateX(-40%); /* Ajusta el centro */
-  left: 30%;
+  left: 70%; /* Centra horizontalmente */
+  transform: translateY(-10%); /* Ajusta el centro */
+  font-weight: 600;
 }

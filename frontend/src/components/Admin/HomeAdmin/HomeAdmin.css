@@ -13,7 +13,7 @@
 }
 
 .table-container-admin {
-    width: 70%;
+    width: 65%;
     margin-top: 20px;
 }
 
@@ -29,3 +29,9 @@
 .space-admin{
     padding: 15px;
 }
+
+.table-active {
+    background-color: #EFF6FF;
+    color: #c62426;
+  }
+  

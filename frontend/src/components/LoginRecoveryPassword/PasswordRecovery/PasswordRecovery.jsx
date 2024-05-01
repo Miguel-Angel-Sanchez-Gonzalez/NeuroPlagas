@@ -34,7 +34,55 @@ const PasswordRecovery = ({ onClose }) => {
         email: email 
       };
 
-      // Resto de tu código para enviar el correo de recuperación...
+      fetch('http://localhost:3000/login/check_email_existence',{
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+          body: JSON.stringify(data)
+      })
+        .then(response => response.json())
+        .then(result => {
+          if (result.exists) {
+
+            const OTP = Math.floor(Math.random() * 9000 + 1000);
+            setGeneratedOTP(OTP);
+
+            const data2 = {
+              recipient_email: email,
+              OTP: OTP
+            }
+
+            fetch('http://localhost:3000/login/send_recovery_email',{
+              method: 'POST',
+              headers: {
+              'Content-Type': 'application/json'
+              },
+                body: JSON.stringify(data2)
+            })
+              .then(() => {
+                setIsPasswordRecoveryOpen(false);
+                setIsOTPInputOpen(true);
+                setIsLoading(false);
+                setAlertMessage('El código de recuperación se envió correctamente');
+              })
+              .catch((error) => {
+                console.error("Error al enviar el correo de recuperación:", error);
+                setAlertMessage('Error al enviar el correo de recuperación');
+                setErrorMessage('Error al enviar el correo de recuperación');
+                setIsLoading(false);
+              });
+
+          } else {
+            setErrorMessage('El correo electrónico ingresado no corresponde a ningún usuario registrado');
+            setIsLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.error("Error al verificar el correo electrónico en la BD:", error);
+          setErrorMessage('Error al verificar el correo electrónico en la BD');
+          setIsLoading(false);
+        });
     } else {
       setErrorMessage('Por favor, ingresa un correo electrónico válido');
     }

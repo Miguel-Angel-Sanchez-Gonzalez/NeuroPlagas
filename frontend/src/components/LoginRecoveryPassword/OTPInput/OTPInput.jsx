@@ -56,14 +56,14 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
     newOTPInput[index] = value;
     setOTPInput(newOTPInput);
   
-    if (value === "" && index > 0) {
-      // Si se borra un dígito y no es el primer input, mover al input anterior
-      inputRefs.current[index - 1].focus();
-    } else if (value !== "" && index < 3) {
-      // Si se ingresa un dígito y no es el último input, pasar al siguiente
-      inputRefs.current[index + 1].focus();
+    if (index > 0 && (value === "" || value === undefined)) {   // Si el valor es vacío o no está definido y no es el primer input,
+      inputRefs.current[index - 1].focus();                     // mover al input anterior
+    } else if (value !== "" && index < 3) {                     // Si se ingresa un dígito y no es el último input, 
+      inputRefs.current[index + 1].focus();                     // pasar al siguiente
     }
   };
+  
+  
 
   const handleResendOTP = () => {
     setIsLoading(true);

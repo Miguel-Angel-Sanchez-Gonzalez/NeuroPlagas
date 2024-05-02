@@ -13,8 +13,6 @@ const Login = () => {
   const [loginSuccessfull, setLoginSuccessfull] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [showRecovery, setShowRecovery] = useState(false); // Estado para controlar la visibilidad del componente de recuperación de contraseña
-  // const [userEmail, setUserEmail] = useState(localStorage.getItem('email') || '');
-  // const [userName, setUserName] = useState(localStorage.getItem('username') || '');
   
 
 
@@ -38,6 +36,7 @@ const Login = () => {
         if (result.token) {
           localStorage.setItem('token', result.token);
           localStorage.setItem('userRole', result.rol); // Guardamos el rol del usuario en el almacenamiento local
+          console.log("rol del user", result.rol);
           setLoginSuccessfull(true);
 
 
@@ -56,8 +55,9 @@ const Login = () => {
           })
             .then(response => response.json())
             .then(result => {
-              if (result) {
-                //console.log(result[0]);
+              if (result[0] != undefined) {
+                console.log("La data del user es: ");
+                console.log(result[0]);
                 localStorage.setItem('username', result[0].nombre);
                 localStorage.setItem('email', result[0].correo_electronico);
                 window.location.reload();

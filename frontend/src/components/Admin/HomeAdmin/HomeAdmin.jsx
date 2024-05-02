@@ -11,8 +11,7 @@ import DTableWorkers from '../For/For-Workers/DTableWorkers/DTableWorkers';
 
 const HomeAdmin = () => {
 
-  const storedUsername = localStorage.getItem('username');
-  const storedEmail = localStorage.getItem('email');
+
 
   const [showProfileAdmin, setshowProfileAdmin] = useState(false);
   const [activeTable, setActiveTable] = useState('farmers');
@@ -42,7 +41,7 @@ const HomeAdmin = () => {
 
   return (
     <div>
-      <NavbarAdmin onConfigureProfileClick={handleConfigureProfileClick} username={storedUsername} email={storedEmail}/>
+      <NavbarAdmin onConfigureProfileClick={handleConfigureProfileClick} />
       <div className='dashboard-admin'>
           <SidebarAdmin setActiveTable={setActiveTable} />
         <div className='table-container-admin'>

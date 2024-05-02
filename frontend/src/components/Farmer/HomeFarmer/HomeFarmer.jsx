@@ -5,20 +5,20 @@ import NavbarFarmer from '../NavbarFarmer/NavbarFarmer';
 import DataTableFarmer from '../DataTableFarmer/DataTableFarmer';
 
 const HomeFarmer = () => {
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        // Eliminar el token cuando la pestaña se vuelve invisible
-        localStorage.removeItem('token');
-      }
-    };
+  // useEffect(() => {
+  //   const handleVisibilityChange = () => {
+  //     if (document.visibilityState === 'hidden') {
+  //       // Eliminar el token cuando la pestaña se vuelve invisible
+  //       localStorage.removeItem('token');
+  //     }
+  //   };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+  //   document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener('visibilitychange', handleVisibilityChange);
+  //   };
+  // }, []);
 
   return (
     <div>

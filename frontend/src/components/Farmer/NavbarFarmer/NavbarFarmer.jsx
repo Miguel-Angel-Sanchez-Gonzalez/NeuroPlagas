@@ -3,6 +3,10 @@ import { GiFarmer } from "react-icons/gi";
 import './NavbarFarmer.css';  // Importa el archivo de estilos CSS
 
 const NavbarFarmer = () => {
+
+  const storedUsername = localStorage.getItem('username');
+  const storedEmail = localStorage.getItem('email');
+
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRef = useRef(null);
 
@@ -29,7 +33,9 @@ const NavbarFarmer = () => {
   };
 
   const handleLogout = () => {
-    localStorage.setItem('token', ''); // Establece el token como una cadena vacía
+    localStorage.setItem('token', '');  
+    localStorage.setItem('username', '');
+    localStorage.setItem('email', '');
     window.location.href = '/login'; // Redirige al usuario a la página de inicio de sesión
   };
 
@@ -48,9 +54,9 @@ const NavbarFarmer = () => {
           )}
         </div>
         <div className='user-info'>
-          <label>Lizeth Antonio</label>
+          <label>{storedUsername}</label>
           <br />
-          <label>1916@gmail.com</label>
+          <label>{storedEmail}</label>
         </div>
       </div>
     </div>

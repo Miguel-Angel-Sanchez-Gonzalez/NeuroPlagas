@@ -24,12 +24,12 @@
   color: #fff;
   z-index: 1;
   top: 0;
-  right: -60%;
+  right: -67%;
 }
 
-.notify-admin .icon{
-  font-size: 20px;
-  transition: 0.5s ease-in-out;
+.notify-admin .icon {
+  font-size: 30px;
+  transition: 0.2s ease-in-out;
 }
 
 .menu-options-admin {

@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GrUserWorker } from "react-icons/gr";
+import { HiMenu } from "react-icons/hi";
 import './NavbarWorker.css';  // Importa el archivo de estilos CSS
 
 const NavbarWorker = () => {
+
+  const storedUsername = localStorage.getItem('username');
+  const storedEmail = localStorage.getItem('email');
+
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRef = useRef(null);
 
@@ -29,7 +34,10 @@ const NavbarWorker = () => {
   };
 
   const handleLogout = () => {
-    localStorage.setItem('token', ''); // Establece el token como una cadena vacía
+    //Reset de variables
+    localStorage.setItem('token', '');  
+    localStorage.setItem('username', '');
+    localStorage.setItem('email', '');
     window.location.href = '/login'; // Redirige al usuario a la página de inicio de sesión
   };
 
@@ -39,7 +47,7 @@ const NavbarWorker = () => {
         <img src="/images/tomatito.png"/>                         {/*Imagen*/}
         <h2>NeuroPlagas</h2>                                      {/*Titulo*/}
         <div className='notify' ref={menuRef}>
-          <GrUserWorker className='icon' onClick={toggleMenu}/>   {/*Icono del rol*/}
+          <HiMenu className='icon' onClick={toggleMenu}/>   {/*Icono del rol*/}
           {menuVisible && (
             <div className="menu-options">
               <p onClick={handleProfile}>Configurar perfil</p>
@@ -48,9 +56,9 @@ const NavbarWorker = () => {
           )}
         </div>
         <div className='user-info'>
-          <label>Abiu Franco</label>
+          <label>{storedUsername}</label>
           <br />
-          <label>1916@gmail.com</label>
+          <label>{storedEmail}</label>
         </div>
       </div>
     </div>

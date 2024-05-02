@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GiFarmer } from "react-icons/gi";
+import { HiMenu } from "react-icons/hi";
 import './NavbarFarmer.css';  // Importa el archivo de estilos CSS
 
 const NavbarFarmer = () => {
@@ -45,7 +46,7 @@ const NavbarFarmer = () => {
         <img src="/images/tomatito.png"/> {/*Imagen*/}
         <h2>NeuroPlagas</h2>              {/*Titulo*/}
         <div className='notify' ref={menuRef}>
-          <GiFarmer className='icon' onClick={toggleMenu}/>   {/*Icono del rol*/}
+          <HiMenu className='icon' onClick={toggleMenu}/>   {/*Icono del rol*/}
           {menuVisible && (
             <div className="menu-options">
               <p onClick={handleProfile}>Configurar perfil</p>

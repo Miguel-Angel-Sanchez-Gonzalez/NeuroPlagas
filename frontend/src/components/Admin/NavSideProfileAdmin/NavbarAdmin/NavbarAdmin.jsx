@@ -3,7 +3,10 @@ import { RiAdminFill } from "react-icons/ri";
 import './NavbarAdmin.css';
 import ProfileAdmin from '../ProfileAdmin/ProfileAdmin';
 
-const NavbarAdmin = ({onConfigureProfileClick, username}) => {
+const NavbarAdmin = ({onConfigureProfileClick, username, email}) => {
+
+
+
   const [showProfileAdmin, setshowProfileAdmin] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRef = useRef(null);
@@ -26,7 +29,10 @@ const NavbarAdmin = ({onConfigureProfileClick, username}) => {
   };
 
   const handleLogout = () => {
-    localStorage.setItem('token', ''); // Establece el token como una cadena vacía
+    //Reset de variables
+    localStorage.setItem('token', '');  
+    localStorage.setItem('username', '');
+    localStorage.setItem('email', '');
     window.location.href = '/login'; // Redirige al usuario a la página de inicio de sesión
   };
 
@@ -51,7 +57,7 @@ const NavbarAdmin = ({onConfigureProfileClick, username}) => {
         <div className='user-info-admin'>
           <label>{username}</label>
           <br />
-          <label>1916@gmail.com</label>
+          <label>{email}</label>
         </div>
       </div>
       

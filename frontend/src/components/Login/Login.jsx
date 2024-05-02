@@ -13,7 +13,11 @@ const Login = () => {
   const [loginSuccessfull, setLoginSuccessfull] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [showRecovery, setShowRecovery] = useState(false); // Estado para controlar la visibilidad del componente de recuperación de contraseña
+  // const [userEmail, setUserEmail] = useState(localStorage.getItem('email') || '');
+  // const [userName, setUserName] = useState(localStorage.getItem('username') || '');
   
+
+
   const handdleLogin = (e) => {
     e.preventDefault();
     
@@ -53,8 +57,10 @@ const Login = () => {
             .then(response => response.json())
             .then(result => {
               if (result) {
-                console.log("Objeto con los datos del user");
-                console.log(result[0]);
+                //console.log(result[0]);
+                localStorage.setItem('username', result[0].nombre);
+                localStorage.setItem('email', result[0].correo_electronico);
+                window.location.reload();
               }else{
                 console.log("Objeto sin data");
               }
@@ -84,7 +90,7 @@ const Login = () => {
     const userRole = localStorage.getItem('userRole');
     switch (userRole) {
       case 'admin':
-        return <HomeAdmin username = {username} />;
+        return <HomeAdmin />;
       case 'farmer':
         return <HomeFarmer />;
       case 'worker':

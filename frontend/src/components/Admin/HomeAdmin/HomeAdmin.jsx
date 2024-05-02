@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './HomeAdmin.css';
 import NavbarAdmin from '../NavSideProfileAdmin/NavbarAdmin/NavbarAdmin';
 import SidebarAdmin from '../NavSideProfileAdmin/SidebarAdmin/SidebarAdmin';
@@ -9,8 +9,11 @@ import DTableGreenhouses from '../For/For-Greenhouses/DTableGreenhouses/DTableGr
 import DTablePlagues from '../For/For-Plagues/DTablePlagues/DTablePlagues';
 import DTableWorkers from '../For/For-Workers/DTableWorkers/DTableWorkers';
 
-const HomeAdmin = ({username}) => {
-  console.log(String(username));
+const HomeAdmin = () => {
+
+  const storedUsername = localStorage.getItem('username');
+  const storedEmail = localStorage.getItem('email');
+
   const [showProfileAdmin, setshowProfileAdmin] = useState(false);
   const [activeTable, setActiveTable] = useState('farmers');
 
@@ -39,7 +42,7 @@ const HomeAdmin = ({username}) => {
 
   return (
     <div>
-      <NavbarAdmin onConfigureProfileClick={handleConfigureProfileClick} username={username}/>
+      <NavbarAdmin onConfigureProfileClick={handleConfigureProfileClick} username={storedUsername} email={storedEmail}/>
       <div className='dashboard-admin'>
           <SidebarAdmin setActiveTable={setActiveTable} />
         <div className='table-container-admin'>

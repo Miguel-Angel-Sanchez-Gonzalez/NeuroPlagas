@@ -10,8 +10,12 @@ import DeleteFarmer from '../CRUD/Delete/DeleteFarmer';
 /*Agricultores*/
 
 const DTableFarmers = () => {
+
+
     const [inputValue, setInputValue] = useState("");
     const [filteredFarmers, setFilteredFarmers] = useState([]); 
+
+    const [idFarmer, setIDFarmer] = useState("");
 
     const columns = [
         {
@@ -125,11 +129,14 @@ const DTableFarmers = () => {
 
 
       const handleEditClick = (row) => {
+        console.log("ID del registro a actualizar:", row.id_agricultor);
         setShowEditFarmer(true);
       };
 
       const handleDeleteClick = (row) => {
+        console.log("ID del registro a eliminar:", row.id_agricultor);
         setshowDeleteFarmer(true);
+        setIDFarmer(row.id_agricultor);
       };
 
       const paginacionOpciones={
@@ -161,7 +168,7 @@ const DTableFarmers = () => {
           />
           {showRegisterFarmer && <RegisterFarmer onCancelClick={handleCancelClick} />} 
           {showEditFarmer && <EditFarmer onCancelClick={handleCancelClick} />}
-          {showDeleteFarmer && <DeleteFarmer onCancelClick={handleCancelClick} />}
+          {showDeleteFarmer && <DeleteFarmer onCancelClick={handleCancelClick} idFarmer={idFarmer}/>}
           
         </div>
     );

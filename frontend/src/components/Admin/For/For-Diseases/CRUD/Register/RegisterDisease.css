@@ -50,7 +50,7 @@
   border: 2px solid #d4d0d0;
 }
 
-.input-description-register{
+.textarea-description-register{
   height: 100px;
   margin-top: 5px;
   margin-left: 0px;
@@ -58,9 +58,10 @@
   padding: 10px;
   border: 2px solid #d4d0d0;
   border-radius: 10px;
+  resize: none;
 }
 
-.input-description-register2{
+.textarea-description-register2{
   height: 60px;
   margin-top: 5px;
   margin-left: 0px;
@@ -68,10 +69,11 @@
   padding: 10px;
   border: 2px solid #d4d0d0;
   border-radius: 10px;
+  resize: none;
 }
 
-.input-description-register:focus,
-.input-description-register2:focus,
+.textarea-description-register:focus,
+.textarea-description-register2:focus,
 .inputs-register-disease:focus {
   border: 2px solid #c62426;
   outline: none;
@@ -137,4 +139,12 @@ button {
 /* Estilo específico para resaltar el borde del input */
 .red-input {
   border-color: #c62426; /* Cambia el color del borde a rojo */
+}
+
+.disease-exists{
+  margin-top: 5px;
+  margin-right: 10px;
+  text-align: justify;
+  color: #c62426;
+  font-size: medium;
 }

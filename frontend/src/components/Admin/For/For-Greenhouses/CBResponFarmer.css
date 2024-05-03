@@ -1,0 +1,52 @@
+.dropdown-cbfarmer {
+    position: relative;
+    width: 80%;
+    margin-top: 5px;
+    font-size: 15px;
+  }
+  
+  .dropdown-cbfarmer-btn{
+    padding: 8px;
+    background-color: #fff;
+    border: 2px solid #d4d0d0;
+    border-radius: 5px;
+    color: #000000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 14.5px;
+  }
+  
+  .dropdown-cbfarmer-btn:hover {
+    cursor: pointer;
+    
+  }
+  
+  .dropdown-cbfarmer-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    z-index: 1;
+    width: 100%;
+    cursor: pointer;
+    font-size: 15px;
+  }
+  
+  .dropdown-cbfarmer-content .dropdown-cbfarmer-option {
+      padding: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .dropdown-cbfarmer-content .dropdown-cbfarmer-option:hover {
+        background-color: #ecaeaf;
+      }
+      
+    
+    .dropdown-cbfarmer:hover .dropdown-cbfarmer-content {
+      display: block;
+    }

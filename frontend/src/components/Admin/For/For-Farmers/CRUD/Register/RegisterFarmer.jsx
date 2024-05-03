@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './RegisterFarmer.css';
-import LoginNotification from '../../../../../LoginNotifications/LoginNotifications';
+import AddNotification from '../../../../../LoginNotifications/AddNotification';
 
 const RegisterFarmer = ({ onCancelClick }) => {
   const [records, setRecords] = useState('');
@@ -124,9 +124,9 @@ const RegisterFarmer = ({ onCancelClick }) => {
           setIsLoading(false);
           setLoadingMessage('Se ha agregado correctamente el agricultor.');
           setTimeout(() => {
-            setLoadingMessage(''); // Oculta el mensaje después de unos segundos
-            window.location.reload();
-          }, 3000); // Mostrar el mensaje durante 3 segundos
+          setLoadingMessage(''); // Oculta el mensaje después de unos segundos
+          window.location.reload();
+          }, 2000); // Mostrar el mensaje durante 3 segundos
         } else {
           setRecords('Por favor, inténtelo de nuevo más tarde.');
           setIsLoading(false); // Agregar para detener la pantalla de carga
@@ -296,7 +296,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
             {records && !isInputFocused && <p className='error-message'>{records}</p>}
         </div>
         {loadingMessage && (
-        <LoginNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification"/>
+        <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification"/>
       )}
         </div>
       </div>

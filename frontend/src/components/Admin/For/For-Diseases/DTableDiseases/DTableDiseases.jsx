@@ -10,6 +10,8 @@ import DeleteDisease from '../CRUD/Delete/DeleteDisease';
 /*Enfermedad*/
 
 const DTableDiseases = () => {
+    const [inputValue, setInputValue] = useState("");
+    const [filteredDiseases, setFilteredDiseases] = useState([]); 
 
     const columns = [
         {
@@ -55,19 +57,12 @@ const DTableDiseases = () => {
                     <FontAwesomeIcon icon={faPencilAlt} onClick={() => handleEditClick(row)} className='edit-icon' size='lg'/>
                     <FontAwesomeIcon icon={faTrash} onClick={() => handleDeleteClick(row)} className='delete-icon' size='lg' />
                 </div>
-            )
+            ),
+            width:'90px'
         }
     ];
 
     const data = [
-        {
-            id: 1,
-            nombreEnfermedad: 'Botritys',
-            nombreCientifico: 'Botritys cinerea',
-            descripcion: 'Enfermedad mala',
-            recomendaciones: 'Mantener humedo el invernadero',
-            acciones: 'Retirar maleza',
-        }
     ];
     
     const [showRegisterDisease, setShowRegisterDisease] = useState(false); //Form de register
@@ -85,15 +80,28 @@ const DTableDiseases = () => {
         const response = await fetch(`http://localhost:3000/disease`)
         const data = await response.json()
         setDiseases(data);
+        setFilteredDiseases(data);
         console.log(diseases)
     } 
 
 
     const handleFilter = (event) => {
-        const newData = diseases.filter(row => {
-            return row.nombre.toLowerCase().includes(event.target.value.toLowerCase());
-        });
-        setDiseases(newData);
+        const value = event.target.value.toLowerCase();
+        setInputValue(value);
+        if (value) {
+            //dividir el texto para separar los valores de búsqueda
+            const searchValue = value.split(' ');
+            const filtered = diseases.filter(disease =>{
+                return searchValue.every(value =>
+                    disease.nombre.toLowerCase().includes(value) ||
+                    disease.nombre_cientifico.toLowerCase().includes(value) 
+                )}
+            );
+            //muestra los agricultores filtrados
+            setFilteredDiseases(filtered);
+        } else {
+            setFilteredDiseases(diseases); 
+        }
     };
     
 
@@ -128,7 +136,8 @@ const DTableDiseases = () => {
           <DataTable 
             title={<div>Enfermedades<label className='description'>Lista de enfermedades en los invernaderos</label></div>}
             columns={columns}
-            data={diseases}
+            //considerando el filtro
+            data={filteredDiseases}
             responsive={true}
             selectableRows
             fixedHeader
@@ -137,7 +146,7 @@ const DTableDiseases = () => {
             actions={
                 <div className='header-table-disease'>
                 <FontAwesomeIcon icon={faSearch} className='search' />
-                <input type="text" placeholder='Buscar...' onChange={handleFilter} />
+                <input type="text" placeholder='Buscar...' value={inputValue} onChange={handleFilter} className='searchDisease'/>
                 <button type="button" className='buttonEnfermedad' onClick={handleRegisterClick}>Registrar enfermedad</button>
               </div>
             }

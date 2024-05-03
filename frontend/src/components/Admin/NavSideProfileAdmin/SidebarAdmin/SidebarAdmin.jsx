@@ -14,7 +14,7 @@ const SidebarAdmin = ({ setActiveTable, activeTable }) => {
     return (
         <div className='menu-admin'>
             <div className='menu-list-admin'>
-                <a href="#" onClick={() => handleItemClick('farmers')} className={`item-admin ${selectedItem === 'farmers' ? 'active' : ''}`}>
+            <a href="#" onClick={() => handleItemClick('farmers')} className={`item-admin ${selectedItem === 'farmers' ? 'active' : ''}`}>
                     <FontAwesomeIcon icon={faHomeUser} className='icon'/> {/* Icono de agricultor */}
                     Agricultor
                 </a>

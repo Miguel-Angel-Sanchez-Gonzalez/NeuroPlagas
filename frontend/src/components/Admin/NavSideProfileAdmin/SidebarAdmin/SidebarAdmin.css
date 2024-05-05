@@ -16,7 +16,7 @@
   }
   
   .menu-list-admin {
-    margin-right: 100px;
+    margin-right: 90px;
     display: flex;
     flex-direction: column;
     text-align: left;
@@ -49,6 +49,6 @@
   color: #c62426;
   cursor: pointer;
   padding-left: 20px;
-  width: 80%;
-  height: 20%;
+  width: 90%;
+  height: 25%;
 }

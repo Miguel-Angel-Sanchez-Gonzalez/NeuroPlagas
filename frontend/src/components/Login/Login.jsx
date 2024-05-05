@@ -93,8 +93,8 @@ const Login = () => {
         return <HomeAdmin />;
       case 'farmer':
         return <HomeFarmer />;
-      case 'worker':
-        return <HomeWorker />;
+      // case 'worker':
+      //   return <HomeWorker />;
       default:
         return null;
     }

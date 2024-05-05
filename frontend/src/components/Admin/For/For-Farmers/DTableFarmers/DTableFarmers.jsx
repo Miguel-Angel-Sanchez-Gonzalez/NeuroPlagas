@@ -10,8 +10,6 @@ import DeleteFarmer from '../CRUD/Delete/DeleteFarmer';
 /*Agricultores*/
 
 const DTableFarmers = () => {
-
-
     const [inputValue, setInputValue] = useState("");
     const [filteredFarmers, setFilteredFarmers] = useState([]); 
 

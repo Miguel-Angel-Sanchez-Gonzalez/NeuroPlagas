@@ -40,8 +40,10 @@ const HomeAdmin = () => {
   };
 
   return (
-    <div>
+    <div >
+      <div className="navbar-container-admin">
       <NavbarAdmin onConfigureProfileClick={handleConfigureProfileClick} />
+      </div>
       <div className='dashboard-admin'>
           <SidebarAdmin setActiveTable={setActiveTable} />
         <div className='table-container-admin'>

@@ -50,7 +50,7 @@
   border: 2px solid #d4d0d0;
 }
 
-.input-description-register{
+.textarea-description-register{
   height: 100px;
   margin-top: 5px;
   margin-left: 0px;
@@ -58,24 +58,26 @@
   padding: 10px;
   border: 2px solid #d4d0d0;
   border-radius: 10px;
+  resize: none;
 }
 
-.input-description-register2{
-  height: 80px;
+.textarea-description-register2{
+  height: 60px;
   margin-top: 5px;
   margin-left: 0px;
   width: 95%;
   padding: 10px;
   border: 2px solid #d4d0d0;
   border-radius: 10px;
+  resize: none;
 }
 
-.input-description-register:focus,
-.input-description-register2:focus,
+.textarea-description-register:focus,
+.textarea-description-register2:focus,
 .inputs-register-plague:focus {
   border: 2px solid #c62426;
+  outline: none;
 }
-
 
 .form-section-plague {
   display: flex;
@@ -99,8 +101,8 @@
 .button-container-admin {
   padding-top: 20px;
   display: flex;
-  justify-content: space-between; 
-  align-items: center; 
+  justify-content: space-between; /* Distribuye el espacio entre los botones */
+  align-items: center; /* Centra verticalmente los botones */
 }
 
 .btncan-register-plague  {
@@ -110,7 +112,7 @@
   background-color: #c62426;
   border: 2px solid #c62426;
   border-radius: 10px;
-  margin-right: 10px;
+  margin-left: 20px;
 }
 
 
@@ -118,4 +120,31 @@
 button {
   transform: scale(1, 1);
   cursor: pointer;
+}
+
+
+.error-message{
+  margin-left: 20px;
+  margin-right: 20px;
+  text-align: justify;
+  color: #c62426;
+  font-size: medium;
+}
+
+.red-label {
+  border-color: #c62426; /* Cambia el color del borde a rojo */
+  color: #c62426; /* Cambia el color del texto a rojo */
+}
+
+/* Estilo específico para resaltar el borde del input */
+.red-input {
+  border-color: #c62426; /* Cambia el color del borde a rojo */
+}
+
+.plague-exists{
+  margin-top: 5px;
+  margin-right: 10px;
+  text-align: justify;
+  color: #c62426;
+  font-size: medium;
 }

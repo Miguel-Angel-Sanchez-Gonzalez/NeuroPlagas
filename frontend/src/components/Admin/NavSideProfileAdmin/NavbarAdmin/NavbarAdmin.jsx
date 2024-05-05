@@ -45,10 +45,10 @@ const NavbarAdmin = ({onConfigureProfileClick}) => {
   };
 
   return (
-    <div className='navbar-container-admin'>
+    <div >
       <div className='menu--nav-admin'>
       <img src="/images/tomatito.png" alt="" /> {/*Imagen*/}
-        <h2>NeuroPlagas</h2>              {/*Titulo*/}
+        <h2>IA - Plagas y enfermedades </h2>              {/*Titulo*/}
         <div className='notify-admin' ref={menuRef}>
             <HiMenu className='icon' onClick={toggleMenu}/>   
             {menuVisible && (

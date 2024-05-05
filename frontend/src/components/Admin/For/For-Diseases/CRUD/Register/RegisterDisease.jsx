@@ -98,7 +98,7 @@ const RegisterDisease = ({ onCancelClick }) => {
               setTimeout(() => {
               setLoadingMessage(''); // Oculta el mensaje después de unos segundos
               window.location.reload();
-              }, 2000); // Mostrar el mensaje durante 3 segundos
+              }, 2000); 
             } else {
               setRecords('Hubo un problema al agregar la enfermedad. Por favor, inténtelo de nuevo más tarde.');
               setIsLoading(false);
@@ -115,14 +115,14 @@ const RegisterDisease = ({ onCancelClick }) => {
           <div className="loading-spinner"></div>
         </div>
       )}
-        <div className="register-disease-form">
+        <div className="register-disease-container">
           <div className='centrar-disease'>
-            <h4 className='h4register'>Registrar enfermedad</h4>
-            <h5 className='h5register'>*Campos requeridos</h5>
-            <label className='label-datos-disease'>Registre una nueva enfermedad</label>
-          <div className="form-section-disease">
-            <div className="column-admin-register">
-                <label className={`label-disease ${isFormSubmitted && !values.nombreEnfermedad && 'red-label'}`}>
+            <h4 className='h4register-disease'>Registrar enfermedad</h4>
+            <h5 className='h5register-disease'>*Campos requeridos</h5>
+            <label className='label-dato-disease'>Registre una nueva enfermedad</label>
+          <div className="form-sec-disease-register">
+            <div className="column-register-disease">
+                <label className={`labels-disease-r ${isFormSubmitted && !values.nombreEnfermedad && 'red-label'}`}>
                   Nombre de la enfermedad*
                 </label>
                 <input
@@ -144,8 +144,8 @@ const RegisterDisease = ({ onCancelClick }) => {
               />
               {diseaseExists && <p className="disease-exists">La enfermedad ya fue registrada.</p>}
             </div>
-            <div className="column-admin-register">
-                <label className={`label-disease ${isFormSubmitted && !values.nombreCientifico && 'red-label'}`}>
+            <div className="column-register-disease">
+                <label className={`labels-disease-r ${isFormSubmitted && !values.nombreCientifico && 'red-label'}`}>
                   Nombre científico*
                 </label>
               <input
@@ -161,13 +161,13 @@ const RegisterDisease = ({ onCancelClick }) => {
               />
             </div>
           </div>
-          <div className="form-section-disease">
-            <div className="column-admin-register">
-                <label className={`label-disease ${isFormSubmitted && !values.descripcion && 'red-label'}`}>
+          <div className="form-sec-disease-register">
+            <div className="column-register-disease">
+                <label className={`labels-disease-r ${isFormSubmitted && !values.descripcion && 'red-label'}`}>
                   Descripción*
                 </label>
               <textarea
-                className= {`textarea-description-register ${isFormSubmitted && !values.descripcion && 'red-input'}`}
+                className= {`textarea-disease-r ${isFormSubmitted && !values.descripcion && 'red-input'}`}
                 type="text"
                 required
                 name="descripcion"
@@ -178,12 +178,12 @@ const RegisterDisease = ({ onCancelClick }) => {
                 onBlur={handleInputBlur}   // Nuevo evento de desenfoque
               />
             </div>
-            <div className="column-admin-register">
-                <label className={`label-disease ${isFormSubmitted && !values.recomendaciones && 'red-label'}`}>
+            <div className="column-register-disease">
+                <label className={`labels-disease-r ${isFormSubmitted && !values.recomendaciones && 'red-label'}`}>
                   Recomendaciones*
                 </label>
               <textarea
-                className= {`textarea-description-register ${isFormSubmitted && !values.recomendaciones && 'red-input'}`}
+                className= {`textarea-disease-r ${isFormSubmitted && !values.recomendaciones && 'red-input'}`}
                 type="text"
                 required
                 name="recomendaciones"
@@ -195,13 +195,13 @@ const RegisterDisease = ({ onCancelClick }) => {
               />
             </div>
           </div>
-          <div className="form-section-disease">
-            <div className="column-admin-register">
-                <label className={`label-disease ${isFormSubmitted && !values.acciones && 'red-label'}`}>
+          <div className="form-sec-disease-register">
+            <div className="column-register-disease">
+                <label className={`labels-disease-r ${isFormSubmitted && !values.acciones && 'red-label'}`}>
                   Acciones*
                 </label>
               <textarea
-                className= {`textarea-description-register2 ${isFormSubmitted && !values.acciones && 'red-input'}`}
+                className= {`textarea-disease-r2 ${isFormSubmitted && !values.acciones && 'red-input'}`}
                 type="text"
                 required
                 name="acciones"
@@ -214,11 +214,11 @@ const RegisterDisease = ({ onCancelClick }) => {
             </div>
           </div>
           <div className='button-container-admin'>
-              <button className='button-admin' type="submit" onClick={handleSubmit}>Guardar</button>
+              <button className='button-disease' type="submit" onClick={handleSubmit}>Guardar</button>
                  {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
-              <button className='button-cancel-admin ' onClick={onCancelClick}>Cancelar</button>
+              <button className='button-disease ' onClick={onCancelClick}>Cancelar</button>
             </div>
-              {records && !isInputFocused && <p className='error-message'>{records}</p>}
+              {records && !isInputFocused && <p className='error-message-disease'>{records}</p>}
             </div>
             {loadingMessage && (
             <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification"/>

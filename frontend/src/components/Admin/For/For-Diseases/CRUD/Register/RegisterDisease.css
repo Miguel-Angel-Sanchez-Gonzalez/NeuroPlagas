@@ -1,5 +1,5 @@
 /* Estilos base */
-.register-disease-form {
+.register-disease-container {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -9,142 +9,110 @@
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 500px;
+  width: 505px;
   max-width: 100%; /* Para hacerlo responsivo */
   display: flex;
   flex-direction: column;
-  
 }
 
-.centrar-disease{
-  margin-right: 10px;
+.centrar-disease {
+  padding: 5px;
 }
 
-.h4register{
+.h4register-disease {
   padding-top: 20px;
   margin-bottom: 20px;
   text-align: center;
 }
 
-.h5register{
+.h5register-disease {
   text-align: right;
   padding-bottom: 10px;
   color: #c62426;
-  margin-right: 20px;
+  margin-right: 15px;
 }
 
-.label-datos-disease{
+.label-dato-disease {
   font-weight: bold;
-  padding-left: 15px;
+  margin-left: 12px;
 }
 
-.label-disease{
+.labels-disease-r {
   font-size: 15px;
+  margin-left: 12px; 
 }
 
-.inputs-register-disease {
+.inputs-register-disease, .textarea-disease-r, .textarea-disease-r2 {
   margin-top: 5px;
-  margin-left: 0px;
-  width: 88%;
+  margin-left: 12px;
+  width: calc(100% - 25px); /* Ajuste para tener en cuenta el padding y margen */
   padding: 10px;
   border: 2px solid #d4d0d0;
+  border-radius: 8px;
+  resize: none;
 }
 
-.textarea-description-register{
+.textarea-disease-r {
   height: 100px;
-  margin-top: 5px;
-  margin-left: 0px;
-  width: 88%;
-  padding: 10px;
-  border: 2px solid #d4d0d0;
-  border-radius: 10px;
-  resize: none;
 }
 
-.textarea-description-register2{
-  height: 60px;
-  margin-top: 5px;
-  margin-left: 0px;
-  width: 95%;
-  padding: 10px;
-  border: 2px solid #d4d0d0;
-  border-radius: 10px;
-  resize: none;
+.textarea-disease-r2 {
+  height: 80px;
 }
 
-.textarea-description-register:focus,
-.textarea-description-register2:focus,
-.inputs-register-disease:focus {
+.inputs-register-disease:focus, 
+.textarea-disease-r:focus, 
+.textarea-disease-r2:focus {
   border: 2px solid #c62426;
   outline: none;
 }
 
-.form-section-disease {
+.form-sec-disease-register {
   display: flex;
   flex-direction: row;
-  justify-content: space-between; /* Distribuye los elementos horizontalmente */
-  margin-bottom: 10px;
-  padding-left: 15px;
+  justify-content: space-between;
+  
 }
 
-.column-admin-register {
-  margin-right: 10px; /* Espacio entre las columnas */
+.column-register-disease {
+  flex: 1; /* Asigna el mismo espacio a cada columna */
   margin-top: 10px;
 }
 
-.password-rules label {
-  display: block;
-  padding-top: 4px;
-}
-
-
 .button-container-admin {
-  padding-top: 20px;
   display: flex;
-  justify-content: space-between; /* Distribuye el espacio entre los botones */
-  align-items: center; /* Centra verticalmente los botones */
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 12px;
+  margin-right: 12px;
 }
 
-.btncan-register-disease  {
+.button-disease {
   width: 150px;
   padding: 12px;
   color: white;
   background-color: #c62426;
   border: 2px solid #c62426;
   border-radius: 10px;
-  margin-right: 10px;
 }
 
-
-/* Estilos adicionales para el botón */
-button {
-  transform: scale(1, 1);
-  cursor: pointer;
+.red-label, .red-input {
+  color: #c62426;
+  border-color: #c62426;
 }
 
-
-.error-message{
-  margin-left: 20px;
-  margin-right: 20px;
+.error-message-disease{
+  margin-top: 15px;
+  margin-left: 12px;
   text-align: justify;
   color: #c62426;
   font-size: medium;
 }
 
-.red-label {
-  border-color: #c62426; /* Cambia el color del borde a rojo */
-  color: #c62426; /* Cambia el color del texto a rojo */
-}
-
-/* Estilo específico para resaltar el borde del input */
-.red-input {
-  border-color: #c62426; /* Cambia el color del borde a rojo */
-}
-
-.disease-exists{
-  margin-top: 5px;
-  margin-right: 10px;
+.disease-exists {
+  margin: 5px 20px;
   text-align: justify;
   color: #c62426;
-  font-size: medium;
+  font-size: 15px;
+  margin-left: 12px;
 }

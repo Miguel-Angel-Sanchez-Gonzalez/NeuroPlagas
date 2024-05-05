@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './RegisterGreenhouse.css';
 import AddNotification from '../../../../../LoginNotifications/AddNotification';
 import ComboBoxGreenhouse from '../../ComboBoxGreenhouse';
@@ -44,17 +44,17 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
     setIsInputFocused(false); // Actualiza el estado cuando un input pierde el enfoque
   };
 
-  const checkGreenhouseExists = async (email) => {
-    const response = await fetch(`http://localhost:3000/login/check_email_existence`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email: email })
-    });
-    const data = await response.json();
-    return data.exists;
-  };
+  useEffect(()=>{
+    checkGreenhouseExists();
+  }, []);
+
+  /*FUNCIONES*/
+  async function checkGreenhouseExists(greenhouseName){
+      const response = await fetch(`http://localhost:3000/greenhouse/checkExist/${greenhouseName}`)
+      const data = await response.json()
+      //se están cargando los datos
+      return data.exists;
+  } 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,7 +78,7 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
 
     setIsLoading(true);
     const data = {
-      idFarmer: '9',
+      idFarmer: '2',
       name: values.nombreInvernadero,
       typeGreenhouse: values.tipoInvernadero,
       humidity: values.humedad,
@@ -138,8 +138,8 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
                 onBlur={async () => {
                   handleInputBlur();
                   if (values.nombreInvernadero) {
-                    const exists = await checkGreenhouseExists(values.nombreInvernadero);
-                    setGreenhouseExists(exists);
+                    const greenhouseExists = await checkGreenhouseExists(values.nombreInvernadero);
+                    setGreenhouseExists(greenhouseExists);
                   }
                 }}
               />

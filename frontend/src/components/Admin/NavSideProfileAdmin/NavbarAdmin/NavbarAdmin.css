@@ -1,9 +1,9 @@
-.navbar-container-admin {
-  width: 110%;
+/* .navbar-container-admin {
+  width: 100%;
   padding: 10px;
   margin-left: 0px;
   background: #c62426;
-}
+} */
 
 .menu--nav-admin {
   display: flex;
@@ -24,7 +24,8 @@
   color: #fff;
   z-index: 1;
   top: 0;
-  right: -67%;
+  margin-left: auto;
+  margin-right: 40px;
 }
 
 .notify-admin .icon {
@@ -48,7 +49,6 @@
   padding: 8px; /* Añade espacio alrededor del texto */
   cursor: pointer; /* Cambia el cursor al pasar sobre las opciones */
   transition: background-color 0.3s ease; /* Transición suave para el cambio de color de fondo */
-  left: 50%;
 }
 
 .menu-options-admin p:hover {
@@ -63,7 +63,7 @@
 
 .user-info-admin {
   position: absolute;
-  left: 70%; /* Centra horizontalmente */
+  right: 160px; /* Centra horizontalmente */
   transform: translateY(-10%); /* Ajusta el centro */
   font-weight: 600;
 }

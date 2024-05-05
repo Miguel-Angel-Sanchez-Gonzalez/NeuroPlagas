@@ -214,9 +214,9 @@ const RegisterDisease = ({ onCancelClick }) => {
             </div>
           </div>
           <div className='button-container-admin'>
-              <button className='button-disease' type="submit" onClick={handleSubmit}>Guardar</button>
+              <button className='button-disease-r' type="submit" onClick={handleSubmit}>Guardar</button>
                  {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
-              <button className='button-disease ' onClick={onCancelClick}>Cancelar</button>
+              <button className='button-disease-r ' onClick={onCancelClick}>Cancelar</button>
             </div>
               {records && !isInputFocused && <p className='error-message-disease'>{records}</p>}
             </div>

@@ -141,14 +141,14 @@ const RegisterFarmer = ({ onCancelClick }) => {
           <div className="loading-spinner"></div>
         </div>
       )}
-        <div className="register-farmer-form">
-          <div className='centrar-farmer'>
-          <h4 className='h4register'>Registrar agricultor</h4>
-          <h5 className='h5register'>*Campos requeridos</h5>
-          <label className='label-register-farmer'>Registre sus datos personales</label>
-          <div className="form-section-farmer">
-            <div className="column-admin-register">
-                <label className={`label-farmer ${isFormSubmitted && !values.nombre && 'red-label'}`}>
+        <div className="register-farmer-container">
+          <div className='centrar-farmer' >
+          <h4 className='h4register-farmer'>Registrar agricultor</h4>
+          <h5 className='h5register-farmer'>*Campos requeridos</h5>
+          <label className='label-dato-farmer'>Registre sus datos personales</label>
+          <div className="form-sec-farmer-register">
+            <div className="column-register-farmer">
+                <label className={`label-farmer-r ${isFormSubmitted && !values.nombre && 'red-label'}`}>
                   Nombre*
                 </label>
               <input
@@ -163,8 +163,8 @@ const RegisterFarmer = ({ onCancelClick }) => {
                 onBlur={handleInputBlur}   // Nuevo evento de desenfoque
               />
             </div>
-            <div className="column-admin-register">
-                <label className={`label-farmer ${isFormSubmitted && !values.primerApellido && 'red-label'}`}>
+            <div className="column-register-farmer">
+                <label className={`label-farmer-r ${isFormSubmitted && !values.primerApellido && 'red-label'}`}>
                   Primer apellido*
                 </label>
               <input
@@ -179,8 +179,8 @@ const RegisterFarmer = ({ onCancelClick }) => {
                 onBlur={handleInputBlur}   // Nuevo evento de desenfoque
               />
             </div>
-            <div className="column-admin-register">
-                <label className={`label-farmer ${isFormSubmitted && !values.segundoApellido && 'red-label'}`}>
+            <div className="column-register-farmer">
+                <label className={`label-farmer-r ${isFormSubmitted && !values.segundoApellido && 'red-label'}`}>
                   Segundo apellido*
                 </label>
               <input
@@ -196,13 +196,13 @@ const RegisterFarmer = ({ onCancelClick }) => {
               />
             </div>
           </div>
-          <div className="form-section-farmer">
-            <div className="column-admin-register">
-                <label className={`label-farmer ${isFormSubmitted && !values.correo && 'red-label'}`}>
+          <div className="form-sec-farmer-register">
+            <div className="column-register-farmer">
+                <label className={`label-farmer-r ${isFormSubmitted && !values.correo && 'red-label'}`}>
                   Correo*
                 </label>
               <input
-                className={`inputs-register-farmer ${isFormSubmitted && !values.correo ? 'red-input' : ''}`}
+                className={`inputs-register-farmer2 ${isFormSubmitted && !values.correo ? 'red-input' : ''}`}
                 type="email" // Utiliza el tipo email
                   required
                   name="correo"
@@ -221,12 +221,12 @@ const RegisterFarmer = ({ onCancelClick }) => {
                 />
                 {emailExists && <p className="email-exists">El correo ya existe.</p>}
             </div>
-            <div className="column-admin-register">
-                <label className={`label-farmer ${isFormSubmitted && !values.telefono && 'red-label'}`}>
+            <div className="column-register-farmer">
+                <label className={`label-farmer-r ${isFormSubmitted && !values.telefono && 'red-label'}`}>
                   Teléfono*
                 </label>
               <input
-                className={`inputs-register-farmer ${isFormSubmitted && !values.telefono && 'red-input'}`}
+                className={`inputs-register-farmer2 ${isFormSubmitted && !values.telefono && 'red-input'}`}
                 type="text"
                 required
                 name="telefono"
@@ -248,10 +248,10 @@ const RegisterFarmer = ({ onCancelClick }) => {
             <div></div>
           </div>
 
-          <label className='label-register-farmer'>Registre sus datos de inicio de sesión</label>
-          <div className="form-section-farmer">
-            <div className="column-admin-register">
-                <label className={`label-farmer ${isFormSubmitted && !values.nombreUsuario && 'red-label'}`}>
+          <label className='label-dato-farmer'>Registre sus datos de inicio de sesión</label>
+          <div className="form-sec-farmer-register">
+            <div className="column-register-farmer">
+                <label className={`label-farmer-r ${isFormSubmitted && !values.nombreUsuario && 'red-label'}`}>
                   Nombre de usuario*
                 </label>
               <input
@@ -266,8 +266,8 @@ const RegisterFarmer = ({ onCancelClick }) => {
                 onBlur={handleInputBlur}   // Nuevo evento de desenfoque
               />
             </div>
-            <div className="column-admin-register">
-                <label className={`label-farmer ${isFormSubmitted && !values.contrasenia && 'red-label'}`}>
+            <div className="column-register-farmer">
+                <label className={`label-farmer-r ${isFormSubmitted && !values.contrasenia && 'red-label'}`}>
                   Contraseña*
                 </label>
               <input
@@ -283,15 +283,17 @@ const RegisterFarmer = ({ onCancelClick }) => {
               />
             </div>
           </div>
-          <div className="password-rules-farmer">
-            <label>*La contraseña debe ser mínimo de 8 caracteres.</label>
-            <label>*Debes de incluir letras mayúsculas y minúsculas</label>
-            <label>*Debes de incluir al menos un número y un símbolo (Todos son válidos).</label>
-          </div>
+          <div className="password-rules-farmer-r">
+          <label>*La contraseña debe ser mínimo de 8 caracteres.</label>
+          <br/>
+          <label>*Debes de incluir letras mayúsculas y minúsculas</label>
+          <br/>
+          <label>*Debes de incluir al menos un número y un símbolo (Todos son válidos).</label>
+        </div>
             <div className='button-container-admin'>
-              <button className='button-admin' type="submit" onClick={handleSubmit}>Guardar</button>
+              <button className='button-farmer' type="submit" onClick={handleSubmit}>Guardar</button>
               {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
-              <button className='button-cancel-admin ' onClick={onCancelClick}>Cancelar</button>
+              <button className='button-farmer ' onClick={onCancelClick}>Cancelar</button>
             </div>
             {records && !isInputFocused && <p className='error-message'>{records}</p>}
         </div>

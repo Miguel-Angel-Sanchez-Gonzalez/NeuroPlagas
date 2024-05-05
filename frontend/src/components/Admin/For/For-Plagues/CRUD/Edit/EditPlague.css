@@ -1,5 +1,5 @@
 /* Estilos base */
-.edit-plague-form {
+.edit-plague-container {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -9,112 +9,112 @@
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 500px;
+  width: 505px;
   max-width: 100%; /* Para hacerlo responsivo */
   display: flex;
   flex-direction: column;
-  
 }
 
-.centrar-plague{
-  margin-right: 10px;
+.centrar-plague {
+  padding: 5px;
 }
 
-.h4edit{
+.h4edit-plague {
   padding-top: 20px;
   margin-bottom: 20px;
   text-align: center;
 }
 
-.h5edit{
+.h5edit-plague {
   text-align: right;
   padding-bottom: 10px;
   color: #c62426;
-  margin-right: 20px;
+  margin-right: 15px;
 }
 
-.label-datos-plague{
+.label-dato-plague {
   font-weight: bold;
-  padding-left: 15px;
+  margin-left: 12px;
 }
 
-.label-plague{
+.labels-plague-e {
   font-size: 15px;
+  margin-left: 12px; 
 }
 
-.inputs-edit-plague {
+.inputs-edit-plague,
+.textarea-plague-e, 
+.textarea-plague-e2 {
   margin-top: 5px;
-  margin-left: 0px;
-  width: 88%;
+  margin-left: 12px;
+  width: calc(100% - 25px); /* Ajuste para tener en cuenta el padding y margen */
   padding: 10px;
   border: 2px solid #d4d0d0;
+  border-radius: 8px;
+  resize: none;
 }
 
-.input-description-edit{
+.textarea-plague-e {
   height: 100px;
-  margin-top: 5px;
-  margin-left: 0px;
-  width: 88%;
-  padding: 10px;
-  border: 2px solid #d4d0d0;
-  border-radius: 10px;
 }
 
-.input-description-edit2{
+.textarea-plague-e2 {
   height: 80px;
-  margin-top: 5px;
-  margin-left: 0px;
-  width: 95%;
-  padding: 10px;
-  border: 2px solid #d4d0d0;
-  border-radius: 10px;
 }
 
-.input-description-edit:focus,
-.input-description-edit2:focus,
-.inputs-edit-plague:focus {
+.inputs-edit-plague:focus, 
+.textarea-plague-e:focus, 
+.textarea-plague-e2:focus {
   border: 2px solid #c62426;
+  outline: none;
 }
 
-.form-section-plague {
+.form-sec-plague-edit {
   display: flex;
   flex-direction: row;
-  justify-content: space-between; /* Distribuye los elementos horizontalmente */
-  margin-bottom: 10px;
-  padding-left: 15px;
+  justify-content: space-between;
+  
 }
 
-.column-admin-edit {
-  margin-right: 10px; /* Espacio entre las columnas */
+.column-edit-plague {
+  flex: 1; /* Asigna el mismo espacio a cada columna */
   margin-top: 10px;
 }
 
-.password-rules label {
-  display: block;
-  padding-top: 4px;
-}
-
-
 .button-container-admin {
-  padding-top: 20px;
   display: flex;
-  justify-content: space-between; /* Distribuye el espacio entre los botones */
-  align-items: center; /* Centra verticalmente los botones */
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 12px;
+  margin-right: 12px;
 }
 
-.btncan-edit-plague  {
+.button-plague-e {
   width: 150px;
   padding: 12px;
   color: white;
   background-color: #c62426;
   border: 2px solid #c62426;
   border-radius: 10px;
-  margin-right: 10px;
 }
 
+.red-label, .red-input {
+  color: #c62426;
+  border-color: #c62426;
+}
 
-/* Estilos adicionales para el botón */
-button {
-  transform: scale(1, 1);
-  cursor: pointer;
+.error-message-plague{
+  margin-top: 15px;
+  margin-left: 12px;
+  text-align: justify;
+  color: #c62426;
+  font-size: medium;
+}
+
+.plague-exists {
+  margin: 5px 20px;
+  text-align: justify;
+  color: #c62426;
+  font-size: 15px;
+  margin-left: 12px;
 }

@@ -10,6 +10,7 @@ import DeleteWorker from '../CRUD/Delete/DeleteWorker';
 /*Trabajadores*/
 
 const DTableWorkers = () => {
+    
     const columns = [
         {
             name: 'ID',
@@ -122,9 +123,9 @@ const DTableWorkers = () => {
     }
 
     return (
-        <div className='table-workers-admin'>
+        <div className='table-worker-admin'>
           <DataTable 
-            title={<div>Trabajadores<label className='description-workers'>Lista de todos los trabajadores que existen en el sistema</label></div>}
+            title={<div>Trabajadores<label className='description-worker'>Lista de todos los trabajadores que existen en el sistema</label></div>}
             columns={columns}
             data={records}
             responsive={true}
@@ -133,10 +134,10 @@ const DTableWorkers = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             actions={
-                <div className='header-table'>
+                <div className='header-table-worker'>
                 <FontAwesomeIcon icon={faSearch} className='search' />
-                <input type="text" placeholder='Buscar...' onChange={handleFilter} />
-                <button type="button" className='buttonTrabajador' onClick={handleRegisterClick}>Registrar trabajador</button>
+                <input type="text" placeholder='Buscar...' onChange={handleFilter} className='searchWorker' />
+                <button type="button" className='buttonTrabajador' onClick={handleRegisterClick}>Registrar agricultor</button>
               </div>
             }
           />

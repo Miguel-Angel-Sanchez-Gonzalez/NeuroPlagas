@@ -23,14 +23,14 @@ const RegisterWorker = ({ onCancelClick }) => {
 
 
   return (
-    <div className="register-worker-form">
+    <div className="register-worker-container">
       <div className='centrar-worker'>
-      <h4 className='h4register'>Registre trabajador</h4>
-      <h5 className='h5register'>*Campos requeridos</h5>
-      <label className='label-register-worker'>Registre sus datos personales</label>
-      <div className="form-section-worker">
-        <div className="column-admin-register">
-          <label  className='label-worker'>Nombre*</label>
+      <h4 className='h4register-worker'>Registre trabajador</h4>
+      <h5 className='h5register-worker'>*Campos requeridos</h5>
+      <label className='label-dato-worker'>Registre sus datos personales</label>
+      <div className="form-sec-worker-register">
+        <div className="column-register-worker">
+          <label  className='label-worker-r'>Nombre*</label>
           <input
             className='inputs-register-worker'
             type="text"
@@ -40,8 +40,8 @@ const RegisterWorker = ({ onCancelClick }) => {
             onChange={handdleInputChange}
           />
         </div>
-        <div className="column-admin-register">
-          <label  className='label-worker'>Primer apellido*</label>
+        <div className="column-register-worker">
+          <label  className='label-worker-r'>Primer apellido*</label>
           <input
             className='inputs-register-worker'
             type="text"
@@ -51,8 +51,8 @@ const RegisterWorker = ({ onCancelClick }) => {
             onChange={handdleInputChange}
           />
         </div>
-        <div className="column-admin-register">
-          <label  className='label-worker'>Segundo apellido*</label>
+        <div className="column-register-worker">
+          <label  className='label-worker-r'>Segundo apellido*</label>
           <input
             className='inputs-register-worker'
             type="text"
@@ -63,9 +63,9 @@ const RegisterWorker = ({ onCancelClick }) => {
           />
         </div>
       </div>
-      <div className="form-section-worker">
-        <div className="column-admin-register">
-          <label className='label-worker'>Correo*</label>
+      <div className="form-sec-worker-register">
+        <div className="column-register-worker">
+          <label className='label-worker-r'>Correo*</label>
           <input
             className='inputs-register-worker'
             type="text"
@@ -75,8 +75,8 @@ const RegisterWorker = ({ onCancelClick }) => {
             onChange={handdleInputChange}
           />
         </div>
-        <div className="column-admin-register">
-          <label className='label-worker'>Teléfono*</label>
+        <div className="column-register-worker">
+          <label className='label-worker-r'>Teléfono*</label>
           <input
             className='inputs-register-worker'
             type="text"
@@ -89,11 +89,11 @@ const RegisterWorker = ({ onCancelClick }) => {
         <div></div>
       </div>
       <div className='espacio'>
-        <label className='label-register-worker'>Registre sus datos de inicio de sesión</label>
+        <label className='label-dato-worker'>Registre sus datos de inicio de sesión</label>
       </div>
-      <div className="form-section-worker">
-        <div className="column-admin-register">
-          <label className='label-worker'>Nombre de usuario*</label>
+      <div className="form-sec-worker-register">
+        <div className="column-register-worker">
+          <label className='label-worker-r'>Nombre de usuario*</label>
           <input
             className='inputs-register-worker2'
             type="text"
@@ -103,8 +103,8 @@ const RegisterWorker = ({ onCancelClick }) => {
             onChange={handdleInputChange}
           />
         </div>
-        <div className="column-admin-register">
-          <label className='label-worker'>Contraseña*</label>
+        <div className="column-register-worker">
+          <label className='label-worker-r'>Contraseña*</label>
           <input
             className='inputs-register-worker2'
             type="password"
@@ -115,15 +115,17 @@ const RegisterWorker = ({ onCancelClick }) => {
           />
       </div>
       </div>
-        <div className="rules-worker">
+      <div className="password-rules-worker-r">
         <label>*La contraseña debe ser mínimo de 8 caracteres.</label>
+        <br/>
         <label>*Debes de incluir letras mayúsculas y minúsculas</label>
+        <br/>
         <label>*Debes de incluir al menos un número y un símbolo (Todos son válidos).</label>
       </div>
-      <label className='label-register-worker'>Asigne su agricultor</label>
-      <div className="form-section-worker">
-        <div className="column-admin-register">
-          <label className='label-worker'>Agricultor responsable*</label>
+      <label className='label-dato-worker'>Asigne su agricultor</label>
+      <div className="form-sec-worker-register">
+        <div className="column-register-worker">
+          <label className='label-worker-r'>Agricultor responsable*</label>
           <input
             className='inputs-register-worker3'
             type="text"
@@ -135,8 +137,8 @@ const RegisterWorker = ({ onCancelClick }) => {
         </div>
       </div>
       <div className='button-container-admin'>
-          <button className='button-admin' type="submit">Guardar</button>
-          <button className='button-cancel-admin ' onClick={onCancelClick}>Cancelar</button>
+          <button className='button-worker' type="submit">Guardar</button>
+          <button className='button-worker ' onClick={onCancelClick}>Cancelar</button>
         </div>
     </div>
     </div>

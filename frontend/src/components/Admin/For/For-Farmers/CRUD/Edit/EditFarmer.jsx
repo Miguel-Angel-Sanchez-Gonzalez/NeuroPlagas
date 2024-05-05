@@ -21,14 +21,14 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
   };
 
   return (
-    <div className="edit-farmer-form">
+    <div className="edit-farmer-container">
       <div className='centrar-farmer'>
-      <h4 className='h4edit'>Editar agricultor</h4>
-      <h5 className='h5edit'>*Campos requeridos</h5>
-      <label className='label-edit-farmer'>Edite sus datos personales</label>
-      <div className="form-section-farmer">
-        <div className="column-admin-edit">
-          <label  className='label-farmer'>Nombre*</label>
+      <h4 className='h4edit-farmer'>Editar agricultor</h4>
+      <h5 className='h5edit-farmer'>*Campos requeridos</h5>
+      <label className='label-dato-farmer'>Edite sus datos personales</label>
+      <div className="form-sec-farmer-edit">
+        <div className="column-edit-farmer">
+          <label  className='label-farmer-e'>Nombre*</label>
           <input
             className='inputs-edit-farmer'
             type="text"
@@ -38,8 +38,8 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
             onChange={handdleInputChange}
           />
         </div>
-        <div className="column-admin-edit">
-          <label  className='label-farmer'>Primer apellido*</label>
+        <div className="column-edit-farmer">
+          <label  className='label-farmer-e'>Primer apellido*</label>
           <input
             className='inputs-edit-farmer'
             type="text"
@@ -49,8 +49,8 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
             onChange={handdleInputChange}
           />
         </div>
-        <div className="column-admin-edit">
-          <label  className='label-farmer'>Segundo apellido*</label>
+        <div className="column-edit-farmer">
+          <label  className='label-farmer-e'>Segundo apellido*</label>
           <input
             className='inputs-edit-farmer'
             type="text"
@@ -61,9 +61,9 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
           />
         </div>
       </div>
-      <div className="form-section-farmer">
-        <div className="column-admin-edit">
-          <label className='label-farmer'>Correo*</label>
+      <div className="form-sec-farmer-edit">
+        <div className="column-edit-farmer">
+          <label className='label-farmer-e'>Correo*</label>
           <input
             className='inputs-edit-farmer'
             type="text"
@@ -73,8 +73,8 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
             onChange={handdleInputChange}
           />
         </div>
-        <div className="column-admin-edit">
-          <label className='label-farmer'>Teléfono*</label>
+        <div className="column-edit-farmer">
+          <label className='label-farmer-e'>Teléfono*</label>
           <input
             className='inputs-edit-farmer'
             type="text"
@@ -87,10 +87,10 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
         <div></div>
       </div>
 
-      <label className='label-edit-farmer'>Edite sus datos de inicio de sesión</label>
-      <div className="form-section-farmer">
-        <div className="column-admin-edit">
-          <label className='label-farmer'>Nombre de usuario*</label>
+      <label className='label-dato-farmer'>Edite sus datos de inicio de sesión</label>
+      <div className="form-sec-farmer-edit">
+        <div className="column-edit-farmer">
+          <label className='label-farmer-e'>Nombre de usuario*</label>
           <input
             className='inputs-edit-farmer2'
             type="text"
@@ -100,8 +100,8 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
             onChange={handdleInputChange}
           />
         </div>
-        <div className="column-admin-edit">
-          <label className='label-farmer'>Contraseña*</label>
+        <div className="column-edit-farmer">
+          <label className='label-farmer-e'>Contraseña*</label>
           <input
             className='inputs-edit-farmer2'
             type="password"
@@ -112,14 +112,16 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
           />
         </div>
       </div>
-      <div className="password-rules-farmer">
+      <div className="password-rules-farmer-e">
         <label>*La contraseña debe ser mínimo de 8 caracteres.</label>
+        <br/>
         <label>*Debes de incluir letras mayúsculas y minúsculas</label>
+        <br/>
         <label>*Debes de incluir al menos un número y un símbolo (Todos son válidos).</label>
       </div>
       <div className='button-container-admin'>
-          <button className='button-admin' type="submit">Guardar</button>
-          <button className='button-cancel-admin ' onClick={onCancelClick}>Cancelar</button>
+          <button className='button-farmer' type="submit">Guardar</button>
+          <button className='button-farmer ' onClick={onCancelClick}>Cancelar</button>
         </div>
     </div>
     </div>

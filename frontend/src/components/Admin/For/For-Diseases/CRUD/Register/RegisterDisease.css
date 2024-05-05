@@ -42,7 +42,9 @@
   margin-left: 12px; 
 }
 
-.inputs-register-disease, .textarea-disease-r, .textarea-disease-r2 {
+.inputs-register-disease, 
+.textarea-disease-r, 
+.textarea-disease-r2 {
   margin-top: 5px;
   margin-left: 12px;
   width: calc(100% - 25px); /* Ajuste para tener en cuenta el padding y margen */
@@ -87,7 +89,7 @@
   margin-right: 12px;
 }
 
-.button-disease {
+.button-disease-r {
   width: 150px;
   padding: 12px;
   color: white;

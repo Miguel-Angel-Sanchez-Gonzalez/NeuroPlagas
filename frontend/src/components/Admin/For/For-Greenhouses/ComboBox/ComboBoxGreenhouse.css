@@ -1,8 +1,9 @@
 .dropdown {
   position: relative;
-  width: 80%;
+  width: 90%;
   margin-top: 5px;
   font-size: 15px;
+  margin-left: 5px;
 }
 
 .dropdown-btn{

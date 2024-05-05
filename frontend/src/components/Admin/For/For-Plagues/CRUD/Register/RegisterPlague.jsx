@@ -112,14 +112,14 @@ const RegisterPlague = ({ onCancelClick }) => {
           <div className="loading-spinner"></div>
         </div>
       )}
-        <div className="register-plague-form">
+        <div className="register-plague-container">
           <div className='centrar-plague'>
-            <h4 className='h4register'>Registrar plaga</h4>
-            <h5 className='h5register'>*Campos requeridos</h5>
-            <label className='label-datos-plague'>Registre una nueva plaga</label>
-          <div className="form-section-plague">
-            <div className="column-admin-register">
-                <label className={`label-plague ${isFormSubmitted && !values.nombrePlaga && 'red-label'}`}>
+            <h4 className='h4register-plague'>Registrar plaga</h4>
+            <h5 className='h5register-plague'>*Campos requeridos</h5>
+            <label className='label-dato-plague'>Registre una nueva plaga</label>
+          <div className="form-sec-plague-register">
+            <div className="column-register-plague">
+                <label className={`labels-plague-r ${isFormSubmitted && !values.nombrePlaga && 'red-label'}`}>
                   Nombre de la plaga*
                 </label>
                 <input
@@ -141,8 +141,8 @@ const RegisterPlague = ({ onCancelClick }) => {
               />
               {plagueExists && <p className="plague-exists">La plaga ya fue registrada.</p>}
             </div>
-            <div className="column-admin-register">
-                <label className={`label-plague ${isFormSubmitted && !values.nombreCientifico && 'red-label'}`}>
+            <div className="column-register-plague">
+                <label className={`labels-plague-r ${isFormSubmitted && !values.nombreCientifico && 'red-label'}`}>
                   Nombre científico*
                 </label>
               <input
@@ -158,13 +158,13 @@ const RegisterPlague = ({ onCancelClick }) => {
               />
             </div>
           </div>
-          <div className="form-section-plague">
-            <div className="column-admin-register">
-                <label className={`label-plague ${isFormSubmitted && !values.descripcion && 'red-label'}`}>
+          <div className="form-sec-plague-register">
+            <div className="column-register-plague">
+                <label className={`labels-plague-r ${isFormSubmitted && !values.descripcion && 'red-label'}`}>
                   Descripción*
                 </label>
               <textarea
-                className= {`textarea-description-register ${isFormSubmitted && !values.descripcion && 'red-input'}`}
+                className= {`textarea-plague-r ${isFormSubmitted && !values.descripcion && 'red-input'}`}
                 type="text"
                 required
                 name="descripcion"
@@ -175,12 +175,12 @@ const RegisterPlague = ({ onCancelClick }) => {
                 onBlur={handleInputBlur}   // Nuevo evento de desenfoque
               />
             </div>
-            <div className="column-admin-register">
-                <label className={`label-plague ${isFormSubmitted && !values.recomendaciones && 'red-label'}`}>
+            <div className="column-register-plague">
+                <label className={`labels-plague-r ${isFormSubmitted && !values.recomendaciones && 'red-label'}`}>
                   Recomendaciones*
                 </label>
               <textarea
-                className= {`textarea-description-register ${isFormSubmitted && !values.recomendaciones && 'red-input'}`}
+                className= {`textarea-plague-r ${isFormSubmitted && !values.recomendaciones && 'red-input'}`}
                 type="text"
                 required
                 name="recomendaciones"
@@ -192,13 +192,13 @@ const RegisterPlague = ({ onCancelClick }) => {
               />
             </div>
           </div>
-          <div className="form-section-plague">
-            <div className="column-admin-register">
-                <label className={`label-plague ${isFormSubmitted && !values.acciones && 'red-label'}`}>
+          <div className="form-sec-plague-register">
+            <div className="column-register-plague">
+                <label className={`labels-plague-r ${isFormSubmitted && !values.acciones && 'red-label'}`}>
                   Acciones*
                 </label>
               <textarea
-                className= {`textarea-description-register2 ${isFormSubmitted && !values.acciones && 'red-input'}`}
+                className= {`textarea-plague-r2 ${isFormSubmitted && !values.acciones && 'red-input'}`}
                 type="text"
                 required
                 name="acciones"
@@ -211,9 +211,9 @@ const RegisterPlague = ({ onCancelClick }) => {
             </div>
           </div>
           <div className='button-container-admin'>
-              <button className='btncan-register-plague' type="submit" onClick={handleSubmit}>Guardar</button>
+              <button className='button-plague-r' type="submit" onClick={handleSubmit}>Guardar</button>
                  {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
-              <button className='button-cancel-admin ' onClick={onCancelClick}>Cancelar</button>
+              <button className='button-plague-r ' onClick={onCancelClick}>Cancelar</button>
             </div>
               {records && !isInputFocused && <p className='error-message'>{records}</p>}
             </div>

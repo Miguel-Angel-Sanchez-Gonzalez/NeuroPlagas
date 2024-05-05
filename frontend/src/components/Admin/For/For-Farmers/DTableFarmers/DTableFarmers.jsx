@@ -12,7 +12,6 @@ import DeleteFarmer from '../CRUD/Delete/DeleteFarmer';
 const DTableFarmers = () => {
     const [inputValue, setInputValue] = useState("");
     const [filteredFarmers, setFilteredFarmers] = useState([]); 
-
     const [idFarmer, setIDFarmer] = useState("");
 
     const columns = [

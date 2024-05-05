@@ -25,14 +25,14 @@ const EditPlague = ({ rowData, onCancelClick }) => {
 
 
   return (
-    <div className="edit-plague-form">
+    <div className="edit-plague-container">
       <div className='centrar-plague'>
-      <h4 className='h4edit'>Editar plaga</h4>
-      <h5 className='h5edit'>*Campos requeridos</h5>
-      <label className='label-datos-plague'>Edite una nueva plaga</label>
-      <div className="form-section-plague">
-        <div className="column-admin-edit">
-          <label className='label-plague'>Nombre de la plaga*</label>
+      <h4 className='h4edit-plague'>Editar plaga</h4>
+      <h5 className='h5edit-plague'>*Campos requeridos</h5>
+      <label className='label-dato-plague'>Edite una nueva plaga</label>
+      <div className="form-sec-plague-edit">
+        <div className="column-edit-plague">
+          <label className='labels-plague-e'>Nombre de la plaga*</label>
           <input
             className='inputs-edit-plague'
             type="text"
@@ -42,8 +42,8 @@ const EditPlague = ({ rowData, onCancelClick }) => {
             onChange={handdleInputChange}
           />
         </div>
-        <div className="column-admin-edit">
-          <label className='label-plague'>Nombre científico*</label>
+        <div className="column-edit-plague">
+          <label className='labels-plague-e'>Nombre científico*</label>
           <input
             className='inputs-edit-plague'
             type="text"
@@ -54,11 +54,11 @@ const EditPlague = ({ rowData, onCancelClick }) => {
           />
         </div>
       </div>
-      <div className="form-section-plague">
-        <div className="column-admin-edit">
-          <label className='label-plague'>Descripción*</label>
+      <div className="form-sec-plague-edit">
+        <div className="column-edit-plague">
+          <label className='labels-plague-e'>Descripción*</label>
           <input
-            className='input-description-edit'
+            className='textarea-plague-e'
             type="text"
             required
             name="descripcion"
@@ -66,10 +66,10 @@ const EditPlague = ({ rowData, onCancelClick }) => {
             onChange={handdleInputChange}
           />
         </div>
-        <div className="column-admin-edit">
-          <label className='label-plague'>Recomendacciones*</label>
+        <div className="column-edit-plague">
+          <label className='labels-plague-e'>Recomendacciones*</label>
           <input
-            className='input-description-edit'
+            className='textarea-plague-e'
             type="text"
             required
             name="recomendaciones"
@@ -78,11 +78,11 @@ const EditPlague = ({ rowData, onCancelClick }) => {
           />
         </div>
       </div>
-      <div className="form-section-plague">
-        <div className="column-admin-edit">
-          <label className='label-plague'>Acciones*</label>
+      <div className="form-sec-plague-edit">
+        <div className="column-edit-plague">
+          <label className='labels-plague-e'>Acciones*</label>
           <input
-            className='input-description-edit2'
+            className='textarea-plague-e2'
             type="text"
             required
             name="acciones"
@@ -92,8 +92,8 @@ const EditPlague = ({ rowData, onCancelClick }) => {
         </div>
       </div>
       <div className='button-container-admin'>
-          <button className='button-admin' type="submit" >Guardar</button>
-          <button className='btncan-edit-plague' onClick={onCancelClick}>Cancelar</button>
+          <button className='button-plague-e' type="submit" >Guardar</button>
+          <button className='button-plague-e' onClick={onCancelClick}>Cancelar</button>
         </div>
     </div>
     </div>

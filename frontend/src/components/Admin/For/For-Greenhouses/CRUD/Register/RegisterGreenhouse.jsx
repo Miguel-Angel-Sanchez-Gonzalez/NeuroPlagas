@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './RegisterGreenhouse.css';
 import AddNotification from '../../../../../LoginNotifications/AddNotification';
-import ComboBoxGreenhouse from '../../ComboBoxGreenhouse';
+import ComboBoxGreenhouse from '../../ComboBox/ComboBoxGreenhouse';
 
 const RegisterGreenhouse = ({ onCancelClick }) => {
   const [records, setRecords] = useState('');
@@ -116,14 +116,14 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
           <div className="loading-spinner"></div>
         </div>
       )}
-        <div className="register-greenhouse-form">
+        <div className="register-greenhouse-container">
           <div className='centrar-greenhouse'>
-          <h4 className='h4register'>Registrar invernadero</h4>
-          <h5 className='h5register'>*Campos requeridos</h5>
-          <label className='datos-greenhouse'>Registre los datos del invernadero</label>
-          <div className="form-section-greenhouse">
-            <div className="column-admin-greenhouse">
-              <label className={`label-greenhouse ${isFormSubmitted && !values.nombreInvernadero && 'red-label'}`}>
+          <h4 className='h4register-greenhouse'>Registrar invernadero</h4>
+          <h5 className='h5register-greenhouse'>*Campos requeridos</h5>
+          <label className='label-dato-greenhouse'>Registre los datos del invernadero</label>
+          <div className="form-sec-greenhouse-register">
+            <div className="column-register-greenhouse">
+              <label className={`label-greenhouse-r ${isFormSubmitted && !values.nombreInvernadero && 'red-label'}`}>
                 Nombre del invernadero*
               </label>
               <input
@@ -145,8 +145,8 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
               />
               {greenhouseExists && <p className="greenhouse-exists">El nombre del invernadero ya existe.</p>}
             </div>
-            <div className="column-admin-greenhouse">
-              <label className={`label-greenhouse ${isFormSubmitted && !values.tipoInvernadero && 'red-label'}`}>
+            <div className="column-register-greenhouse">
+              <label className={`label-greenhouse-r ${isFormSubmitted && !values.tipoInvernadero && 'red-label'}`}>
                 Tipo de invernadero*
               </label>
               <ComboBoxGreenhouse
@@ -155,9 +155,9 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
               />
             </div>
           </div>
-          <div className="form-section-greenhouse">
-            <div className="column-admin-greenhouse">
-              <label className={`label-greenhouse ${isFormSubmitted && !values.humedad && 'red-label'}`}>
+          <div className="form-sec-greenhouse-register">
+            <div className="column-register-greenhouse">
+              <label className={`label-greenhouse-r ${isFormSubmitted && !values.humedad && 'red-label'}`}>
                 Humedad (C°)*
               </label>
               <input
@@ -172,8 +172,8 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
                 onBlur={handleInputBlur} 
               />
             </div>
-            <div className="column-admin-greenhouse">
-              <label className={`label-greenhouse ${isFormSubmitted && !values.tamanio && 'red-label'}`}>
+            <div className="column-register-greenhouse">
+              <label className={`label-greenhouse-r ${isFormSubmitted && !values.tamanio && 'red-label'}`}>
                 Tamaño (mts)*
               </label>
               <input
@@ -189,10 +189,10 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
               />
             </div>
           </div>
-          <h4 className='datos-greenhouse'>Registrar datos del agricultor </h4>
-          <div className="form-section-greenhouse">
-            <div className="column-admin-greenhouse">
-              <label className={`label-greenhouse ${isFormSubmitted && !values.agricultorResponsable && 'red-label'}`}>
+          <h4 className='label-dato-greenhouse2'>Registrar datos del agricultor </h4>
+          <div className="form-sec-greenhouse-register">
+            <div className="column-register-greenhouse">
+              <label className={`label-greenhouse-r ${isFormSubmitted && !values.agricultorResponsable && 'red-label'}`}>
                 Agricultor responsable*
               </label>
                 <input
@@ -208,12 +208,12 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
                 />
             </div>
           </div>
-          <div className='button-container-register'>
-              <button className='button-admin' type="submit" onClick={handleSubmit}>Guardar</button>
+          <div className='button-container-greenhouse '>
+              <button className='button-greenhouse' type="submit" onClick={handleSubmit}>Guardar</button>
               {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
-              <button className='button-cancel-admin ' onClick={onCancelClick}>Cancelar</button>
+              <button className='button-greenhouse ' onClick={onCancelClick}>Cancelar</button>
             </div>
-            {records && !isInputFocused && <p className='error-message'>{records}</p>}
+            {records && !isInputFocused && <p className='error-message-greenhouse'>{records}</p>}
         </div>
         {loadingMessage && (
             <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification"/>

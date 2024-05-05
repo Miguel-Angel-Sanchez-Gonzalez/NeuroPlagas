@@ -41,7 +41,7 @@
   padding: 10px;
   color: #333; /* Color del texto */
   z-index: 999; /* Asegura que el menú esté por encima de otros elementos */
-
+  margin-left: -60px;
 }
 
 .menu-options-admin p {

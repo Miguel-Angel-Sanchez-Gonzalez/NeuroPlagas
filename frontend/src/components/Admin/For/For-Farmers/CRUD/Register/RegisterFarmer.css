@@ -1,5 +1,5 @@
 /* Estilos base */
-.register-farmer-form {
+.register-farmer-container {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -9,129 +9,107 @@
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 500px;
-  max-width: 100%; /* Para hacerlo responsivo */
+  width: 100%; /* Hacerlo responsivo */
+  max-width: 505px;
   display: flex;
   flex-direction: column;
 }
 
-.h4register {
-  padding-top: 20px;
-  margin-bottom: 20px;
+.centrar-farmer {
+  padding: 5px;
 }
 
-.h5register {
+.h4register-farmer {
+  padding-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.h5register-farmer {
   text-align: right;
   padding-bottom: 10px;
   color: #c62426;
+  margin-right: 15px;
 }
 
-.label-register-farmer {
-  font-size: 16px; /* Asegura consistencia de tamaño */
+.label-dato-farmer {
+  font-weight: bold;
   margin-left: 15px;
-  margin-bottom: 10px;
-  font-weight: bold; /* Hace que el texto sea negrita */
 }
 
-
-.inputs-register-farmer{
-  margin-top: 5px;
-  width: 80%; /* Ajusta el ancho a 80% como solicitado */
-  padding: 10px;
-  border: 2px solid #d4d0d0;
-  margin-left: auto; /* Centra los inputs */
-  margin-right: auto; /* Centra los inputs */
+.label-farmer-r {
+  font-size: 14px;
+  margin-left: 5px;
 }
 
+.inputs-register-farmer,
 .inputs-register-farmer2 {
   margin-top: 5px;
-  margin-left: 0px;
-  width: 80%;
+  width: 90%; /* Ajusta el ancho a 80% como solicitado */
   padding: 10px;
   border: 2px solid #d4d0d0;
+  margin-left: 5px; /* Centra los inputs */
 }
 
 .inputs-register-farmer:focus,
-.inputs-register-farmer2:focus{
+.inputs-register-farmer2:focus {
   border: 2px solid #c62426;
 }
 
-.form-section-farmer {
+.form-sec-farmer-register {
   display: flex;
   flex-direction: row;
   justify-content: space-between; /* Distribuye los elementos horizontalmente */
   margin-bottom: 10px;
-  padding-left: 15px;
+  margin-left: 10px;
 }
 
-.column-admin-register {
+.column-register-farmer {
   flex: 1; /* Ocupa el espacio disponible */
   margin-right: 10px; /* Espacio entre las columnas */
   margin-top: 10px;
 }
 
-.password-rules-farmer label {
+.password-rules-farmer-r {
   display: block;
   padding-top: 4px;
-  margin-left: 10px;
+  margin-bottom: 20px;
+  margin-left: 12px;
 }
 
 .button-container-admin {
-  padding-top: 20px;
   display: flex;
-  justify-content: space-between; /* Distribuye el espacio entre los botones */
-  align-items: center; /* Centra verticalmente los botones */
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  margin-left: 25px;
+  margin-right: 20px;
 }
 
-.button-admin, .button-cancel-admin {
+.button-farmer {
   width: 150px;
   padding: 12px;
   color: white;
   background-color: #c62426;
   border: 2px solid #c62426;
   border-radius: 10px;
+  cursor: pointer; /* Cambiado desde el selector de etiqueta */
 }
 
-.button-admin {
-  margin-left: 20px;
-}
-
-.button-cancel-admin {
-  margin-right: 20px;
-}
-
-/* Estilos adicionales para el botón */
-button {
-  transform: scale(1, 1);
-  cursor: pointer;
-}
-
-.error-message{
-  margin-left: 20px;
-  margin-right: 20px;
+.error-message-disease,
+.email-exists {
+  margin-top: 15px;
+  margin-left: 15px;
   text-align: justify;
   color: #c62426;
   font-size: medium;
 }
 
-.red-label {
-  border-color: #c62426; /* Cambia el color del borde a rojo */
-  color: #c62426; /* Cambia el color del texto a rojo */
-}
-
-/* Estilo específico para resaltar el borde del input */
+.red-label,
 .red-input {
-  border-color: #c62426; /* Cambia el color del borde a rojo */
-}
-
-.email-exists{
-  margin-top: 5px;
-  margin-right: 10px;
-  text-align: justify;
   color: #c62426;
-  font-size: medium;
+  border-color: #c62426;
 }
-
 
 /*
 ANIMACION DE CARGA
@@ -148,7 +126,6 @@ ANIMACION DE CARGA
   left: 0;
   width: 100%;
   height: 100%;
-  /*background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -165,7 +142,10 @@ ANIMACION DE CARGA
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
-

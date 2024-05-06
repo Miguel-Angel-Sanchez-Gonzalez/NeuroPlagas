@@ -34,7 +34,7 @@
 
 .label-dato-worker {
   font-weight: bold;
-  margin-left: 20px;
+  margin-left: 15px;
 }
 
 .label-worker-r {
@@ -84,6 +84,7 @@
   padding-top: 4px;
   margin-bottom: 10px;
   margin-left: 12px;
+  text-align: left;
 }
 
 .button-container-admin {
@@ -104,14 +105,24 @@
   cursor: pointer; /* Cambiado desde el selector de etiqueta */
 }
 
-.error-message-disease,
-.email-exists {
-  margin-top: 15px;
-  margin-left: 12px;
-  text-align: justify;
+.error-message-worker,
+.email-exists-r {
+  margin-top: 5px;
+  margin-left: 5px;
+  text-align: left;
   color: #c62426;
-  font-size: medium;
+  font-size: 14px;
 }
+
+
+.error-password {
+  margin-top: 5px;
+  margin-left: 5px;
+  text-align: left;
+  color: #c62426;
+  font-size: 14px;
+}
+
 
 .red-label,
 .red-input {

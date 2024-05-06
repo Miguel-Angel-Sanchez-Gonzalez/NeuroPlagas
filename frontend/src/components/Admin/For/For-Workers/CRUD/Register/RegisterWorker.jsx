@@ -11,6 +11,7 @@ const RegisterWorker = ({ onCancelClick }) => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Nuevo estado para rastrear si el formulario se ha enviado
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   const [values, setValues] = useState({
     nombre: "",
@@ -20,8 +21,6 @@ const RegisterWorker = ({ onCancelClick }) => {
     correo: "",
     nombreUsuario: "",
     contrasenia:"",
-
-
   });
 
   const handleInputChange = (e) =>{
@@ -45,7 +44,7 @@ const RegisterWorker = ({ onCancelClick }) => {
     setIsInputFocused(false); // Actualiza el estado cuando un input pierde el enfoque
   };
 
-
+  
   const checkEmailExists = async (email) => {
     const response = await fetch(`http://localhost:3000/login/check_email_existence`, {
       method: 'POST',
@@ -69,6 +68,27 @@ const RegisterWorker = ({ onCancelClick }) => {
     const phonePattern = /^\(?([0-9]{3})\)?[-.]?([0-9]{3})?[-.]?([0-9]{4})$/;
     return phonePattern.test(phoneNumber);
   };
+
+  const validatePassword = (password) => {
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  
+    if (password.length < 8) {
+      return "Debe tener al menos 8 caracteres.";
+    }
+    if (!hasUpperCase) {
+      return "Debe tener al menos una letra mayúscula.";
+    }
+    if (!hasNumber) {
+      return "Debe tener al menos un número.";
+    }
+    if (!hasSpecialChar) {
+      return "Debe tener al menos un caracter especial.";
+    }
+    return true;
+  };
+  
   
   
   const handleSubmit = async (e) => {
@@ -76,6 +96,7 @@ const RegisterWorker = ({ onCancelClick }) => {
     setIsFormSubmitted(true); 
 
     
+
     for (const key in values) {
       if (values[key] === "") {
         setRecords('Por favor complete todos los campos.');
@@ -99,6 +120,12 @@ const RegisterWorker = ({ onCancelClick }) => {
     // const phoneValidate = validatePhone(values.telefono);
     if (!validatePhone(values.telefono)) {
       setRecords('Teléfono no válido (10 dígitos).');
+      return;
+    }
+
+    const passwordValidationResult = validatePassword(values.contrasenia);
+    if (passwordValidationResult !== true) {
+      setPasswordError(passwordValidationResult);
       return;
     }
 
@@ -226,7 +253,7 @@ const RegisterWorker = ({ onCancelClick }) => {
                   }}
                 />
                 {values.correo && !validateEmail(values.correo) && isFormSubmitted && (
-                  <p className="error-message-farmer">Correo electrónico inválido.</p>
+                  <p className="error-message-worker">Correo electrónico inválido.</p>
                 )}
                 {emailExists && 
                 <p className="email-exists-r">El correo ya existe.</p>}    
@@ -283,13 +310,15 @@ const RegisterWorker = ({ onCancelClick }) => {
               <input
                 className= {`inputs-register-worker2 ${isFormSubmitted && !values.contrasenia && 'red-input'}`}
                 type="password"
-                required
                 name="contrasenia"
                 placeholder="Contraseña"
-                onChange={handleInputChange}
+                minLength="8"
+                onChange={(e) => handleInputChange(e)}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur} 
               />
+              {isFormSubmitted && !values.contrasenia && <p className="error-password">Por favor ingrese una contraseña.</p>}
+              {passwordError && <p className="error-password">{passwordError}</p>}
           </div>
           </div>
           <div className="password-rules-worker-r">

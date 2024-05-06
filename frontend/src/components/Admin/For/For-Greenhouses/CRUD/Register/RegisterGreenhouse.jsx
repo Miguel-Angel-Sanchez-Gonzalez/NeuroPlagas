@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './RegisterGreenhouse.css';
 import AddNotification from '../../../../../LoginNotifications/AddNotification';
-import ComboBoxGreenhouse from '../../ComboBox/ComboBoxGreenhouse';
+import GreenhouseType from '../../ComboBox/GreenhouseType';
+import ResponsibleFarmer from '../../ComboBox/ResponsibleFarmer';
 
 const RegisterGreenhouse = ({ onCancelClick }) => {
   const [records, setRecords] = useState('');
@@ -31,9 +32,15 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
     }
   };
 
+  //PARA LOS COMBOBOX
   const handleTypeGreenhouseSelect = (selectedOption) => {
     setValues({ ...values, tipoInvernadero: selectedOption }); // Actualiza el tipo de invernadero seleccionado
   };
+
+  const handleRespFarmerSelect = (selectedOption) => {
+    setValues({ ...values, agricultorResponsable: selectedOption }); // Actualiza el tipo de invernadero seleccionado
+  };
+  //
 
   const handleInputFocus = () => {
     setIsInputFocused(true); // Actualiza el estado cuando un input recibe enfoque
@@ -62,7 +69,7 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
 
     
     for (const key in values) {
-      if (values[key] === "") {
+      if (values[key] === "" || (key === "agricultorResponsable" && !values[key])) {
         setRecords('Por favor complete todos los campos.');
         return;
       }
@@ -78,7 +85,7 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
 
     setIsLoading(true);
     const data = {
-      idFarmer: '2',
+      idFarmer: values.agricultorResponsable ? values.agricultorResponsable.value : null,
       name: values.nombreInvernadero,
       typeGreenhouse: values.tipoInvernadero,
       humidity: values.humedad,
@@ -143,15 +150,16 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
                   }
                 }}
               />
-              {greenhouseExists && <p className="greenhouse-exists">El nombre del invernadero ya existe.</p>}
+              {greenhouseExists && <p className="greenhouse-exists-r">Nombre ya registrado</p>}
             </div>
             <div className="column-register-greenhouse">
               <label className={`label-greenhouse-r ${isFormSubmitted && !values.tipoInvernadero && 'red-label'}`}>
                 Tipo de invernadero*
               </label>
-              <ComboBoxGreenhouse
-                selected={values.tipoInvernadero}
-                setSelected={handleTypeGreenhouseSelect}
+              <GreenhouseType
+                  selected={values.tipoInvernadero}
+                  setSelected={handleTypeGreenhouseSelect}
+                  isFormSubmitted={isFormSubmitted}
               />
             </div>
           </div>
@@ -161,7 +169,7 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
                 Humedad (C°)*
               </label>
               <input
-                className={`inputs-register-greenhouse ${isFormSubmitted && !values.humedad && 'red-input'}`}
+                className={`inputs-register-greenhouse2 ${isFormSubmitted && !values.humedad && 'red-input'}`}
                 type="text"
                 required
                 name="humedad"
@@ -177,7 +185,7 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
                 Tamaño (mts)*
               </label>
               <input
-                className={`inputs-register-greenhouse ${isFormSubmitted && !values.tamanio && 'red-input'}`}
+                className={`inputs-register-greenhouse2 ${isFormSubmitted && !values.tamanio && 'red-input'}`}
                 type="text"
                 required
                 name="tamanio"
@@ -189,23 +197,18 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
               />
             </div>
           </div>
-          <h4 className='label-dato-greenhouse2'>Registrar datos del agricultor </h4>
+          <br />
+          <label className='label-dato-greenhouse'>Registrar datos del agricultor </label>
           <div className="form-sec-greenhouse-register">
             <div className="column-register-greenhouse">
               <label className={`label-greenhouse-r ${isFormSubmitted && !values.agricultorResponsable && 'red-label'}`}>
                 Agricultor responsable*
               </label>
-                <input
-                className={`inputs-register-greenhouse2 ${isFormSubmitted && !values.agricultorResponsable && 'red-input'}`}
-                  type="text"
-                  required
-                  name="agricultorResponsable"
-                  placeholder="Agricultor responsable"
-                  value={values.agricultorResponsable}
-                  onChange={handleInputChange}
-                  onFocus={handleInputFocus} 
-                  onBlur={handleInputBlur} 
-                />
+              <ResponsibleFarmer
+                selected={values.agricultorResponsable}
+                setSelected={handleRespFarmerSelect}
+                isFormSubmitted={isFormSubmitted}
+              />
             </div>
           </div>
           <div className='button-container-greenhouse '>
@@ -213,7 +216,7 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
               {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
               <button className='button-greenhouse ' onClick={onCancelClick}>Cancelar</button>
             </div>
-            {records && !isInputFocused && <p className='error-message-greenhouse'>{records}</p>}
+            {records && !isInputFocused && <p className='error-message-greenhouse-r'>{records}</p>}
         </div>
         {loadingMessage && (
             <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification"/>

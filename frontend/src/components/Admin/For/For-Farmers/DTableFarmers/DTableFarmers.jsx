@@ -31,18 +31,18 @@ const DTableFarmers = () => {
             name: 'Primer apellido',
             selector: row => row.primer_apellido,
             sortable: true,
-            width:'140px'
+            width:'160px'
         },
         {
             name: 'Segundo apellido',
             selector: row => row.segundo_apellido,
             sortable: true,
-            width:'150px'
+            width:'160px'
         },
         {
             name: 'Teléfono',
             selector: row => row.telefono,
-            width:'110px'
+            width:'140px'
         },
         {
             name: 'Correo electrónico',
@@ -53,7 +53,7 @@ const DTableFarmers = () => {
             name: 'Usuario',
             selector: row => row.nombre_usuario,
             sortable: true,
-            width:'95px'
+            width:'100px'
         },
         {
             name: 'Contraseña',
@@ -72,8 +72,7 @@ const DTableFarmers = () => {
         }
     ];
 
-    const data = [
-    ];
+    const data = [];
 
     const [showRegisterFarmer, setShowRegisterFarmer] = useState(false); //Form de register
     const [showEditFarmer, setShowEditFarmer] = useState(false); //Form de edicion
@@ -91,7 +90,6 @@ const DTableFarmers = () => {
         //se están cargando los datos
         setFarmers(data);
         setFilteredFarmers(data);
-        console.log(farmers)
     } 
     
     const handleFilter = (event) => {

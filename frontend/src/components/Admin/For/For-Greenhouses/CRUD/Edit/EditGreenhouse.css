@@ -16,7 +16,7 @@
 }
 
 .centrar-greenhouse {
-  padding: 5px;
+  margin: 5px;
 }
 
 .h4edit-greenhouse {
@@ -34,13 +34,7 @@
 
 .label-dato-greenhouse {
   font-weight: bold;
-  margin-left: 15px;
-}
-
-.label-dato-greenhouse2 {
-  font-weight: bold;
-  margin-left: 15px;
-  margin-top: 20px;
+  margin-left: 25px;
 }
 
 .label-greenhouse-e {
@@ -48,10 +42,17 @@
   margin-left: 5px;
 }
 
-.inputs-edit-greenhouse,
-.inputs-edit-greenhouse2 {
+.inputs-edit-greenhouse{
   margin-top: 5px;
   width: 90%; /* Ajusta el ancho a 80% como solicitado */
+  padding: 10px;
+  border: 2px solid #d4d0d0;
+  margin-left: 5px; /* Centra los inputs */
+}
+
+.inputs-edit-greenhouse2 {
+  margin-top: 5px;
+  width: 70%; /* Ajusta el ancho a 80% como solicitado */
   padding: 10px;
   border: 2px solid #d4d0d0;
   margin-left: 5px; /* Centra los inputs */
@@ -67,7 +68,7 @@
   flex-direction: row;
   justify-content: space-between; /* Distribuye los elementos horizontalmente */
   margin-bottom: 10px;
-  margin-left: 10px;
+  margin-left: 20px;
 }
 
 .column-edit-greenhouse {
@@ -76,7 +77,7 @@
   margin-top: 10px;
 }
 
-.password-rules-greenhouse-r {
+.password-rules-greenhouse-e {
   display: block;
   padding-top: 4px;
   margin-left: 15px;
@@ -86,6 +87,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 20px;
   margin-left: auto;
   margin-right: 25px;
 }
@@ -98,6 +100,7 @@
   border: 2px solid #c62426;
   border-radius: 10px;
   cursor: pointer; /* Cambiado desde el selector de etiqueta */
+  margin-left: 25px;
 }
 
 .error-message-greenhouse,

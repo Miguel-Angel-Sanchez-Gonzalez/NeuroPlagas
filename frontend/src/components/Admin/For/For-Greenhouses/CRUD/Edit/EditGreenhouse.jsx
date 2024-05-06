@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './EditGreenhouse.css';
 import AddNotification from '../../../../../LoginNotifications/AddNotification';
-import ComboBoxGreenhouse from '../../ComboBox/ComboBoxGreenhouse';
+import GreenhouseType from '../../ComboBox/GreenhouseType';
+import ResponsibleFarmer from '../../ComboBox/ResponsibleFarmer';
 
 const EditGreenhouse = ({ onCancelClick }) => {
   const [records, setRecords] = useState('');
@@ -31,9 +32,15 @@ const EditGreenhouse = ({ onCancelClick }) => {
     }
   };
 
+  //PARA LOS COMBOBOX
   const handleTypeGreenhouseSelect = (selectedOption) => {
     setValues({ ...values, tipoInvernadero: selectedOption }); // Actualiza el tipo de invernadero seleccionado
   };
+
+  const handleRespFarmerSelect = (selectedOption) => {
+    setValues({ ...values, agricultorResponsable: selectedOption }); // Actualiza el tipo de invernadero seleccionado
+  };
+  //
 
   const handleInputFocus = () => {
     setIsInputFocused(true); // Actualiza el estado cuando un input recibe enfoque
@@ -56,58 +63,58 @@ const EditGreenhouse = ({ onCancelClick }) => {
       return data.exists;
   } 
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setIsFormSubmitted(true); 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsFormSubmitted(true); 
 
     
-  //   for (const key in values) {
-  //     if (values[key] === "") {
-  //       setRecords('Por favor complete todos los campos.');
-  //       return;
-  //     }
-  //   }
+    for (const key in values) {
+      if (values[key] === "") {
+        setRecords('Por favor complete todos los campos.');
+        return;
+      }
+    }
 
-  //   //Validando que el invernadero exista
-  //   const greenhouseExists = await checkGreenhouseExists(values.nombreInvernadero);
-  //   if (greenhouseExists) {
-  //     setGreenhouseExists(true);
-  //     return;
-  //   }
+    //Validando que el invernadero exista
+    const greenhouseExists = await checkGreenhouseExists(values.nombreInvernadero);
+    if (greenhouseExists) {
+      setGreenhouseExists(true);
+      return;
+    }
     
 
-  //   setIsLoading(true);
-  //   const data = {
-  //     idFarmer: '2',
-  //     name: values.nombreInvernadero,
-  //     typeGreenhouse: values.tipoInvernadero,
-  //     humidity: values.humedad,
-  //     size: values.tamanio
-  //   };
+    setIsLoading(true);
+    const data = {
+      // idFarmer: '2',
+      name: values.nombreInvernadero,
+      typeGreenhouse: values.tipoInvernadero,
+      humidity: values.humedad,
+      size: values.tamanio
+    };
 
-  //   //Se esta haciendo la promesa
-  //   //Post para insertar los datos de un invernadero
-  //     const response = await fetch('http://localhost:3000/greenhouse/', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify(data)
-  //     }) 
-  //       if (response){
-  //         const responseData = await response.json();
-  //         const { id } = responseData; // Obtiene el ID del agricultor del backend
-  //         setIsLoading(false);
-  //         setLoadingMessage('Se ha agregado correctamente el invernadero.');
-  //         setTimeout(() => {
-  //         setLoadingMessage(''); // Oculta el mensaje después de unos segundos
-  //         window.location.reload();
-  //         }, 2000); // Mostrar el mensaje durante 3 segundos
-  //       } else {
-  //         setRecords('Por favor, inténtelo de nuevo más tarde.');
-  //         setIsLoading(false); // Agregar para detener la pantalla de carga
-  //       }
-  // };
+    //Se esta haciendo la promesa
+    //Post para insertar los datos de un invernadero
+      const response = await fetch('http://localhost:3000/greenhouse/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }) 
+        if (response){
+          const responseData = await response.json();
+          const { id } = responseData; // Obtiene el ID del agricultor del backend
+          setIsLoading(false);
+          setLoadingMessage('Se ha agregado correctamente el invernadero.');
+          setTimeout(() => {
+          setLoadingMessage(''); // Oculta el mensaje después de unos segundos
+          window.location.reload();
+          }, 2000); // Mostrar el mensaje durante 3 segundos
+        } else {
+          setRecords('Por favor, inténtelo de nuevo más tarde.');
+          setIsLoading(false); // Agregar para detener la pantalla de carga
+        }
+  };
 
   return (
     <div>
@@ -149,7 +156,7 @@ const EditGreenhouse = ({ onCancelClick }) => {
               <label className={`label-greenhouse-e ${isFormSubmitted && !values.tipoInvernadero && 'red-label'}`}>
                 Tipo de invernadero*
               </label>
-              <ComboBoxGreenhouse
+              <GreenhouseType
                 selected={values.tipoInvernadero}
                 setSelected={handleTypeGreenhouseSelect}
               />
@@ -161,7 +168,7 @@ const EditGreenhouse = ({ onCancelClick }) => {
                 Humedad (C°)*
               </label>
               <input
-                className={`inputs-edit-greenhouse ${isFormSubmitted && !values.humedad && 'red-input'}`}
+                className={`inputs-edit-greenhouse2 ${isFormSubmitted && !values.humedad && 'red-input'}`}
                 type="text"
                 required
                 name="humedad"
@@ -177,7 +184,7 @@ const EditGreenhouse = ({ onCancelClick }) => {
                 Tamaño (mts)*
               </label>
               <input
-                className={`inputs-edit-greenhouse ${isFormSubmitted && !values.tamanio && 'red-input'}`}
+                className={`inputs-edit-greenhouse2 ${isFormSubmitted && !values.tamanio && 'red-input'}`}
                 type="text"
                 required
                 name="tamanio"
@@ -189,27 +196,21 @@ const EditGreenhouse = ({ onCancelClick }) => {
               />
             </div>
           </div>
-          <h4 className='label-dato-greenhouse2'>Registrar datos del agricultor </h4>
+          <br />
+          <label className='label-dato-greenhouse'>Registrar datos del agricultor </label>
           <div className="form-sec-greenhouse-edit">
             <div className="column-edit-greenhouse">
               <label className={`label-greenhouse-e ${isFormSubmitted && !values.agricultorResponsable && 'red-label'}`}>
                 Agricultor responsable*
               </label>
-                <input
-                className={`inputs-edit-greenhouse2 ${isFormSubmitted && !values.agricultorResponsable && 'red-input'}`}
-                  type="text"
-                  required
-                  name="agricultorResponsable"
-                  placeholder="Agricultor responsable"
-                  value={values.agricultorResponsable}
-                  onChange={handleInputChange}
-                  onFocus={handleInputFocus} 
-                  onBlur={handleInputBlur} 
-                />
+              <ResponsibleFarmer
+                selected={values.agricultorResponsable}
+                setSelected={handleRespFarmerSelect}
+              />
             </div>
           </div>
           <div className='button-container-greenhouse '>
-              <button className='button-greenhouse' type="submit">Guardar</button>
+              <button className='button-greenhouse' type="submit" onClick={handleSubmit}>Guardar</button>
               {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
               <button className='button-greenhouse ' onClick={onCancelClick}>Cancelar</button>
             </div>

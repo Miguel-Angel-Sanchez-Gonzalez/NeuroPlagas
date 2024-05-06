@@ -80,7 +80,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
 
     //Validando el correo
     if (!validateEmail(values.correo)) {
-      setRecords('El correo electrónico no es válido.');
+      //setRecords('El correo electrónico no es válido.');
       return;
     }
 
@@ -201,9 +201,9 @@ const RegisterFarmer = ({ onCancelClick }) => {
                 <label className={`label-farmer-r ${isFormSubmitted && !values.correo && 'red-label'}`}>
                   Correo*
                 </label>
-              <input
-                className={`inputs-register-farmer2 ${isFormSubmitted && !values.correo ? 'red-input' : ''}`}
-                type="email" // Utiliza el tipo email
+                <input
+                  className={`inputs-register-farmer2 ${isFormSubmitted && !values.correo ? 'red-input' : ''}`}
+                  type="email"
                   required
                   name="correo"
                   placeholder="ejemplo@gmail.com"
@@ -212,14 +212,22 @@ const RegisterFarmer = ({ onCancelClick }) => {
                   onFocus={handleInputFocus}
                   onBlur={async () => {
                     handleInputBlur();
-                    if (values.correo && validateEmail(values.correo)) {
+                    if (values.correo) {
+                      if (!validateEmail(values.correo)) {
+                      setEmailExists(false);
+                    } else {
                       const emailExists = await checkEmailExists(values.correo);
                       setEmailExists(emailExists);
                     }
+                  }
                   }}
-                  
                 />
-                {emailExists && <p className="email-exists">El correo ya existe.</p>}
+                {values.correo && !validateEmail(values.correo) && isFormSubmitted && (
+                  <p className="error-message-farmer">Correo electrónico inválido.</p>
+                )}
+                {emailExists && 
+                <p className="email-exists-r">El correo ya existe.</p>}
+
             </div>
             <div className="column-register-farmer">
                 <label className={`label-farmer-r ${isFormSubmitted && !values.telefono && 'red-label'}`}>

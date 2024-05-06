@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import './ComboBoxGreenhouse.css';
+import './GreenhouseType.css';
 
-function ComboBoxGreenhouse({ selected, setSelected }) {
+function GreenhouseType({ selected, setSelected, isFormSubmitted }) {
     const [isActive, setIsActive] = useState(false);
     const options = ["Túnel", "Capilla", "Malla sombra"];
 
@@ -13,7 +13,7 @@ function ComboBoxGreenhouse({ selected, setSelected }) {
     return (
         <div className="dropdown">
             <div
-                className="dropdown-btn"
+                className={`dropdown-btn ${isFormSubmitted && !selected ? 'red-input' : ''}`}
                 onClick={() => setIsActive(!isActive)}
             >
                 {selected || "Seleccionar tipo..."}
@@ -35,4 +35,5 @@ function ComboBoxGreenhouse({ selected, setSelected }) {
     );
 }
 
-export default ComboBoxGreenhouse;
+export default GreenhouseType;
+

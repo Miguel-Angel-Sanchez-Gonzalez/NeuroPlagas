@@ -94,11 +94,11 @@
   cursor: pointer; /* Cambiado desde el selector de etiqueta */
 }
 
-.error-message-disease,
-.email-exists {
-  margin-top: 15px;
-  margin-left: 12px;
-  text-align: justify;
+.error-message-farmer-e,
+.email-exists-Fe {
+  margin-top: 7px;
+  margin-left: 5px;
+  text-align: left;
   color: #c62426;
   font-size: medium;
 }
@@ -148,3 +148,6 @@ ANIMACION DE CARGA
   }
 }
 
+.input-from-backend {
+  background-color: #c5e5f0;
+}

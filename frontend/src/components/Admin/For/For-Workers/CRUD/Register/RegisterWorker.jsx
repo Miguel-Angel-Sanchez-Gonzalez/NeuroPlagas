@@ -57,13 +57,13 @@ const RegisterWorker = ({ onCancelClick }) => {
     return data.exists;
   };
   
+  //VALIDACIONES
   const validateEmail = (email) => {
     // Que el correo sea Gmail, Hotmail, Yahoo o Outlook
-    const emailPattern = /^[^\s@]+@(gmail\.com|hotmail\.com|yahoo\.com|outlook\.com)$/;
+    const emailPattern = /^[^\s@]+@(gmail\.com|hotmail\.com|yahoo\.com|outlook\.com|itoaxaca\.edu.mx)$/;
     return emailPattern.test(email); //true si es valido
   };
   
-
   const validatePhone = (phoneNumber) => {
     const phonePattern = /^\(?([0-9]{3})\)?[-.]?([0-9]{3})?[-.]?([0-9]{4})$/;
     return phonePattern.test(phoneNumber);
@@ -89,8 +89,7 @@ const RegisterWorker = ({ onCancelClick }) => {
     return true;
   };
   
-  
-  
+  //PARA CREAR AL TRABAJADOR
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsFormSubmitted(true); 
@@ -292,34 +291,34 @@ const RegisterWorker = ({ onCancelClick }) => {
                 <label className={`label-worker-r ${isFormSubmitted && !values.nombreUsuario && 'red-label'}`}>
                   Nombre de usuario*
                 </label>
-              <input
-                className= {`inputs-register-worker2 ${isFormSubmitted && !values.nombreUsuario && 'red-input'}`}
-                type="text"
-                required
-                name="nombreUsuario"
-                placeholder="Ingrese su nombre de usuario"
-                onChange={handleInputChange}
-                onFocus={handleInputFocus} 
-                onBlur={handleInputBlur} 
-              />
+                <input
+                  className= {`inputs-register-worker2 ${isFormSubmitted && !values.nombreUsuario && 'red-input'}`}
+                  type="text"
+                  required
+                  name="nombreUsuario"
+                  placeholder="Ingrese su nombre de usuario"
+                  onChange={handleInputChange}
+                  onFocus={handleInputFocus} 
+                  onBlur={handleInputBlur} 
+                />
             </div>
             <div className="column-register-worker">
                 <label className={`label-worker-r ${isFormSubmitted && !values.contrasenia && 'red-label'}`}>
                   Contraseña*
                 </label>
-              <input
-                className= {`inputs-register-worker2 ${isFormSubmitted && !values.contrasenia && 'red-input'}`}
-                type="password"
-                name="contrasenia"
-                placeholder="Contraseña"
-                minLength="8"
-                onChange={(e) => handleInputChange(e)}
-                onFocus={handleInputFocus} 
-                onBlur={handleInputBlur} 
-              />
-              {isFormSubmitted && !values.contrasenia && <p className="error-password">Por favor ingrese una contraseña.</p>}
-              {passwordError && <p className="error-password">{passwordError}</p>}
-          </div>
+                <input
+                  className= {`inputs-register-worker2 ${isFormSubmitted && !values.contrasenia && 'red-input'}`}
+                  type="password"
+                  name="contrasenia"
+                  placeholder="Contraseña"
+                  minLength="8"
+                  onChange={(e) => handleInputChange(e)}
+                  onFocus={handleInputFocus} 
+                  onBlur={handleInputBlur} 
+                />
+                {isFormSubmitted && !values.contrasenia && <p className="error-password">Por favor ingrese una contraseña.</p>}
+                {passwordError && <p className="error-password">{passwordError}</p>}
+            </div>
           </div>
           <div className="password-rules-worker-r">
             <label>*La contraseña debe ser mínimo de 8 caracteres.</label>

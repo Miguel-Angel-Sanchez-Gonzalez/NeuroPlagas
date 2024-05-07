@@ -98,12 +98,20 @@
 }
 
 .error-message-farmer,
-.email-exists-r {
+.email-exists-Fr {
   margin-top: 7px;
   margin-left: 5px;
   text-align: left;
   color: #c62426;
   font-size: medium;
+}
+
+.error-password {
+  margin-top: 5px;
+  margin-left: 5px;
+  text-align: left;
+  color: #c62426;
+  font-size: 14px;
 }
 
 .red-label,

@@ -9,6 +9,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Nuevo estado para rastrear si el formulario se ha enviado
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   const [values, setValues] = useState({
     nombre: "",
@@ -28,6 +29,9 @@ const RegisterFarmer = ({ onCancelClick }) => {
     }));
     if (name === 'correo') {
       setEmailExists(false);
+    }
+    if (name === 'contrasenia') {
+      setPasswordError('');
     }
   };
 
@@ -52,20 +56,40 @@ const RegisterFarmer = ({ onCancelClick }) => {
     const data = await response.json();
     return data.exists;
   };
-  
+
+  //VALIDACIONES
   const validateEmail = (email) => {
     // Que el correo sea Gmail, Hotmail, Yahoo o Outlook
-    const emailPattern = /^[^\s@]+@(gmail\.com|hotmail\.com|yahoo\.com|outlook\.com)$/;
+    const emailPattern = /^[^\s@]+@(gmail\.com|hotmail\.com|yahoo\.com|outlook\.com|itoaxaca\.edu.mx)$/;
     return emailPattern.test(email); //true si es valido
   };
   
-
   const validatePhone = (phoneNumber) => {
     const phonePattern = /^\(?([0-9]{3})\)?[-.]?([0-9]{3})?[-.]?([0-9]{4})$/;
     return phonePattern.test(phoneNumber);
   };
+
+  const validatePassword = (password) => {
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
   
+    if (password.length < 8) {
+      return "Debe tener al menos 8 caracteres.";
+    }
+    if (!hasUpperCase) {
+      return "Debe tener al menos una letra mayúscula.";
+    }
+    if (!hasNumber) {
+      return "Debe tener al menos un número.";
+    }
+    if (!hasSpecialChar) {
+      return "Debe tener al menos un caracter especial.";
+    }
+    return true;
+  };
   
+  //PARA CREAR AL AGRICULTOR
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsFormSubmitted(true); 
@@ -94,6 +118,12 @@ const RegisterFarmer = ({ onCancelClick }) => {
     // const phoneValidate = validatePhone(values.telefono);
     if (!validatePhone(values.telefono)) {
       setRecords('Teléfono no válido (10 dígitos).');
+      return;
+    }
+
+    const passwordValidationResult = validatePassword(values.contrasenia);
+    if (passwordValidationResult !== true) {
+      setPasswordError(passwordValidationResult);
       return;
     }
 
@@ -159,8 +189,8 @@ const RegisterFarmer = ({ onCancelClick }) => {
                 placeholder="Ingrese su nombre"
                 value={values.nombre}
                 onChange={handleInputChange}
-                onFocus={handleInputFocus} // Nuevo evento de enfoque
-                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
+                onFocus={handleInputFocus} 
+                onBlur={handleInputBlur}   
               />
             </div>
             <div className="column-register-farmer">
@@ -175,8 +205,8 @@ const RegisterFarmer = ({ onCancelClick }) => {
                 placeholder="Ingrese su primer apellido"
                 value={values.primerApellido}
                 onChange={handleInputChange}
-                onFocus={handleInputFocus} // Nuevo evento de enfoque
-                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
+                onFocus={handleInputFocus} 
+                onBlur={handleInputBlur}   
               />
             </div>
             <div className="column-register-farmer">
@@ -191,8 +221,8 @@ const RegisterFarmer = ({ onCancelClick }) => {
                 placeholder="Ingrese su segundo apellido"
                 value={values.segundoApellido}
                 onChange={handleInputChange}
-                onFocus={handleInputFocus} // Nuevo evento de enfoque
-                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
+                onFocus={handleInputFocus} 
+                onBlur={handleInputBlur}   
               />
             </div>
           </div>
@@ -226,7 +256,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
                   <p className="error-message-farmer">Correo electrónico inválido.</p>
                 )}
                 {emailExists && 
-                <p className="email-exists-r">El correo ya existe.</p>}
+                <p className="email-exists-Fr">El correo ya existe.</p>}
 
             </div>
             <div className="column-register-farmer">
@@ -241,8 +271,8 @@ const RegisterFarmer = ({ onCancelClick }) => {
                 maxLength="10"
                 placeholder="Ingrese su número telefónico"
                 value={values.telefono}
-                onFocus={handleInputFocus} // Nuevo evento de enfoque
-                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
+                onFocus={handleInputFocus} 
+                onBlur={handleInputBlur}   
                 onChange={(e) => {
                   // Filtra solo dígitos y limita a 10 caracteres
                   const phoneNumber = e.target.value.replace(/\D/g, '').slice(0, 10);
@@ -270,25 +300,33 @@ const RegisterFarmer = ({ onCancelClick }) => {
                 placeholder="Ingrese su nombre de usuario"
                 value={values.nombreUsuario}
                 onChange={handleInputChange}
-                onFocus={handleInputFocus} // Nuevo evento de enfoque
-                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
+                onFocus={handleInputFocus} 
+                onBlur={handleInputBlur}   
               />
             </div>
             <div className="column-register-farmer">
                 <label className={`label-farmer-r ${isFormSubmitted && !values.contrasenia && 'red-label'}`}>
                   Contraseña*
                 </label>
-              <input
-                className={`inputs-register-farmer2 ${isFormSubmitted && !values.contrasenia && 'red-input'}`}
-                type="password"
-                required
-                name="contrasenia"
-                placeholder="Contraseña"
-                value={values.contrasenia}
-                onChange={handleInputChange}
-                onFocus={handleInputFocus} // Nuevo evento de enfoque
-                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
-              />
+                <input
+                  className= {`inputs-register-worker2 ${isFormSubmitted && !values.contrasenia && 'red-input'}`}
+                  type="password"
+                  name="contrasenia"
+                  placeholder="Contraseña"
+                  minLength="8"
+                  onChange={(e) => handleInputChange(e)}
+                  onFocus={handleInputFocus} 
+                  onBlur={async () => {
+                    if (values.contrasenia) {
+                      const validationMessage = validatePassword(values.contrasenia);
+                      if (validationMessage !== true) {
+                        setPasswordError(validationMessage);
+                      }
+                    }
+                  }}
+                />
+                {isFormSubmitted && !values.contrasenia && <p className="error-password">Por favor ingrese una contraseña.</p>}
+                {passwordError && <p className="error-password">{passwordError}</p>}
             </div>
           </div>
           <div className="password-rules-farmer-r">

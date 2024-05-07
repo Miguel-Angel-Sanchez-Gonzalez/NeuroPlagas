@@ -35,6 +35,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
     }
   };
 
+  //ENFOQUES
   const handleInputFocus = () => {
     setIsInputFocused(true); // Actualiza el estado cuando un input recibe enfoque
     setRecords(''); // Borra el mensaje de error
@@ -45,6 +46,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
   };
 
 
+  //VALIDACIONES
   const checkEmailExists = async (email) => {
     const response = await fetch(`http://localhost:3000/login/check_email_existence`, {
       method: 'POST',
@@ -331,10 +333,8 @@ const RegisterFarmer = ({ onCancelClick }) => {
           </div>
           <div className="password-rules-farmer-r">
           <label>*La contraseña debe ser mínimo de 8 caracteres.</label>
-          <br/>
-          <label>*Debes de incluir letras mayúsculas y minúsculas</label>
-          <br/>
-          <label>*Debes de incluir al menos un número y un símbolo (Todos son válidos).</label>
+            <br/>
+            <label>*Debe incluir al menos: una mayúscula, número y un símbolo (Todos son válidos).</label>
         </div>
             <div className='button-container-admin'>
               <button className='button-farmer' type="submit" onClick={handleSubmit}>Guardar</button>

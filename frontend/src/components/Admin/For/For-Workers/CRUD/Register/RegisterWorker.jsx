@@ -323,9 +323,7 @@ const RegisterWorker = ({ onCancelClick }) => {
           <div className="password-rules-worker-r">
             <label>*La contraseña debe ser mínimo de 8 caracteres.</label>
             <br/>
-            <label>*Debes de incluir letras mayúsculas y minúsculas</label>
-            <br/>
-            <label>*Debes de incluir al menos un número y un símbolo (Todos son válidos).</label>
+            <label>*Debe incluir al menos: una mayúscula, número y un símbolo (Todos son válidos).</label>
           </div>
           <label className='label-dato-worker'>Asigne su agricultor</label>
           <div className="form-sec-worker-register">

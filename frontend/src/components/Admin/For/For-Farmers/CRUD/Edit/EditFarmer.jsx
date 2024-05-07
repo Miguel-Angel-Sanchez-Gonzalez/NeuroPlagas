@@ -145,7 +145,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
             required
             name="correo"
             placeholder="ejemplo@gmail.com"
-            value={values.email}
+            value={values.correo}
             onChange={handdleInputChange}
           />
         </div>

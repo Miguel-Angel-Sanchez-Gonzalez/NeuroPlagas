@@ -4,7 +4,7 @@ import AddNotification from '../../../../../LoginNotifications/AddNotification';
 import GreenhouseType from '../../ComboBox/GreenhouseType';
 import ResponsibleFarmer from '../../ComboBox/ResponsibleFarmer';
 
-const EditGreenhouse = ({ onCancelClick }) => {
+const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
   const [records, setRecords] = useState('');
   const [greenhouseExists, setGreenhouseExists] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false); // Nuevo estado para controlar el enfoque en los inputs

@@ -10,6 +10,7 @@ import DeleteGreenhouse from '../CRUD/Delete/DeleteGreenhouse';
 const DTableGreenhouses = () => {
     const [inputValue, setInputValue] = useState("");
     const [filteredGreenhouses, setFilteredGreenhouses] = useState([]);
+    const [idGreenhouse, setIDGreenhouse] = useState("");
 
     const columns = [
         {
@@ -111,10 +112,12 @@ const DTableGreenhouses = () => {
       };
 
     const handleEditClick = (row) => {
+        setIDGreenhouse(row.id_invernadero);
         setshowEditGreenh(true);
       };
 
     const handleDeleteClick = (row) => {
+        setIDGreenhouse(row.id_invernadero);
         setshowDeleteGreenh(true);
     };
 
@@ -146,8 +149,8 @@ const DTableGreenhouses = () => {
             }
           />
           {showRegisterGreenh && <RegisterGreenhouse onCancelClick={handleCancelClick} />}{}
-          {showEditGreenh && <EditGreenhouse onCancelClick={handleCancelClick} />}
-          {showDeleteGreenh && <DeleteGreenhouse onCancelClick={handleCancelClick} />}
+          {showEditGreenh && <EditGreenhouse onCancelClick={handleCancelClick} idGreenhouse={idGreenhouse}/>}
+          {showDeleteGreenh && <DeleteGreenhouse onCancelClick={handleCancelClick} idGreenhouse={idGreenhouse} />}
           
         </div>
     );

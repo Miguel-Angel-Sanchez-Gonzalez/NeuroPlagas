@@ -29,9 +29,9 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
       ...prevValues,
       [name]: value,
     }));
-    if (name === 'correo') {
-      setEmailExists(false);
-    }
+    // if (name === 'correo') {
+    //   setEmailExists(false);
+    // }
     if (name === 'contrasenia') {
       setPasswordError('');
     }
@@ -48,23 +48,6 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
   };
 
   //VALIDACIONES
-  const checkEmailExists = async (email) => {
-    try {
-      const response = await fetch(`http://localhost:3000/login/check_email_existence`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email })
-      });
-      const data = await response.json();
-      return data.exists;
-    } catch (error) {
-      console.error('Error al verificar la existencia del correo:', error);
-      return false;
-    }
-  };
-
   const validateEmail = (email) => {
     const emailPattern = /^[^\s@]+@(gmail\.com|hotmail\.com|yahoo\.com|outlook\.com|itoaxaca\.edu\.mx)$/;
     return emailPattern.test(email);
@@ -103,6 +86,7 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
           throw new Error('Error al obtener el agricultor');
         }
         const data = await response.json();
+        
         setValues({
           nombre: data.nombre,
           primerApellido: data.primer_apellido,
@@ -119,6 +103,7 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
     };
     getFarmerById();
   }, [idFarmer]);
+
 
   const onConfirmClick = async (e) => {
     e.preventDefault();
@@ -186,9 +171,6 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
       });
   };
 
-  const isValueModified = (name) => {
-    return initialValues[name] !== values[name];
-  };
 
   return (
     <div>
@@ -216,7 +198,8 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
                 value={values.nombre}
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
-                onBlur={handleInputBlur} 
+                onBlur={handleInputBlur}
+                style={values.nombre ? { backgroundColor: '#c5e5f0' } : null} 
               />
             </div>
             <div className="column-edit-farmer">
@@ -233,6 +216,7 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur} 
+                style={values.primerApellido ? { backgroundColor: '#c5e5f0' } : null}
               />
             </div>
             <div className="column-edit-farmer">
@@ -249,6 +233,7 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur} 
+                style={values.segundoApellido ? { backgroundColor: '#c5e5f0' } : null}
               />
             </div>
           </div>
@@ -267,6 +252,7 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
                       onChange={handleInputChange}
                       onFocus={handleInputFocus}
                       onBlur={handleInputBlur} 
+                      style={values.correo ? { backgroundColor: '#c5e5f0' } : null}
                     />
                     {values.correo && !validateEmail(values.correo) && isFormSubmitted && (
                       <p className="error-message-farmer-e">Correo electrónico inválido.</p>
@@ -294,6 +280,7 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
                         telefono: phoneNumber,
                       }));
                     }}
+                    style={values.telefono ? { backgroundColor: '#c5e5f0' } : null}
                   />
                 </div>
             <div></div>
@@ -315,6 +302,7 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur}  
+                style={values.nombreUsuario ? { backgroundColor: '#c5e5f0' } : null}
               />
             </div>
             <div className="column-edit-farmer">
@@ -337,6 +325,7 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
                       }
                     }
                   }}
+                  
                 />
                 {isFormSubmitted && !values.contrasenia && <p className="error-password">Por favor ingrese una contraseña.</p>}
                 {passwordError && <p className="error-password">{passwordError}</p>}

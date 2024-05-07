@@ -124,12 +124,13 @@ const DTableFarmers = () => {
 
 
       const handleEditClick = (row) => {
-        console.log("ID del registro a actualizar:", row.id_agricultor);
+        //console.log("ID del registro a actualizar:", row.id_agricultor);
         setShowEditFarmer(true);
+        setIDFarmer(row.id_agricultor);
       };
 
       const handleDeleteClick = (row) => {
-        console.log("ID del registro a eliminar:", row.id_agricultor);
+        //console.log("ID del registro a eliminar:", row.id_agricultor);
         setshowDeleteFarmer(true);
         setIDFarmer(row.id_agricultor);
       };
@@ -162,7 +163,7 @@ const DTableFarmers = () => {
             }
           />
           {showRegisterFarmer && <RegisterFarmer onCancelClick={handleCancelClick} />} 
-          {showEditFarmer && <EditFarmer onCancelClick={handleCancelClick} />}
+          {showEditFarmer && <EditFarmer onCancelClick={handleCancelClick} idFarmer={idFarmer}/>}
           {showDeleteFarmer && <DeleteFarmer onCancelClick={handleCancelClick} idFarmer={idFarmer}/>}
           
         </div>

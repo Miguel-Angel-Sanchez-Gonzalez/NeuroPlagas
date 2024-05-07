@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './EditFarmer.css';
 
-const EditFarmer = ({ rowData, onCancelClick }) => {
+const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
+
+  //Para setear los valores al momento
   const [values, setValues] = useState({
     nombre: "",
     primerApellido: "",
@@ -11,6 +13,76 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
     nombreUsuario: "",
     contrasenia:""
   });
+
+
+  //Para el fetch de recuperacion de data del farmer
+  useEffect(() => {
+    const getFarmerById = () => {
+      fetch(`http://localhost:3000/farmer/${idFarmer}`)
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error('Error al obtener el agricultor');
+        })
+        .then(data => {
+          // Actualizar el estado con los datos del agricultor
+          setValues({
+            nombre: data.nombre,
+            primerApellido: data.primer_apellido,
+            segundoApellido: data.segundo_apellido,
+            telefono: data.telefono,
+            correo: data.correo_electronico,
+            nombreUsuario: data.nombre_usuario,
+            contrasenia: data.contrasenia
+          });
+        })
+        .catch(error => {
+          console.error('Error al obtener el agricultor:', error);
+        });
+    };
+    getFarmerById();
+  }, [idFarmer]);
+  
+  
+  //Data para el fetch de actualizacion
+  const data = {
+    name: values.nombre,
+    surname: values.primerApellido,
+    secondSurname: values.segundoApellido,
+    phone: values.telefono,
+    email: values.correo,
+    nameUser: values.nombreUsuario,
+    password: values.contrasenia,
+    role: "farmer"
+  };
+
+  const onConfirmClick = () => {
+    console.log("datos que se envian", data);
+    fetch(`http://localhost:3000/farmer/${idFarmer}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => {
+        if (response.ok) {
+          alert("El usuario se actualizo correctamente");
+          onCancelClick();
+          window.location.reload();
+        } else {
+          alert("Error al actualizar la info de este user");
+        }
+      })
+      .catch(error => {
+        console.error('Error al actualizar el farmer:', error);
+        alert("Error al actualizar el farmer");
+      });
+  }
+
+
+
 
   const handdleInputChange = (event) => {
     const { name, value } = event.target;
@@ -35,6 +107,7 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
             required
             name="nombre"
             placeholder="Ingrese su nombre"
+            value={values.nombre}
             onChange={handdleInputChange}
           />
         </div>
@@ -46,6 +119,7 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
             required
             name="primerApellido"
             placeholder="Ingrese su primer apellido"
+            value={values.primerApellido}
             onChange={handdleInputChange}
           />
         </div>
@@ -57,6 +131,7 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
             required
             name="segundoApellido"
             placeholder="Ingrese su segundo apellido"
+            value={values.segundoApellido}
             onChange={handdleInputChange}
           />
         </div>
@@ -70,6 +145,7 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
             required
             name="correo"
             placeholder="ejemplo@gmail.com"
+            value={values.email}
             onChange={handdleInputChange}
           />
         </div>
@@ -81,6 +157,7 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
             required
             name="telefono"
             placeholder="Ingrese su número telefónico"
+            value={values.telefono}
             onChange={handdleInputChange}
           />
         </div>
@@ -97,6 +174,7 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
             required
             name="nombreUsuario"
             placeholder="Ingrese su nombre de usuario"
+            value={values.nombreUsuario}
             onChange={handdleInputChange}
           />
         </div>
@@ -108,6 +186,7 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
             required
             name="contrasenia"
             placeholder="Contraseña"
+            value={values.contrasenia}
             onChange={handdleInputChange}
           />
         </div>
@@ -120,7 +199,7 @@ const EditFarmer = ({ rowData, onCancelClick }) => {
         <label>*Debes de incluir al menos un número y un símbolo (Todos son válidos).</label>
       </div>
       <div className='button-container-admin'>
-          <button className='button-farmer' type="submit">Guardar</button>
+          <button className='button-farmer' type="submit" onClick={onConfirmClick}>Guardar</button>
           <button className='button-farmer ' onClick={onCancelClick}>Cancelar</button>
         </div>
     </div>

@@ -68,8 +68,10 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
 
   const validatePhone = (phoneNumber) => {
     const phonePattern = /^\(?([0-9]{3})\)?[-.]?([0-9]{3})?[-.]?([0-9]{4})$/;
-    return phonePattern.test(phoneNumber);
-  };
+    return phonePattern.test(phoneNumber) && phoneNumber.length === 10;
+};
+
+
 
   const validatePassword = (password) => {
     const hasUpperCase = /[A-Z]/.test(password);
@@ -212,7 +214,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
           setTimeout(() => {
             setLoadingMessage(''); // Oculta el mensaje después de unos segundos
             window.location.reload();
-          }, 4000); 
+          }, 6000); 
         } else {
           alert("Error al actualizar la info de este user");
         }

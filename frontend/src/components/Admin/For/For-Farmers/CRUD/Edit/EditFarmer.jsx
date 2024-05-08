@@ -135,62 +135,84 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
   };
 
   const onConfirmClick = () => {
-    
+    console.log("entre a las validaciones");
     setIsFormSubmitted(true);
-
+  
+    console.log("validacion 1 que los campos no esten vacios");
     for (const key in values) {
       if (values[key] === "") {
         setRecords('Por favor complete todos los campos.');
         return;
       }
     }
-
-    //Validando el correo
+  
+    console.log("validacion 2 que el correo tenga un formato");
     if (!validateEmail(values.correo)) {
-      //setRecords('El correo electrónico no es válido.');
+      setRecords('El correo electrónico no es válido.');
       return;
     }
-
-    //Validando que el correo exista
-    const emailExists = checkEmailExists(values.correo);
-    if (emailExists) {
-      setEmailExists(true);
-      return;
-    }
-
+  
+    console.log("validacion 3 que el correo exista");
     
-    // const phoneValidate = validatePhone(values.telefono);
-    if (!validatePhone(values.telefono)) {
-      setRecords('Teléfono no válido (10 dígitos).');
-      return;
-    }
-
-    const passwordValidationResult = validatePassword(values.contrasenia);
-    if (passwordValidationResult !== true) {
-      setPasswordError(passwordValidationResult);
-      return;
-    }
-    
-    setIsLoading(true);
-    console.log("datos que se envian", data);
-    fetch(`http://localhost:3000/farmer/${idFarmer}`, {
-      method: 'PATCH',
+    fetch(`http://localhost:3000/login/check_email_existence`, {
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify({ email: values.correo })
     })
+    .then(response => response.json())
+    .then(data => {
+      if (data.exists) {
+        setEmailExists(true);
+        console.log("el email se encontro");
+        continueValidations(); // Continuar con las siguientes validaciones si el correo existe
+      } else {
+        console.log("el email no se encontro");
+        setEmailExists(false);
+      }
+    })
+    .catch(error => {
+      console.error('Error al verificar el correo:', error);
+      alert("Error al verificar el correo");
+    });
+  
+    const continueValidations = () => {
+      console.log("validacion 4 que el telefono tenga 10 digitos no mas ni menos");
+      if (!validatePhone(values.telefono)) {
+        setRecords('Teléfono no válido (10 dígitos).');
+        return;
+      }
+  
+      console.log("validacion 5 que la contraseña cumpla con las reglas");
+      console.log("mi contra es", values.contrasenia);
+      const passwordValidationResult = validatePassword(values.contrasenia);
+      if (passwordValidationResult !== true) {
+        setPasswordError(passwordValidationResult);
+        return;
+      }
+  
+      setIsLoading(true);
+
+      
+      console.log("pase las validaciones arranco el fetch");
+  
+      console.log("datos que se envian", data);
+      fetch(`http://localhost:3000/farmer/${idFarmer}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
       .then(response => {
         if (response.ok) {
           setIsLoading(false);
           setLoadingMessage('El agricultor se actualizó correctamente.');
           setTimeout(() => {
-          setLoadingMessage(''); // Oculta el mensaje después de unos segundos
-          window.location.reload();
-          }, 2000); // Mostrar el mensaje durante 3 segundos
-          // alert("El usuario se actualizo correctamente");
-          // onCancelClick();
-          // window.location.reload();
+            setLoadingMessage(''); // Oculta el mensaje después de unos segundos
+            window.location.reload();
+          }, 4000); 
         } else {
           alert("Error al actualizar la info de este user");
         }
@@ -199,18 +221,11 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
         console.error('Error al actualizar el farmer:', error);
         alert("Error al actualizar el farmer");
       });
-  }
+    };
+  };
+  
+  
 
-
-
-
-  // const handdleInputChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setValues({
-  //     ...values,
-  //     [name]: value,
-  //   });
-  // };
 
   return (
     <div>

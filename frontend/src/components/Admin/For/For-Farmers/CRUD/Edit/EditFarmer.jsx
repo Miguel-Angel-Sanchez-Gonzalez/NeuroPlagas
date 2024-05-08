@@ -11,6 +11,8 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
   const [loadingMessage, setLoadingMessage] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
+
+
   //Para setear los valores al momento
   const [values, setValues] = useState({
     nombre: "",
@@ -137,24 +139,23 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
   };
 
   const onConfirmClick = () => {
-    console.log("entre a las validaciones");
     setIsFormSubmitted(true);
   
-    console.log("validacion 1 que los campos no esten vacios");
+    // Validación 1: Campos no vacíos -----------------------------------------------------------------------
     for (const key in values) {
       if (values[key] === "") {
         setRecords('Por favor complete todos los campos.');
         return;
       }
     }
-  
-    console.log("validacion 2 que el correo tenga un formato");
+
+    // Validación 2: Correo con formato válido --------------------------------------------------------------
     if (!validateEmail(values.correo)) {
       setRecords('El correo electrónico no es válido.');
       return;
-    }
-  
-    console.log("validacion 3 que el correo exista");
+    } 
+
+    // Validación 3: Correo existe --------------------------------------------------------------------------
     
     fetch(`http://localhost:3000/login/check_email_existence`, {
       method: 'POST',
@@ -167,8 +168,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
     .then(data => {
       if (data.exists) {
         setEmailExists(true);
-        console.log("el email se encontro");
-        continueValidations(); // Continuar con las siguientes validaciones si el correo existe
+        continueValidations(); // Continuar con las siguientes validaciones si el correo existe =>
       } else {
         console.log("el email no se encontro");
         setEmailExists(false);
@@ -179,27 +179,22 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
       alert("Error al verificar el correo");
     });
   
+    // Validación 4: Teléfono válido ---------------------------------------------------------------------------
     const continueValidations = () => {
-      console.log("validacion 4 que el telefono tenga 10 digitos no mas ni menos");
       if (!validatePhone(values.telefono)) {
         setRecords('Teléfono no válido (10 dígitos).');
         return;
       }
-  
-      console.log("validacion 5 que la contraseña cumpla con las reglas");
-      console.log("mi contra es", values.contrasenia);
+
+      // Validación 5: Contraseña válida ----------------------------------------------------------------------
       const passwordValidationResult = validatePassword(values.contrasenia);
       if (passwordValidationResult !== true) {
         setPasswordError(passwordValidationResult);
         return;
       }
-  
-      setIsLoading(true);
 
-      
-      console.log("pase las validaciones arranco el fetch");
-  
-      console.log("datos que se envian", data);
+      setIsLoading(true);
+      // Realiza el fetch si pasa todas las validaciones 
       fetch(`http://localhost:3000/farmer/${idFarmer}`, {
         method: 'PATCH',
         headers: {

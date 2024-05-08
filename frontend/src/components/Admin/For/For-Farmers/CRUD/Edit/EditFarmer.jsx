@@ -10,6 +10,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [emailModified, setEmailModified] = useState(false);
 
 
 
@@ -32,6 +33,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
     }));
     if (name === 'correo') {
       setEmailExists(false);
+      setEmailModified(true);
     }
     if (name === 'contrasenia') {
       setPasswordError('');
@@ -72,7 +74,6 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
     const phonePattern = /^\(?([0-9]{3})\)?[-.]?([0-9]{3})?[-.]?([0-9]{4})$/;
     return phonePattern.test(phoneNumber) && phoneNumber.length === 10;
 };
-
 
 
   const validatePassword = (password) => {
@@ -155,38 +156,14 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
       return;
     } 
 
-    // Validación 3: Correo existe --------------------------------------------------------------------------
-    
-    fetch(`http://localhost:3000/login/check_email_existence`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email: values.correo })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.exists) {
-        setEmailExists(true);
-        continueValidations(); // Continuar con las siguientes validaciones si el correo existe =>
-      } else {
-        console.log("el email no se encontro");
-        setEmailExists(false);
-      }
-    })
-    .catch(error => {
-      console.error('Error al verificar el correo:', error);
-      alert("Error al verificar el correo");
-    });
-  
-    // Validación 4: Teléfono válido ---------------------------------------------------------------------------
-    const continueValidations = () => {
+     // Validación 3: Teléfono válido ---------------------------------------------------------------------------
+     const continueValidations = () => {
       if (!validatePhone(values.telefono)) {
         setRecords('Teléfono no válido (10 dígitos).');
         return;
       }
 
-      // Validación 5: Contraseña válida ----------------------------------------------------------------------
+      // Validación 4: Contraseña válida ----------------------------------------------------------------------
       const passwordValidationResult = validatePassword(values.contrasenia);
       if (passwordValidationResult !== true) {
         setPasswordError(passwordValidationResult);
@@ -209,7 +186,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
           setTimeout(() => {
             setLoadingMessage(''); // Oculta el mensaje después de unos segundos
             window.location.reload();
-          }, 6000); 
+          }, 2000); 
         } else {
           alert("Error al actualizar la info de este user");
         }
@@ -219,6 +196,35 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
         alert("Error al actualizar el farmer");
       });
     };
+
+    // Validación 5: Correo existe --------------------------------------------------------------------------
+    if (emailModified) { // Realizar la validación solo si el correo ha sido modificado
+      fetch(`http://localhost:3000/login/check_email_existence`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: values.correo })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.exists) {
+          setEmailExists(true);
+          continueValidations(); // Continuar con las siguientes validaciones si el correo existe =>
+        } else {
+          console.log("el email no se encontro");
+          setEmailExists(false);
+        }
+      })
+      .catch(error => {
+        console.error('Error al verificar el correo:', error);
+        alert("Error al verificar el correo");
+      });
+      } else {
+      // Si el correo no ha sido modificado, continuar con las validaciones sin verificar el correo existente
+      continueValidations();
+    }
+  
   };
   
   
@@ -314,7 +320,14 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
                 name="telefono"
                 placeholder="Ingrese su número telefónico"
                 value={values.telefono}
-                onChange={handleInputChange}
+                onChange={(e) => {
+                  // Filtra solo dígitos y limita a 10 caracteres
+                  const phoneNumber = e.target.value.replace(/\D/g, '').slice(0, 10);
+                  setValues(prevState => ({
+                    ...prevState,
+                    telefono: phoneNumber,
+                  }));
+                }}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur}   
               />

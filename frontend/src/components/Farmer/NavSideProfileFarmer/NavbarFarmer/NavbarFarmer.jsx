@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { HiMenu } from "react-icons/hi";
-import './NavbarAdmin.css';
-import ProfileAdmin from '../ProfileAdmin/ProfileAdmin';
+import './NavbarFarmer.css';  // Importa el archivo de estilos CSS
 
-const NavbarAdmin = ({onConfigureProfileClick}) => {
+const NavbarFarmer = ({onConfigureProfileClick}) => {
   const storedUsername = localStorage.getItem('username');
   const storedEmail = localStorage.getItem('email');
 
@@ -28,6 +27,18 @@ const NavbarAdmin = ({onConfigureProfileClick}) => {
     setMenuVisible(!menuVisible);
   };
 
+  // const handleProfile = () => {
+  //   // Lógica para configurar perfil
+  //   console.log('Configurar perfil');
+  // };
+
+  // const handleLogout = () => {
+  //   localStorage.setItem('token', '');  
+  //   localStorage.setItem('username', '');
+  //   localStorage.setItem('email', '');
+  //   window.location.href = '/login'; // Redirige al usuario a la página de inicio de sesión
+  // };
+
   const handleLogout = () => {
     //Reset de variables
     localStorage.setItem('token', '');  
@@ -37,34 +48,34 @@ const NavbarAdmin = ({onConfigureProfileClick}) => {
     window.location.href = '/login'; 
   };
 
-  const handleProfileFormCancel = () => {
-    setshowProfileAdmin(false);
-  };
+  // const handleProfileFormCancel = () => {
+  //   setshowProfileAdmin(false);
+  // };
 
   return (
     <div >
-      <div className='menu--nav-admin'>
+      <div className='menu--nav-farmer'>
       <img src="/images/tomatito.png" alt="" /> {/*Imagen*/}
         <h2>Tomi-Plagas y Enfermedades </h2>              {/*Titulo*/}
-        <div className='notify-admin' ref={menuRef}>
+        <div className='notify-farmer' ref={menuRef}>
             <HiMenu className='icon' onClick={toggleMenu}/>   
             {menuVisible && (
-              <div className="menu-options-admin">
+              <div className="menu-options-farmer">
                 <p onClick={onConfigureProfileClick}>Configurar perfil</p> {/* Llama a la función desde las props */}
                 <p onClick={handleLogout}>Cerrar sesión</p>
               </div>
             )}
         </div>
-        <div className='user-info-admin'>
+        <div className='user-info-farmer'>
           <label>{storedUsername}</label>
           <br />
           <label>{storedEmail}</label>
         </div>
       </div>
       
-      {showProfileAdmin && <ProfileAdmin onCancelClick={handleProfileFormCancel} />}
+      {/*showProfileAdmin && <ProfileAdmin onCancelClick={handleProfileFormCancel} />*/}
     </div>
   );
 };
 
-export default NavbarAdmin;
+export default NavbarFarmer;

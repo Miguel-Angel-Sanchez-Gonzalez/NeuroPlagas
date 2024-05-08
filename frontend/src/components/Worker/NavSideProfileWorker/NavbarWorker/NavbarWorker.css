@@ -1,58 +1,57 @@
-.navbar-container {
-  width: 99vw;
+/* .navbar-container-worker {
+  width: 100%;
   padding: 10px;
   margin-left: 0px;
   background: #c62426;
-}
+} */
 
-
-.menu--nav {
+.menu--nav-worker {
   display: flex;
   align-items: center;
   color: white;
   width: 100%;
 }
 
-.menu--nav img {
+.menu--nav-worker img {
   width: 60px; /* Ajusta el tamaño de la imagen según sea necesario */
   margin-left: 20px; /* Añade un margen derecho para separar la imagen del título */
 }
 
-.notify {
-  position: relative; /* Cambiado a posición relativa */
-  margin-left: auto; /* Cambiado para alinear a la derecha */
-  margin-right: 20px; /* Añadido margen derecho */
+.notify-worker{
+  position: relative;
   background: #c62426;
-  padding: 12px;
   border-radius: 10px;
   color: #fff;
+  z-index: 1;
+  top: 0;
+  margin-left: auto;
+  margin-right: 40px;
 }
 
-.notify .icon{
-  font-size: 20px;
-  transition: 0.5s ease-in-out;
+.notify-worker .icon {
+  font-size: 30px;
+  transition: 0.2s ease-in-out;
 }
 
-.menu-options {
+.menu-options-worker {
   position: absolute;
-  top: calc(100% + 5px); /* Coloca el menú justo debajo del icono */
-  right: 0; /* Ajusta la posición del menú a la derecha */
   background-color: #fff; /* Fondo blanco */
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1); /* Sombra */
   border-radius: 8px; /* Bordes redondeados */
   padding: 10px;
   color: #333; /* Color del texto */
   z-index: 999; /* Asegura que el menú esté por encima de otros elementos */
+  margin-left: -60px;
 }
 
-.menu-options p {
+.menu-options-worker p {
   margin: 5px 0; /* Añade espacio entre las opciones del menú */
   padding: 8px; /* Añade espacio alrededor del texto */
   cursor: pointer; /* Cambia el cursor al pasar sobre las opciones */
   transition: background-color 0.3s ease; /* Transición suave para el cambio de color de fondo */
 }
 
-.menu-options p:hover {
+.menu-options-worker p:hover {
   background-color: #f5f5f5; /* Cambia el color de fondo al pasar el cursor sobre las opciones */
 }
 
@@ -62,7 +61,9 @@
   cursor: pointer;
 }
 
-.user-info {
+.user-info-worker {
   position: absolute;
-  margin-left: 77%;
+  right: 160px; /* Centra horizontalmente */
+  transform: translateY(-10%); /* Ajusta el centro */
+  font-weight: 600;
 }

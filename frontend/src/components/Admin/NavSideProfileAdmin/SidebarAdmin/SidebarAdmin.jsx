@@ -1,4 +1,3 @@
-// En tu componente SidebarAdmin
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHomeUser, faWarehouse, faPersonDigging, faChartBar, faBug, faVirus } from '@fortawesome/free-solid-svg-icons';

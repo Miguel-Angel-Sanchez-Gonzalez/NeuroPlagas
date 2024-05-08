@@ -329,16 +329,6 @@ const RegisterWorker = ({ onCancelClick }) => {
           <div className="form-sec-worker-register">
             <div className="column-register-worker">
               <label className='label-worker-r'>Agricultor responsable*</label>
-              {/* <input
-                className='inputs-register-worker3'
-                type="text"
-                required
-                name="nombreUsuario"
-                placeholder="Ingrese su nombre de usuario"
-                onChange={handleInputChange}
-                onFocus={handleInputFocus} 
-                onBlur={handleInputBlur} 
-              /> */}
               <ResponsibleFarmerInWorker
                 idFarmer={idFarmer}
                 setIdFarmer={setIdFarmer}

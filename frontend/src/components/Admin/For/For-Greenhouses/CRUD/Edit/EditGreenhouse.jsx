@@ -69,7 +69,7 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
 
     
     for (const key in values) {
-      if (values[key] === "") {
+      if (values[key] === "" || (key === "agricultorResponsable" && !values[key])) {
         setRecords('Por favor complete todos los campos.');
         return;
       }
@@ -85,7 +85,7 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
 
     setIsLoading(true);
     const data = {
-      // idFarmer: '2',
+      idFarmer: values.agricultorResponsable ? values.agricultorResponsable.value : null,
       name: values.nombreInvernadero,
       typeGreenhouse: values.tipoInvernadero,
       humidity: values.humedad,
@@ -125,9 +125,9 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
       )}
         <div className="edit-greenhouse-container">
           <div className='centrar-greenhouse'>
-          <h4 className='h4edit-greenhouse'>Registrar invernadero</h4>
+          <h4 className='h4edit-greenhouse'>Editar invernadero</h4>
           <h5 className='h5edit-greenhouse'>*Campos requeridos</h5>
-          <label className='label-dato-greenhouse'>Registre los datos del invernadero</label>
+          <label className='label-dato-greenhouse'>Edite los datos del invernadero</label>
           <div className="form-sec-greenhouse-edit">
             <div className="column-edit-greenhouse">
               <label className={`label-greenhouse-e ${isFormSubmitted && !values.nombreInvernadero && 'red-label'}`}>
@@ -197,7 +197,7 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
             </div>
           </div>
           <br />
-          <label className='label-dato-greenhouse'>Registrar datos del agricultor </label>
+          <label className='label-dato-greenhouse'>Editar datos del agricultor </label>
           <div className="form-sec-greenhouse-edit">
             <div className="column-edit-greenhouse">
               <label className={`label-greenhouse-e ${isFormSubmitted && !values.agricultorResponsable && 'red-label'}`}>

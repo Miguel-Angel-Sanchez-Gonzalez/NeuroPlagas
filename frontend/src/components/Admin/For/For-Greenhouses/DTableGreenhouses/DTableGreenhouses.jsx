@@ -23,13 +23,13 @@ const DTableGreenhouses = () => {
             name: 'Nombre del invernadero',
             selector: row => row.nombre,
             sortable: true,
-            width:'240px',
+            width:'260px',
         },
         {
             name: 'Tipo de invernadero',
             selector: row => row.tipo_invernadero,
             sortable: true,
-            width:'160px',
+            width:'230px',
         },
         {
             name: 'Humedad',
@@ -46,7 +46,7 @@ const DTableGreenhouses = () => {
         {
             name: 'Agricultor responsable',
             selector: row => row.nombre_agricultor,
-            width:'230px',
+            width:'260px',
         },
         {
             name: 'Acciones',
@@ -57,7 +57,7 @@ const DTableGreenhouses = () => {
                     <FontAwesomeIcon icon={faEye}  className='view-icon' size='lg' />
                 </div>
             ),
-            width:'100px'
+            width:'auto'
         }
     ];
 

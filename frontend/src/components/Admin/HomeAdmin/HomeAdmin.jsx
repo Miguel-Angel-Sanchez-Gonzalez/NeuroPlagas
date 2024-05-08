@@ -49,11 +49,6 @@ const HomeAdmin = () => {
                     <div className='space-admin'>
                         <h2 className='h2admin'>Bienvenido <span className='rol-admin'>administrador</span></h2>
                         {renderActiveTable()}
-                        {/* {activeTable === 'farmers' && <DTableFarmers className="table-active" />}
-                        {activeTable === 'greenhouses' && <DTableGreenhouses className="table-active" />}
-                        {activeTable === 'plagues' && <DTablePlagues className="table-active" />}
-                        {activeTable === 'diseases' && <DTableDiseases className="table-active" />}
-                        {activeTable === 'workers' && <DTableWorkers className="table-active" />} */}
                     </div>
                 </div>
             </div>

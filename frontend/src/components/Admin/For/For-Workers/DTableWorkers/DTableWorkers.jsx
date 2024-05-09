@@ -132,13 +132,13 @@ const DTableWorkers = () => {
 
 
       const handleEditClick = (row) => {
-        console.log("ID del registro a actualizar:", row.id_trabajador);
+        //console.log("ID del registro a actualizar:", row.id_trabajador);
         setShowEditWorker(true);
         setIDWorker(row.id_trabajador);
       };
 
       const handleDeleteClick = (row) => {
-        console.log("ID del registro a eliminar:", row.id_trabajador);
+        //console.log("ID del registro a eliminar:", row.id_trabajador);
         setShowDeleteWorker(true);
         setIDWorker(row.id_trabajador);
       };
@@ -171,8 +171,8 @@ const DTableWorkers = () => {
             }
           />
           {showRegisterWorker && <RegisterWorker onCancelClick={handleCancelClick} />} {}
-          {showEditWorker && <EditWorker onCancelClick={handleCancelClick} />}
-          {showDeleteWorker && <DeleteWorker onCancelClick={handleCancelClick} idWorker={idWorker}/>}
+          {showEditWorker && <EditWorker onCancelClick={handleCancelClick} idWorker={idWorker} />}
+          {showDeleteWorker && <DeleteWorker onCancelClick={handleCancelClick} idWorker={idWorker} />}
           
         </div>
     );

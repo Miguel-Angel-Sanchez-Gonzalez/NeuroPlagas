@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './EditWorker.css';
 import ResponsibleFarmerInWorker from '../../ComboBox/ResponsibleFarmerInWorker';
 import AddNotification from '../../../../../LoginNotifications/AddNotification';
 
-const EditWorker = ({onCancelClick }) => {
+const EditWorker = ({onCancelClick, idWorker }) => {
   const [records, setRecords] = useState('');
   const [idFarmer, setIdFarmer] = useState('');
   const [emailExists, setEmailExists] = useState(false);
@@ -39,6 +39,34 @@ const EditWorker = ({onCancelClick }) => {
   const handleInputBlur = () => {
     setIsInputFocused(false); // Actualiza el estado cuando un input pierde el enfoque
   };
+
+  useEffect(() => {
+    const getFarmerById = () => {
+      fetch(`http://localhost:3000/worker/${idWorker}`)
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error('Error al obtener el trabajador');
+        })
+        .then(data => {
+          setValues({
+            primerApellido: data.primer_apellido,
+            nombre: data.nombre,
+            segundoApellido: data.segundo_apellido,
+            telefono: data.telefono,
+            correo: data.correo_electronico,
+            nombreUsuario: data.nombre_usuario,
+            contrasenia: data.contrasenia
+          });
+        })
+        .catch(error => {
+          console.error('Error al obtener el trabajador:', error);
+        });
+    };
+    getFarmerById();
+  }, [idWorker]);
+  
   
   return (
     <div>
@@ -79,6 +107,7 @@ const EditWorker = ({onCancelClick }) => {
                 type="text"
                 required
                 name="primerApellido"
+                value={values.primerApellido}
                 placeholder="Ingrese su primer apellido"
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
@@ -94,6 +123,7 @@ const EditWorker = ({onCancelClick }) => {
                 type="text"
                 required
                 name="segundoApellido"
+                value={values.segundoApellido}
                 placeholder="Ingrese su segundo apellido"
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
@@ -111,6 +141,7 @@ const EditWorker = ({onCancelClick }) => {
                 type="text"
                 required
                 name="correo"
+                value={values.correo}
                 placeholder="ejemplo@gmail.com"
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
@@ -126,6 +157,7 @@ const EditWorker = ({onCancelClick }) => {
                 type="text"
                 required
                 name="telefono"
+                value={values.telefono}
                 placeholder="Ingrese su número telefónico"
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
@@ -147,6 +179,7 @@ const EditWorker = ({onCancelClick }) => {
                 type="text"
                 required
                 name="nombreUsuario"
+                value={values.nombreUsuario}
                 placeholder="Ingrese su nombre de usuario"
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
@@ -162,6 +195,7 @@ const EditWorker = ({onCancelClick }) => {
                 type="password"
                 required
                 name="contrasenia"
+                value={values.contrasenia}
                 placeholder="Contraseña"
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import './ResponsibleFarmerInWorker.css';
 
-function ResponsibleFarmerInWorker({ idFarmer, setIdFarmer, isFormSubmitted }) {
+function ResponsibleFarmerInWorker({ idFarmer, setIdFarmer, isFormSubmitted, value }) {
     const [isActive, setIsActive] = useState(false);
     const [options, setOptions] = useState([]);
 
@@ -23,13 +23,16 @@ function ResponsibleFarmerInWorker({ idFarmer, setIdFarmer, isFormSubmitted }) {
         setIsActive(false);
     };
 
+    
+
     return (
         <div className="dropdown">
             <div
                 className={`dropdown-btn ${isFormSubmitted && !idFarmer ? 'red-input' : ''}`}
                 onClick={() => setIsActive(!isActive)}
             >
-                {idFarmer ? options.find(option => option.value === idFarmer).label : "Seleccionar agricultor..."}
+                {idFarmer ? options.find(option => option.value === idFarmer).label : value}
+                {/* Usar el valor pasado como prop si idFarmer está vacío */}
             </div>
             {isActive && (
                 <div className="dropdown-content">
@@ -47,5 +50,6 @@ function ResponsibleFarmerInWorker({ idFarmer, setIdFarmer, isFormSubmitted }) {
         </div>
     );
 }
+
 
 export default ResponsibleFarmerInWorker;

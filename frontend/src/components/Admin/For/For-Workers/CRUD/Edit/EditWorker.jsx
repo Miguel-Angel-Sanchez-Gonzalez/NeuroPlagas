@@ -20,8 +20,14 @@ const EditWorker = ({onCancelClick, idWorker }) => {
     telefono: "",
     correo: "",
     nombreUsuario: "",
-    contrasenia:""
+    contrasenia: "",
+    idAgricultorResponsable: "",
   });
+
+  const [valuesFarmer, setValuesFarmer] = useState({
+    nombreAgricultorResponsable: ""
+  });
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -40,8 +46,9 @@ const EditWorker = ({onCancelClick, idWorker }) => {
     setIsInputFocused(false); // Actualiza el estado cuando un input pierde el enfoque
   };
 
+  //Para obtener la data del Worker y setearla en los INPUT
   useEffect(() => {
-    const getFarmerById = () => {
+    const getWorkerById = () => {
       fetch(`http://localhost:3000/worker/${idWorker}`)
         .then(response => {
           if (response.ok) {
@@ -57,14 +64,32 @@ const EditWorker = ({onCancelClick, idWorker }) => {
             telefono: data.telefono,
             correo: data.correo_electronico,
             nombreUsuario: data.nombre_usuario,
-            contrasenia: data.contrasenia
+            contrasenia: data.contrasenia,
+            idAgricultorResponsable: data.id_agricultor 
           });
+
+          fetch(`http://localhost:3000/farmer/${data.id_agricultor}`)
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Error al obtener el agricultor responsable');
+          })
+          .then(data => {
+            setValuesFarmer({
+              nombreAgricultorResponsable: data.nombre +" "+ data.primer_apellido +" "+ data.segundo_apellido
+            });
+          })
+          .catch(error => {
+            console.error('Error al obtener el agricultor responsable:', error);
+          });
+
         })
         .catch(error => {
           console.error('Error al obtener el trabajador:', error);
         });
     };
-    getFarmerById();
+    getWorkerById();
   }, [idWorker]);
   
   
@@ -216,6 +241,8 @@ const EditWorker = ({onCancelClick, idWorker }) => {
                 idFarmer={idFarmer}
                 setIdFarmer={setIdFarmer}
                 isFormSubmitted={isFormSubmitted}
+                //value={""}
+                value={valuesFarmer.nombreAgricultorResponsable}
             />
             </div>
           </div>

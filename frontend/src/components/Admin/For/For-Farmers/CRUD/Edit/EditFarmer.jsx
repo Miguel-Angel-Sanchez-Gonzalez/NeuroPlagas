@@ -394,7 +394,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
               <label>*Debe incluir al menos: una mayúscula, número y un símbolo (Todos son válidos).</label>
           </div>
           <div className='button-container-admin'>
-              <button className='button-farmer' type="submit"onClick={onConfirmClick}>Guardar</button>
+              <button className='button-farmer' type="submit" onClick={onConfirmClick}>Guardar</button>
               <button className='button-farmer ' onClick={onCancelClick}>Cancelar</button>
             </div>
             {records && !isInputFocused && <p className='error-message'>{records}</p>}

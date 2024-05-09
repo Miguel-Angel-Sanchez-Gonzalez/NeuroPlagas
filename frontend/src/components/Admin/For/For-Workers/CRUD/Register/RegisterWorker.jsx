@@ -333,6 +333,7 @@ const RegisterWorker = ({ onCancelClick }) => {
                 idFarmer={idFarmer}
                 setIdFarmer={setIdFarmer}
                 isFormSubmitted={isFormSubmitted}
+                value={"Seleccione un agricultor"}
             />
             </div>
           </div>

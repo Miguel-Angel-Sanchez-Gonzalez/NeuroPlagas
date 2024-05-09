@@ -51,6 +51,21 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
     setIsInputFocused(false); // Actualiza el estado cuando un input pierde el enfoque
   };
 
+  const handleEmailBlur = async () => {
+    handleInputBlur(); // Llama a la función general de manejo de desenfoque
+    if (values.correo) {
+      if (!validateEmail(values.correo)) {
+        setEmailExists(false);
+      } else {
+        // Verificar si el correo fue modificado y si necesita verificación
+        if (values.correo !== originalEmail) {
+          const emailExists = await checkEmailExists(values.correo);
+          setEmailExists(emailExists);
+        }
+      }
+    }
+  };
+
   //VALIDACIONES
   const checkEmailExists = async (email) => {
     const response = await fetch(`http://localhost:3000/login/check_email_existence`, {
@@ -292,29 +307,16 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
                 value={values.correo}
                 onChange={handleInputChange}
                 onFocus={handleInputFocus}
-                onBlur={() => {
-                  handleInputBlur();
-                  if (values.correo) {
-                    if (!validateEmail(values.correo)) {
-                      setEmailExists(false);
-                    } else {
-                      checkEmailExists(values.correo).then(emailExists => {
-                        setEmailExists(emailExists);
-                      });
-                    }
-                  }
-                }}
+                onBlur={handleInputBlur}   
                 //style={values.correo ? { backgroundColor: '#c5e5f0' } : null}
               />
               {values.correo && !validateEmail(values.correo) && isFormSubmitted && (
                   <p className="error-message-farmer">Correo electrónico inválido.</p>
                 )}
-                {emailExists && values.correo !== data.correo_electronico && (
-                  <p className="error-message-farmer">El correo ya está en uso.</p>
-                )}
+              {emailExists && values.correo !== originalEmail && (
+                <p className="email-exists-Fr">El correo ya está en uso.</p>
+              )}
 
-                {/* {emailExists && 
-                <p className="email-exists-Fr">El correo ya está en uso.</p>} */}
             </div>
             <div className="column-edit-farmer">
               <label className={`label-farmer-e ${isFormSubmitted && !values.telefono && 'red-label'}`}>

@@ -128,6 +128,14 @@ const RegisterWorker = ({ onCancelClick }) => {
       return;
     }
 
+
+    if (idFarmer === '') {
+      setRecords('Por favor selecciona un agriculor');
+      return;
+    }
+
+
+    console.log("ID del farmer al momento", idFarmer);
     setIsLoading(true);
     const data = {
       name: values.nombre,

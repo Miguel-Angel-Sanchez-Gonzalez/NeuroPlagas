@@ -11,6 +11,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
   const [loadingMessage, setLoadingMessage] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [emailModified, setEmailModified] = useState(false);
+  const [originalEmail, setOriginalEmail] = useState('');
 
 
 
@@ -25,7 +26,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
     contrasenia:""
   });
 
-  const handleInputChange = (e) =>{
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues(values => ({
       ...values,
@@ -33,12 +34,12 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
     }));
     if (name === 'correo') {
       setEmailExists(false);
-      setEmailModified(true);
     }
     if (name === 'contrasenia') {
       setPasswordError('');
     }
   };
+  
 
   //ENFOQUES
   const handleInputFocus = () => {
@@ -108,6 +109,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
           throw new Error('Error al obtener el agricultor');
         })
         .then(data => {
+          setOriginalEmail(data.correo_electronico);
           // Actualizar el estado con los datos del agricultor
           setValues({
             nombre: data.nombre,
@@ -138,101 +140,6 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
     password: values.contrasenia,
     role: "farmer"
   };
-
-  // const onConfirmClick = () => {
-  //   setIsFormSubmitted(true);
-  
-  //   // Validación 1: Campos no vacíos -----------------------------------------------------------------------
-  //   for (const key in values) {
-  //     if (values[key] === "") {
-  //       setRecords('Por favor complete todos los campos.');
-  //       return;
-  //     }
-  //   }
-
-  //   // Validación 2: Correo con formato válido --------------------------------------------------------------
-  //   if (!validateEmail(values.correo)) {
-  //     setRecords('El correo electrónico no es válido.');
-  //     return;
-  //   } 
-
-  //   // if (values.correo) {
-  //   //   setEmailExists(true);
-  //   //   return;
-  //   // }
-
-  //    // Validación 3: Teléfono válido ---------------------------------------------------------------------------
-  //    const continueValidations = () => {
-  //     if (!validatePhone(values.telefono)) {
-  //       setRecords('Teléfono no válido (10 dígitos).');
-  //       return;
-  //     }
-
-  //     // Validación 4: Contraseña válida ----------------------------------------------------------------------
-  //     const passwordValidationResult = validatePassword(values.contrasenia);
-  //     if (passwordValidationResult !== true) {
-  //       setPasswordError(passwordValidationResult);
-  //       return;
-  //     }
-
-  //     setIsLoading(true);
-  //     // Realiza el fetch si pasa todas las validaciones 
-  //     fetch(`http://localhost:3000/farmer/${idFarmer}`, {
-  //       method: 'PATCH',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify(data)
-  //     })
-  //     .then(response => {
-  //       if (response.ok) {
-  //         setIsLoading(false);
-  //         setLoadingMessage('El agricultor se actualizó correctamente.');
-  //         setTimeout(() => {
-  //           setLoadingMessage(''); // Oculta el mensaje después de unos segundos
-  //           window.location.reload();
-  //         }, 2000); 
-  //       } else {
-  //         alert("Error al actualizar la info de este user");
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error('Error al actualizar el farmer:', error);
-  //       alert("Error al actualizar el farmer");
-  //     });
-  //   };
-
-  //   // Validación 5: Correo existe --------------------------------------------------------------------------
-  //   if (emailModified) { // Realizar la validación solo si el correo ha sido modificado
-  //     fetch(`http://localhost:3000/login/check_email_existence`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ email: values.correo })
-  //     })
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       console.log("Respuesta del servidor:", data);      
-  //       if (data.exists) {
-  //         setEmailExists(true);
-  //       } else {
-  //         console.log("el email no se encontro");
-  //         setEmailExists(false);
-  //       }
-  //       continueValidations(); // Continuar con las siguientes validaciones si el correo existe =>
-  //     })
-  //     .catch(error => {
-  //       console.error('Error al verificar el correo:', error);
-  //       alert("Error al verificar el correo");
-  //     });
-  //     } else {
-  //     // Si el correo no ha sido modificado, continuar con las validaciones sin verificar el correo existente
-  //     continueValidations();
-  //   }
-  
-  // };
-  
   
   const onConfirmClick = async () => {
     setIsFormSubmitted(true);
@@ -247,21 +154,22 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
   
     // Validación 2: Correo con formato válido
     if (!validateEmail(values.correo)) {
-      setRecords('El correo electrónico no es válido.');
+      //setRecords('El correo electrónico no es válido.');
       return;
     }
   
-    // Validación 3: Verificar si el correo fue modificado y si necesita verificación
-    if (emailModified) {
-      const emailExists = await checkEmailExists(values.correo);
-      if (emailExists) {
-        setEmailExists(true);
-        //setRecords('El correo electrónico ya está en uso.');
-        return;
-      } else {
-        setEmailExists(false);
-      }
+    // Validar si el correo electrónico fue modificado
+  if (values.correo !== originalEmail) {
+    // Realizar la verificación de existencia del nuevo correo electrónico
+    const emailExists = await checkEmailExists(values.correo);
+    if (emailExists) {
+      setEmailExists(true);
+      // setRecords('El correo electrónico ya está en uso.');
+      return;
+    } else {
+      setEmailExists(false);
     }
+  }
   
     // Validación 4: Teléfono válido
     if (!validatePhone(values.telefono)) {
@@ -384,25 +292,29 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
                 value={values.correo}
                 onChange={handleInputChange}
                 onFocus={handleInputFocus}
-                onBlur={async () => {
+                onBlur={() => {
                   handleInputBlur();
                   if (values.correo) {
                     if (!validateEmail(values.correo)) {
-                    setEmailExists(false);
-                  } else {
-                    const emailExists = await checkEmailExists(values.correo);
-                    setEmailExists(emailExists);
+                      setEmailExists(false);
+                    } else {
+                      checkEmailExists(values.correo).then(emailExists => {
+                        setEmailExists(emailExists);
+                      });
+                    }
                   }
-                }
-                }} 
-                // style={values.correo ? { backgroundColor: '#c5e5f0' } : null}
+                }}
+                //style={values.correo ? { backgroundColor: '#c5e5f0' } : null}
               />
               {values.correo && !validateEmail(values.correo) && isFormSubmitted && (
                   <p className="error-message-farmer">Correo electrónico inválido.</p>
                 )}
-                {emailExists && 
-                <p className="email-exists-Fr">El correo ya está en uso.</p>}
+                {emailExists && values.correo !== data.correo_electronico && (
+                  <p className="error-message-farmer">El correo ya está en uso.</p>
+                )}
 
+                {/* {emailExists && 
+                <p className="email-exists-Fr">El correo ya está en uso.</p>} */}
             </div>
             <div className="column-edit-farmer">
               <label className={`label-farmer-e ${isFormSubmitted && !values.telefono && 'red-label'}`}>

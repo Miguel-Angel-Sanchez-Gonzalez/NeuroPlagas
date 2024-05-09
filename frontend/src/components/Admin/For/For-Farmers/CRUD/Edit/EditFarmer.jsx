@@ -10,6 +10,8 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [emailModified, setEmailModified] = useState(false);
+  const [originalEmail, setOriginalEmail] = useState('');
 
 
 
@@ -24,7 +26,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
     contrasenia:""
   });
 
-  const handleInputChange = (e) =>{
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues(values => ({
       ...values,
@@ -37,6 +39,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
       setPasswordError('');
     }
   };
+  
 
   //ENFOQUES
   const handleInputFocus = () => {
@@ -46,6 +49,21 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
 
   const handleInputBlur = () => {
     setIsInputFocused(false); // Actualiza el estado cuando un input pierde el enfoque
+  };
+
+  const handleEmailBlur = async () => {
+    handleInputBlur(); // Llama a la función general de manejo de desenfoque
+    if (values.correo) {
+      if (!validateEmail(values.correo)) {
+        setEmailExists(false);
+      } else {
+        // Verificar si el correo fue modificado y si necesita verificación
+        if (values.correo !== originalEmail) {
+          const emailExists = await checkEmailExists(values.correo);
+          setEmailExists(emailExists);
+        }
+      }
+    }
   };
 
   //VALIDACIONES
@@ -72,7 +90,6 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
     const phonePattern = /^\(?([0-9]{3})\)?[-.]?([0-9]{3})?[-.]?([0-9]{4})$/;
     return phonePattern.test(phoneNumber) && phoneNumber.length === 10;
 };
-
 
 
   const validatePassword = (password) => {
@@ -107,6 +124,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
           throw new Error('Error al obtener el agricultor');
         })
         .then(data => {
+          setOriginalEmail(data.correo_electronico);
           // Actualizar el estado con los datos del agricultor
           setValues({
             nombre: data.nombre,
@@ -137,92 +155,81 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
     password: values.contrasenia,
     role: "farmer"
   };
-
-  const onConfirmClick = () => {
+  
+  const onConfirmClick = async () => {
     setIsFormSubmitted(true);
   
-    // Validación 1: Campos no vacíos -----------------------------------------------------------------------
+    // Validación 1: Campos no vacíos
     for (const key in values) {
       if (values[key] === "") {
         setRecords('Por favor complete todos los campos.');
         return;
       }
     }
-
-    // Validación 2: Correo con formato válido --------------------------------------------------------------
+  
+    // Validación 2: Correo con formato válido
     if (!validateEmail(values.correo)) {
-      setRecords('El correo electrónico no es válido.');
+      //setRecords('El correo electrónico no es válido.');
       return;
-    } 
-
-    // Validación 3: Correo existe --------------------------------------------------------------------------
-    
-    fetch(`http://localhost:3000/login/check_email_existence`, {
-      method: 'POST',
+    }
+  
+    // Validar si el correo electrónico fue modificado
+  if (values.correo !== originalEmail) {
+    // Realizar la verificación de existencia del nuevo correo electrónico
+    const emailExists = await checkEmailExists(values.correo);
+    if (emailExists) {
+      setEmailExists(true);
+      // setRecords('El correo electrónico ya está en uso.');
+      return;
+    } else {
+      setEmailExists(false);
+    }
+  }
+  
+    // Validación 4: Teléfono válido
+    if (!validatePhone(values.telefono)) {
+      setRecords('Teléfono no válido (10 dígitos).');
+      return;
+    }
+  
+    // Validación 5: Contraseña válida
+    const passwordValidationResult = validatePassword(values.contrasenia);
+    if (passwordValidationResult !== true) {
+      setPasswordError(passwordValidationResult);
+      return;
+    }
+  
+    // Si todas las validaciones son correctas, proceder a actualizar
+    updateFarmerData();
+  };
+  
+  const updateFarmerData = () => {
+    setIsLoading(true);
+    fetch(`http://localhost:3000/farmer/${idFarmer}`, {
+      method: 'PATCH',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ email: values.correo })
+      body: JSON.stringify(data)
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.exists) {
-        setEmailExists(true);
-        continueValidations(); // Continuar con las siguientes validaciones si el correo existe =>
+    .then(response => {
+      if (response.ok) {
+        setIsLoading(false);
+        setLoadingMessage('El agricultor se actualizó correctamente.');
+        setTimeout(() => {
+          setLoadingMessage(''); // Oculta el mensaje después de unos segundos
+          window.location.reload();
+        }, 2000); 
       } else {
-        console.log("el email no se encontro");
-        setEmailExists(false);
+        throw new Error('No se pudo actualizar el agricultor');
       }
     })
     .catch(error => {
-      console.error('Error al verificar el correo:', error);
-      alert("Error al verificar el correo");
+      console.error('Error al actualizar el agricultor:', error);
+      alert("Error al actualizar el agricultor");
     });
-  
-    // Validación 4: Teléfono válido ---------------------------------------------------------------------------
-    const continueValidations = () => {
-      if (!validatePhone(values.telefono)) {
-        setRecords('Teléfono no válido (10 dígitos).');
-        return;
-      }
-
-      // Validación 5: Contraseña válida ----------------------------------------------------------------------
-      const passwordValidationResult = validatePassword(values.contrasenia);
-      if (passwordValidationResult !== true) {
-        setPasswordError(passwordValidationResult);
-        return;
-      }
-
-      setIsLoading(true);
-      // Realiza el fetch si pasa todas las validaciones 
-      fetch(`http://localhost:3000/farmer/${idFarmer}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-      .then(response => {
-        if (response.ok) {
-          setIsLoading(false);
-          setLoadingMessage('El agricultor se actualizó correctamente.');
-          setTimeout(() => {
-            setLoadingMessage(''); // Oculta el mensaje después de unos segundos
-            window.location.reload();
-          }, 6000); 
-        } else {
-          alert("Error al actualizar la info de este user");
-        }
-      })
-      .catch(error => {
-        console.error('Error al actualizar el farmer:', error);
-        alert("Error al actualizar el farmer");
-      });
-    };
   };
   
-  
-
 
   return (
     <div>
@@ -293,15 +300,23 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
               </label>
               <input
                 className={`inputs-edit-farmer ${isFormSubmitted && !values.correo && 'red-input'}`}
-                type="text"
+                type="email"
                 required
                 name="correo"
                 placeholder="ejemplo@gmail.com"
                 value={values.correo}
                 onChange={handleInputChange}
-                onFocus={handleInputFocus} 
+                onFocus={handleInputFocus}
                 onBlur={handleInputBlur}   
+                //style={values.correo ? { backgroundColor: '#c5e5f0' } : null}
               />
+              {values.correo && !validateEmail(values.correo) && isFormSubmitted && (
+                  <p className="error-message-farmer">Correo electrónico inválido.</p>
+                )}
+              {emailExists && values.correo !== originalEmail && (
+                <p className="email-exists-Fr">El correo ya está en uso.</p>
+              )}
+
             </div>
             <div className="column-edit-farmer">
               <label className={`label-farmer-e ${isFormSubmitted && !values.telefono && 'red-label'}`}>
@@ -314,7 +329,14 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
                 name="telefono"
                 placeholder="Ingrese su número telefónico"
                 value={values.telefono}
-                onChange={handleInputChange}
+                onChange={(e) => {
+                  // Filtra solo dígitos y limita a 10 caracteres
+                  const phoneNumber = e.target.value.replace(/\D/g, '').slice(0, 10);
+                  setValues(prevState => ({
+                    ...prevState,
+                    telefono: phoneNumber,
+                  }));
+                }}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur}   
               />

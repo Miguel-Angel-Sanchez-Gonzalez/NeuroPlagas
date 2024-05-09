@@ -21,7 +21,7 @@
 
 }
 
-.h4-delete{
+.h4-delete-greenhouse{
   padding-top: 20px;
   margin-bottom: 20px;
   text-align: center;
@@ -41,7 +41,7 @@
   background-color: #c62426;
   border: 2px solid #c62426;
   border-radius: 10px;
-  margin-left: 30px;
+  margin-right: 150px;
 }
 
 .btn-delete-greenhouse-cancel {

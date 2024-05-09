@@ -104,13 +104,22 @@
   cursor: pointer; /* Cambiado desde el selector de etiqueta */
 }
 
-.error-message-disease,
-.email-exists {
-  margin-top: 15px;
-  margin-left: 12px;
-  text-align: justify;
+.error-message-worker-e,
+.email-exists-r {
+  margin-top: 5px;
+  margin-left: 5px;
+  text-align: left;
   color: #c62426;
-  font-size: medium;
+  font-size: 14px;
+}
+
+
+.error-password {
+  margin-top: 5px;
+  margin-left: 5px;
+  text-align: left;
+  color: #c62426;
+  font-size: 14px;
 }
 
 .red-label,

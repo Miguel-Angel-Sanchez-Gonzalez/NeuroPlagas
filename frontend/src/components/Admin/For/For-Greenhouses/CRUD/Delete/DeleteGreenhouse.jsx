@@ -29,7 +29,7 @@ const DeleteGreenhouse = ({ onCancelClick, idGreenhouse }) => {
   return (
     <div className="delete-greenhouse-form">
       <div className='container-delete-greenhouse'>
-      <h4 className='h4-delete'>Eliminar invernadero</h4>
+      <h4 className='h4-delete-greenhouse'>Eliminar invernadero</h4>
         <label>¿Está seguro que desea eliminar esta invernadero?</label>
       </div>
       <div className='button-container-greenhouse'>

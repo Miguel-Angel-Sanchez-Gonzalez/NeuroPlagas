@@ -1,39 +1,55 @@
-import React, { useEffect } from 'react';
-import './HomeFarmer.css';
-import SidebarFarmer from '../SidebarFarmer/SidebarFarmer';
-import NavbarFarmer from '../NavbarFarmer/NavbarFarmer';
+import React, { useState } from 'react';
 import DataTableFarmer from '../DataTableFarmer/DataTableFarmer';
+import NavbarFarmer from '../NavSideProfileFarmer/NavbarFarmer/NavbarFarmer';
+import SidebarFarmer from '../NavSideProfileFarmer/SidebarFarmer/SidebarFarmer';
+import './HomeFarmer.css';
 
 const HomeFarmer = () => {
-  // useEffect(() => {
-  //   const handleVisibilityChange = () => {
-  //     if (document.visibilityState === 'hidden') {
-  //       // Eliminar el token cuando la pestaña se vuelve invisible
-  //       localStorage.removeItem('token');
-  //     }
-  //   };
+  const [activeSection, setActiveSection] = useState('notifications'); // Establece la sección activa inicialmente como 'farmers'
+  const [showProfileAdmin, setshowProfileAdmin] = useState(false);
+   
+    const handleConfigureProfileClick = () => {
+        setshowProfileAdmin(true);
+    };
 
-  //   document.addEventListener('visibilitychange', handleVisibilityChange);
+    const handleProfileFormCancel = () => {
+        setshowProfileAdmin(false);
+    };
 
-  //   return () => {
-  //     document.removeEventListener('visibilitychange', handleVisibilityChange);
-  //   };
-  // }, []);
+  const renderActiveTable = () => {
+    switch (activeSection) {
+        case 'notifications':
+            return <DataTableFarmer />;
+        // case 'greenhouses':
+        //     return <DTableGreenhouses />;
+        // case 'workers':
+        //     return <DTableWorkers />;
+        // case 'plagues':
+        //     return <DTablePlagues />;
+        // case 'diseases':
+        //     return <DTableDiseases />;
+        default:
+            return null;
+    }
+  };
 
   return (
     <div>
-      <NavbarFarmer />
-      <div className='dashboard'>
-          <SidebarFarmer />
-        <div className='table-container'>
-          <div className='space'>
-          <h2>Bienvenido <span className='rol'>agricultor</span></h2>
-          </div>
-          <DataTableFarmer />
+        <div className="navbar-container-farmer">
+            <NavbarFarmer onConfigureProfileClick={handleConfigureProfileClick} />
         </div>
-      </div>
+        <div className='dashboard-farmer'>
+        <SidebarFarmer setActiveSection={setActiveSection} activeSection={activeSection} />
+            <div className='table-container-farmer'>
+                <div className='space-farmer'>
+                    <h2 className='h2farmer'>Bienvenido <span className='rol-farmer'>agricultor</span></h2>
+                    {renderActiveTable()}
+                </div>
+            </div>
+        </div>
+        {/*showProfileAdmin && <ProfileAdmin onCancelClick={handleProfileFormCancel} />*/}
     </div>
-  );
+);
 };
 
 export default HomeFarmer;

@@ -132,14 +132,15 @@ const DTableWorkers = () => {
 
 
       const handleEditClick = (row) => {
-        console.log("ID del registro a actualizar:", row.id_agricultor);
+        console.log("ID del registro a actualizar:", row.id_trabajador);
         setShowEditWorker(true);
+        setIDWorker(row.id_trabajador);
       };
 
       const handleDeleteClick = (row) => {
-        console.log("ID del registro a eliminar:", row.id_agricultor);
+        console.log("ID del registro a eliminar:", row.id_trabajador);
         setShowDeleteWorker(true);
-        setIDWorker(row.id_agricultor);
+        setIDWorker(row.id_trabajador);
       };
 
       const paginacionOpciones={
@@ -165,7 +166,7 @@ const DTableWorkers = () => {
                 <div className='header-table-worker'>
                 <FontAwesomeIcon icon={faSearch} className='search' />
                 <input type="text" placeholder='Buscar...' value={inputValue} onChange={handleFilter} className='searchWorker' />
-                <button type="button" className='buttonTrabajador' onClick={handleRegisterClick}>Registrar agricultor</button>
+                <button type="button" className='buttonTrabajador' onClick={handleRegisterClick}>Registrar trabajador</button>
               </div>
             }
           />

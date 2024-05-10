@@ -4,6 +4,8 @@ import './NavbarWorker.css';  // Importa el archivo de estilos CSS
 
 const NavbarWorker = ({onConfigureProfileClick}) => {
   const storedUsername = localStorage.getItem('username');
+  const storedLastname = localStorage.getItem('lastname');
+  const storedSecondLastname = localStorage.getItem('secondlastname');
   const storedEmail = localStorage.getItem('email');
 
   const [showProfileAdmin, setshowProfileAdmin] = useState(false);
@@ -31,6 +33,8 @@ const NavbarWorker = ({onConfigureProfileClick}) => {
     //Reset de variables
     localStorage.setItem('token', '');  
     localStorage.setItem('username', '');
+    localStorage.setItem('lastname', '');
+    localStorage.setItem('secondlastname', '');
     localStorage.setItem('email', '');
     // Redirige al usuario a la página de inicio de sesión
     window.location.href = '/login'; 
@@ -55,7 +59,7 @@ const NavbarWorker = ({onConfigureProfileClick}) => {
             )}
         </div>
         <div className='user-info-worker'>
-          <label>{storedUsername}</label>
+          <label>{storedUsername +" "+ storedLastname +" "+ storedSecondLastname}</label>
           <br />
           <label>{storedEmail}</label>
         </div>

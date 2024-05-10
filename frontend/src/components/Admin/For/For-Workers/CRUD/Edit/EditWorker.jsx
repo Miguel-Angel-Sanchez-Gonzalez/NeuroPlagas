@@ -12,7 +12,8 @@ const EditWorker = ({onCancelClick, idWorker }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [idAgricultorResponsable, setidAgricultorResponsable]  = useState('');
+  const [originalEmail, setOriginalEmail] = useState('');
+  const [idAgricultorResponsable, setidAgricultorResponsable] = useState('');
 
   const [values, setValues] = useState({
     nombre: "",
@@ -35,6 +36,12 @@ const EditWorker = ({onCancelClick, idWorker }) => {
       ...values,
       [name]: value,
     });
+    if (name === 'correo') {
+      setEmailExists(false);
+    }
+    if (name === 'contrasenia') {
+      setPasswordError('');
+    }
   };
 
   const handleInputFocus = () => {
@@ -46,6 +53,52 @@ const EditWorker = ({onCancelClick, idWorker }) => {
     setIsInputFocused(false); // Actualiza el estado cuando un input pierde el enfoque
   };
 
+  //VALIDACIONES
+  const checkEmailExists = async (email) => {
+    const response = await fetch(`http://localhost:3000/login/check_email_existence`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: email })
+    });
+    const data = await response.json();
+    return data.exists;
+  };
+
+
+  const validateEmail = (email) => {
+    // Que el correo sea Gmail, Hotmail, Yahoo o Outlook
+    const emailPattern = /^[^\s@]+@(gmail\.com|hotmail\.com|yahoo\.com|outlook\.com|itoaxaca\.edu.mx)$/;
+    return emailPattern.test(email); //true si es valido
+  };
+
+  const validatePhone = (phoneNumber) => {
+    const phonePattern = /^\(?([0-9]{3})\)?[-.]?([0-9]{3})?[-.]?([0-9]{4})$/;
+    return phonePattern.test(phoneNumber) && phoneNumber.length === 10;
+};
+
+
+  const validatePassword = (password) => {
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  
+    if (password.length < 8) {
+      return "Debe tener al menos 8 caracteres.";
+    }
+    if (!hasUpperCase) {
+      return "Debe tener al menos una letra mayúscula.";
+    }
+    if (!hasNumber) {
+      return "Debe tener al menos un número.";
+    }
+    if (!hasSpecialChar) {
+      return "Debe tener al menos un caracter especial.";
+    }
+    return true;
+  };
+  
   //Para obtener la data del Worker y setearla en los INPUT
   useEffect(() => {
     const getWorkerById = () => {
@@ -57,6 +110,7 @@ const EditWorker = ({onCancelClick, idWorker }) => {
           throw new Error('Error al obtener el trabajador');
         })
         .then(data => {
+          setOriginalEmail(data.correo_electronico);
           setValues({
             primerApellido: data.primer_apellido,
             nombre: data.nombre,
@@ -111,10 +165,45 @@ const EditWorker = ({onCancelClick, idWorker }) => {
     setIsFormSubmitted(true);
   
     // ESPACIO DE VALIDACIONES
+    // Validación 1: Campos no vacíos
+    for (const key in values) {
+      if (values[key] === "") {
+        setRecords('Por favor complete todos los campos.');
+        return;
+      }
+    }
   
-
-
-
+    // Validación 2: Correo con formato válido
+    if (!validateEmail(values.correo)) {
+      //setRecords('El correo electrónico no es válido.');
+      return;
+    }
+  
+    // Validar si el correo electrónico fue modificado
+  if (values.correo !== originalEmail) {
+    // Realizar la verificación de existencia del nuevo correo electrónico
+    const emailExists = await checkEmailExists(values.correo);
+    if (emailExists) {
+      setEmailExists(true);
+      // setRecords('El correo electrónico ya está en uso.');
+      return;
+    } else {
+      setEmailExists(false);
+    }
+  }
+  
+    // Validación 4: Teléfono válido
+    if (!validatePhone(values.telefono)) {
+      setRecords('Teléfono no válido (10 dígitos).');
+      return;
+    }
+  
+    // Validación 5: Contraseña válida
+    const passwordValidationResult = validatePassword(values.contrasenia);
+    if (passwordValidationResult !== true) {
+      setPasswordError(passwordValidationResult);
+      return;
+    }
     // Si todas las validaciones son correctas, proceder a actualizar
     
     console.log("la data que se va actualizar es: ", data);
@@ -177,7 +266,7 @@ const EditWorker = ({onCancelClick, idWorker }) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur} 
-                
+                style={values.nombre ? {  backgroundColor: '#EFF6FF' } : null}
               />
             </div>
             <div className="column-edit-worker">
@@ -194,6 +283,7 @@ const EditWorker = ({onCancelClick, idWorker }) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur} 
+                style={values.primerApellido ? {  backgroundColor: '#EFF6FF' } : null}   
               />
             </div>
             <div className="column-edit-worker">
@@ -210,6 +300,7 @@ const EditWorker = ({onCancelClick, idWorker }) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur} 
+                style={values.segundoApellido ? {  backgroundColor: '#EFF6FF' } : null} 
               />
             </div>
           </div>
@@ -219,7 +310,7 @@ const EditWorker = ({onCancelClick, idWorker }) => {
                 Correo*
               </label>
               <input
-                className='inputs-edit-worker'
+                className={`inputs-edit-worker ${isFormSubmitted && !values.correo && 'red-input'}`}
                 type="text"
                 required
                 name="correo"
@@ -227,8 +318,15 @@ const EditWorker = ({onCancelClick, idWorker }) => {
                 placeholder="ejemplo@gmail.com"
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
-                onBlur={handleInputBlur} 
+                onBlur={handleInputBlur}
+                style={values.correo ? {  backgroundColor: '#EFF6FF' } : null}
               />
+              {values.correo && !validateEmail(values.correo) && isFormSubmitted && (
+                  <p className="error-message-farmer">Correo electrónico inválido.</p>
+                )}
+              {emailExists && values.correo !== originalEmail && (
+                <p className="email-exists-Fr">El correo ya está en uso.</p>
+              )}
             </div>
             <div className="column-edit-worker">
               <label className={`label-worker-e ${isFormSubmitted && !values.telefono && 'red-label'}`}>
@@ -241,9 +339,17 @@ const EditWorker = ({onCancelClick, idWorker }) => {
                 name="telefono"
                 value={values.telefono}
                 placeholder="Ingrese su número telefónico"
-                onChange={handleInputChange}
+                onChange={(e) => {
+                  // Filtra solo dígitos y limita a 10 caracteres
+                  const phoneNumber = e.target.value.replace(/\D/g, '').slice(0, 10);
+                  setValues(prevState => ({
+                    ...prevState,
+                    telefono: phoneNumber,
+                  }));
+                }}
                 onFocus={handleInputFocus} 
-                onBlur={handleInputBlur} 
+                onBlur={handleInputBlur}  
+                style={values.telefono ? {  backgroundColor: '#EFF6FF' } : null} 
               />
             </div>
             <div></div>
@@ -266,23 +372,34 @@ const EditWorker = ({onCancelClick, idWorker }) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur} 
+                style={values.nombreUsuario ? {  backgroundColor: '#EFF6FF' } : null}  
               />
             </div>
             <div className="column-edit-worker">
               <label className={`label-worker-e ${isFormSubmitted && !values.contrasenia && 'red-label'}`}>
                   Contraseña*
                 </label>
-              <input
-                className='inputs-edit-worker2'
-                type="password"
-                required
-                name="contrasenia"
-                value={values.contrasenia}
-                placeholder="Contraseña"
-                onChange={handleInputChange}
-                onFocus={handleInputFocus} 
-                onBlur={handleInputBlur} 
-              />
+                <input
+                  className={`inputs-edit-worker2 ${isFormSubmitted && !values.contrasenia && 'red-input'}`}
+                  type="password"
+                  required
+                  name="contrasenia"
+                  value={values.contrasenia}
+                  placeholder="Contraseña"
+                  onChange={(e) => handleInputChange(e)}
+                  onFocus={handleInputFocus} 
+                  onBlur={async () => {
+                    if (values.contrasenia) {
+                      const validationMessage = validatePassword(values.contrasenia);
+                      if (validationMessage !== true) {
+                        setPasswordError(validationMessage);
+                      }
+                    }
+                  }}
+                  style={values.contrasenia ? {  backgroundColor: '#EFF6FF' } : null}
+                />
+                {isFormSubmitted && !values.contrasenia && <p className="error-password">Por favor ingrese una contraseña.</p>}
+                {passwordError && <p className="error-password">{passwordError}</p>}
             </div>
           </div>
           <div className="password-rules-worker-e">
@@ -302,11 +419,9 @@ const EditWorker = ({onCancelClick, idWorker }) => {
                 onFarmerSelected={(farmerId) => setidAgricultorResponsable(farmerId)}
                 
               />
-
-
             </div>
           </div>
-              <div className='button-container-admin'>
+          <div className='button-container-admin'>
                 <button className='button-worker' type="submit" onClick={onConfirmClick}>Guardar</button>
                 <button className='button-worker ' onClick={onCancelClick}>Cancelar</button>
               </div>

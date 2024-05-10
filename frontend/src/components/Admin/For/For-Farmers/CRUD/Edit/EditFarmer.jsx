@@ -10,10 +10,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [emailModified, setEmailModified] = useState(false);
   const [originalEmail, setOriginalEmail] = useState('');
-
-
 
   //Para setear los valores al momento
   const [values, setValues] = useState({
@@ -51,20 +48,20 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
     setIsInputFocused(false); // Actualiza el estado cuando un input pierde el enfoque
   };
 
-  const handleEmailBlur = async () => {
-    handleInputBlur(); // Llama a la función general de manejo de desenfoque
-    if (values.correo) {
-      if (!validateEmail(values.correo)) {
-        setEmailExists(false);
-      } else {
-        // Verificar si el correo fue modificado y si necesita verificación
-        if (values.correo !== originalEmail) {
-          const emailExists = await checkEmailExists(values.correo);
-          setEmailExists(emailExists);
-        }
-      }
-    }
-  };
+  // const handleEmailBlur = async () => {
+  //   handleInputBlur(); // Llama a la función general de manejo de desenfoque
+  //   if (values.correo) {
+  //     if (!validateEmail(values.correo)) {
+  //       setEmailExists(false);
+  //     } else {
+  //       // Verificar si el correo fue modificado y si necesita verificación
+  //       if (values.correo !== originalEmail) {
+  //         const emailExists = await checkEmailExists(values.correo);
+  //         setEmailExists(emailExists);
+  //       }
+  //     }
+  //   }
+  // };
 
   //VALIDACIONES
   const checkEmailExists = async (email) => {
@@ -227,6 +224,8 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
     .catch(error => {
       console.error('Error al actualizar el agricultor:', error);
       alert("Error al actualizar el agricultor");
+      window.location.reload();
+      setIsLoading(false);
     });
   };
   
@@ -257,7 +256,8 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
                 value={values.nombre}
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
-                onBlur={handleInputBlur}   
+                onBlur={handleInputBlur}
+                style={values.nombre ? {  backgroundColor: '#EFF6FF' } : null}   
               />
             </div>
             <div className="column-edit-farmer">
@@ -273,7 +273,8 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
                 value={values.primerApellido}
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
-                onBlur={handleInputBlur}   
+                onBlur={handleInputBlur}
+                style={values.primerApellido ? {  backgroundColor: '#EFF6FF' } : null}   
               />
             </div>
             <div className="column-edit-farmer">
@@ -289,7 +290,8 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
                 value={values.segundoApellido}
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
-                onBlur={handleInputBlur}   
+                onBlur={handleInputBlur} 
+                style={values.segundoApellido ? {  backgroundColor: '#EFF6FF' } : null}  
               />
             </div>
           </div>
@@ -308,7 +310,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus}
                 onBlur={handleInputBlur}   
-                //style={values.correo ? { backgroundColor: '#c5e5f0' } : null}
+                style={values.correo ? {  backgroundColor: '#EFF6FF' } : null}
               />
               {values.correo && !validateEmail(values.correo) && isFormSubmitted && (
                   <p className="error-message-farmer">Correo electrónico inválido.</p>
@@ -316,7 +318,6 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
               {emailExists && values.correo !== originalEmail && (
                 <p className="email-exists-Fr">El correo ya está en uso.</p>
               )}
-
             </div>
             <div className="column-edit-farmer">
               <label className={`label-farmer-e ${isFormSubmitted && !values.telefono && 'red-label'}`}>
@@ -338,7 +339,8 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
                   }));
                 }}
                 onFocus={handleInputFocus} 
-                onBlur={handleInputBlur}   
+                onBlur={handleInputBlur}  
+                style={values.telefono ? {  backgroundColor: '#EFF6FF' } : null} 
               />
             </div>
             <div></div>
@@ -359,7 +361,8 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
                 value={values.nombreUsuario}
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
-                onBlur={handleInputBlur}   
+                onBlur={handleInputBlur} 
+                style={values.nombreUsuario ? {  backgroundColor: '#EFF6FF' } : null}  
               />
             </div>
             <div className="column-edit-farmer">
@@ -383,7 +386,9 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
                       }
                     }
                   }}
+                  style={values.contrasenia ? {  backgroundColor: '#EFF6FF' } : null}
                 />
+                
                 {isFormSubmitted && !values.contrasenia && <p className="error-password">Por favor ingrese una contraseña.</p>}
                 {passwordError && <p className="error-password">{passwordError}</p>}
             </div>

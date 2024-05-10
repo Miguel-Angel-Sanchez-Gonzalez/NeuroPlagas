@@ -81,12 +81,13 @@
   margin-top: 10px;
 }
 
-.button-container-admin {
+.button-container-admin-fr {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 12px;
-  margin-right: 12px;
+  margin-top: 30px;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 
 .button-plague-r {

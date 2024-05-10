@@ -12,6 +12,7 @@ import DeleteDisease from '../CRUD/Delete/DeleteDisease';
 const DTableDiseases = () => {
     const [inputValue, setInputValue] = useState("");
     const [filteredDiseases, setFilteredDiseases] = useState([]); 
+    const [idDisease, setIDDisease] = useState(""); 
 
     const columns = [
         {
@@ -81,7 +82,6 @@ const DTableDiseases = () => {
         const data = await response.json()
         setDiseases(data);
         setFilteredDiseases(data);
-        console.log(diseases)
     } 
 
 
@@ -118,10 +118,12 @@ const DTableDiseases = () => {
 
       const handleEditClick = (row) => {
         setShowEditDisease(true);
+        setIDDisease(row.id_enfermedad);
       };
 
       const handleDeleteClick = (row) => {
         setShowDeleteDisease(true);
+        setIDDisease(row.id_enfermedad);
       };
 
       const paginacionOpciones={
@@ -152,8 +154,8 @@ const DTableDiseases = () => {
             }
           />
           {showRegisterDisease && <RegisterDisease onCancelClick={handleCancelClick} />} {}
-          {showEditDisease && <EditDisease onCancelClick={handleCancelClick} />}
-          {showDeleteDisease && <DeleteDisease onCancelClick={handleCancelClick} />}
+          {showEditDisease && <EditDisease onCancelClick={handleCancelClick} idDisease={idDisease} />}
+          {showDeleteDisease && <DeleteDisease onCancelClick={handleCancelClick} idDisease={idDisease} />}
           
         </div>
     );

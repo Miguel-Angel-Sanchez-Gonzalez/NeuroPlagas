@@ -10,7 +10,8 @@ import DeletePlague from '../CRUD/Delete/DeletePlague';
 
 const DTablePlagues = () => {
     const [inputValue, setInputValue] = useState("");
-    const [filteredPlagues, setFilteredPlagues] = useState([]); 
+    const [filteredPlagues, setFilteredPlagues] = useState([]);
+    const [idPlague, setIDPlague] = useState(""); 
 
     const columns = [
         {
@@ -115,10 +116,12 @@ const DTablePlagues = () => {
 
       const handleEditClick = (row) => {
         setShowEditPlague(true);
+        setIDPlague(row.id_plaga);
       };
 
       const handleDeleteClick = (row) => {
         setShowDeletePlague(true);
+        setIDPlague(row.id_plaga);
       };
 
       const paginacionOpciones={
@@ -150,8 +153,8 @@ const DTablePlagues = () => {
 
           />
           {showRegisterPlague && <RegisterPlague onCancelClick={handleCancelClick} />} {}
-          {showEditPlague && <EditPlague onCancelClick={handleCancelClick} />}
-          {showDeletePlague && <DeletePlague onCancelClick={handleCancelClick} />}
+          {showEditPlague && <EditPlague onCancelClick={handleCancelClick} idPlague={idPlague} />}
+          {showDeletePlague && <DeletePlague onCancelClick={handleCancelClick}  idPlague={idPlague}/>}
           
         </div>
     );

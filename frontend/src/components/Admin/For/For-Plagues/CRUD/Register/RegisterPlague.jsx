@@ -30,12 +30,12 @@ const RegisterPlague = ({ onCancelClick }) => {
   };
 
   const handleInputFocus = () => {
-    setIsInputFocused(true); // Actualiza el estado cuando un input recibe enfoque
-    setRecords(''); // Borra el mensaje de error
+    setIsInputFocused(true); 
+    setRecords(''); 
   };
 
   const handleInputBlur = () => {
-    setIsInputFocused(false); // Actualiza el estado cuando un input pierde el enfoque
+    setIsInputFocused(false);
   };
 
 
@@ -43,7 +43,7 @@ const RegisterPlague = ({ onCancelClick }) => {
     checkPlagueExists();
   }, []);
 
-  /*FUNCIONES*/
+  /*VER SI LA PLAGA EXISTE*/
   async function checkPlagueExists(plagueName){
       const response = await fetch(`http://localhost:3000/plague/checkExist/${plagueName}`)
       const data = await response.json()
@@ -153,8 +153,8 @@ const RegisterPlague = ({ onCancelClick }) => {
                 placeholder="Ingrese el nombre científico"
                 value={values.nombreCientifico}
                 onChange={handleInputChange}
-                onFocus={handleInputFocus} // Nuevo evento de enfoque
-                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
+                onFocus={handleInputFocus} 
+                onBlur={handleInputBlur}   
               />
             </div>
           </div>
@@ -171,8 +171,8 @@ const RegisterPlague = ({ onCancelClick }) => {
                 placeholder="Escriba una pequeña descripción"
                 value={values.descripcion}
                 onChange={handleInputChange}
-                onFocus={handleInputFocus} // Nuevo evento de enfoque
-                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
+                onFocus={handleInputFocus} 
+                onBlur={handleInputBlur}  
               />
             </div>
             <div className="column-register-plague">
@@ -187,8 +187,8 @@ const RegisterPlague = ({ onCancelClick }) => {
                 placeholder="Ingrese las recomendaciones"
                 value={values.recomendaciones}
                 onChange={handleInputChange}
-                onFocus={handleInputFocus} // Nuevo evento de enfoque
-                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
+                onFocus={handleInputFocus} 
+                onBlur={handleInputBlur}   
               />
             </div>
           </div>
@@ -205,12 +205,12 @@ const RegisterPlague = ({ onCancelClick }) => {
                 placeholder="Mencione las acciones a tomar"
                 value={values.acciones}
                 onChange={handleInputChange}
-                onFocus={handleInputFocus} // Nuevo evento de enfoque
-                onBlur={handleInputBlur}   // Nuevo evento de desenfoque
+                onFocus={handleInputFocus} 
+                onBlur={handleInputBlur}   
               />
             </div>
           </div>
-          <div className='button-container-admin'>
+          <div className='button-container-admin-fr'>
               <button className='button-plague-r' type="submit" onClick={handleSubmit}>Guardar</button>
                  {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
               <button className='button-plague-r ' onClick={onCancelClick}>Cancelar</button>

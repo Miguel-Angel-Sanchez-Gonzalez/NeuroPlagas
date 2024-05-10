@@ -13,6 +13,7 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
   const [loadingMessage, setLoadingMessage] = useState('');
   const [idFarmer, setIdFarmer] = useState('');
   const [idAgricultorResponsable, setidAgricultorResponsable] = useState('');
+  const [originalName, setOriginalName] = useState('');
 
 
   const [values, setValues] = useState({
@@ -71,8 +72,7 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
           throw new Error('Error al obtener el invernadero');
         })
         .then(data => {
-          //setOriginalEmail(data.correo_electronico);
-          //console.log("data del invernadero" , data[0]);
+          setOriginalName(data[0].nombre)
           setValues({
             nombreInvernadero: data[0].nombre,
             tipoInvernadero: data[0].tipo_invernadero,
@@ -144,12 +144,25 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
       }
     }
 
-    //Validando que el invernadero exista
-    const greenhouseExists = await checkGreenhouseExists(values.nombreInvernadero);
-    if (greenhouseExists) {
-      setGreenhouseExists(true);
-      return;
+        // Validar si el correo electrónico fue modificado
+    if (values.nombreInvernadero !== originalName) {
+      //Validando que el invernadero exista
+      const greenhouseExists = await checkGreenhouseExists(values.nombreInvernadero);
+      if (greenhouseExists) {
+        setGreenhouseExists(true);
+        return;
+      }
+    }else{
+      setGreenhouseExists(false);
     }
+    
+
+    // //Validando que el invernadero exista
+    // const greenhouseExists = await checkGreenhouseExists(values.nombreInvernadero);
+    // if (greenhouseExists) {
+    //   setGreenhouseExists(true);
+    //   return;
+    // }
 
     //YA QUE PASARON TODAS LAS VALIDACIONES
     setIsLoading(true);
@@ -213,10 +226,6 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
                 onFocus={handleInputFocus} 
                 onBlur={async () => {
                   handleInputBlur();
-                  if (values.nombreInvernadero) {
-                    const greenhouseExists = await checkGreenhouseExists(values.nombreInvernadero);
-                    setGreenhouseExists(greenhouseExists);
-                  }
                 }}
               />
               {greenhouseExists && <p className="greenhouse-exists">El nombre del invernadero ya existe.</p>}

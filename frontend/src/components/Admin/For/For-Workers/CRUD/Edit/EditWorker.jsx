@@ -206,7 +206,6 @@ const EditWorker = ({onCancelClick, idWorker }) => {
     }
     // Si todas las validaciones son correctas, proceder a actualizar
     
-    console.log("la data que se va actualizar es: ", data);
     updateWorkerData();
   };
 

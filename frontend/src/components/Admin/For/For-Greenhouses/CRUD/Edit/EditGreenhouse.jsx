@@ -114,22 +114,28 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
   }, []);
 
 
-
-
-
   /*FUNCIONES*/
   async function checkGreenhouseExists(greenhouseName){
       const response = await fetch(`http://localhost:3000/greenhouse/checkExist/${greenhouseName}`)
       const data = await response.json()
       //se están cargando los datos
       return data.exists;
-  } 
+  }
+  
+  //Data para el fetch de actualizacion
+  const data = {
+    idFarmer : idAgricultorResponsable,
+    name: values.nombreInvernadero,
+    typeGreenhouse: values.tipoInvernadero,
+    humidity: values.humedad,
+    size: values.tamanio
+  };
 
   const onConfirmClick = async (e) => {
     e.preventDefault();
     setIsFormSubmitted(true);
-    console.log("listo para validar");  
 
+    //ESPACIO DE VALIDACIONES INVERNADERO
     
     for (const key in values) {
       if (values[key] === "" || (key === "agricultorResponsable" && !values[key])) {
@@ -144,45 +150,39 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
       setGreenhouseExists(true);
       return;
     }
-    
 
     //YA QUE PASARON TODAS LAS VALIDACIONES
-    
-    //setIsLoading(true);
-    //Data para hacer el update // CHECAR EL ID DEL FARMER ¨******************+
-    const data = {
-      //idFarmer: values.agricultorResponsable ? values.agricultorResponsable.value : null,
-      idFarmer : idAgricultorResponsable,
-      name: values.nombreInvernadero,
-      typeGreenhouse: values.tipoInvernadero,
-      humidity: values.humedad,
-      size: values.tamanio
-    };
+    setIsLoading(true);
+    //console.log("La data que va hacer el update es: " , data);
+    updateGreenhouseData();
+  };
 
-    console.log("La data que va hacer el update es: " , data);
 
-    //Se esta haciendo la promesa
-    //Post para insertar los datos de un invernadero
-      // const response = await fetch('http://localhost:3000/greenhouse/', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(data)
-      // }) 
-      //   if (response){
-      //     const responseData = await response.json();
-      //     const { id } = responseData; // Obtiene el ID del agricultor del backend
-      //     setIsLoading(false);
-      //     setLoadingMessage('Se ha agregado correctamente el invernadero.');
-      //     setTimeout(() => {
-      //     setLoadingMessage(''); // Oculta el mensaje después de unos segundos
-      //     window.location.reload();
-      //     }, 2000); // Mostrar el mensaje durante 3 segundos
-      //   } else {
-      //     setRecords('Por favor, inténtelo de nuevo más tarde.');
-      //     setIsLoading(false); // Agregar para detener la pantalla de carga
-      //   }
+  const updateGreenhouseData = () => {
+    setIsLoading(true);
+    fetch(`http://localhost:3000/greenhouse/${idGreenhouse}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      if (response.ok) {
+        setIsLoading(false);
+        setLoadingMessage('El invernadero se actualizó correctamente.');
+        setTimeout(() => {
+          setLoadingMessage(''); // Oculta el mensaje después de unos segundos
+          window.location.reload();
+        }, 2000); 
+      } else {
+        throw new Error('No se pudo actualizar el invernadero');
+      }
+    })
+    .catch(error => {
+      console.error('Error al actualizar el invernadero:', error);
+      alert("Error al actualizar el invernadero");
+    });
   };
 
   return (

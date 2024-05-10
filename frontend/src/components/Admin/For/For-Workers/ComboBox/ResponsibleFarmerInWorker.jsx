@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import './ResponsibleFarmerInWorker.css';
 
-function ResponsibleFarmerInWorker({ idFarmer, setIdFarmer, isFormSubmitted, value }) {
+function ResponsibleFarmerInWorker({ idFarmer, setIdFarmer, isFormSubmitted, value, onFarmerSelected }) {
     const [isActive, setIsActive] = useState(false);
     const [options, setOptions] = useState([]);
 
@@ -21,8 +21,13 @@ function ResponsibleFarmerInWorker({ idFarmer, setIdFarmer, isFormSubmitted, val
     const handleOptionClick = (option) => {
         setIdFarmer(option.value);
         setIsActive(false);
+        console.log("seleccionado el farmer con ID ", option.value);
+        // Envía el ID del agricultor al componente padre EditWorker
+        if (typeof onFarmerSelected === 'function') {
+            onFarmerSelected(option.value);
+        }
     };
-
+    
     
 
     return (
@@ -50,6 +55,5 @@ function ResponsibleFarmerInWorker({ idFarmer, setIdFarmer, isFormSubmitted, val
         </div>
     );
 }
-
 
 export default ResponsibleFarmerInWorker;

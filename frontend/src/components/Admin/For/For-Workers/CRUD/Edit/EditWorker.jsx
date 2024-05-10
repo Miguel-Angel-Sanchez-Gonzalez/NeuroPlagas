@@ -12,6 +12,7 @@ const EditWorker = ({onCancelClick, idWorker }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [idAgricultorResponsable, setidAgricultorResponsable]  = useState('');
 
   const [values, setValues] = useState({
     nombre: "",
@@ -20,8 +21,7 @@ const EditWorker = ({onCancelClick, idWorker }) => {
     telefono: "",
     correo: "",
     nombreUsuario: "",
-    contrasenia: "",
-    idAgricultorResponsable: "",
+    contrasenia: ""
   });
 
   const [valuesFarmer, setValuesFarmer] = useState({
@@ -64,9 +64,9 @@ const EditWorker = ({onCancelClick, idWorker }) => {
             telefono: data.telefono,
             correo: data.correo_electronico,
             nombreUsuario: data.nombre_usuario,
-            contrasenia: data.contrasenia,
-            idAgricultorResponsable: data.id_agricultor 
+            contrasenia: data.contrasenia
           });
+          setidAgricultorResponsable(data.id_agricultor);
 
           fetch(`http://localhost:3000/farmer/${data.id_agricultor}`)
           .then(response => {
@@ -91,6 +91,61 @@ const EditWorker = ({onCancelClick, idWorker }) => {
     };
     getWorkerById();
   }, [idWorker]);
+
+
+
+  //Data para el fetch de actualizacion
+  const data = {
+    idFarmer : idAgricultorResponsable,
+    name : values.nombre,
+    surname : values.primerApellido,
+    secondSurname : values.segundoApellido,
+    phone : values.telefono,
+    email: values.correo,
+    nameUser : values.nombreUsuario,
+    password : values.contrasenia,
+    role : "worker"
+  };
+
+  const onConfirmClick = async () => {
+    setIsFormSubmitted(true);
+  
+    // ESPACIO DE VALIDACIONES
+  
+    // Si todas las validaciones son correctas, proceder a actualizar
+    
+    console.log("la data que se va actualizar es: ", data);
+    console.log("mi ID ES", idAgricultorResponsable);
+    //updateWorkerData();
+  };
+
+
+  const updateWorkerData = () => {
+    setIsLoading(true);
+    fetch(`http://localhost:3000/worker/${idWorker}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      if (response.ok) {
+        setIsLoading(false);
+        setLoadingMessage('El trabajador se actualizó correctamente.');
+        setTimeout(() => {
+          setLoadingMessage(''); // Oculta el mensaje después de unos segundos
+          window.location.reload();
+        }, 2000); 
+      } else {
+        throw new Error('No se pudo actualizar el trabajador');
+      }
+    })
+    .catch(error => {
+      console.error('Error al actualizar el trabajador:', error);
+      alert("Error al actualizar el trabajador");
+    });
+  };
   
   
   return (
@@ -241,13 +296,16 @@ const EditWorker = ({onCancelClick, idWorker }) => {
                 idFarmer={idFarmer}
                 setIdFarmer={setIdFarmer}
                 isFormSubmitted={isFormSubmitted}
-                //value={""}
                 value={valuesFarmer.nombreAgricultorResponsable}
-            />
+                onFarmerSelected={(farmerId) => setidAgricultorResponsable(farmerId)}
+                
+              />
+
+
             </div>
           </div>
               <div className='button-container-admin'>
-                <button className='button-worker' type="submit">Guardar</button>
+                <button className='button-worker' type="submit" onClick={onConfirmClick}>Guardar</button>
                 <button className='button-worker ' onClick={onCancelClick}>Cancelar</button>
               </div>
               {records && !isInputFocused && <p className='error-message'>{records}</p>}

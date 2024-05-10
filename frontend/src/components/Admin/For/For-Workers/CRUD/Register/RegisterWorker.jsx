@@ -128,14 +128,12 @@ const RegisterWorker = ({ onCancelClick }) => {
       return;
     }
 
-
+    // Validacion para saber si ya ha seleccionado un agricultor
     if (idFarmer === '') {
       setRecords('Por favor selecciona un agriculor');
       return;
     }
 
-
-    console.log("ID del farmer al momento", idFarmer);
     setIsLoading(true);
     const data = {
       name: values.nombre,

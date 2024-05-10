@@ -274,7 +274,7 @@ const EditWorker = ({onCancelClick, idWorker }) => {
                 Primer apellido*
               </label>
               <input
-                className='inputs-edit-worker'
+                className= {`inputs-edit-worker ${isFormSubmitted && !values.primerApellido && 'red-input'}`}
                 type="text"
                 required
                 name="primerApellido"
@@ -291,7 +291,7 @@ const EditWorker = ({onCancelClick, idWorker }) => {
                 Segundo apellido*
               </label>
               <input
-                className='inputs-edit-worker'
+                className= {`inputs-edit-worker ${isFormSubmitted && !values.segundoApellido && 'red-input'}`}
                 type="text"
                 required
                 name="segundoApellido"
@@ -333,7 +333,7 @@ const EditWorker = ({onCancelClick, idWorker }) => {
                 Teléfono*
               </label>
               <input
-                className='inputs-edit-worker'
+                className= {`inputs-edit-worker ${isFormSubmitted && !values.telefono && 'red-input'}`}
                 type="text"
                 required
                 name="telefono"
@@ -363,7 +363,7 @@ const EditWorker = ({onCancelClick, idWorker }) => {
                 Nombre de usuario*
               </label>
               <input
-                className='inputs-edit-worker2'
+                className= {`inputs-edit-worker2 ${isFormSubmitted && !values.nombreUsuario && 'red-input'}`}
                 type="text"
                 required
                 name="nombreUsuario"
@@ -416,6 +416,8 @@ const EditWorker = ({onCancelClick, idWorker }) => {
                 setIdFarmer={setIdFarmer}
                 isFormSubmitted={isFormSubmitted}
                 value={valuesFarmer.nombreAgricultorResponsable}
+                //ModoEdicion
+                isEditing={true}
                 onFarmerSelected={(farmerId) => setidAgricultorResponsable(farmerId)}
                 
               />

@@ -25,9 +25,9 @@ const EditPlague = ({ rowData, onCancelClick, idPlague}) => {
       ...values,
       [name]: value,
     }));
-    if (name === 'nombrePlaga') {
-      setPlagueExists(false);
-    }
+    // if (name === 'nombrePlaga') {
+    //   setPlagueExists(false);
+    // }
   };
 
   const handleInputFocus = () => {
@@ -40,7 +40,7 @@ const EditPlague = ({ rowData, onCancelClick, idPlague}) => {
   };
 
 
-  const checkPlagueExists = async (plagueName) => {
+  async function checkPlagueExists (plagueName) {
     const response = await fetch(`http://localhost:3000/plague/checkExist/${plagueName}`);
     const data = await response.json();
     return data.exists;
@@ -59,7 +59,7 @@ const EditPlague = ({ rowData, onCancelClick, idPlague}) => {
         })
         .then(data => {
           console.log("Datos recibidos:", data);
-          setOriginalPlague(data.nombrePlaga);
+          setOriginalPlague(data.nombre);
           setValues({
             nombrePlaga: data.nombre,
             nombreCientifico: data.nombre_cientifico,
@@ -87,6 +87,7 @@ const EditPlague = ({ rowData, onCancelClick, idPlague}) => {
 
   const onConfirmClick = async () => {
     setIsFormSubmitted(true); 
+
     for (const key in values) {
       if (values[key] === "") {
         setRecords('Por favor complete todos los campos.');
@@ -107,7 +108,7 @@ const EditPlague = ({ rowData, onCancelClick, idPlague}) => {
     }
   
     // Si todas las validaciones son correctas, proceder a actualizar
-    updatePlagueData(); // Movido dentro del bloque if
+    updatePlagueData(); 
   }
   
 
@@ -246,7 +247,7 @@ const EditPlague = ({ rowData, onCancelClick, idPlague}) => {
               />
             </div>
           </div>
-          <div className='button-container-admin-fe'>
+          <div className='button-container-admin-pe'>
               <button className='button-plague-e' type="submit" onClick={onConfirmClick}>Guardar</button>
                  {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
               <button className='button-plague-e ' onClick={onCancelClick}>Cancelar</button>

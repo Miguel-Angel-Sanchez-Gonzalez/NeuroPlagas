@@ -97,11 +97,6 @@ const EditDisease = ({ rowData, onCancelClick, idDisease}) => {
     }
   }
 
-  // if (!originalDiseaseExists) {
-  //   // Mostrar mensaje de error si la enfermedad original no existe
-  //   setRecords('La enfermedad original no existe.');
-  //   return;
-  // }
 
   if (values.nombreEnfermedad !== originalDisease) {
     // Verificar si la enfermedad nueva ya existe en la base de datos
@@ -237,7 +232,7 @@ const EditDisease = ({ rowData, onCancelClick, idDisease}) => {
           </div>
           <div className="form-sec-disease-edit">
             <div className="column-edit-disease">
-            <label className={`labels-disease-e${isFormSubmitted && !values.acciones && 'red-label'}`}>
+            <label className={`labels-disease-e ${isFormSubmitted && !values.acciones && 'red-label'}`}>
                   Acciones*
                 </label>
               <textarea

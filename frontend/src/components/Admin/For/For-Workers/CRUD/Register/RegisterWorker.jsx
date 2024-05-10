@@ -340,7 +340,14 @@ const RegisterWorker = ({ onCancelClick }) => {
                 setIdFarmer={setIdFarmer}
                 isFormSubmitted={isFormSubmitted}
                 value={"Seleccione un agricultor"}
+                //ModoEdición
+                isEditing={false}
+                //className={isFormSubmitted && !idFarmer ? 'red-input' : ''}
             />
+            {/* {!idFarmer && isFormSubmitted && (
+              <span className="error-message">Por favor seleccione un agricultor.</span>
+          )} */}
+
             </div>
           </div>
             <div className='button-container-admin'>

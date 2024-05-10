@@ -112,11 +112,13 @@ const EditWorker = ({onCancelClick, idWorker }) => {
   
     // ESPACIO DE VALIDACIONES
   
+
+
+
     // Si todas las validaciones son correctas, proceder a actualizar
     
     console.log("la data que se va actualizar es: ", data);
-    console.log("mi ID ES", idAgricultorResponsable);
-    //updateWorkerData();
+    updateWorkerData();
   };
 
 

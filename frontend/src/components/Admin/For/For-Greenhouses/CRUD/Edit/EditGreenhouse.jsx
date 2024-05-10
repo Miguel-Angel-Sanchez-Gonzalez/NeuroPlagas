@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './EditGreenhouse.css';
 import AddNotification from '../../../../../LoginNotifications/AddNotification';
 import GreenhouseType from '../../ComboBox/GreenhouseType';
-import ResponsibleFarmer from '../../ComboBox/ResponsibleFarmer';
+import ResponsibleFarmerInWorker from '../../../For-Workers/ComboBox/ResponsibleFarmerInWorker';
 
 const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
   const [records, setRecords] = useState('');
@@ -11,6 +11,8 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Nuevo estado para rastrear si el formulario se ha enviado
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
+  const [idFarmer, setIdFarmer] = useState('');
+  const [idAgricultorResponsable, setidAgricultorResponsable] = useState('');
 
 
   const [values, setValues] = useState({
@@ -19,6 +21,11 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
     humedad: "",
     tamanio: "",
     agricultorResponsable: ""
+  });
+
+
+  const [valuesFarmer, setValuesFarmer] = useState({
+    nombreAgricultorResponsable: ""
   });
 
   const handleInputChange = (e) =>{
@@ -51,9 +58,64 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
     setIsInputFocused(false); // Actualiza el estado cuando un input pierde el enfoque
   };
 
+
+
+  //Para obtener la data del Greenhouse y setearla en los INPUT
+  useEffect(() => {
+    const getWorkerById = () => {
+      fetch(`http://localhost:3000/greenhouse/${idGreenhouse}`)
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error('Error al obtener el invernadero');
+        })
+        .then(data => {
+          //setOriginalEmail(data.correo_electronico);
+          //console.log("data del invernadero" , data[0]);
+          setValues({
+            nombreInvernadero: data[0].nombre,
+            tipoInvernadero: data[0].tipo_invernadero,
+            humedad: data[0].humedad,
+            tamanio: data[0].tamanio
+          });
+          setidAgricultorResponsable(data[0].id_agricultor);
+          console.log("el id del agricultor a byscar es" , data[0].id_agricultor);
+          fetch(`http://localhost:3000/farmer/${data[0].id_agricultor}`)
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Error al obtener el agricultor responsable');
+          })
+          .then(data => {
+            //console.log("data del agricultor" , data);
+            setValuesFarmer({
+              nombreAgricultorResponsable: data.nombre +" "+ data.primer_apellido +" "+ data.segundo_apellido
+            });
+          })
+          .catch(error => {
+            console.error('Error al obtener el agricultor responsable:', error);
+          });
+
+        })
+        .catch(error => {
+          console.error('Error al obtener el invernadero:', error);
+        });
+    };
+    getWorkerById();
+  }, [idGreenhouse]);
+
+
+
+
   useEffect(()=>{
     checkGreenhouseExists();
   }, []);
+
+
+
+
 
   /*FUNCIONES*/
   async function checkGreenhouseExists(greenhouseName){
@@ -63,9 +125,10 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
       return data.exists;
   } 
 
-  const handleSubmit = async (e) => {
+  const onConfirmClick = async (e) => {
     e.preventDefault();
-    setIsFormSubmitted(true); 
+    setIsFormSubmitted(true);
+    console.log("listo para validar");  
 
     
     for (const key in values) {
@@ -83,37 +146,43 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
     }
     
 
-    setIsLoading(true);
+    //YA QUE PASARON TODAS LAS VALIDACIONES
+    
+    //setIsLoading(true);
+    //Data para hacer el update // CHECAR EL ID DEL FARMER ¨******************+
     const data = {
-      idFarmer: values.agricultorResponsable ? values.agricultorResponsable.value : null,
+      //idFarmer: values.agricultorResponsable ? values.agricultorResponsable.value : null,
+      idFarmer : idAgricultorResponsable,
       name: values.nombreInvernadero,
       typeGreenhouse: values.tipoInvernadero,
       humidity: values.humedad,
       size: values.tamanio
     };
 
+    console.log("La data que va hacer el update es: " , data);
+
     //Se esta haciendo la promesa
     //Post para insertar los datos de un invernadero
-      const response = await fetch('http://localhost:3000/greenhouse/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      }) 
-        if (response){
-          const responseData = await response.json();
-          const { id } = responseData; // Obtiene el ID del agricultor del backend
-          setIsLoading(false);
-          setLoadingMessage('Se ha agregado correctamente el invernadero.');
-          setTimeout(() => {
-          setLoadingMessage(''); // Oculta el mensaje después de unos segundos
-          window.location.reload();
-          }, 2000); // Mostrar el mensaje durante 3 segundos
-        } else {
-          setRecords('Por favor, inténtelo de nuevo más tarde.');
-          setIsLoading(false); // Agregar para detener la pantalla de carga
-        }
+      // const response = await fetch('http://localhost:3000/greenhouse/', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(data)
+      // }) 
+      //   if (response){
+      //     const responseData = await response.json();
+      //     const { id } = responseData; // Obtiene el ID del agricultor del backend
+      //     setIsLoading(false);
+      //     setLoadingMessage('Se ha agregado correctamente el invernadero.');
+      //     setTimeout(() => {
+      //     setLoadingMessage(''); // Oculta el mensaje después de unos segundos
+      //     window.location.reload();
+      //     }, 2000); // Mostrar el mensaje durante 3 segundos
+      //   } else {
+      //     setRecords('Por favor, inténtelo de nuevo más tarde.');
+      //     setIsLoading(false); // Agregar para detener la pantalla de carga
+      //   }
   };
 
   return (
@@ -203,14 +272,20 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
               <label className={`label-greenhouse-e ${isFormSubmitted && !values.agricultorResponsable && 'red-label'}`}>
                 Agricultor responsable*
               </label>
-              <ResponsibleFarmer
-                selected={values.agricultorResponsable}
-                setSelected={handleRespFarmerSelect}
+              <ResponsibleFarmerInWorker
+                idFarmer={idFarmer}
+                setIdFarmer={setIdFarmer}
+                isFormSubmitted={isFormSubmitted}
+                value={valuesFarmer.nombreAgricultorResponsable}
+                //ModoEdicion
+                isEditing={true}
+                onFarmerSelected={(farmerId) => setidAgricultorResponsable(farmerId)}
+                
               />
             </div>
           </div>
           <div className='button-container-greenhouse '>
-              <button className='button-greenhouse' type="submit" onClick={handleSubmit}>Guardar</button>
+              <button className='button-greenhouse' type="submit" onClick={onConfirmClick}>Guardar</button>
               {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
               <button className='button-greenhouse ' onClick={onCancelClick}>Cancelar</button>
             </div>

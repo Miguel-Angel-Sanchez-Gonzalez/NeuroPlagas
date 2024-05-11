@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './RegisterWorker.css';
 import AddNotification from '../../../../../LoginNotifications/AddNotification';
-import ResponsibleFarmerInWorker from '../../ComboBox/ResponsibleFarmerInWorker';
+import ResponsibleFarmerAndWorker from '../../ComboBox/ResponsibleFarmerAndWorker';
 
 const RegisterWorker = ({ onCancelClick }) => {
   const [records, setRecords] = useState('');
@@ -335,7 +335,7 @@ const RegisterWorker = ({ onCancelClick }) => {
           <div className="form-sec-worker-register">
             <div className="column-register-worker">
               <label className='label-worker-r'>Agricultor responsable*</label>
-              <ResponsibleFarmerInWorker
+              <ResponsibleFarmerAndWorker
                 idFarmer={idFarmer}
                 setIdFarmer={setIdFarmer}
                 isFormSubmitted={isFormSubmitted}

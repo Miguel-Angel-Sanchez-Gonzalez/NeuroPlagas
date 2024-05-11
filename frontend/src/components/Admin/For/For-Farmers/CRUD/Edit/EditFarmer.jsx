@@ -47,22 +47,6 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
   const handleInputBlur = () => {
     setIsInputFocused(false); // Actualiza el estado cuando un input pierde el enfoque
   };
-
-  // const handleEmailBlur = async () => {
-  //   handleInputBlur(); // Llama a la función general de manejo de desenfoque
-  //   if (values.correo) {
-  //     if (!validateEmail(values.correo)) {
-  //       setEmailExists(false);
-  //     } else {
-  //       // Verificar si el correo fue modificado y si necesita verificación
-  //       if (values.correo !== originalEmail) {
-  //         const emailExists = await checkEmailExists(values.correo);
-  //         setEmailExists(emailExists);
-  //       }
-  //     }
-  //   }
-  // };
-
   //VALIDACIONES
   const checkEmailExists = async (email) => {
     const response = await fetch(`http://localhost:3000/login/check_email_existence`, {

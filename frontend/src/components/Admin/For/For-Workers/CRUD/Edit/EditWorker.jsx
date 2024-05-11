@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './EditWorker.css';
-import ResponsibleFarmerInWorker from '../../ComboBox/ResponsibleFarmerInWorker';
 import AddNotification from '../../../../../LoginNotifications/AddNotification';
+import ResponsibleFarmerAndWorker from '../../ComboBox/ResponsibleFarmerAndWorker';
 
 const EditWorker = ({onCancelClick, idWorker }) => {
   const [records, setRecords] = useState('');
@@ -410,7 +410,7 @@ const EditWorker = ({onCancelClick, idWorker }) => {
           <div className="form-sec-worker-edit">
             <div className="column-edit-worker">
               <label className='label-worker-e'>Agricultor responsable*</label>
-              <ResponsibleFarmerInWorker
+              <ResponsibleFarmerAndWorker
                 idFarmer={idFarmer}
                 setIdFarmer={setIdFarmer}
                 isFormSubmitted={isFormSubmitted}

@@ -14,6 +14,7 @@ function GreenhouseType({ selected, setSelected, isFormSubmitted }) {
         <div className="dropdown">
             <div
                 className={`dropdown-btn ${isFormSubmitted && !selected ? 'red-input' : ''}`}
+                style={selected ? { backgroundColor: '#EFF6FF' } : null}
                 onClick={() => setIsActive(!isActive)}
             >
                 {selected || "Seleccionar tipo..."}
@@ -36,4 +37,3 @@ function GreenhouseType({ selected, setSelected, isFormSubmitted }) {
 }
 
 export default GreenhouseType;
-

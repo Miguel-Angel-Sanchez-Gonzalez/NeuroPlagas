@@ -91,7 +91,7 @@
   background-color: #c62426;
   border: 2px solid #c62426;
   border-radius: 10px;
-  cursor: pointer; /* Cambiado desde el selector de etiqueta */
+  cursor: pointer; 
 }
 
 .error-message-farmer-e,

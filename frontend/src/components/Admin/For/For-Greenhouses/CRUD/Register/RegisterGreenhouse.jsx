@@ -150,7 +150,7 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
                   }
                 }}
               />
-              {greenhouseExists && <p className="greenhouse-exists-r">Nombre ya registrado</p>}
+              {greenhouseExists && <p className="greenhouse-exists-r">Nombre ya registrado.</p>}
             </div>
             <div className="column-register-greenhouse">
               <label className={`label-greenhouse-r ${isFormSubmitted && !values.tipoInvernadero && 'red-label'}`}>

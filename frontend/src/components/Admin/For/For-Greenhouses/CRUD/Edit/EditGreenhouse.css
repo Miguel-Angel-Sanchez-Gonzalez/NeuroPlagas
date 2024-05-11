@@ -105,11 +105,11 @@
 
 .error-message-greenhouse,
 .greenhouse-exists {
-  margin-top: 15px;
-  margin-left: 15px;
-  text-align: justify;
+  margin-top: 5px;
+  margin-left: 5px;
+  text-align: left;
   color: #c62426;
-  font-size: medium;
+  font-size: 15px;
 }
 
 .red-label,

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './EditGreenhouse.css';
 import AddNotification from '../../../../../LoginNotifications/AddNotification';
 import GreenhouseType from '../../ComboBox/GreenhouseType';
-import ResponsibleFarmerInWorker from '../../../For-Workers/ComboBox/ResponsibleFarmerInWorker';
+import ResponsibleFarmerAndWorker from '../../../For-Workers/ComboBox/ResponsibleFarmerAndWorker';
 
 const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
   const [records, setRecords] = useState('');
@@ -63,7 +63,7 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
 
   //Para obtener la data del Greenhouse y setearla en los INPUT
   useEffect(() => {
-    const getWorkerById = () => {
+    const getGreenhouseById = () => {
       fetch(`http://localhost:3000/greenhouse/${idGreenhouse}`)
         .then(response => {
           if (response.ok) {
@@ -73,6 +73,7 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
         })
         .then(data => {
           setOriginalName(data[0].nombre)
+          
           setValues({
             nombreInvernadero: data[0].nombre,
             tipoInvernadero: data[0].tipo_invernadero,
@@ -103,7 +104,7 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
           console.error('Error al obtener el invernadero:', error);
         });
     };
-    getWorkerById();
+    getGreenhouseById();
   }, [idGreenhouse]);
 
 
@@ -227,8 +228,9 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
                 onBlur={async () => {
                   handleInputBlur();
                 }}
+                style={values.nombreInvernadero ? {  backgroundColor: '#EFF6FF' } : null}
               />
-              {greenhouseExists && <p className="greenhouse-exists">El nombre del invernadero ya existe.</p>}
+              {greenhouseExists && <p className="greenhouse-exists">Nombre ya registrado.</p>}
             </div>
             <div className="column-edit-greenhouse">
               <label className={`label-greenhouse-e ${isFormSubmitted && !values.tipoInvernadero && 'red-label'}`}>
@@ -255,6 +257,7 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur} 
+                style={values.humedad ? {  backgroundColor: '#EFF6FF' } : null}
               />
             </div>
             <div className="column-edit-greenhouse">
@@ -271,6 +274,7 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur} 
+                style={values.tamanio ? {  backgroundColor: '#EFF6FF' } : null}
               />
             </div>
           </div>
@@ -278,10 +282,8 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
           <label className='label-dato-greenhouse'>Editar datos del agricultor </label>
           <div className="form-sec-greenhouse-edit">
             <div className="column-edit-greenhouse">
-              <label className={`label-greenhouse-e ${isFormSubmitted && !values.agricultorResponsable && 'red-label'}`}>
-                Agricultor responsable*
-              </label>
-              <ResponsibleFarmerInWorker
+            <label className='label-worker-e'>Agricultor responsable*</label>
+              <ResponsibleFarmerAndWorker
                 idFarmer={idFarmer}
                 setIdFarmer={setIdFarmer}
                 isFormSubmitted={isFormSubmitted}
@@ -289,7 +291,6 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
                 //ModoEdicion
                 isEditing={true}
                 onFarmerSelected={(farmerId) => setidAgricultorResponsable(farmerId)}
-                
               />
             </div>
           </div>

@@ -47,7 +47,7 @@ const HomeAdmin = () => {
             <SidebarAdmin setActiveSection={setActiveSection} activeSection={activeSection} />
                 <div className='table-container-admin'>
                     <div className='space-admin'>
-                        <h2 className='h2admin'>Bienvenido <span className='rol-admin'>administrador</span></h2>
+                        {/* <h2 className='h2admin'>Bienvenido <span className='rol-admin'>administrador</span></h2> */}
                         {renderActiveTable()}
                     </div>
                 </div>

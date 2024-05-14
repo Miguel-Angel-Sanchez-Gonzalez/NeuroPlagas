@@ -153,7 +153,7 @@ const DTableWorkers = () => {
     return (
         <div className='table-worker-admin'>
           <DataTable 
-            title={<div>Trabajadores<label className='description-worker'>Lista de todos los trabajadores que existen en el sistema</label></div>}
+            title={<div> <h4>Trabajadores</h4><label className='description-worker'>Lista de todos los trabajadores que existen en el sistema</label></div>}
             columns={columns}
             //se está considerando el filtro
             data={filteredWorkers}

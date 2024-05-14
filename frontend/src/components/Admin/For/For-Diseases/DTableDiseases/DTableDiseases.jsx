@@ -136,7 +136,7 @@ const DTableDiseases = () => {
     return (
         <div className='table-disease-admin'>
           <DataTable 
-            title={<div>Enfermedades<label className='description'>Lista de enfermedades en los invernaderos</label></div>}
+            title={<div><h4>Enfermedades</h4><label className='description'>Lista de enfermedades en los invernaderos</label></div>}
             columns={columns}
             //considerando el filtro
             data={filteredDiseases}

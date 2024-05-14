@@ -143,9 +143,11 @@ const DTableFarmers = () => {
     }
 
     return (
+        <div>
+            <div><h2 className='h2admin'>Bienvenido <span className='rol-admin'>administrador</span></h2></div>
         <div className='table-farmer-admin'>
           <DataTable 
-            title={<div>Agricultores<label className='description-farmer'>Lista de todos los agricultores que existen en el sistema</label></div>}
+            title={<div> <h4>Agricultores</h4> <label className='description-farmer'>Lista de todos los agricultores que existen en el sistema</label></div>}
             columns={columns}
             //se está considerando el filtro
             data={filteredFarmers}
@@ -166,6 +168,7 @@ const DTableFarmers = () => {
           {showEditFarmer && <EditFarmer onCancelClick={handleCancelClick} idFarmer={idFarmer}/>}
           {showDeleteFarmer && <DeleteFarmer onCancelClick={handleCancelClick} idFarmer={idFarmer}/>}
           
+        </div>
         </div>
     );
     

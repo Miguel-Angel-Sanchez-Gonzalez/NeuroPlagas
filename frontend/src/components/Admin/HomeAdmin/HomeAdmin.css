@@ -25,7 +25,7 @@
     width: 75%; /* Asegúrate de que la suma de este ancho y el de otros elementos no exceda el 100% */
     overflow: auto; /* Permite desplazamiento si el contenido interno es muy ancho */
 }
-
+/* 
 .h2admin {
   margin-left: 15px;
   margin-bottom: 20px;
@@ -33,7 +33,7 @@
 
 .rol-admin {
   color: #c62426;
-}
+} */
 
 .space-admin {
   padding: 15px;

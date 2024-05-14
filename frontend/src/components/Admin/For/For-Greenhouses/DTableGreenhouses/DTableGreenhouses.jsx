@@ -6,11 +6,14 @@ import './DTableGreenhouses.css';
 import RegisterGreenhouse from '../CRUD/Register/RegisterGreenhouse';
 import EditGreenhouse from '../CRUD/Edit/EditGreenhouse';
 import DeleteGreenhouse from '../CRUD/Delete/DeleteGreenhouse';
+import DTableBeds from '../../For-Beds/DTableBeds/DTableBeds';
 
 const DTableGreenhouses = () => {
     const [inputValue, setInputValue] = useState("");
     const [filteredGreenhouses, setFilteredGreenhouses] = useState([]);
     const [idGreenhouse, setIDGreenhouse] = useState("");
+    const [nameGreenhouse, setNameGreenhouse] = useState("");
+    const [nameFarmer, setNameFarmer] = useState("");
 
     const columns = [
         {
@@ -54,7 +57,7 @@ const DTableGreenhouses = () => {
                 <div className='icons-container'>
                     <FontAwesomeIcon icon={faPencilAlt} onClick={() => handleEditClick(row)} className='edit-icon' size='lg'/>
                     <FontAwesomeIcon icon={faTrash} onClick={() => handleDeleteClick(row)} className='delete-icon' size='lg' />
-                    <FontAwesomeIcon icon={faEye}  className='view-icon' size='lg' />
+                    <FontAwesomeIcon icon={faEye} onClick={() => handdleShowBeds(row)} className='view-icon' size='lg' />
                 </div>
             ),
             width:'auto'
@@ -67,6 +70,7 @@ const DTableGreenhouses = () => {
     const [showRegisterGreenh, setshowRegisterGreenh] = useState(false); //Form de register
     const [showEditGreenh, setshowEditGreenh] = useState(false); //Form de edicion
     const [showDeleteGreenh, setshowDeleteGreenh] = useState(false); //Form de eliminacion
+    const [showGreenhouseBeds, setShowGreenhouseBeds] = useState(false); //Form para ver las camas de un invernadero
     const [greenhouses, setGreenhouses] = useState(data);
 
     useEffect(()=>{
@@ -109,6 +113,7 @@ const DTableGreenhouses = () => {
         setshowRegisterGreenh(false);
         setshowEditGreenh(false);
         setshowDeleteGreenh(false);
+        setShowGreenhouseBeds(false);
       };
 
     const handleEditClick = (row) => {
@@ -121,6 +126,18 @@ const DTableGreenhouses = () => {
         setshowDeleteGreenh(true);
     };
 
+    const handdleShowBeds = (row) => {
+        setIDGreenhouse(row.id_invernadero);
+        setNameGreenhouse(row.nombre);
+        setNameFarmer(row.nombre_agricultor);
+        setShowGreenhouseBeds(true);
+    };
+
+    //si showGreenhouseBeds es true se muestra el DTableBeds
+    if (showGreenhouseBeds) {
+        return <DTableBeds onCancelClick={handleCancelClick} idGreenhouse={idGreenhouse} nameGreenhouse={nameGreenhouse} nameFarmer={nameFarmer}/>
+    }
+
     const paginacionOpciones={
         rowsPerPageText: 'Filas por página',
         rangeSeparatorText: 'de',
@@ -131,7 +148,7 @@ const DTableGreenhouses = () => {
     return (
         <div className='table-greenhouse-admin'>
           <DataTable 
-            title={<div>Invernaderos<label className='description-greenhouse'>Lista de todos los invernaderos que existen en el sistema</label></div>}
+            title={<div> <h4>Invernaderos</h4><label className='description-greenhouse'>Lista de todos los invernaderos que existen en el sistema</label></div>}
             columns={columns}
             //Considerando el filtro
             data={filteredGreenhouses}
@@ -151,7 +168,6 @@ const DTableGreenhouses = () => {
           {showRegisterGreenh && <RegisterGreenhouse onCancelClick={handleCancelClick} />}{}
           {showEditGreenh && <EditGreenhouse onCancelClick={handleCancelClick} idGreenhouse={idGreenhouse}/>}
           {showDeleteGreenh && <DeleteGreenhouse onCancelClick={handleCancelClick} idGreenhouse={idGreenhouse} />}
-          
         </div>
     );
 };

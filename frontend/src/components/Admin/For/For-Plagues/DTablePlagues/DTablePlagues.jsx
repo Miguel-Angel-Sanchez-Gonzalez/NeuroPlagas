@@ -132,9 +132,9 @@ const DTablePlagues = () => {
     }
 
     return (
-        <div className='table-plague-admin'>
+        <div className='table-plagues-admin'>
           <DataTable 
-            title={<div>Plagas<label className='description'>Lista de plagas en los invernaderos</label></div>}
+            title={<div> <h4>Plagas</h4><label className='description'>Lista de plagas en los invernaderos</label></div>}
             columns={columns}
             //considerando el filtro
             data={filteredPlagues}
@@ -144,7 +144,7 @@ const DTablePlagues = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             actions={
-                <div className='header-table-plague'>
+                <div className='header-table-plagues'>
                 <FontAwesomeIcon icon={faSearch} className='search' />
                 <input type="text" placeholder='Buscar...' value={inputValue} onChange={handleFilter} className='searchPlague'/>
                 <button type="button" className='buttonPlaga' onClick={handleRegisterClick}>Registrar plaga</button>

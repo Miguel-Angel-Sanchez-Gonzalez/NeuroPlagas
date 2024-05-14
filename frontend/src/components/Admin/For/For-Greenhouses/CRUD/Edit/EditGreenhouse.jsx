@@ -14,8 +14,7 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
   const [idFarmer, setIdFarmer] = useState('');
   const [idAgricultorResponsable, setidAgricultorResponsable] = useState('');
   const [originalName, setOriginalName] = useState('');
-
-
+  
   const [values, setValues] = useState({
     nombreInvernadero: "",
     tipoInvernadero: "",
@@ -145,7 +144,7 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
       }
     }
 
-        // Validar si el correo electrónico fue modificado
+        // Validar si el nombre de invernadero fue modificado
     if (values.nombreInvernadero !== originalName) {
       //Validando que el invernadero exista
       const greenhouseExists = await checkGreenhouseExists(values.nombreInvernadero);
@@ -157,13 +156,6 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
       setGreenhouseExists(false);
     }
     
-
-    // //Validando que el invernadero exista
-    // const greenhouseExists = await checkGreenhouseExists(values.nombreInvernadero);
-    // if (greenhouseExists) {
-    //   setGreenhouseExists(true);
-    //   return;
-    // }
 
     //YA QUE PASARON TODAS LAS VALIDACIONES
     setIsLoading(true);

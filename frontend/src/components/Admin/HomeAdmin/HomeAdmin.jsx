@@ -7,6 +7,7 @@ import ProfileAdmin from '../NavSideProfileAdmin/ProfileAdmin/ProfileAdmin';
 import DTableGreenhouses from '../For/For-Greenhouses/DTableGreenhouses/DTableGreenhouses';
 import DTablePlagues from '../For/For-Plagues/DTablePlagues/DTablePlagues';
 import DTableWorkers from '../For/For-Workers/DTableWorkers/DTableWorkers';
+import Dashboard from '../../Dashboard/Dashboard';
 import './HomeAdmin.css'; // Importa tus estilos CSS aquí
 
 const HomeAdmin = () => {
@@ -22,6 +23,7 @@ const HomeAdmin = () => {
     };
 
     const renderActiveTable = () => {
+        console.log("mi seleccion es: " , activeSection);
         switch (activeSection) {
             case 'farmers':
                 return <DTableFarmers />;
@@ -29,6 +31,8 @@ const HomeAdmin = () => {
                 return <DTableGreenhouses />;
             case 'workers':
                 return <DTableWorkers />;
+            case 'reporte':
+                return <Dashboard />;
             case 'plagues':
                 return <DTablePlagues />;
             case 'diseases':

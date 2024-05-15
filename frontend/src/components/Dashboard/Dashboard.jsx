@@ -1,9 +1,9 @@
 import { Card, Metric, Text, Title, DonutChart, LineChart } from "@tremor/react";
 
-import './App.css'
+import './Dashboard.css'
 
-import dataBarbie from './movie-barbie.json';
-import dataOppenheimer from './movie-oppenheimer.json';
+import dataBarbie from '../../movie-barbie.json';
+import dataOppenheimer from '../../movie-oppenheimer.json';
 
 const chartData = dataBarbie.domestic_daily.map(({ revenue, date }) => {
   const oppenheimer = dataOppenheimer.domestic_daily.find(opp => opp.date === date);
@@ -14,7 +14,7 @@ const chartData = dataBarbie.domestic_daily.map(({ revenue, date }) => {
   }
 })
 
-function addCommasToNumber(number: number) {
+function addCommasToNumber(number) {
   // Convert the number to a string
   let numString = number.toString();
   
@@ -98,7 +98,7 @@ function App() {
           data={chartData}
           index="year"
           categories={["Barbie", "Oppenheimer"]}
-          colors={["pink", "gray"]}
+          colors={["pink", "green"]}
           yAxisWidth={120}
           valueFormatter={addCommasToNumber}
         />

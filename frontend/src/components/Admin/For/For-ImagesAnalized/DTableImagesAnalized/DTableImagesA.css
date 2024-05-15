@@ -1,14 +1,13 @@
-.table-bed-admin {
+.table-imagesA-admin {
   display: flex;
-  align-items: inherit;
-  
+  align-items: inherit; /* Esto alinea verticalmente los contenidos */
 }
 
-.left-content-bed  {
+.left-content-imageA {
   padding-right: 10px;
 }
 
-.back-icon {
+.back-icon-imageA {
   margin-top: 10px;
   cursor: pointer;
   color: #c62426;
@@ -19,15 +18,15 @@
   flex: 1; /* Esto hace que el contenido derecho ocupe todo el espacio disponible */
 }
 
-.h2green-bed, 
-.h4farmer-bed{
+.h2green-bed-imageA, 
+.h4farmer-bed-imageA{
   color: #05073C;
   width: 100%;
   margin-left: 16px;
   margin-bottom: 5px;
 }
 
-.only-table-bed {
+.only-table-imageA {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -37,50 +36,38 @@
   margin-left: 10px;
 }
 
-.title-and-search-bed {
+.title-and-search-imageA {
   display: flex;
   justify-content: space-between; /* Distribuye los elementos horizontalmente */
   align-items: center; /* Centra los elementos verticalmente */
   margin-bottom: 10px; /* Ajusta el margen inferior */
 }
 
-.description-bed{
+.description-imagesA{
   display: block;
   font-size: 15px;
   margin-top: 10px;
 }
 
-.header-table-bed {
+.header-table-imagesA {
   display: flex;
   align-items: center;
 }
 
-.icon-bed {
-  margin-right: 0px;
+.icon-ImageA {
+  margin-right: 10px;
   color: #c62426;
 }
 
-.search-bed {
-  padding: 12px 16px;
+.search-ImageA {
+  padding: 10px 16px;
   border: 1px solid #ccc;
   border-radius: 8px;
   outline: none;
   width: 150px;
 }
 
-.search-bed:focus {
+.search-ImageA:focus {
   border-color: #2f31758e;
 }
 
-.buttonBed{
-  padding: 10px 15px;
-  color: white;
-  background-color: #c62426;
-  border: 2px solid #c62426;
-  border-radius: 10px;
-}
-
-.name-farmer,
-.name-bed{
-  color: #c62426;
-}

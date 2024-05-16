@@ -1,69 +1,61 @@
 /* Estilos base */
-.edit-greenhouse-container {
+.edit-bed-container {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
   background-color: #fff;
-  padding: 20px;
+  padding: 10px;
   border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%; /* Hacerlo responsivo */
-  max-width: 500px;
+  max-width: 450px;
   display: flex;
   flex-direction: column;
 }
 
-.centrar-greenhouse {
+.centrar-bed {
   margin: 5px;
 }
 
-.h4edit-greenhouse {
+.h4edit-bed {
   padding-top: 20px;
   margin-bottom: 20px;
   text-align: center;
 }
 
-.h5edit-greenhouse {
+.h5edit-bed {
   text-align: right;
   padding-bottom: 10px;
   color: #c62426;
   margin-right: 25px;
 }
 
-.label-dato-greenhouse {
+.label-dato-bed {
   font-weight: bold;
   margin-left: 25px;
 }
 
-.label-greenhouse-e {
+.label-bed-e {
   font-size: 14px;
   margin-left: 5px;
 }
 
-.inputs-edit-greenhouse{
+.inputs-edit-bed{
   margin-top: 5px;
   width: 90%; /* Ajusta el ancho a 80% como solicitado */
   padding: 10px;
   border: 2px solid #d4d0d0;
-  margin-left: 5px; /* Centra los inputs */
+  margin-left: 5px;
+  margin-bottom: 20px;
 }
 
-.inputs-edit-greenhouse2 {
-  margin-top: 5px;
-  width: 70%; /* Ajusta el ancho a 80% como solicitado */
-  padding: 10px;
-  border: 2px solid #d4d0d0;
-  margin-left: 5px; /* Centra los inputs */
-}
-
-.inputs-edit-greenhouse:focus,
-.inputs-edit-greenhouse2:focus {
+.inputs-edit-bed:focus {
   border: 2px solid #c62426;
 }
 
-.form-sec-greenhouse-edit {
+.form-sec-bed-edit {
   display: flex;
   flex-direction: row;
   justify-content: space-between; /* Distribuye los elementos horizontalmente */
@@ -71,28 +63,29 @@
   margin-left: 20px;
 }
 
-.column-edit-greenhouse {
+.column-edit-bed {
   flex: 1; /* Ocupa el espacio disponible */
   margin-right: 10px; /* Espacio entre las columnas */
   margin-top: 10px;
 }
 
-.password-rules-greenhouse-e {
+.password-rules-bed-e {
   display: block;
   padding-top: 4px;
   margin-left: 15px;
 }
 
-.button-container-greenhouse {
+.button-container-bed {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 20px;
   margin-left: auto;
   margin-right: 25px;
+  margin-bottom: 20px;
 }
 
-.button-greenhouse {
+.button-bed {
   width: 150px;
   padding: 12px;
   color: white;
@@ -103,8 +96,15 @@
   margin-left: 25px;
 }
 
-.error-message-greenhouse,
-.greenhouse-exists {
+.error-message-bed-e{
+  margin-top: 15px;
+  text-align: left;
+  color: #c62426;
+  font-size: medium;
+  margin-left: 25px;
+}
+
+.bed-exists-e {
   margin-top: 5px;
   margin-left: 5px;
   text-align: left;

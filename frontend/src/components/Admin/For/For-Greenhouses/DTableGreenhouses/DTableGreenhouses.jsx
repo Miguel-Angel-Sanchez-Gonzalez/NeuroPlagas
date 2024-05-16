@@ -70,7 +70,7 @@ const DTableGreenhouses = () => {
     const [showRegisterGreenh, setshowRegisterGreenh] = useState(false); //Form de register
     const [showEditGreenh, setshowEditGreenh] = useState(false); //Form de edicion
     const [showDeleteGreenh, setshowDeleteGreenh] = useState(false); //Form de eliminacion
-    const [showGreenhouseBeds, setShowGreenhouseBeds] = useState(false); //Form para ver las camas de un invernadero
+    const [showDataTableBeds, setshowDataTableBeds] = useState(false); //Form para ver las camas de un invernadero
     const [greenhouses, setGreenhouses] = useState(data);
 
     useEffect(()=>{
@@ -113,7 +113,7 @@ const DTableGreenhouses = () => {
         setshowRegisterGreenh(false);
         setshowEditGreenh(false);
         setshowDeleteGreenh(false);
-        setShowGreenhouseBeds(false);
+        setshowDataTableBeds(false);
       };
 
     const handleEditClick = (row) => {
@@ -130,11 +130,11 @@ const DTableGreenhouses = () => {
         setIDGreenhouse(row.id_invernadero);
         setNameGreenhouse(row.nombre);
         setNameFarmer(row.nombre_agricultor);
-        setShowGreenhouseBeds(true);
+        setshowDataTableBeds(true);
     };
 
-    //si showGreenhouseBeds es true se muestra el DTableBeds
-    if (showGreenhouseBeds) {
+    //si showDataTableBeds es true se muestra el DTableBeds
+    if (showDataTableBeds) {
         return <DTableBeds onCancelClick={handleCancelClick} idGreenhouse={idGreenhouse} nameGreenhouse={nameGreenhouse} nameFarmer={nameFarmer}/>
     }
 

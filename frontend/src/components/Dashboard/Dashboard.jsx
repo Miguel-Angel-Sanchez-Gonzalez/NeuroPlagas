@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Card,
   Metric,
@@ -8,8 +9,10 @@ import {
   DatePicker,
   CategoryBar,
   Legend,
+  BarList,
+  FunnelChart,
 } from "@tremor/react";
-import "./Dashboard.css";
+import "./Dashboard.css"; // Importa el archivo CSS
 import dataBarbie from "../../movie-barbie.json";
 import dataOppenheimer from "../../movie-oppenheimer.json";
 
@@ -29,166 +32,75 @@ const Dashboard = () => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  const valor = 3000;
-  const valor2 = 42;
-
   const sales = [
-    {
-      name: "New York",
-      sales: 980,
-    },
-    {
-      name: "London",
-      sales: 456,
-    },
-    {
-      name: "Hong Kong",
-      sales: 390,
-    },
-    {
-      name: "San Francisco",
-      sales: 240,
-    },
-    {
-      name: "Singapore",
-      sales: 190,
-    },
+    { name: "New York", sales: 980 },
+    { name: "London", sales: 456 },
+    { name: "Hong Kong", sales: 390 },
+    { name: "San Francisco", sales: 240 },
+    { name: "Singapore", sales: 190 },
   ];
 
-  const valueFormatter = (number) =>
-    `$ ${Intl.NumberFormat("us").format(number).toString()}`;
+  const valueFormatter = (number) => `$ ${Intl.NumberFormat("us").format(number).toString()}`;
+
+  const datahero = [
+    { name: '/home', value: 456 },
+    { name: '/imprint', value: 351 },
+    { name: '/cancellation', value: 51 },
+  ];
+
+  const chartdata = [
+    { name: 'opens', value: 200 },
+    { name: 'visitors', value: 351 },
+    {
+      name: "added to cart",
+      value: 191,
+    },
+    { name: 'orders', value: 10 },
+  ];
 
   return (
-    <div className="text-left">
-      <div className="grid grid-cols-2 gap-12">
-        {/* Plagas */}
-        <div>
-          <h2 className="text-2xl font-bold mb-6">Plagas</h2>
+    <div className="main-div bg-gray-100">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <Section>
+          <CardMetric title="Total Plagas" value={addCommasToNumber(dataBarbie.global_revenue)} />
+          <CardDonut title="Plagas Distribution" data={sales} valueFormatter={valueFormatter} />
+          
+          <CardCategoryBar title="Product A Rating" value="42" values={[40, 30, 20, 10]} />
+        </Section>
 
-          {/* Componente de Dona */}
-          <Card className="max-w-lg mb-6 h-30 text-tremor-content">
-            <Title>Sales</Title>
-            <div className="flex items-center justify-center space-x-6">
-              <DonutChart
-                data={sales}
-                category="sales"
-                index="name"
-                valueFormatter={valueFormatter}
-                colors={["blue", "cyan", "indigo", "violet", "fuchsia"]}
-                className="w-40"
-              />
-              <Legend
-                categories={[
-                  "New York",
-                  "London",
-                  "Hong Kong",
-                  "San Francisco",
-                  "Singapore",
-                ]}
-                colors={["blue", "cyan", "indigo", "violet", "fuchsia"]}
-                className="max-w-xs"
-              />
-            </div>
-          </Card>
+        <Section>
+          <CardMetric title="Total Enfermedades" value={addCommasToNumber(dataOppenheimer.global_revenue)} />
+          <CardDonut title="Enfermedades Distribution" data={sales} valueFormatter={valueFormatter} />
+          
+          <CardCategoryBar title="Product A Rating" value="42" values={[40, 30, 20, 10]} />
+        </Section>
 
-          {/* Componentes para mostrar un valor numérico de manera destacada (Metric) */}
-          <Card className="max-w-xs mx-auto mb-6 decoration-top decorationColor-indigo">
-            <Text>Revenue</Text>
-            <Metric>${addCommasToNumber(dataBarbie.global_revenue)}</Metric>
-          </Card>
-
-          <Card className="max-w-xs mx-auto mb-6 decoration-top decorationColor-indigo">
-            <Text>Budget</Text>
-            <Metric>${valor}</Metric>
-          </Card>
-
-          {/* Componente CategoryBar (INDICES DE 0 A 100) */}
-          <Card className="mx-auto max-w-sm">
-            <p className="text-tremor-default text-tremor-content dark:text-dark-tremor-content-inverted flex items-center justify-between">
-              <span>Rating Product A</span>
-              <span>${valor2}</span>
-            </p>
-            <CategoryBar
-              values={[40, 30, 20, 10]}
-              colors={["emerald", "yellow", "orange", "rose"]}
-              markerValue={valor2}
-              className="mt-3"
-            />
-          </Card>
-        </div>
-
-        {/* Enfermedades */}
-        <div>
-          <h2 className="text-2xl font-bold mb-6">Enfermedades</h2>
-
-          {/* Componente de Dona */}
-          <Card className="max-w-lg mb-6 h-30 text-tremor-content">
-            <Title>Sales</Title>
-            <div className="flex items-center justify-center space-x-6">
-              <DonutChart
-                data={sales}
-                category="sales"
-                index="name"
-                valueFormatter={valueFormatter}
-                colors={["blue", "cyan", "indigo", "violet", "fuchsia"]}
-                className="w-40"
-              />
-              <Legend
-                categories={[
-                  "New York",
-                  "London",
-                  "Hong Kong",
-                  "San Francisco",
-                  "Singapore",
-                ]}
-                colors={["blue", "cyan", "indigo", "violet", "fuchsia"]}
-                className="max-w-xs"
-              />
-            </div>
-          </Card>
-
-          {/* Componente para mostrar un valor numérico de manera destacada (Metric) */}
-          <Card className="max-w-xs mx-auto mb-6 decoration-top decorationColor-indigo">
-            <Text>Revenue</Text>
-            <Metric>
-              ${addCommasToNumber(dataOppenheimer.global_revenue)}
-            </Metric>
-          </Card>
-          <Card className="max-w-xs mx-auto mb-6 decoration-top decorationColor-indigo">
-            <Text>Budget</Text>
-            <Metric>${addCommasToNumber(dataOppenheimer.budget)}</Metric>
-          </Card>
-
-          {/* Componente CategoryBar (INDICES DE 0 A 100) */}
-          <Card className="mx-auto max-w-sm">
-            <p className="text-tremor-default text-tremor-content dark:text-dark-tremor-content flex items-center justify-between">
-              <span>Rating Product A</span>
-              <span>${valor2}</span>
-            </p>
-            <CategoryBar
-              values={[40, 30, 20, 10]}
-              colors={["emerald", "yellow", "orange", "rose"]}
-              markerValue={valor2}
-              className="mt-3"
-            />
-          </Card>
-        </div>
+        <Section>
+        <CardMetric title="Total Sanos" value="3,000" />
+        <FunnelChart className="h-60" data={chartdata} onValueChange={(v) => console.log(v)} />
+        
+        <BarList
+          data={datahero}
+          sortOrder="ascending"
+          className="mx-auto max-w-sm"
+        />
+        </Section>
       </div>
 
-      {/* Componente de Calendario */}
-      <p className="text-center font-mono text-sm text-slate-600">
-        Seleccione una fecha
-      </p>
-      <DatePicker />
+      <div className="text-center mb-8">
+        <Text className="text-lg-medium">Seleccione una fecha</Text>
+        <DatePicker />
+        
+      </div>
 
-      <Card className="mt-8">
-        <Title>Domestic Daily</Title>
+      <Card>
+        <Title className="text-medium">Domestic Daily Revenue Comparison</Title>
         <LineChart
           className="mt-6"
           data={chartData}
           index="date"
           categories={["Barbie", "Oppenheimer"]}
-          colors={["pink", "green"]}
+          colors={["purple", "fuchsia"]}
           yAxisWidth={100}
           valueFormatter={addCommasToNumber}
         />
@@ -196,5 +108,59 @@ const Dashboard = () => {
     </div>
   );
 };
+
+// COMPONENTES DE TREMOR
+
+const Section = ({ title, children }) => (
+  <div>
+    <Title className="section-title">{title}</Title>
+    <div className="space-y-6">
+      {children}
+    </div>
+  </div>
+);
+
+const CardDonut = ({ title, data, valueFormatter }) => (
+  <Card className="max-w-full">
+    <Title className="text-medium">{title}</Title>
+    <div className="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0 md:space-x-6">
+      <DonutChart
+        data={data}
+        category="sales"
+        index="name"
+        valueFormatter={valueFormatter}
+        colors={["blue", "cyan", "indigo", "violet", "fuchsia"]}
+        className="w-40"
+      />
+      <Legend
+        categories={data.map(item => item.name)}
+        colors={["blue", "cyan", "indigo", "violet", "fuchsia"]}
+        className="max-w-xs"
+      />
+    </div>
+  </Card>
+);
+
+const CardMetric = ({ title, value }) => (
+  <Card className="max-w-full">
+    <Text className="text-medium">{title}</Text>
+    <Metric>{value}</Metric>
+  </Card>
+);
+
+const CardCategoryBar = ({ title, value, values }) => (
+  <Card className="max-w-full">
+    <div className="flex items-center justify-between mb-4">
+      <Text className="text-medium">{title}</Text>
+      <Metric>{value}</Metric>
+    </div>
+    <CategoryBar
+      values={values}
+      colors={["emerald", "yellow", "orange", "rose"]}
+      markerValue={value}
+      className="mt-3"
+    />
+  </Card>
+);
 
 export default Dashboard;

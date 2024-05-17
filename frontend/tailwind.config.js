@@ -44,19 +44,19 @@ module.exports = {
         // dark mode
         "dark-tremor": {
           brand: {
-            faint: "#0B1229", // custom
-            muted: "#172554", // blue-950
-            subtle: "#1e40af", // blue-800
+            faint: "#f6405a", // custom
+            muted: "#f6405a", // blue-950
+            subtle: "#86bceb", // blue-800
             DEFAULT: "#3b82f6", // blue-500
             emphasis: "#60a5fa", // blue-400
             inverted: "#030712", // gray-950
           },
           background: {
-            muted: "#131A2B", // custom
-            subtle: "#1f2937", // gray-800
-            DEFAULT: "#60a5fa", // gray-900
-            emphasis: "#d1d5db", // gray-300
-            emphasis2: "#60a5fa", // blue-400
+            muted: "#9FC5E8", // custom  -- COLOR DE FONDO DEL CALENDARIO
+            subtle: "#3b82f6", // gray-800
+            DEFAULT: "#cde6ff", // gray-900 -- COLOR DE FONDO
+            emphasis: "#6ab7ff", // gray-300
+            emphasis2: "#4698ff", // blue-400
           },
           border: {
             DEFAULT: "#1f2937", // gray-800
@@ -66,9 +66,9 @@ module.exports = {
           },
           content: {
             subtle: "#4b5563", // gray-600
-            DEFAULT: "#6b7280", // gray-600
-            emphasis: "#e5e7eb", // gray-200
-            strong: "#f9fafb", // gray-50
+            DEFAULT: "#000000", // gray-600
+            emphasis: "#000000", // gray-200 -- COLOR TEXTOS INTERNOS
+            strong: "#000000", // gray-50 -- COLOR TEXTOS EXTERNOS
             inverted: "#000000", // black
           },
         },

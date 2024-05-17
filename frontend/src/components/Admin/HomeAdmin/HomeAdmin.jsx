@@ -23,7 +23,6 @@ const HomeAdmin = () => {
     };
 
     const renderActiveTable = () => {
-        console.log("mi seleccion es: " , activeSection);
         switch (activeSection) {
             case 'farmers':
                 return <DTableFarmers />;

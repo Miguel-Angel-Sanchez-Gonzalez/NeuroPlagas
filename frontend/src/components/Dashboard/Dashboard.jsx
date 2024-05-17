@@ -1,11 +1,23 @@
-import { Card, Metric, Text, Title, DonutChart, LineChart, DatePicker, CategoryBar, Legend } from '@tremor/react';
-import './Dashboard.css';
-import dataBarbie from '../../movie-barbie.json';
-import dataOppenheimer from '../../movie-oppenheimer.json';
+import {
+  Card,
+  Metric,
+  Text,
+  Title,
+  DonutChart,
+  LineChart,
+  DatePicker,
+  CategoryBar,
+  Legend,
+} from "@tremor/react";
+import "./Dashboard.css";
+import dataBarbie from "../../movie-barbie.json";
+import dataOppenheimer from "../../movie-oppenheimer.json";
 
 const Dashboard = () => {
   const chartData = dataBarbie.domestic_daily.map(({ revenue, date }) => {
-    const oppenheimer = dataOppenheimer.domestic_daily.find(opp => opp.date === date);
+    const oppenheimer = dataOppenheimer.domestic_daily.find(
+      (opp) => opp.date === date
+    );
     return {
       date,
       Barbie: revenue,
@@ -22,29 +34,29 @@ const Dashboard = () => {
 
   const sales = [
     {
-      name: 'New York',
+      name: "New York",
       sales: 980,
     },
     {
-      name: 'London',
+      name: "London",
       sales: 456,
     },
     {
-      name: 'Hong Kong',
+      name: "Hong Kong",
       sales: 390,
     },
     {
-      name: 'San Francisco',
+      name: "San Francisco",
       sales: 240,
     },
     {
-      name: 'Singapore',
+      name: "Singapore",
       sales: 190,
     },
   ];
-  
+
   const valueFormatter = (number) =>
-    `$ ${Intl.NumberFormat('us').format(number).toString()}`;
+    `$ ${Intl.NumberFormat("us").format(number).toString()}`;
 
   return (
     <div className="text-left">
@@ -92,7 +104,7 @@ const Dashboard = () => {
 
           {/* Componente CategoryBar (INDICES DE 0 A 100) */}
           <Card className="mx-auto max-w-sm">
-            <p className="text-tremor-default text-tremor-content dark:text-dark-tremor-content flex items-center justify-between">
+            <p className="text-tremor-default text-tremor-content dark:text-dark-tremor-content-inverted flex items-center justify-between">
               <span>Rating Product A</span>
               <span>${valor2}</span>
             </p>

@@ -180,7 +180,7 @@ const DTableBeds = ({idGreenhouse, nameGreenhouse, nameFarmer}) => {
                     />
                     </div>
           </div>
-          {showRegisterBed && <RegisterBed onCancelClick={handleRegisterClick} idGreenhouse={idGreenhouse} />}
+          {showRegisterBed && <RegisterBed onCancelClick={handleCancelClick} idGreenhouse={idGreenhouse} />}
           {showEditBed && <EditBed onCancelClick={handleCancelClick} idBed={idBed} idGreenhouse={idGreenhouse}/>}
           {showDataTableImagesA && <DTableImagesA onCancelClick={handleCancelClick} idBed={idBed} idGreenhouse={idGreenhouse} />} 
           

@@ -79,7 +79,7 @@ const DTableImagesA = ({idBed, idGreenhouse, nameGreenhouse, nameFarmer, numberB
     try {
         const response = await fetch(`http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`);
         const data = await response.json();
-        console.log(data)
+        console.log('Respuesta del servidor:', data);
         setImagesAnalized(data);
         setFilteredImagesA(data);
       } catch (error) {

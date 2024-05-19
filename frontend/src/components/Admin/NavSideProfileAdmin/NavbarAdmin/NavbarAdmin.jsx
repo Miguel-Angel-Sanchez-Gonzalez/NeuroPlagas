@@ -2,28 +2,28 @@ import React, { useState, useEffect, useRef } from 'react';
 import { HiMenu } from "react-icons/hi";
 import './NavbarAdmin.css';
 import ProfileAdmin from '../ProfileAdmin/ProfileAdmin';
+import { Navigate, useNavigate } from 'react-router-dom';
 
-const NavbarAdmin = ({onConfigureProfileClick}) => {
-  const storedUsername = localStorage.getItem('username');
-  const storedLastname = localStorage.getItem('lastname');
-  const storedSecondLastname = localStorage.getItem('secondlastname');
-  const storedEmail = localStorage.getItem('email');
+const NavbarAdmin = ({ onConfigureProfileClick }) => {
+  const [user, setUser] = useState({
+    username: localStorage.getItem('username') || '',
+    lastname: localStorage.getItem('lastname') || '',
+    secondLastname: localStorage.getItem('secondlastname') || '',
+    email: localStorage.getItem('email') || ''
+  });
 
-  const [showProfileAdmin, setshowProfileAdmin] = useState(false);
+  const [showProfileAdmin, setShowProfileAdmin] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setMenuVisible(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    setUser({
+      username: localStorage.getItem('username') || '',
+      lastname: localStorage.getItem('lastname') || '',
+      secondLastname: localStorage.getItem('secondlastname') || '',
+      email: localStorage.getItem('email') || ''
+    });
   }, []);
 
   const toggleMenu = () => {
@@ -31,41 +31,48 @@ const NavbarAdmin = ({onConfigureProfileClick}) => {
   };
 
   const handleLogout = () => {
-    //Reset de variables
-    localStorage.setItem('token', '');  
+    // Reset de variables
+    localStorage.setItem('token', '');
     localStorage.setItem('username', '');
     localStorage.setItem('lastname', '');
     localStorage.setItem('secondlastname', '');
     localStorage.setItem('email', '');
+    // Actualiza el estado del usuario
+    setUser({
+      username: '',
+      lastname: '',
+      secondLastname: '',
+      email: ''
+    });
     // Redirige al usuario a la página de inicio de sesión
-    window.location.href = '/login'; 
+    navigate('/login');
   };
 
   const handleProfileFormCancel = () => {
-    setshowProfileAdmin(false);
+    setShowProfileAdmin(false);
   };
 
   return (
-    <div >
+    <div>
       <div className='menu--nav-admin'>
-      <img src="/images/tomatito.png" alt="" /> {/*Imagen*/}
-        <h2>Tomi-Plagas y Enfermedades </h2>              {/*Titulo*/}
+        <img src="/images/tomatito.png" alt="" /> {/*Imagen*/}
+        <h2>Tomi-Plagas y Enfermedades </h2> {/*Titulo*/}
         <div className='notify-admin' ref={menuRef}>
-            <HiMenu className='icon' onClick={toggleMenu}/>   
-            {menuVisible && (
-              <div className="menu-options-admin">
-                <p onClick={onConfigureProfileClick}>Configurar perfil</p> {/* Llama a la función desde las props */}
-                <p onClick={handleLogout}>Cerrar sesión</p>
-              </div>
-            )}
+          <HiMenu className='icon' onClick={toggleMenu} />
+          {menuVisible && (
+            <div className="menu-options-admin">
+              <p onClick={onConfigureProfileClick}>Configurar perfil</p> {/* Llama a la función desde las props */}
+              <p onClick={handleLogout}>Cerrar sesión</p>
+            </div>
+          )}
         </div>
         <div className='user-info-admin'>
-          <label>{storedUsername +" "+ storedLastname +" "+ storedSecondLastname}</label>
+          <label>{`${user.username} ${user.lastname} ${user.secondLastname}`}</label>
           <br />
-          <label>{storedEmail}</label>
+          <label>{user.email}</label>
         </div>
       </div>
-      
+
       {showProfileAdmin && <ProfileAdmin onCancelClick={handleProfileFormCancel} />}
     </div>
   );

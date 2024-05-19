@@ -40,7 +40,7 @@ const DTableBeds = ({idGreenhouse, nameGreenhouse, nameFarmer}) => {
                 <div className='icons-container'>
                     <FontAwesomeIcon icon={faPencilAlt} onClick={() => handleEditClick(row)} className='edit-icon' size='lg'/>
                     {/* <FontAwesomeIcon icon={faTrash} onClick={() => handleDeleteClick(row)} className='delete-icon' size='lg' /> */}
-                    <FontAwesomeIcon icon={faEye}   onClick={() => handdleShowbednalized(row)} className='view-icon' size='lg' />
+                    <FontAwesomeIcon icon={faEye}   onClick={() => handleShowImageAnalized(row)} className='view-icon' size='lg' />
                 </div>
             ),
             width:'auto'
@@ -124,7 +124,7 @@ const DTableBeds = ({idGreenhouse, nameGreenhouse, nameFarmer}) => {
     // };
 
     //Para mostrar las imagenes
-    const handdleShowbednalized = (row) => {
+    const handleShowImageAnalized = (row) => {
         setIDBed(row.id_cama);
         setNumberBed(row.numero_cama)
         setshowDataTableImagesA(true);
@@ -180,7 +180,7 @@ const DTableBeds = ({idGreenhouse, nameGreenhouse, nameFarmer}) => {
                     />
                     </div>
           </div>
-          {showRegisterBed && <RegisterBed onCancelClick={handleRegisterClick} idGreenhouse={idGreenhouse} />}
+          {showRegisterBed && <RegisterBed onCancelClick={handleCancelClick} idGreenhouse={idGreenhouse} />}
           {showEditBed && <EditBed onCancelClick={handleCancelClick} idBed={idBed} idGreenhouse={idGreenhouse}/>}
           {showDataTableImagesA && <DTableImagesA onCancelClick={handleCancelClick} idBed={idBed} idGreenhouse={idGreenhouse} />} 
           

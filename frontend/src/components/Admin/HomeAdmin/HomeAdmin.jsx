@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import NavbarAdmin from '../NavSideProfileAdmin/NavbarAdmin/NavbarAdmin';
 import SidebarAdmin from '../NavSideProfileAdmin/SidebarAdmin/SidebarAdmin';
 import DTableDiseases from '../For/For-Diseases/DTableDiseases/DTableDiseases';
@@ -9,50 +9,38 @@ import DTablePlagues from '../For/For-Plagues/DTablePlagues/DTablePlagues';
 import DTableWorkers from '../For/For-Workers/DTableWorkers/DTableWorkers';
 import Dashboard from '../../Dashboard/Dashboard';
 import './HomeAdmin.css'; // Importa tus estilos CSS aquí
+import { Route, Routes, useNavigate } from 'react-router-dom';
 
 const HomeAdmin = () => {
-    const [activeSection, setActiveSection] = useState('farmers'); // Establece la sección activa inicialmente como 'farmers'
-    const [showProfileAdmin, setshowProfileAdmin] = useState(false);
-   
+    const [showProfileAdmin, setShowProfileAdmin] = React.useState(false);
+    const navigate = useNavigate();
+
     const handleConfigureProfileClick = () => {
-        setshowProfileAdmin(true);
+        setShowProfileAdmin(true);
     };
 
     const handleProfileFormCancel = () => {
-        setshowProfileAdmin(false);
-    };
-
-    const renderActiveTable = () => {
-        console.log("mi seleccion es: " , activeSection);
-        switch (activeSection) {
-            case 'farmers':
-                return <DTableFarmers />;
-            case 'greenhouses':
-                return <DTableGreenhouses />;
-            case 'workers':
-                return <DTableWorkers />;
-            case 'reporte':
-                return <Dashboard />;
-            case 'plagues':
-                return <DTablePlagues />;
-            case 'diseases':
-                return <DTableDiseases />;
-            default:
-                return null;
-        }
+        setShowProfileAdmin(false);
     };
 
     return (
-        <div >
+        <div>
             <div className="navbar-container-admin">
                 <NavbarAdmin onConfigureProfileClick={handleConfigureProfileClick} />
             </div>
             <div className='dashboard-admin'>
-            <SidebarAdmin setActiveSection={setActiveSection} activeSection={activeSection} />
+                <SidebarAdmin />
                 <div className='table-container-admin'>
                     <div className='space-admin'>
-                        {/* <h2 className='h2admin'>Bienvenido <span className='rol-admin'>administrador</span></h2> */}
-                        {renderActiveTable()}
+                        <Routes>
+
+                            <Route path="/agricultores" element={<DTableFarmers />} />
+                            <Route path="/invernaderos" element={<DTableGreenhouses />} />
+                            <Route path="/trabajadores" element={<DTableWorkers />} />
+                            <Route path="/reportes" element={<Dashboard />} />
+                            <Route path="/plagas" element={<DTablePlagues />} />
+                            <Route path="/enfermedades" element={<DTableDiseases />} />
+                        </Routes>
                     </div>
                 </div>
             </div>

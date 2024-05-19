@@ -138,6 +138,7 @@ const EditBed = ({ onCancelClick, idGreenhouse, idBed }) => {
                 value={values.numeroCama}
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
+                onBlur={handleInputBlur} 
                 style={values.numeroCama ? {  backgroundColor: '#EFF6FF' } : null}   
               />
             </div>

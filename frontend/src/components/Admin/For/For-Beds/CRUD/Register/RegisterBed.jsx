@@ -55,11 +55,10 @@ const RegisterBed = ({ onCancelClick, idGreenhouse}) => {
     setIsFormSubmitted(true); 
 
     
-    for (const key in values) {
-      if (values[key] === "") {
-        setRecords('Por favor complete todos los campos.');
-        return;
-      }
+    // Validación específica para cada campo
+    if (values.numeroCama === "" || values.tipoCultivo === "") {
+      setRecords('Por favor complete todos los campos.');
+      return;
     }
 
     // //Validando que el invernadero exista
@@ -95,7 +94,7 @@ const RegisterBed = ({ onCancelClick, idGreenhouse}) => {
           window.location.reload();
           }, 2000); // Mostrar el mensaje durante 3 segundos
         } else {
-          setRecords('Por favor, inténtelo de nuevo más tarde.');
+          alert('Por favor, inténtelo de nuevo más tarde.');
           setIsLoading(false); // Agregar para detener la pantalla de carga
         }
   };
@@ -126,6 +125,7 @@ const RegisterBed = ({ onCancelClick, idGreenhouse}) => {
                 value={values.numeroCama}
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
+                onBlur={handleInputBlur} 
                 // onBlur={async () => {
                 //   handleInputBlur();
                 //   if (values.nombreInvernadero) {

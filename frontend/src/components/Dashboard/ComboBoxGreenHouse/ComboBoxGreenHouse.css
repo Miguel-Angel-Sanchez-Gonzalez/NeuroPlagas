@@ -1,0 +1,24 @@
+.combobox-greenhouse {
+  display: inline-block;
+  width: 100%;
+  max-width: 400px;
+  margin: 10px 0;
+}
+
+.combobox-greenhouse select {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.combobox-greenhouse select:focus {
+  outline: none;
+  border-color: #9FC5E8; /* Blue color */
+  box-shadow: 0 0 5px rgba(205, 230, 255, 0.5); /* Blue shadow */
+}

@@ -12,9 +12,11 @@ import {
   BarList,
   FunnelChart,
 } from "@tremor/react";
+import { useEffect, useState } from "react";
 import "./Dashboard.css"; // Importa el archivo CSS
 import dataBarbie from "../../movie-barbie.json";
 import dataOppenheimer from "../../movie-oppenheimer.json";
+import ComboBoxGreenHouse from './ComboBoxGreenHouse/ComboBoxGreenHouse'; 
 
 const Dashboard = () => {
   const chartData = dataBarbie.domestic_daily.map(({ revenue, date }) => {
@@ -58,39 +60,85 @@ const Dashboard = () => {
     { name: 'orders', value: 10 },
   ];
 
+  const [selectedGreenhouseId, setSelectedGreenhouseId] = useState(null);
+  const [miValor, setMiValor] = useState("0");
+
+
+  const handleSelectionChange = (selectedGreenhouseName, selectedGreenhouseId) => {
+    // Aquí puedes hacer lo que necesites con el nombre y el id_invernadero seleccionados
+    console.log("Nombre del invernadero seleccionado:", selectedGreenhouseName);
+    console.log("ID del invernadero seleccionado:", selectedGreenhouseId);
+  
+    // Actualiza el estado con el id_invernadero seleccionado
+    setSelectedGreenhouseId(selectedGreenhouseId);
+    setMiValor(selectedGreenhouseId);
+  };
+  
+
+
   return (
     <div className="main-div bg-gray-100">
+      <Card className="mt-8">
+        <Title className="text-medium">Seleccione un invernadero</Title>
+        <ComboBoxGreenHouse
+          onChange={handleSelectionChange}
+        />
+      </Card>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
         <Section>
-          <CardMetric title="Total Plagas" value={addCommasToNumber(dataBarbie.global_revenue)} />
-          <CardDonut title="Plagas Distribution" data={sales} valueFormatter={valueFormatter} />
-          
-          <CardCategoryBar title="Product A Rating" value="42" values={[40, 30, 20, 10]} />
+          <CardMetric
+            title="Total Plagas"
+            value={miValor}
+          />
+          <CardDonut
+            title="Plagas Distribution"
+            data={sales}
+            valueFormatter={valueFormatter}
+          />
+          <CardCategoryBar
+            title="Product A Rating"
+            value="42"
+            values={[40, 30, 20, 10]}
+          />
         </Section>
 
         <Section>
-          <CardMetric title="Total Enfermedades" value={addCommasToNumber(dataOppenheimer.global_revenue)} />
-          <CardDonut title="Enfermedades Distribution" data={sales} valueFormatter={valueFormatter} />
-          
-          <CardCategoryBar title="Product A Rating" value="42" values={[40, 30, 20, 10]} />
+          <CardMetric
+            title="Total Enfermedades"
+            value={addCommasToNumber(dataOppenheimer.global_revenue)}
+          />
+          <CardDonut
+            title="Enfermedades Distribution"
+            data={sales}
+            valueFormatter={valueFormatter}
+          />
+
+          <CardCategoryBar
+            title="Product A Rating"
+            value="42"
+            values={[40, 30, 20, 10]}
+          />
         </Section>
 
         <Section>
-        <CardMetric title="Total Sanos" value="3,000" />
-        <FunnelChart className="h-60" data={chartdata} onValueChange={(v) => console.log(v)} />
-        
-        <BarList
-          data={datahero}
-          sortOrder="ascending"
-          className="mx-auto max-w-sm"
-        />
+          <CardMetric title="Total Sanos" value="3,000" />
+          <FunnelChart
+            className="h-60"
+            data={chartdata}
+            onValueChange={(v) => console.log(v)}
+          />
+
+          <BarList
+            data={datahero}
+            sortOrder="ascending"
+            className="mx-auto max-w-sm"
+          />
         </Section>
       </div>
 
       <div className="text-center mb-8">
         <Text className="text-lg-medium">Seleccione una fecha</Text>
         <DatePicker />
-        
       </div>
 
       <Card>

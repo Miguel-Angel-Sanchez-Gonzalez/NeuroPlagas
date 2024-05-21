@@ -4,11 +4,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faEye, faBackward, faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 import './DTableImagesA.css'; 
 import DTableBeds from '../../For-Beds/DTableBeds/DTableBeds';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-
-const DTableImagesA = ({idBed, idGreenhouse, nameGreenhouse, nameFarmer, numberBed}) => {
+const DTableImagesA = () => {
     const [inputValue, setInputValue] = useState("");
     const [filteredImagesA, setFilteredImagesA] = useState([]);
+    const [nameGreenhouse, setNameGreenhouse] = useState("");
+    const [nameFarmer, setNameFarmer] = useState("");
+    const [numberBed, setNumberBed] = useState("");
+
+    //Para ver las imagenes analizadas de una cama
+    const location = useLocation();
+
+    const { idGreenhouse, idBed } = useParams();
+    console.log("CAMA:", idBed);
+    console.log("NOMBRE CAMA:", numberBed);
 
     const columns = [
         {
@@ -65,27 +75,38 @@ const DTableImagesA = ({idBed, idGreenhouse, nameGreenhouse, nameFarmer, numberB
     const data = [
     ];
 
+
+    //const [showDataTableBeds, setshowDataTableBeds] = useState(false); //Form para ver las camas de un invernadero
     const [imagesAnalized, setImagesAnalized] = useState(data);
-    const [showDataTableBeds, setshowDataTableBeds] = useState(false); //Form para ver las camas de un invernadero
 
     useEffect(() => {
-        console.log(idBed)
-        getImageAByIdBed();
-    
-    }, [idBed]);
+        if (location.state) {
+            const { nameGreenhouse, nameFarmer, numberBed } = location.state;
+            setNameGreenhouse(nameGreenhouse);
+            setNameFarmer(nameFarmer);
+            setNumberBed(numberBed);
+        }
+        getImageAByIdBed(idBed);
+    }, [location.state, idBed]);
 
   
-    const getImageAByIdBed = async () => {
-    try {
-        const response = await fetch(`http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`);
-        const data = await response.json();
-        console.log('Respuesta del servidor:', data);
-        setImagesAnalized(data);
-        setFilteredImagesA(data);
-      } catch (error) {
-        console.error('Error al obtener las imagenes analizadas de la cama:', error);
-      }
+    const getImageAByIdBed = async (idBed) => {
+        try {
+            const response = await fetch(`http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`);
+            if (!response.ok) {
+                throw new Error('La respuesta de la red no fue exitosa');
+            }
+            const data = await response.json();
+            console.log('Respuesta del servidor:', data);
+            setImagesAnalized(Array.isArray(data) ? data : []);
+            setFilteredImagesA(Array.isArray(data) ? data : []);
+        } catch (error) {
+            console.error('Error al obtener las imágenes analizadas de la cama:', error);
+            setImagesAnalized([]);
+            setFilteredImagesA([]);
+        }
     }
+    
 
     const handleFilter = (event) => {
         const value = event.target.value.toLowerCase();
@@ -100,21 +121,17 @@ const DTableImagesA = ({idBed, idGreenhouse, nameGreenhouse, nameFarmer, numberB
             setFilteredImagesA(imagesAnalized); 
         }
     };
-    
 
-    const handleCancelClick = () => {
-        setshowDataTableBeds(false);
-      };
-
-    const handleBackBedClick = () => {
-        setshowDataTableBeds(true);
-      };
-
-    //si setShowImageAnalized es true se muestra el DTableImagesA
-    if (showDataTableBeds) {
-        console.log("volviste a la vista de camas" +showDataTableBeds)
-        return <DTableBeds onCancelClick={handleCancelClick} idBed={idBed} idGreenhouse={idGreenhouse} nameGreenhouse={nameGreenhouse} nameFarmer={nameFarmer}/>
-    }
+    // const handleShowImageAnalized = (row) => {
+    //     navigate(`/homeAdmin/invernaderos/${idGreenhouse}/imagenesAnalizadas/${row.id_cama}`, {
+    //         state: {
+    //             idGreenhouse,
+    //             nameGreenhouse,
+    //             nameFarmer,
+    //             idBed: row.id_cama
+    //         }
+    //     });
+    // };
 
 
     const paginacionOpciones={
@@ -126,9 +143,6 @@ const DTableImagesA = ({idBed, idGreenhouse, nameGreenhouse, nameFarmer, numberB
 
     return (
         <div className='table-imagesA-admin'>
-            <div className='left-content-imageA'>
-                <FontAwesomeIcon icon={faArrowCircleLeft} className='back-icon' onClick={handleBackBedClick} size='2x' />
-            </div>
             <div className='right-content-imageA'>
                 <h1 className='h2green-bed-imageA'>Invernadero <span className='name-bed'> {nameGreenhouse}, Cama {numberBed}</span></h1>
                 <h4 className='h4farmer-bed-imageA'>Agricultor responsable: <span className='name-farmer'>{nameFarmer}</span></h4>

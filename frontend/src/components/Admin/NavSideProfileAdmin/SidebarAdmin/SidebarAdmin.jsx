@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHomeUser, faWarehouse, faPersonDigging, faChartBar, faBug, faVirus } from '@fortawesome/free-solid-svg-icons';
 import './SidebarAdmin.css';
+import DTableBeds from '../../For/For-Beds/DTableBeds/DTableBeds';
 
 const SidebarAdmin = () => {
     const { pathname } = useLocation();

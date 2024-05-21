@@ -1,92 +1,95 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faPencilAlt, faTrash, faEye, faBackward, faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faPencilAlt, faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
 import './DTableBeds.css'; 
-import DTableGreenhouses from '../../For-Greenhouses/DTableGreenhouses/DTableGreenhouses';
 import RegisterBed from '../CRUD/Register/RegisterBed';
 import EditBed from '../CRUD/Edit/EditBed';
-import DTableImagesA from '../../For-ImagesAnalized/DTableImagesAnalized/DTableImagesA';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-const DTableBeds = ({idGreenhouse, nameGreenhouse, nameFarmer}) => {
+const DTableBeds = () => {
     const [inputValue, setInputValue] = useState("");
     const [filteredBeds, setFilteredBeds] = useState([]);
     const [idBed, setIDBed] = useState("");
-    // const [nameGreenhouse, setNameGreenhouse] = useState("");
-    const [numberBed, setNumberBed] = useState("");
+    const [idGreenhouse, setIDGreenhouse] = useState("");
+    const [nameGreenhouse, setNameGreenhouse] = useState("");
+    const [nameFarmer, setNameFarmer] = useState("");
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const { idGreenhouse: paramIdGreenhouse } = useParams();
 
     const columns = [
         {
             name: 'ID',
             selector: row => row.id_cama,
             sortable: true,
-            width:'65px'
+            width: '65px'
         },
         {
             name: 'Número de cama',
             selector: row => row.numero_cama,
             sortable: true,
-            width:'260px',
+            width: '260px',
         },
         {
             name: 'Tipo de cultivo',
             selector: row => row.tipo_cultivo,
             sortable: true,
-            width:'350px',
+            width: '350px',
         },
         {
             name: 'Acciones',
             cell: row => (
                 <div className='icons-container'>
                     <FontAwesomeIcon icon={faPencilAlt} onClick={() => handleEditClick(row)} className='edit-icon' size='lg'/>
-                    {/* <FontAwesomeIcon icon={faTrash} onClick={() => handleDeleteClick(row)} className='delete-icon' size='lg' /> */}
-                    <FontAwesomeIcon icon={faEye}   onClick={() => handleShowImageAnalized(row)} className='view-icon' size='lg' />
+                    <FontAwesomeIcon icon={faTrash} onClick={() => handleDeleteClick(row)} className='delete-icon' size='lg' /> 
+                    <FontAwesomeIcon icon={faEye} onClick={() => handleShowImageAnalized(row)} className='view-icon' size='lg' />
                 </div>
             ),
-            width:'auto'
+            width: 'auto'
         }
     ];
 
-    const data = [
-    ];
-    
-    const [showRegisterBed, setshowRegisterBed] = useState(false); //Form de register
-    const [showEditBed, setshowEditBed] = useState(false); //Form de edicion
-    const [showDeleteBed, setshowDeleteBed] = useState(false); //Form de eliminacion
-    const [showDataTableGreenhouse, setshowDataTableGreenhouse] = useState(false); //Form para ver las camas de un invernadero
-    const [showDataTableImagesA, setshowDataTableImagesA] = useState(false); //Form para ver las imagenes de una cama
-    const [beds, setBeds] = useState(data);
+    const [showRegisterBed, setShowRegisterBed] = useState(false);
+    const [showEditBed, setShowEditBed] = useState(false);
+    const [showDeleteBed, setShowDeleteBed] = useState(false);
+    const [beds, setBeds] = useState([]);
 
     useEffect(() => {
-        console.log(idGreenhouse)
-        getBedByIdGreenhouse();
-    
-    }, [idGreenhouse]);
+        if (location.state) {
+            const { idGreenhouse, nameGreenhouse, nameFarmer } = location.state;
+            setIDGreenhouse(idGreenhouse);
+            setNameGreenhouse(nameGreenhouse);
+            setNameFarmer(nameFarmer);
+            getBedByIdGreenhouse(idGreenhouse);
+        } else if (paramIdGreenhouse) {
+            setIDGreenhouse(paramIdGreenhouse);
+            getBedByIdGreenhouse(paramIdGreenhouse);
+        }
+    }, [location.state, paramIdGreenhouse]);
 
-  
-    const getBedByIdGreenhouse = async () => {
-    try {
-        const response = await fetch(`http://localhost:3000/bed/greenhouse/${idGreenhouse}`);
-        const data = await response.json();
-        setBeds(data);
-        setFilteredBeds(data);
-      } catch (error) {
-        console.error('Error al obtener las camas:', error);
-      }
-    }
+    const getBedByIdGreenhouse = async (idGreenhouse) => {
+        try {
+            const response = await fetch(`http://localhost:3000/bed/greenhouse/${idGreenhouse}`);
+            const data = await response.json();
+            setBeds(data);
+            setFilteredBeds(data);
+        } catch (error) {
+            console.error('Error al obtener las camas:', error);
+        }
+    };
 
     const handleFilter = (event) => {
         const value = event.target.value.toLowerCase();
         setInputValue(value);
         if (value) {
-            //dividir el texto para separar los valores de búsqueda
             const searchValue = value.split(' ');
-            const filtered = beds.filter(bed =>{
-                return searchValue.every(value =>
-                    bed.tipo_cultivo.toLowerCase().includes(value) 
-                )}
+            const filtered = beds.filter(bed =>
+                searchValue.every(val =>
+                    bed.tipo_cultivo.toLowerCase().includes(val)
+                )
             );
-            //muestra los agricultores filtrados
             setFilteredBeds(filtered);
         } else {
             setFilteredBeds(beds); 
@@ -94,65 +97,46 @@ const DTableBeds = ({idGreenhouse, nameGreenhouse, nameFarmer}) => {
     };
 
     const handleRegisterClick = () => {
-        setshowRegisterBed(true);
-        //setIDBed(row.id_invernadero);
-      };
+        setShowRegisterBed(true);
+    };
       
     const handleCancelClick = () => {
-        setshowRegisterBed(false);
-        setshowEditBed(false);
-        setshowDeleteBed(false);
-        setshowDataTableGreenhouse(false);
-        setshowDataTableImagesA(false);
-      };
-
-      //Para regresar a la vista de todos los invernaderos DTableGreenhouse
-    const handleBackGreenClick = () => {
-        setshowDataTableGreenhouse(true);
-      };
-
-
-    //Para editar una cama en especifo
-    const handleEditClick = (row) => {
-        setIDBed(row.id_cama);
-        setshowEditBed(true);
-      };
-
-    // const handleDeleteClick = (row) => {
-    //     setIDBed(row.id_cama);
-    //     setshowDeleteBed(true);
-    // };
-
-    //Para mostrar las imagenes
-    const handleShowImageAnalized = (row) => {
-        setIDBed(row.id_cama);
-        setNumberBed(row.numero_cama)
-        setshowDataTableImagesA(true);
+        setShowRegisterBed(false);
+        setShowEditBed(false);
+        setShowDeleteBed(false);
     };
 
-    //si setshowDataTableGreenhouse d es true se muestra el DTableBeds
-    if (showDataTableGreenhouse) {
-        console.log("Volviste a la vista invernadero" + showDataTableGreenhouse)
-        return <DTableGreenhouses onCancelClick={handleCancelClick} />
-    }
+    const handleEditClick = (row) => {
+        setIDBed(row.id_cama);
+        setShowEditBed(true);
+    };
 
-    //si setshowDataTableImagesA es true se muestra las imágenes analizadas
-    if (showDataTableImagesA) {
-        return <DTableImagesA onCancelClick={handleCancelClick} idGreenhouse={idGreenhouse} nameGreenhouse={nameGreenhouse} nameFarmer={nameFarmer} idBed={idBed} numberBed={numberBed}/>
-    }
+    const handleDeleteClick = (row) => {
+        setIDBed(row.id_cama);
+        setShowDeleteBed(true);
+    };
 
-    const paginacionOpciones={
+    const handleShowImageAnalized = (row) => {
+        navigate(`/homeAdmin/invernaderos/${idGreenhouse}/imagenesAnalizadas/${row.id_cama}`, {
+            state: {
+                idGreenhouse,
+                nameGreenhouse,
+                nameFarmer,
+                idBed: row.id_cama,
+                numberBed: row.numero_cama
+            }
+        });
+    };
+
+    const paginacionOpciones = {
         rowsPerPageText: 'Filas por página',
         rangeSeparatorText: 'de',
         selectAllRowsItem: true,
         selectAllRowsItemText: 'Todos'
-    }
+    };
 
     return (
         <div className='table-bed-admin'>
-            <div className='left-content-bed'>
-            <FontAwesomeIcon icon={faArrowCircleLeft} className='back-icon' onClick={handleBackGreenClick} size='2x' />
-            </div>
             <div className='right-content-bed'>
                 <h1 className='h2green-bed'>Invernadero <span className='name-bed'> {nameGreenhouse}</span></h1>
                 <h4 className='h4farmer-bed'>Agricultor responsable: <span className='name-farmer'>{nameFarmer}</span></h4>
@@ -170,7 +154,6 @@ const DTableBeds = ({idGreenhouse, nameGreenhouse, nameFarmer}) => {
                     </div>
                     <DataTable 
                         columns={columns}
-                        //Considerando el filtro
                         data={filteredBeds}
                         responsive={true}
                         selectableRows
@@ -178,12 +161,10 @@ const DTableBeds = ({idGreenhouse, nameGreenhouse, nameFarmer}) => {
                         pagination
                         paginationComponentOptions={paginacionOpciones}
                     />
-                    </div>
-          </div>
-          {showRegisterBed && <RegisterBed onCancelClick={handleCancelClick} idGreenhouse={idGreenhouse} />}
-          {showEditBed && <EditBed onCancelClick={handleCancelClick} idBed={idBed} idGreenhouse={idGreenhouse}/>}
-          {showDataTableImagesA && <DTableImagesA onCancelClick={handleCancelClick} idBed={idBed} idGreenhouse={idGreenhouse} />} 
-          
+                </div>
+            </div>
+            {showRegisterBed && <RegisterBed onCancelClick={handleCancelClick} idGreenhouse={idGreenhouse} />}
+            {showEditBed && <EditBed onCancelClick={handleCancelClick} idBed={idBed} idGreenhouse={idGreenhouse}  />}
         </div>
     );
 };

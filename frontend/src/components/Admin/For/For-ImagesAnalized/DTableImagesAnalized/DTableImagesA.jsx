@@ -1,175 +1,206 @@
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faEye, faBackward, faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
-import './DTableImagesA.css'; 
-import DTableBeds from '../../For-Beds/DTableBeds/DTableBeds';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSearch,
+  faEye,
+  faBackward,
+  faArrowCircleLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import "./DTableImagesA.css";
+import DTableBeds from "../../For-Beds/DTableBeds/DTableBeds";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const DTableImagesA = () => {
-    const [inputValue, setInputValue] = useState("");
-    const [filteredImagesA, setFilteredImagesA] = useState([]);
-    const [nameGreenhouse, setNameGreenhouse] = useState("");
-    const [nameFarmer, setNameFarmer] = useState("");
-    const [numberBed, setNumberBed] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [filteredImagesA, setFilteredImagesA] = useState([]);
+  const [nameGreenhouse, setNameGreenhouse] = useState("");
+  const [nameFarmer, setNameFarmer] = useState("");
+  const [numberBed, setNumberBed] = useState("");
 
-    //Para ver las imagenes analizadas de una cama
-    const location = useLocation();
+  //Para ver las imagenes analizadas de una cama
+  const location = useLocation();
 
-    const { idGreenhouse, idBed } = useParams();
-    console.log("CAMA:", idBed);
-    console.log("NOMBRE CAMA:", numberBed);
+  const { idGreenhouse, idBed } = useParams();
+  console.log("CAMA:", idBed);
+  console.log("NOMBRE CAMA:", numberBed);
 
-    const columns = [
-        {
-            name: 'ID',
-            selector: row => row.id_analizedImage,
-            sortable: true,
-            width:'65px'
-        },
-        {
-            name: 'Nombre de lo detectado',
-            cell: row => {
-                const detected = [...row.detected.plagues, ...row.detected.diseases]; // Combinar arrays de plagas y enfermedades
-                return detected.join(', '); // Unir todo en un solo string separado por comas
-            },
-            sortable: true,
-            width:'260px',
-        },
-        {
-            name: 'Tipo',
-        cell: row => {
-            const isPlague = row.detected.plagues.length > 0; // Verificar si hay plagas detectadas
-            const isDisease = row.detected.diseases.length > 0; // Verificar si hay enfermedades detectadas
-            if (isPlague && isDisease) {
-                return 'Plaga o enfermedad'; // Si se detecta tanto una plaga como una enfermedad
-            } else if (isPlague) {
-                return 'Plaga'; // Si solo se detecta una plaga
-            } else if (isDisease) {
-                return 'Enfermedad'; // Si solo se detecta una enfermedad
-            } else {
-                return 'Desconocido'; // Si no se detecta ni plaga ni enfermedad
-            }
-        },
-        sortable: true,
-        width:'150px',
-        },
-        {
-            name: 'Fecha',
-            selector: row => row.date,
-            sortable: true,
-            width:'350px',
-        },
-        {
-            name: 'Imagen',
-            cell: row => (
-                <div className='icons-container'>
-                    <FontAwesomeIcon icon={faEye}  className='view-icon' size='lg' />
-                </div>
-            ),
-            width:'auto'
-        }
-    ];
-    
-
-    const data = [
-    ];
-
-
-    //const [showDataTableBeds, setshowDataTableBeds] = useState(false); //Form para ver las camas de un invernadero
-    const [imagesAnalized, setImagesAnalized] = useState(data);
-
-    useEffect(() => {
-        if (location.state) {
-            const { nameGreenhouse, nameFarmer, numberBed } = location.state;
-            setNameGreenhouse(nameGreenhouse);
-            setNameFarmer(nameFarmer);
-            setNumberBed(numberBed);
-        }
-        getImageAByIdBed(idBed);
-    }, [location.state, idBed]);
-
-  
-    const getImageAByIdBed = async (idBed) => {
-        try {
-            const response = await fetch(`http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`);
-            if (!response.ok) {
-                throw new Error('La respuesta de la red no fue exitosa');
-            }
-            const data = await response.json();
-            console.log('Respuesta del servidor:', data);
-            setImagesAnalized(Array.isArray(data) ? data : []);
-            setFilteredImagesA(Array.isArray(data) ? data : []);
-        } catch (error) {
-            console.error('Error al obtener las imágenes analizadas de la cama:', error);
-            setImagesAnalized([]);
-            setFilteredImagesA([]);
-        }
-    }
-    
-
-    const handleFilter = (event) => {
-        const value = event.target.value.toLowerCase();
-        setInputValue(value);
-        if (value) {
-            const filtered = imagesAnalized.filter(imageA =>
-                imageA.detected.plagues.join(', ').toLowerCase().includes(value) || // Busca en las plagas detectadas
-                imageA.detected.diseases.join(', ').toLowerCase().includes(value) // Busca en las enfermedades detectadas
-            );
-            setFilteredImagesA(filtered);
+  const columns = [
+    {
+      name: "ID",
+      selector: (row) => row.id_analizedImage,
+      sortable: true,
+      width: "65px",
+    },
+    {
+      name: "Nombre de lo detectado",
+      cell: (row) => {
+        const detected = [...row.detected.plagues, ...row.detected.diseases]; // Combinar arrays de plagas y enfermedades
+        return detected.join(", "); // Unir todo en un solo string separado por comas
+      },
+      sortable: true,
+      width: "260px",
+    },
+    {
+      name: "Tipo",
+      cell: (row) => {
+        const isPlague = row.detected.plagues.length > 0; // Verificar si hay plagas detectadas
+        const isDisease = row.detected.diseases.length > 0; // Verificar si hay enfermedades detectadas
+        if (isPlague && isDisease) {
+          return "Plaga o enfermedad"; // Si se detecta tanto una plaga como una enfermedad
+        } else if (isPlague) {
+          return "Plaga"; // Si solo se detecta una plaga
+        } else if (isDisease) {
+          return "Enfermedad"; // Si solo se detecta una enfermedad
         } else {
-            setFilteredImagesA(imagesAnalized); 
+          return "Desconocido"; // Si no se detecta ni plaga ni enfermedad
         }
-    };
-
-    // const handleShowImageAnalized = (row) => {
-    //     navigate(`/homeAdmin/invernaderos/${idGreenhouse}/imagenesAnalizadas/${row.id_cama}`, {
-    //         state: {
-    //             idGreenhouse,
-    //             nameGreenhouse,
-    //             nameFarmer,
-    //             idBed: row.id_cama
-    //         }
-    //     });
-    // };
-
-
-    const paginacionOpciones={
-        rowsPerPageText: 'Filas por página',
-        rangeSeparatorText: 'de',
-        selectAllRowsItem: true,
-        selectAllRowsItemText: 'Todos'
-    }
-
-    return (
-        <div className='table-imagesA-admin'>
-            <div className='right-content-imageA'>
-                <h1 className='h2green-bed-imageA'>Invernadero <span className='name-bed'> {nameGreenhouse}, Cama {numberBed}</span></h1>
-                <h4 className='h4farmer-bed-imageA'>Agricultor responsable: <span className='name-farmer'>{nameFarmer}</span></h4>
-                <div className='only-table-imageA'>
-                    <div className="title-and-search-imageA">
-                        <div>
-                            <h3>Imágenes analizadas</h3>
-                            <label className='description-imagesA'>Lista de imágenes analizadas que tiene la cama seleccionada</label>
-                        </div>
-                            <div className='header-table-imagesA'>
-                                <FontAwesomeIcon icon={faSearch} className='icon-ImageA' size='lg' />
-                                <input type="text" placeholder='Buscar...' value={inputValue} onChange={handleFilter} className='search-ImageA'/>
-                            </div>
-                        </div>
-                        <DataTable 
-                            columns={columns}
-                            data={filteredImagesA}
-                            responsive={true}
-                            selectableRows
-                            fixedHeader
-                            pagination
-                            paginationComponentOptions={paginacionOpciones}
-                        />
-                </div>
-            </div>
+      },
+      sortable: true,
+      width: "150px",
+    },
+    {
+      name: "Fecha",
+      selector: (row) => row.date,
+      sortable: true,
+      width: "350px",
+    },
+    {
+      name: "Imagen",
+      cell: (row) => (
+        <div className="icons-container">
+          <FontAwesomeIcon icon={faEye} className="view-icon" size="lg" />
         </div>
-    );
+      ),
+      width: "auto",
+    },
+  ];
+
+  const data = [];
+
+  //const [showDataTableBeds, setshowDataTableBeds] = useState(false); //Form para ver las camas de un invernadero
+  const [imagesAnalized, setImagesAnalized] = useState(data);
+
+  useEffect(() => {
+    if (location.state) {
+      const { nameGreenhouse, nameFarmer, numberBed } = location.state;
+      setNameGreenhouse(nameGreenhouse);
+      setNameFarmer(nameFarmer);
+      setNumberBed(numberBed);
+    }
+    getImageAByIdBed(idBed);
+  }, [location.state, idBed]);
+
+  const getImageAByIdBed = async (idBed) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`
+      );
+      if (!response.ok) {
+        throw new Error("La respuesta de la red no fue exitosa");
+      }
+      const data = await response.json();
+      console.log("Respuesta del servidor:", data);
+      setImagesAnalized(Array.isArray(data) ? data : []);
+      setFilteredImagesA(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error(
+        "Error al obtener las imágenes analizadas de la cama:",
+        error
+      );
+      setImagesAnalized([]);
+      setFilteredImagesA([]);
+    }
+  };
+
+  const handleFilter = (event) => {
+    const value = event.target.value.toLowerCase();
+    setInputValue(value);
+    if (value) {
+      const filtered = imagesAnalized.filter(
+        (imageA) =>
+          imageA.detected.plagues.join(", ").toLowerCase().includes(value) || // Busca en las plagas detectadas
+          imageA.detected.diseases.join(", ").toLowerCase().includes(value) // Busca en las enfermedades detectadas
+      );
+      setFilteredImagesA(filtered);
+    } else {
+      setFilteredImagesA(imagesAnalized);
+    }
+  };
+
+  // const handleShowImageAnalized = (row) => {
+  //     navigate(`/homeAdmin/invernaderos/${idGreenhouse}/imagenesAnalizadas/${row.id_cama}`, {
+  //         state: {
+  //             idGreenhouse,
+  //             nameGreenhouse,
+  //             nameFarmer,
+  //             idBed: row.id_cama
+  //         }
+  //     });
+  // };
+
+  const paginacionOpciones = {
+    rowsPerPageText: "Filas por página",
+    rangeSeparatorText: "de",
+    selectAllRowsItem: true,
+    selectAllRowsItemText: "Todos",
+  };
+
+  return (
+    <div className="table-imagesA-admin">
+      <div className="right-content-imageA">
+        <h1 className="h2green-bed-imageA">
+          Invernadero{" "}
+          <span className="name-bed">
+            {" "}
+            {nameGreenhouse}, Cama {numberBed}
+          </span>
+        </h1>
+        <h4 className="h4farmer-bed-imageA">
+          Agricultor responsable:{" "}
+          <span className="name-farmer">{nameFarmer}</span>
+        </h4>
+        <div className="only-table-imageA">
+          <div className="title-and-search-imageA">
+            <div>
+              <h3>Imágenes analizadas</h3>
+              <label className="description-imagesA">
+                Lista de imágenes analizadas que tiene la cama seleccionada
+              </label>
+            </div>
+            <div className="header-table-imagesA">
+              <FontAwesomeIcon
+                icon={faSearch}
+                className="icon-ImageA"
+                size="lg"
+              />
+              <input
+                type="text"
+                placeholder="Buscar..."
+                value={inputValue}
+                onChange={handleFilter}
+                className="search-ImageA"
+              />
+            </div>
+          </div>
+          <DataTable
+            columns={columns}
+            data={filteredImagesA}
+            responsive={true}
+            selectableRows
+            fixedHeader
+            pagination
+            paginationComponentOptions={paginacionOpciones}
+            noDataComponent={
+              <div style={{ marginTop: "15%" }}>
+                Aún no hay imagenes analizadas
+              </div>
+            }
+          />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default DTableImagesA;

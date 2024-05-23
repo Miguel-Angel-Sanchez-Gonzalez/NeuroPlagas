@@ -44,10 +44,6 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
     setValues({ ...values, tipoInvernadero: selectedOption }); // Actualiza el tipo de invernadero seleccionado
   };
 
-  const handleRespFarmerSelect = (selectedOption) => {
-    setValues({ ...values, agricultorResponsable: selectedOption }); // Actualiza el tipo de invernadero seleccionado
-  };
-  //
 
   const handleInputFocus = () => {
     setIsInputFocused(true); // Actualiza el estado cuando un input recibe enfoque
@@ -62,52 +58,36 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
 
   //Para obtener la data del Greenhouse y setearla en los INPUT
   useEffect(() => {
-    const getGreenhouseById = () => {
-      fetch(`http://localhost:3000/greenhouse/${idGreenhouse}`)
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          }
+    const getGreenhouseById = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/greenhouse/${idGreenhouse}`);
+        if (!response.ok) {
           throw new Error('Error al obtener el invernadero');
-        })
-        .then(data => {
-          setOriginalName(data[0].nombre)
-          
-          setValues({
-            nombreInvernadero: data[0].nombre,
-            tipoInvernadero: data[0].tipo_invernadero,
-            humedad: data[0].humedad,
-            tamanio: data[0].tamanio
-          });
-          setidAgricultorResponsable(data[0].id_agricultor);
-          console.log("el id del agricultor a byscar es" , data[0].id_agricultor);
-          fetch(`http://localhost:3000/farmer/${data[0].id_agricultor}`)
-          .then(response => {
-            if (response.ok) {
-              return response.json();
-            }
-            throw new Error('Error al obtener el agricultor responsable');
-          })
-          .then(data => {
-            //console.log("data del agricultor" , data);
-            setValuesFarmer({
-              nombreAgricultorResponsable: data.nombre +" "+ data.primer_apellido +" "+ data.segundo_apellido
-            });
-          })
-          .catch(error => {
-            console.error('Error al obtener el agricultor responsable:', error);
-          });
-
-        })
-        .catch(error => {
-          console.error('Error al obtener el invernadero:', error);
+        }
+        const data = await response.json();
+        setOriginalName(data[0].nombre);
+        setValues({
+          nombreInvernadero: data[0].nombre,
+          tipoInvernadero: data[0].tipo_invernadero,
+          humedad: data[0].humedad,
+          tamanio: data[0].tamanio
         });
+        setidAgricultorResponsable(data[0].id_agricultor);
+        
+        const farmerResponse = await fetch(`http://localhost:3000/farmer/${data[0].id_agricultor}`);
+        if (!farmerResponse.ok) {
+          throw new Error('Error al obtener el agricultor responsable');
+        }
+        const farmerData = await farmerResponse.json();
+        setValuesFarmer({
+          nombreAgricultorResponsable: `${farmerData.nombre} ${farmerData.primer_apellido} ${farmerData.segundo_apellido}`
+        });
+      } catch (error) {
+        console.error('Error en la obtención de datos del invernadero:', error);
+      }
     };
     getGreenhouseById();
   }, [idGreenhouse]);
-
-
-
 
   useEffect(()=>{
     checkGreenhouseExists();
@@ -116,11 +96,16 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
 
   /*FUNCIONES*/
   async function checkGreenhouseExists(greenhouseName){
-      const response = await fetch(`http://localhost:3000/greenhouse/checkExist/${greenhouseName}`)
-      const data = await response.json()
-      //se están cargando los datos
+    try {
+      const response = await fetch(`http://localhost:3000/greenhouse/checkExist/${greenhouseName}`);
+      const data = await response.json();
       return data.exists;
-  }
+    } catch (error) {
+      console.error('Error al verificar la existencia del invernadero:', error);
+      alert('Error al verificar la existencia del invernadero, inténtelo más tarde');
+      return false;
+    }
+  } 
   
   //Data para el fetch de actualizacion
   const data = {
@@ -135,8 +120,6 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
     e.preventDefault();
     setIsFormSubmitted(true);
 
-    //ESPACIO DE VALIDACIONES INVERNADERO
-    
     for (const key in values) {
       if (values[key] === "" || (key === "agricultorResponsable" && !values[key])) {
         setRecords('Por favor complete todos los campos.');
@@ -144,28 +127,26 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
       }
     }
 
-        // Validar si el nombre de invernadero fue modificado
-    if (values.nombreInvernadero !== originalName) {
-      //Validando que el invernadero exista
-      const greenhouseExists = await checkGreenhouseExists(values.nombreInvernadero);
-      if (greenhouseExists) {
-        setGreenhouseExists(true);
-        return;
+    try {
+      if (values.nombreInvernadero !== originalName) {
+        const greenhouseExists = await checkGreenhouseExists(values.nombreInvernadero);
+        if (greenhouseExists) {
+          setGreenhouseExists(true);
+          return;
+        }
+      } else {
+        setGreenhouseExists(false);
       }
-    }else{
-      setGreenhouseExists(false);
-    }
-    
 
-    //YA QUE PASARON TODAS LAS VALIDACIONES
-    setIsLoading(true);
-    //console.log("La data que va hacer el update es: " , data);
-    updateGreenhouseData();
+      setIsLoading(true);
+      updateGreenhouseData();
+    } catch (error) {
+      console.error('Error en la confirmación de edición:', error);
+      setRecords('Error en la confirmación de edición. Por favor, inténtelo de nuevo más tarde.');
+    }
   };
 
-
   const updateGreenhouseData = () => {
-    setIsLoading(true);
     fetch(`http://localhost:3000/greenhouse/${idGreenhouse}`, {
       method: 'PATCH',
       headers: {
@@ -174,16 +155,15 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
       body: JSON.stringify(data)
     })
     .then(response => {
-      if (response.ok) {
-        setIsLoading(false);
-        setLoadingMessage('El invernadero se actualizó correctamente.');
-        setTimeout(() => {
-          setLoadingMessage(''); // Oculta el mensaje después de unos segundos
-          window.location.reload();
-        }, 2000); 
-      } else {
+      if (!response.ok) {
         throw new Error('No se pudo actualizar el invernadero');
       }
+      setIsLoading(false);
+      setLoadingMessage('El invernadero se actualizó correctamente.');
+      setTimeout(() => {
+        setLoadingMessage('');
+        window.location.reload();
+      }, 2000);
     })
     .catch(error => {
       console.error('Error al actualizar el invernadero:', error);

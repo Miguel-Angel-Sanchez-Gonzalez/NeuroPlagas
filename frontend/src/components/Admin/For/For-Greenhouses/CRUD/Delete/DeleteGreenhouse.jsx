@@ -4,25 +4,30 @@ import './DeleteGreenhouse.css';
 const DeleteGreenhouse = ({ onCancelClick, idGreenhouse }) => {
 
   const onConfirmClick = () => {
-    fetch(`http://localhost:3000/greenhouse/${idGreenhouse}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    try {
+      fetch(`http://localhost:3000/greenhouse/${idGreenhouse}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
       .then(response => {
         if (response.ok) {
           alert("El invernadero se eliminó correctamente");
           onCancelClick();
           window.location.reload();
         } else {
-          alert("Error al eliminar el invernadero");
+          throw new Error("Error al eliminar el invernadero");
         }
       })
       .catch(error => {
         console.error('Error al eliminar el invernadero:', error);
         alert("Error al eliminar el invernadero");
       });
+    } catch (error) {
+      console.error('Error al eliminar el invernadero:', error);
+      alert("Error al eliminar el invernadero");
+    }
   }
 
   console.log("el id del invernadero que llego al componente es ", idGreenhouse);

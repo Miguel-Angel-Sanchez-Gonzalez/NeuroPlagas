@@ -77,3 +77,23 @@ input {
 .searchPlague {
   max-width: 40%;
 }
+/* DTablePlagues.css */
+.custom-table-plagues .rdt_TableRow {
+  height: 100px; /* Ajusta según tus necesidades */
+}
+
+.custom-table-plagues .rdt_TableCell {
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 10px; /* Ajusta según tus necesidades */
+  word-wrap: break-word;
+}
+
+.custom-table-plagues .rdt_TableCell div[data-tag="allowRowEvents"] {
+  width: 100%;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: justify;
+}

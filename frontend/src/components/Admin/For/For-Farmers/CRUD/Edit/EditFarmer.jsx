@@ -12,7 +12,6 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
   const [passwordError, setPasswordError] = useState("");
   const [originalEmail, setOriginalEmail] = useState("");
 
-  //Para setear los valores al momento
   const [values, setValues] = useState({
     nombre: "",
     primerApellido: "",
@@ -46,6 +45,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
   const handleInputBlur = () => {
     setIsInputFocused(false); // Actualiza el estado cuando un input pierde el enfoque
   };
+
   //VALIDACIONES
   const checkEmailExists = async (email) => {
     const response = await fetch(
@@ -106,7 +106,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
       const response = await fetch(`http://localhost:3000/farmer/${idFarmer}`);
       if (response.status === 200) {
         const data = await response.json();
-        console.log("data del farmer", data);
+        console.log("Data del agricultor", data);
         setOriginalEmail(data.correo_electronico);
         // Actualizar el estado con los datos del agricultor
         setValues({
@@ -118,9 +118,14 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
           nombreUsuario: data.nombre_usuario,
           contrasenia: data.contrasenia,
         });
-      }
-    } catch (error) {}
-  };
+      } else {
+      throw new Error("Error al obtener los datos del agricultor");
+    }
+  } catch (error) {
+    console.error("Hubo un error al obtener los datos del agricultor:", error);
+    setRecords('Hubo un error al obtener los datos del agricultor.');
+  }
+  }
   //Data para el fetch de actualizacion
   const data = {
     name: values.nombre,
@@ -180,34 +185,35 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
     updateFarmerData();
   };
 
-  const updateFarmerData = () => {
+  const updateFarmerData = async () => {
     setIsLoading(true);
-    fetch(`http://localhost:3000/farmer/${idFarmer}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (response.ok) {
-          setIsLoading(false);
-          setLoadingMessage("El agricultor se actualizó correctamente.");
-          setTimeout(() => {
-            setLoadingMessage(""); // Oculta el mensaje después de unos segundos
-            window.location.reload();
-          }, 2000);
-        } else {
-          throw new Error("No se pudo actualizar el agricultor");
-        }
-      })
-      .catch((error) => {
-        console.error("Error al actualizar el agricultor:", error);
-        alert("Error al actualizar el agricultor");
-        window.location.reload();
-        setIsLoading(false);
+    try {
+      const response = await fetch(`http://localhost:3000/farmer/${idFarmer}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
+  
+      if (response.ok) {
+        setIsLoading(false);
+        setLoadingMessage("El agricultor se actualizó correctamente.");
+        setTimeout(() => {
+          setLoadingMessage(""); // Oculta el mensaje después de unos segundos
+          window.location.reload();
+        }, 2000);
+      } else {
+        throw new Error("No se pudo actualizar el agricultor");
+      }
+    } catch (error) {
+      console.error("Error al actualizar el agricultor:", error);
+      alert("Error al actualizar el agricultor");
+      window.location.reload();
+      setIsLoading(false);
+    }
   };
+  
 
   return (
     <div>
@@ -461,7 +467,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
             </button>
           </div>
           {records && !isInputFocused && (
-            <p className="error-message">{records}</p>
+            <p className="error-message-farmer-e">{records}</p>
           )}
         </div>
         {loadingMessage && (

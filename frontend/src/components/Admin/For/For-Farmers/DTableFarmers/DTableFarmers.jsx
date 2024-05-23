@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faPencilAlt,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
 import "./DTableFarmers.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faSearch, faPencilAlt, faTrash,} from "@fortawesome/free-solid-svg-icons";
+import { useLocation } from "react-router-dom";
 import RegisterFarmer from "../CRUD/Register/RegisterFarmer";
 import EditFarmer from "../CRUD/Edit/EditFarmer";
 import DeleteFarmer from "../CRUD/Delete/DeleteFarmer";
-import { useLocation } from "react-router-dom";
+
 /*Agricultores*/
 
 const DTableFarmers = () => {
@@ -29,7 +26,7 @@ const DTableFarmers = () => {
       name: "Nombre",
       selector: (row) => row.nombre,
       sortable: true,
-      width: "100px",
+      width: "auto",
     },
     {
       name: "Primer apellido",
@@ -90,7 +87,7 @@ const DTableFarmers = () => {
   const [showEditFarmer, setShowEditFarmer] = useState(false); //Form de edicion
   const [showDeleteFarmer, setshowDeleteFarmer] = useState(false); //Form de eliminacion
   const [farmers, setFarmers] = useState([]);
-  // Use location to detect route changes
+  
   const location = useLocation();
   useEffect(() => {
     // console.log("Cargue los agricultores en la tabla");
@@ -99,15 +96,22 @@ const DTableFarmers = () => {
 
   /*FUNCIONES*/
   async function getFarmers() {
-    const response = await fetch(`http://localhost:3000/farmer/`);
-    if (response.status === 200) {
-      const data = await response.json();
-      //se están cargando los datos
-      // console.log("DATOS DE Agricultores:", data);
-      setFarmers(data);
-      setFilteredFarmers(data);
+    try {
+      const response = await fetch(`http://localhost:3000/farmer/`);
+      if (response.status === 200) {
+        const data = await response.json();
+        //se están cargando los datos
+        setFarmers(data);
+        setFilteredFarmers(data);
+      } else {
+        throw new Error('Error al obtener a los agricultores');
+      }
+    } catch (error) {
+      console.error("Error al cargar los datos de los agricultores:", error);
+      alert('Error al obtener a los agricultores, inténtelo más tarte:')
     }
   }
+  
 
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
@@ -205,7 +209,7 @@ const DTableFarmers = () => {
             </div>
           }
           noDataComponent={
-            <div style={{ marginTop: "15%" }}>
+            <div className="no-beds-message">
               Aún no hay agricultores registrados
             </div>
           }

@@ -78,10 +78,19 @@ const DTableDiseases = () => {
 
     /*FUNCIONES*/
     async function getDiseases(){
+    try{
         const response = await fetch(`http://localhost:3000/disease`)
-        const data = await response.json()
-        setDiseases(data);
-        setFilteredDiseases(data);
+        if (response.status === 200) {
+            const data = await response.json();
+            setDiseases(data);
+            setFilteredDiseases(data);
+        } else {
+            throw new Error('Error al obtener las enfermedades');
+          }
+        } catch (error) {
+          console.error("Error al cargar los datos de las enfermedades:", error);
+          alert('Error al obtener las enfermedades, inténtelo más tarte:')
+        }
     } 
 
 
@@ -97,7 +106,7 @@ const DTableDiseases = () => {
                     disease.nombre_cientifico.toLowerCase().includes(value) 
                 )}
             );
-            //muestra los agricultores filtrados
+            //muestrlas enfermedades filtrados
             setFilteredDiseases(filtered);
         } else {
             setFilteredDiseases(diseases); 
@@ -135,7 +144,7 @@ const DTableDiseases = () => {
 
     return (
         <div className='table-disease-admin'>
-          <DataTable 
+          <DataTable className="custom-table-disease"
             title={<div><h4>Enfermedades</h4><label className='description'>Lista de enfermedades en los invernaderos</label></div>}
             columns={columns}
             //considerando el filtro
@@ -151,7 +160,11 @@ const DTableDiseases = () => {
                 <input type="text" placeholder='Buscar...' value={inputValue} onChange={handleFilter} className='searchDisease'/>
                 <button type="button" className='buttonEnfermedad' onClick={handleRegisterClick}>Registrar enfermedad</button>
               </div>
-            }
+            } noDataComponent={
+                <div className="no-beds-message">
+                  Aún no hay enfermedades registradas
+                </div>
+              }
           />
           {showRegisterDisease && <RegisterDisease onCancelClick={handleCancelClick} />} {}
           {showEditDisease && <EditDisease onCancelClick={handleCancelClick} idDisease={idDisease} />}

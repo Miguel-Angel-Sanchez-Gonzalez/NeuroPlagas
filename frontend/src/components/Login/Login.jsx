@@ -42,16 +42,15 @@ const Login = () => {
         return response.json();
       })
       .then(result => {
-        if (result[0]) {
           console.log("La data del usuario es:");
-          console.log(result[0]);
-          localStorage.setItem('username', result[0].nombre);
-          localStorage.setItem('lastname', result[0].primer_apellido);
-          localStorage.setItem('secondlastname', result[0].segundo_apellido);
-          localStorage.setItem('email', result[0].correo_electronico);
+          console.log(result);
+          localStorage.setItem('username', result.nombre);
+          localStorage.setItem('lastname', result.primer_apellido);
+          localStorage.setItem('secondlastname', result.segundo_apellido);
+          localStorage.setItem('email', result.correo_electronico);
           //setIsLoggedIn(true);
           navigateBasedOnRole();
-        }
+        
       })
       .catch(error => {
         console.error('Error:', error);

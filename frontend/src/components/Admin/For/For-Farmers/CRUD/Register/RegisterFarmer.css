@@ -97,10 +97,19 @@
   cursor: pointer; /* Cambiado desde el selector de etiqueta */
 }
 
+
 .error-message-farmer,
 .email-exists-Fr {
   margin-top: 7px;
   margin-left: 5px;
+  text-align: left;
+  color: #c62426;
+  font-size: medium;
+}
+
+.error-message-farmer-r {
+  margin-top: 17px;
+  margin-left: 20px;
   text-align: left;
   color: #c62426;
   font-size: medium;

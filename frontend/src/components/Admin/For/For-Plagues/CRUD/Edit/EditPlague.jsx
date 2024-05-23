@@ -294,7 +294,7 @@ const EditPlague = ({ rowData, onCancelClick, idPlague }) => {
             </button>
           </div>
           {records && !isInputFocused && (
-            <p className="error-message">{records}</p>
+            <p className="error-message-plague-e">{records}</p>
           )}
         </div>
         {loadingMessage && (

@@ -12,7 +12,6 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
 
-
   const [values, setValues] = useState({
     nombreInvernadero: "",
     tipoInvernadero: "",
@@ -57,17 +56,21 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
 
   /*FUNCIONES*/
   async function checkGreenhouseExists(greenhouseName){
-      const response = await fetch(`http://localhost:3000/greenhouse/checkExist/${greenhouseName}`)
-      const data = await response.json()
-      //se están cargando los datos
+    try {
+      const response = await fetch(`http://localhost:3000/greenhouse/checkExist/${greenhouseName}`);
+      const data = await response.json();
       return data.exists;
+    } catch (error) {
+      console.error('Error al verificar la existencia del invernadero:', error);
+      alert('Error al verificar la existencia del invernadero, inténtelo más tarde');
+      return false;
+    }
   } 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsFormSubmitted(true); 
 
-    
     for (const key in values) {
       if (values[key] === "" || (key === "agricultorResponsable" && !values[key])) {
         setRecords('Por favor complete todos los campos.');
@@ -75,45 +78,47 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
       }
     }
 
-    //Validando que el invernadero exista
-    const greenhouseExists = await checkGreenhouseExists(values.nombreInvernadero);
-    if (greenhouseExists) {
-      setGreenhouseExists(true);
-      return;
-    }
-    
+    try {
+      const greenhouseExists = await checkGreenhouseExists(values.nombreInvernadero);
+      if (greenhouseExists) {
+        setGreenhouseExists(true);
+        return;
+      }
 
-    setIsLoading(true);
-    const data = {
-      idFarmer: values.agricultorResponsable ? values.agricultorResponsable.value : null,
-      name: values.nombreInvernadero,
-      typeGreenhouse: values.tipoInvernadero,
-      humidity: values.humedad,
-      size: values.tamanio
-    };
+      setIsLoading(true);
+      const data = {
+        idFarmer: values.agricultorResponsable ? values.agricultorResponsable.value : null,
+        name: values.nombreInvernadero,
+        typeGreenhouse: values.tipoInvernadero,
+        humidity: values.humedad,
+        size: values.tamanio
+      };
 
-    //Se esta haciendo la promesa
-    //Post para insertar los datos de un invernadero
       const response = await fetch('http://localhost:3000/greenhouse/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-      }) 
-        if (response){
-          const responseData = await response.json();
-          const { id } = responseData; // Obtiene el ID del agricultor del backend
-          setIsLoading(false);
-          setLoadingMessage('Se ha agregado correctamente el invernadero.');
-          setTimeout(() => {
-          setLoadingMessage(''); // Oculta el mensaje después de unos segundos
-          window.location.reload();
-          }, 2000); // Mostrar el mensaje durante 3 segundos
-        } else {
-          setRecords('Por favor, inténtelo de nuevo más tarde.');
-          setIsLoading(false); // Agregar para detener la pantalla de carga
-        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al agregar el invernadero');
+      }
+
+      const responseData = await response.json();
+      const { id } = responseData;
+      setIsLoading(false);
+      setLoadingMessage('Se ha agregado correctamente el invernadero.');
+      setTimeout(() => {
+        setLoadingMessage('');
+        window.location.reload();
+      }, 2000); 
+    } catch (error) {
+      console.error('Error al agregar el invernadero:', error);
+      setRecords('Por favor, inténtelo de nuevo más tarde.');
+      setIsLoading(false);
+    }
   };
 
   return (

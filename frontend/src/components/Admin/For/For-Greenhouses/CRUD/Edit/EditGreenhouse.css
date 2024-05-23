@@ -103,7 +103,14 @@
   margin-left: 25px;
 }
 
-.error-message-greenhouse,
+.error-message-greenhouse{
+  margin-top: 17px;
+  margin-left: 25px;
+  text-align: left;
+  color: #c62426;
+  font-size: 15px;
+}
+
 .greenhouse-exists {
   margin-top: 5px;
   margin-left: 5px;
@@ -111,6 +118,7 @@
   color: #c62426;
   font-size: 15px;
 }
+
 
 .red-label,
 .red-input {

@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import "./DeletePlague.css";
 
 const DeletePlague = ({ onCancelClick, idPlague }) => {
-  const onConfirmClick = () => {
-    fetch(`http://localhost:3000/plague/${idPlague}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
+
+  const onConfirmClick  = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/plague/${idPlague}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
         if (response.ok) {
           alert("La plaga se eliminó correctamente");
           onCancelClick();
@@ -17,11 +19,10 @@ const DeletePlague = ({ onCancelClick, idPlague }) => {
         } else {
           alert("Error al eliminar la plaga");
         }
-      })
-      .catch((error) => {
+      } catch(error) {
         console.error("Error al eliminar la plaga:", error);
         alert("Error al eliminar la plaga");
-      });
+      }
   };
 
   return (

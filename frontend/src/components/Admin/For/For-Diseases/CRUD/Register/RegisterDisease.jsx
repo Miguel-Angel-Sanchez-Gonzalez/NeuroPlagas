@@ -213,12 +213,12 @@ const RegisterDisease = ({ onCancelClick }) => {
               />
             </div>
           </div>
-          <div className='button-container-admin'>
+          <div className='btn-cont-admin-dis-r'>
               <button className='button-disease-r' type="submit" onClick={handleSubmit}>Guardar</button>
                  {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
               <button className='button-disease-r ' onClick={onCancelClick}>Cancelar</button>
             </div>
-              {records && !isInputFocused && <p className='error-message-disease'>{records}</p>}
+              {records && !isInputFocused && <p className='error-message-disease-r'>{records}</p>}
             </div>
             {loadingMessage && (
             <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification"/>

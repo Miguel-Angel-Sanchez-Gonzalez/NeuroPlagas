@@ -300,7 +300,7 @@ const EditDisease = ({ rowData, onCancelClick, idDisease }) => {
             </button>
           </div>
           {records && !isInputFocused && (
-            <p className="error-message">{records}</p>
+            <p className="error-message-disease-e">{records}</p>
           )}
         </div>
         {loadingMessage && (

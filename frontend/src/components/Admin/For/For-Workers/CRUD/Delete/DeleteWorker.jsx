@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './DeleteWorker.css';
 
 const DeleteWorker = ({ onCancelClick, idWorker }) => {
@@ -21,11 +21,10 @@ const DeleteWorker = ({ onCancelClick, idWorker }) => {
       })
       .catch(error => {
         console.error('Error al eliminar el trabajador:', error);
-        alert("Error al eliminar el invernadero");
+        alert("Error al eliminar el trabajador");
       });
   }
   
-
   return (
     <div className="delete-farmer-form ">
       <div className='container-delete-farmer'>

@@ -1,29 +1,19 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faPencilAlt,
-  faTrash,
-  faEye,
-} from "@fortawesome/free-solid-svg-icons";
 import "./DTableGreenhouses.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faSearch, faPencilAlt, faTrash, faEye,} from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 import RegisterGreenhouse from "../CRUD/Register/RegisterGreenhouse";
 import EditGreenhouse from "../CRUD/Edit/EditGreenhouse";
 import DeleteGreenhouse from "../CRUD/Delete/DeleteGreenhouse";
-import { useNavigate, useParams } from "react-router-dom";
 
 const DTableGreenhouses = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredGreenhouses, setFilteredGreenhouses] = useState([]);
   const [idGreenhouse, setIDGreenhouse] = useState("");
-  const [nameGreenhouse, setNameGreenhouse] = useState("");
-  const [nameFarmer, setNameFarmer] = useState("");
   const navigate = useNavigate();
 
-  //   const { idGreenhouse } = useParams();
-  // const params = useParams();
-  // console.log(params);
 
   const columns = [
     {
@@ -36,13 +26,13 @@ const DTableGreenhouses = () => {
       name: "Nombre del invernadero",
       selector: (row) => row.nombre,
       sortable: true,
-      width: "260px",
+      width: "280px",
     },
     {
       name: "Tipo de invernadero",
       selector: (row) => row.tipo_invernadero,
       sortable: true,
-      width: "230px",
+      width: "180px",
     },
     {
       name: "Humedad",
@@ -54,12 +44,12 @@ const DTableGreenhouses = () => {
       name: "Tamaño",
       selector: (row) => row.tamanio,
       sortable: true,
-      width: "110px",
+      width: "130px",
     },
     {
       name: "Agricultor responsable",
       selector: (row) => row.nombre_agricultor,
-      width: "260px",
+      width: "auto",
     },
     {
       name: "Acciones",
@@ -85,7 +75,7 @@ const DTableGreenhouses = () => {
           />
         </div>
       ),
-      width: "auto",
+      width: "100px",
     },
   ];
 
@@ -94,7 +84,6 @@ const DTableGreenhouses = () => {
   const [showRegisterGreenh, setshowRegisterGreenh] = useState(false); //Form de register
   const [showEditGreenh, setshowEditGreenh] = useState(false); //Form de edicion
   const [showDeleteGreenh, setshowDeleteGreenh] = useState(false); //Form de eliminacion
-  const [showDataTableBeds, setshowDataTableBeds] = useState(true); //Form para ver las camas de un invernadero
   const [greenhouses, setGreenhouses] = useState(data);
 
   useEffect(() => {
@@ -103,34 +92,46 @@ const DTableGreenhouses = () => {
 
   /*FUNCIONES*/
   async function getGreenhouses() {
-    const response = await fetch(`http://localhost:3000/greenhouse/`);
-    if (response.status === 200) {
-      const data = await response.json();
-      //se están cargando los datos
-      setGreenhouses(data);
-      setFilteredGreenhouses(data);
+    try {
+      const response = await fetch(`http://localhost:3000/greenhouse/`);
+      if (response.status === 200) {
+        const data = await response.json();
+        //se están cargando los datos
+        setGreenhouses(data);
+        setFilteredGreenhouses(data);
+      } else {
+        throw new Error('Error al obtener los invernaderos');
+      }
+    } catch (error) {
+      console.error('Error al obtener los invernaderos:', error);
+      alert('Error al obtener los invernaderos, inténtelo más tarte:')
     }
   }
+  
 
   const handleFilter = (event) => {
-    const value = event.target.value.toLowerCase();
-    setInputValue(value);
-    if (value) {
-      //dividir el texto para separar los valores de búsqueda
-      const searchValue = value.split(" ");
-      const filtered = greenhouses.filter((greenhouse) => {
-        return searchValue.every(
-          (value) =>
-            greenhouse.nombre.toLowerCase().includes(value) ||
-            greenhouse.nombre_agricultor.toLowerCase().includes(value)
-        );
-      });
-      //muestra los agricultores filtrados
-      setFilteredGreenhouses(filtered);
-    } else {
-      setFilteredGreenhouses(greenhouses);
+    try {
+      const value = event.target.value.toLowerCase();
+      setInputValue(value);
+      if (value) {
+        const searchValue = value.split(" ");
+        const filtered = greenhouses.filter((greenhouse) => {
+          return searchValue.every(
+            (value) =>
+              greenhouse.nombre.toLowerCase().includes(value) ||
+              greenhouse.nombre_agricultor.toLowerCase().includes(value)
+          );
+        });
+        setFilteredGreenhouses(filtered);
+      } else {
+        setFilteredGreenhouses(greenhouses);
+      }
+    } catch (error) {
+      console.error('Error durante el filtrado:', error);
+      alert('Error durante el filtrado de invernaderos');
     }
   };
+  
 
   const handleRegisterClick = () => {
     setshowRegisterGreenh(true);
@@ -151,21 +152,19 @@ const DTableGreenhouses = () => {
     setshowDeleteGreenh(true);
   };
 
-  // const handleShowBeds = (row) => {
-  //     setIDGreenhouse(row.id_invernadero);
-  //     setNameGreenhouse(row.nombre);
-  //     setNameFarmer(row.nombre_agricultor);
-  //     navigate(`/homeAdmin/invernaderos/${row.nombre}`);
-  // };
-
   const handleShowBeds = (row) => {
-    navigate(`/homeAdmin/invernaderos/${row.id_invernadero}`, {
-      state: {
-        idGreenhouse: row.id_invernadero,
-        nameGreenhouse: row.nombre,
-        nameFarmer: row.nombre_agricultor,
-      },
-    });
+    try {
+      navigate(`/homeAdmin/invernaderos/${row.id_invernadero}`, {
+        state: {
+          idGreenhouse: row.id_invernadero,
+          nameGreenhouse: row.nombre,
+          nameFarmer: row.nombre_agricultor,
+        },
+      });
+    } catch (error) {
+      console.error('Error al navegar a la sección de camas:', error);
+      alert('Error al intentar mostrar las camas del invernadero');
+    }
   };
 
   const paginacionOpciones = {
@@ -215,7 +214,7 @@ const DTableGreenhouses = () => {
           </div>
         }
         noDataComponent={
-          <div style={{ marginTop: "15%" }}>
+          <div className="no-beds-message">
             No hay invernaderos registrados
           </div>
         }

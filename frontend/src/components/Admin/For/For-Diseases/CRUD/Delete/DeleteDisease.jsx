@@ -3,27 +3,27 @@ import './DeleteDisease.css';
 
 const DeleteDisease = ({ onCancelClick, idDisease }) => {
   
-  const onConfirmClick = () => {
-    fetch(`http://localhost:3000/disease/${idDisease}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => {
-        if (response.ok) {
-          alert("La enfermedad se eliminó correctamente");
-          onCancelClick();
-          window.location.reload();
-        } else {
-          alert("Error al eliminar la enfermedad");
+  const onConfirmClick = async () => {
+    try{
+      const response = await fetch(`http://localhost:3000/disease/${idDisease}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
         }
-      })
-      .catch(error => {
+      });
+
+      if (response.ok) {
+        alert("La enfermedad se eliminó correctamente");
+        onCancelClick();
+        window.location.reload();
+      } else {
+        alert("Error al eliminar la enfermedad");
+      }
+    } catch(error) {
         console.error('Error al eliminar la enfermedad:', error);
         alert("Error al eliminar la enfermedad");
-      });
-  }
+      }
+  };
 
   return (
     <div className="delete-disease-form">

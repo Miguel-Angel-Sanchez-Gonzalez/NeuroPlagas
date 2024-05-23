@@ -86,11 +86,12 @@
   margin-left: 12px;
 }
 
-.button-container-admin {
+.btn-cont-admin-worker-e{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 25px;
+  margin-top: 30px;
+  margin-left: 15px;
   margin-right: 25px;
 }
 
@@ -104,14 +105,20 @@
   cursor: pointer; /* Cambiado desde el selector de etiqueta */
 }
 
-.error-message-worker-e,
-.email-exists-r {
+.email-exists-e {
   margin-top: 5px;
   margin-left: 5px;
   text-align: left;
   color: #c62426;
   font-size: 14px;
 }
+.error-message-worker-e {
+  margin-top: 17px;
+  margin-left: 18px;
+  text-align: left;
+  color: #c62426;
+}
+
 
 
 .error-password {

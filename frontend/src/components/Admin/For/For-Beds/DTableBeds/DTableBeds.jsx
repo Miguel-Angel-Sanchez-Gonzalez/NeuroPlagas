@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
+import './DTableBeds.css'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faPencilAlt, faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
-import './DTableBeds.css'; 
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import RegisterBed from '../CRUD/Register/RegisterBed';
 import EditBed from '../CRUD/Edit/EditBed';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-const DTableBeds = () => {
+const DTableBeds = ({ isLoading, noBedsMessage }) => {
     const [inputValue, setInputValue] = useState("");
     const [filteredBeds, setFilteredBeds] = useState([]);
-    const [idBed, setIDBed] = useState("");
+    const [idBed, setIDBed] = useState(null); // Inicializar como null para evitar problemas de referencia
     const [idGreenhouse, setIDGreenhouse] = useState("");
     const [nameGreenhouse, setNameGreenhouse] = useState("");
     const [nameFarmer, setNameFarmer] = useState("");
     const location = useLocation();
     const navigate = useNavigate();
-
     const { idGreenhouse: paramIdGreenhouse } = useParams();
 
     const columns = [
@@ -53,7 +52,6 @@ const DTableBeds = () => {
 
     const [showRegisterBed, setShowRegisterBed] = useState(false);
     const [showEditBed, setShowEditBed] = useState(false);
-    const [showDeleteBed, setShowDeleteBed] = useState(false);
     const [beds, setBeds] = useState([]);
 
     useEffect(() => {
@@ -72,14 +70,19 @@ const DTableBeds = () => {
     const getBedByIdGreenhouse = async (idGreenhouse) => {
         try {
             const response = await fetch(`http://localhost:3000/bed/greenhouse/${idGreenhouse}`);
-            const data = await response.json();
-            setBeds(data);
-            setFilteredBeds(data);
+            if (response.status === 200) {
+                const data = await response.json();
+                setBeds(data);
+                setFilteredBeds(data);
+            } else {
+                throw new Error('Error al obtener las camas');
+            }
         } catch (error) {
             console.error('Error al obtener las camas:', error);
+            alert('Error al obtener las camas:');
         }
     };
-
+    
     const handleFilter = (event) => {
         const value = event.target.value.toLowerCase();
         setInputValue(value);
@@ -99,11 +102,10 @@ const DTableBeds = () => {
     const handleRegisterClick = () => {
         setShowRegisterBed(true);
     };
-      
+
     const handleCancelClick = () => {
         setShowRegisterBed(false);
         setShowEditBed(false);
-        setShowDeleteBed(false);
     };
 
     const handleEditClick = (row) => {
@@ -113,7 +115,7 @@ const DTableBeds = () => {
 
     const handleDeleteClick = (row) => {
         setIDBed(row.id_cama);
-        setShowDeleteBed(true);
+        // Aquí puedes agregar la lógica para mostrar un modal de confirmación de eliminación
     };
 
     const handleShowImageAnalized = (row) => {
@@ -138,7 +140,7 @@ const DTableBeds = () => {
     return (
         <div className='table-bed-admin'>
             <div className='right-content-bed'>
-                <h1 className='h2green-bed'>Invernadero <span className='name-bed'> {nameGreenhouse}</span></h1>
+                <h1 className='h2green-bed'>Invernadero <span className='name-bed'>{nameGreenhouse}</span></h1>
                 <h4 className='h4farmer-bed'>Agricultor responsable: <span className='name-farmer'>{nameFarmer}</span></h4>
                 <div className='only-table-bed'>
                     <div className="title-and-search-bed">
@@ -152,6 +154,9 @@ const DTableBeds = () => {
                             <button type="button" className='buttonBed' onClick={handleRegisterClick}>Registrar cama</button>
                         </div>
                     </div>
+                    {isLoading ? (
+                    <div className="loading-message">Espere un momento, se están cargando las camas...</div>
+                ) : filteredBeds.length > 0 ? (
                     <DataTable 
                         columns={columns}
                         data={filteredBeds}
@@ -161,12 +166,17 @@ const DTableBeds = () => {
                         pagination
                         paginationComponentOptions={paginacionOpciones}
                     />
+                ) : (
+                    <div className="no-beds-message">{noBedsMessage || "Aún no se han registrado camas para este invernadero."}</div>
+                )}
                 </div>
             </div>
             {showRegisterBed && <RegisterBed onCancelClick={handleCancelClick} idGreenhouse={idGreenhouse} />}
-            {showEditBed && <EditBed onCancelClick={handleCancelClick} idBed={idBed} idGreenhouse={idGreenhouse}  />}
+            {showEditBed && idBed !== null && <EditBed onCancelClick={handleCancelClick} idBed={idBed} idGreenhouse={idGreenhouse} />}
+            {/* Aquí puedes agregar el componente para la eliminación de camas */}
         </div>
     );
+       
 };
 
 export default DTableBeds;

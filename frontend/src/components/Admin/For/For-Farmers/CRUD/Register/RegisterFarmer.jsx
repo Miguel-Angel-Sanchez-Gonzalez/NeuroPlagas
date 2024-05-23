@@ -48,15 +48,21 @@ const RegisterFarmer = ({ onCancelClick }) => {
 
   //VALIDACIONES
   const checkEmailExists = async (email) => {
-    const response = await fetch(`http://localhost:3000/login/check_email_existence`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email: email })
-    });
-    const data = await response.json();
-    return data.exists;
+    try {
+      const response = await fetch(`http://localhost:3000/login/check_email_existence`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email })
+      });
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error('Error al verificar la existencia del correo electrónico:', error);
+      alert('Error al verificar la existencia del correo electrónico');
+    }
+
   };
 
   //VALIDACIONES
@@ -94,77 +100,83 @@ const RegisterFarmer = ({ onCancelClick }) => {
   //PARA CREAR AL AGRICULTOR
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsFormSubmitted(true); 
-
-    
-    for (const key in values) {
-      if (values[key] === "") {
-        setRecords('Por favor complete todos los campos.');
+    setIsFormSubmitted(true);
+  
+    try {
+      for (const key in values) {
+        if (values[key] === "") {
+          setRecords('Por favor complete todos los campos.');
+          return;
+        }
+      }
+  
+      //Validando el correo
+      if (!validateEmail(values.correo)) {
+        //setRecords('El correo electrónico no es válido.');
         return;
       }
-    }
-
-    //Validando el correo
-    if (!validateEmail(values.correo)) {
-      //setRecords('El correo electrónico no es válido.');
-      return;
-    }
-
-    //Validando que el correo exista
-    const emailExists = await checkEmailExists(values.correo);
-    if (emailExists) {
-      setEmailExists(true);
-      return;
-    }
-    
-    // const phoneValidate = validatePhone(values.telefono);
-    if (!validatePhone(values.telefono)) {
-      setRecords('Teléfono no válido (10 dígitos).');
-      return;
-    }
-
-    const passwordValidationResult = validatePassword(values.contrasenia);
-    if (passwordValidationResult !== true) {
-      setPasswordError(passwordValidationResult);
-      return;
-    }
-
-    setIsLoading(true);
-    const data = {
-      name: values.nombre,
-      surname: values.primerApellido,
-      secondSurname: values.segundoApellido,
-      phone: values.telefono,
-      email: values.correo,
-      nameUser: values.nombreUsuario,
-      password: values.contrasenia,
-      role: "farmer"
-    };
-
-    //Se esta haciendo la promesa
-    //Post para insertar los datos de un agricultor
+  
+      //Validando que el correo exista
+      const emailExists = await checkEmailExists(values.correo);
+      if (emailExists) {
+        setEmailExists(true);
+        return;
+      }
+      
+      // const phoneValidate = validatePhone(values.telefono);
+      if (!validatePhone(values.telefono)) {
+        setRecords('Teléfono no válido (10 dígitos).');
+        return;
+      }
+  
+      const passwordValidationResult = validatePassword(values.contrasenia);
+      if (passwordValidationResult !== true) {
+        setPasswordError(passwordValidationResult);
+        return;
+      }
+  
+      setIsLoading(true);
+      const data = {
+        name: values.nombre,
+        surname: values.primerApellido,
+        secondSurname: values.segundoApellido,
+        phone: values.telefono,
+        email: values.correo,
+        nameUser: values.nombreUsuario,
+        password: values.contrasenia,
+        role: "farmer"
+      };
+  
+      //Se esta haciendo la promesa
+      //Post para insertar los datos de un agricultor
       const response = await fetch('http://localhost:3000/farmer/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-      }) 
-        if (response){
-          const responseData = await response.json();
-          const { id } = responseData; // Obtiene el ID del agricultor del backend
-          setIsLoading(false);
-          setLoadingMessage('Se ha agregado correctamente el agricultor.');
-          setTimeout(() => {
+      });
+  
+      if (response.ok) {
+        const responseData = await response.json();
+        const { id } = responseData; // Obtiene el ID del agricultor del backend
+        setIsLoading(false);
+        setLoadingMessage('Se ha agregado correctamente el agricultor.');
+        setTimeout(() => {
           setLoadingMessage(''); // Oculta el mensaje después de unos segundos
           window.location.reload();
-          }, 2000); // Mostrar el mensaje durante 3 segundos
-        } else {
-          setRecords('Por favor, inténtelo de nuevo más tarde.');
-          setIsLoading(false); // Agregar para detener la pantalla de carga
-        }
+        }, 2000); // Mostrar el mensaje durante 3 segundos
+      } else {
+        setRecords('Por favor, inténtelo de nuevo más tarde.');
+        setIsLoading(false); // Detiene la pantalla de carga
+      }
+    } catch (error) {
+      console.error("Hubo un error al procesar el registro del agricultor:", error);
+      setRecords('Hubo un error al procesar su solicitud. Por favor, inténtelo de nuevo más tarde.');
+      setIsLoading(false);
+    }
   };
-
+  
 
   return (
     <div>
@@ -341,7 +353,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
               {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
               <button className='button-farmer ' onClick={onCancelClick}>Cancelar</button>
             </div>
-            {records && !isInputFocused && <p className='error-message'>{records}</p>}
+            {records && !isInputFocused && <p className='error-message-farmer-r'>{records}</p>}
         </div>
         {loadingMessage && (
         <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification"/>

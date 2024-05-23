@@ -69,7 +69,7 @@
 }
 
 .search-bed:focus {
-  border-color: #2f31758e;
+  border-color: #c62426;
 }
 
 .buttonBed{
@@ -83,4 +83,10 @@
 .name-farmer,
 .name-bed{
   color: #c62426;
+}
+
+.no-beds-message {
+  text-align: center;
+  margin-top: 50px; 
+  margin-bottom: 50px; 
 }

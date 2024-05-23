@@ -485,7 +485,7 @@ const EditWorker = ({ onCancelClick, idWorker }) => {
               />
             </div>
           </div>
-          <div className="button-container-admin">
+          <div className="btn-cont-admin-worker-e">
             <button
               className="button-worker"
               type="submit"
@@ -498,7 +498,7 @@ const EditWorker = ({ onCancelClick, idWorker }) => {
             </button>
           </div>
           {records && !isInputFocused && (
-            <p className="error-message">{records}</p>
+            <p className="error-message-worker-e">{records}</p>
           )}
         </div>
         {loadingMessage && (

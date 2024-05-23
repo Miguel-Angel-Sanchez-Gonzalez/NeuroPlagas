@@ -218,11 +218,11 @@ const RegisterPlague = ({ onCancelClick }) => {
                  {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
               <button className='button-plague-r ' onClick={onCancelClick}>Cancelar</button>
             </div>
-            {records && !isInputFocused && <p className='error-message'>{records}</p>}
-{loadingMessage && (
-  <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification" />
-)}
-</div>
+            {records && !isInputFocused && <p className='error-message-plague-r'>{records}</p>}
+            {loadingMessage && (
+              <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification" />
+            )}
+            </div>
         </div>
       </div>
   );

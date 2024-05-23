@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faPencilAlt,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import {faSearch, faPencilAlt, faTrash,} from "@fortawesome/free-solid-svg-icons";
 import "./DTableWorkers.css";
 import RegisterWorker from "../CRUD/Register/RegisterWorker";
 import EditWorker from "../CRUD/Edit/EditWorker";
@@ -102,12 +98,17 @@ const DTableWorkers = () => {
 
   /*FUNCIONES*/
   async function getWorkers() {
-    const response = await fetch(`http://localhost:3000/worker/`);
-    if (response.status === 200) {
-      const data = await response.json();
-      //se están cargando los datos
-      setWorkers(data);
-      setFilteredWorkers(data);
+    try {
+      const response = await fetch(`http://localhost:3000/worker/`);
+      if (response.status === 200) {
+        const data = await response.json();
+        setWorkers(data);
+        setFilteredWorkers(data);
+      } else {
+        throw new Error('Error al obtener los trabajadores');
+      }
+    } catch (error) {
+      console.error('Error al obtener los trabajadores:', error);
     }
   }
 

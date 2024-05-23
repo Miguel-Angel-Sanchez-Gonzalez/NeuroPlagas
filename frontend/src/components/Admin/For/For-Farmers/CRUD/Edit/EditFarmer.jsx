@@ -48,18 +48,23 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
 
   //VALIDACIONES
   const checkEmailExists = async (email) => {
-    const response = await fetch(
-      `http://localhost:3000/login/check_email_existence`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: email }),
-      }
-    );
-    const data = await response.json();
-    return data.exists;
+    try {
+      const response = await fetch(
+        `http://localhost:3000/login/check_email_existence`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: email }),
+        }
+      );
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error("Error al verificar la existencia del correo electrónico:", error);
+      throw error;
+    }
   };
 
   //VALIDACIONES
@@ -119,13 +124,14 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
           contrasenia: data.contrasenia,
         });
       } else {
-      throw new Error("Error al obtener los datos del agricultor");
+        throw new Error("Error al obtener los datos del agricultor");
+      }
+    } catch (error) {
+      console.error("Hubo un error al obtener los datos del agricultor:", error);
+      setRecords('Hubo un error al obtener los datos del agricultor.');
     }
-  } catch (error) {
-    console.error("Hubo un error al obtener los datos del agricultor:", error);
-    setRecords('Hubo un error al obtener los datos del agricultor.');
-  }
-  }
+  };
+
   //Data para el fetch de actualizacion
   const data = {
     name: values.nombre,
@@ -141,48 +147,53 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
   const onConfirmClick = async () => {
     setIsFormSubmitted(true);
 
-    // Validación 1: Campos no vacíos
-    for (const key in values) {
-      if (values[key] === "") {
-        setRecords("Por favor complete todos los campos.");
+    try {
+      // Validación 1: Campos no vacíos
+      for (const key in values) {
+        if (values[key] === "") {
+          setRecords("Por favor complete todos los campos.");
+          return;
+        }
+      }
+
+      // Validación 2: Correo con formato válido
+      if (!validateEmail(values.correo)) {
+        setRecords('El correo electrónico no es válido.');
         return;
       }
-    }
 
-    // Validación 2: Correo con formato válido
-    if (!validateEmail(values.correo)) {
-      //setRecords('El correo electrónico no es válido.');
-      return;
-    }
-
-    // Validar si el correo electrónico fue modificado
-    if (values.correo !== originalEmail) {
-      // Realizar la verificación de existencia del nuevo correo electrónico
-      const emailExists = await checkEmailExists(values.correo);
-      if (emailExists) {
-        setEmailExists(true);
-        // setRecords('El correo electrónico ya está en uso.');
-        return;
-      } else {
-        setEmailExists(false);
+      // Validar si el correo electrónico fue modificado
+      if (values.correo !== originalEmail) {
+        // Realizar la verificación de existencia del nuevo correo electrónico
+        const emailExists = await checkEmailExists(values.correo);
+        if (emailExists) {
+          setEmailExists(true);
+          setRecords('El correo electrónico ya está en uso.');
+          return;
+        } else {
+          setEmailExists(false);
+        }
       }
-    }
 
-    // Validación 4: Teléfono válido
-    if (!validatePhone(values.telefono)) {
-      setRecords("Teléfono no válido (10 dígitos).");
-      return;
-    }
+      // Validación 4: Teléfono válido
+      if (!validatePhone(values.telefono)) {
+        setRecords("Teléfono no válido (10 dígitos).");
+        return;
+      }
 
-    // Validación 5: Contraseña válida
-    const passwordValidationResult = validatePassword(values.contrasenia);
-    if (passwordValidationResult !== true) {
-      setPasswordError(passwordValidationResult);
-      return;
-    }
+      // Validación 5: Contraseña válida
+      const passwordValidationResult = validatePassword(values.contrasenia);
+      if (passwordValidationResult !== true) {
+        setPasswordError(passwordValidationResult);
+        return;
+      }
 
-    // Si todas las validaciones son correctas, proceder a actualizar
-    updateFarmerData();
+      // Si todas las validaciones son correctas, proceder a actualizar
+      updateFarmerData();
+    } catch (error) {
+      console.error("Error en la validación de los datos:", error);
+      setRecords('Hubo un error al validar los datos.');
+    }
   };
 
   const updateFarmerData = async () => {
@@ -195,7 +206,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
         },
         body: JSON.stringify(data),
       });
-  
+
       if (response.ok) {
         setIsLoading(false);
         setLoadingMessage("El agricultor se actualizó correctamente.");
@@ -213,7 +224,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
       setIsLoading(false);
     }
   };
-  
+
 
   return (
     <div>

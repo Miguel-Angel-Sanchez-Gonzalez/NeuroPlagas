@@ -2,18 +2,16 @@ import React, { useState, useEffect } from 'react';
 import './ProfileAdmin.css';
 import AddNotification from '../../../LoginNotifications/AddNotification';
 
-const ProfileAdmin = ({ onCancelClick}) => {
+const ProfileAdmin = ({ onCancelClick }) => {
   const [records, setRecords] = useState('');
   const [emailExists, setEmailExists] = useState(false);
-  const [isInputFocused, setIsInputFocused] = useState(false); // Nuevo estado para controlar el enfoque en los inputs
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Nuevo estado para rastrear si el formulario se ha enviado
+  const [isInputFocused, setIsInputFocused] = useState(false); 
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false); 
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [originalEmail, setOriginalEmail] = useState('');
 
-  
-  //Para setear los valores al momento
   const [values, setValues] = useState({
     nombre: "",
     primerApellido: "",
@@ -21,7 +19,7 @@ const ProfileAdmin = ({ onCancelClick}) => {
     telefono: "",
     correo: "",
     nombreUsuario: "",
-    contrasenia:""
+    contrasenia: ""
   });
 
   const handleInputChange = (e) => {
@@ -38,40 +36,41 @@ const ProfileAdmin = ({ onCancelClick}) => {
     }
   };
 
-  //ENFOQUES
   const handleInputFocus = () => {
-    setIsInputFocused(true); // Actualiza el estado cuando un input recibe enfoque
-    setRecords(''); // Borra el mensaje de error
+    setIsInputFocused(true); 
+    setRecords(''); 
   };
 
   const handleInputBlur = () => {
-    setIsInputFocused(false); // Actualiza el estado cuando un input pierde el enfoque
-  };
-  //VALIDACIONES
-  const checkEmailExists = async (email) => {
-    const response = await fetch(`http://localhost:3000/login/check_email_existence`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email: email })
-    });
-    const data = await response.json();
-    return data.exists;
+    setIsInputFocused(false); 
   };
 
-  //VALIDACIONES
+  const checkEmailExists = async (email) => {
+    try {
+      const response = await fetch(`http://localhost:3000/login/check_email_existence`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email })
+      });
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error('Error al verificar la existencia del correo electrónico:', error);
+      alert('Error al verificar la existencia del correo electrónico');
+    }
+  };
+
   const validateEmail = (email) => {
-    // Que el correo sea Gmail, Hotmail, Yahoo o Outlook
     const emailPattern = /^[^\s@]+@(gmail\.com|hotmail\.com|yahoo\.com|outlook\.com|itoaxaca\.edu.mx)$/;
-    return emailPattern.test(email); //true si es valido
+    return emailPattern.test(email); 
   };
 
   const validatePhone = (phoneNumber) => {
     const phonePattern = /^\(?([0-9]{3})\)?[-.]?([0-9]{3})?[-.]?([0-9]{4})$/;
     return phonePattern.test(phoneNumber) && phoneNumber.length === 10;
-};
-
+  };
 
   const validatePassword = (password) => {
     const hasUpperCase = /[A-Z]/.test(password);
@@ -92,39 +91,35 @@ const ProfileAdmin = ({ onCancelClick}) => {
     }
     return true;
   };
-    
-
-  //Para el fetch de recuperacion de data del admin, mostrar los datos dal administrador
+  
   useEffect(() => {
-    fetch(`http://localhost:3000/admin/`)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/admin/`);
+        if (response.status === 200) {
+          const data = await response.json();
+          console.log(data[0]);
+          setOriginalEmail(data[0].correo_electronico);
+          setValues({
+            nombre: data[0].nombre,
+            primerApellido: data[0].primer_apellido,
+            segundoApellido: data[0].segundo_apellido,
+            telefono: data[0].telefono,
+            correo: data[0].correo_electronico,
+            nombreUsuario: data[0].nombre_usuario,
+            contrasenia: data[0].contrasenia
+          });
+        } else {
+          throw new Error('Error al obtener al administrador');
         }
-        throw new Error('Error al obtener al administrador');
-      })
-      .then(data => {
-        console.log(data[0]);
-        setOriginalEmail(data[0].correo_electronico);
-        // Actualizar el estado con los datos dal administrador
-        setValues({
-          nombre: data[0].nombre,
-          primerApellido: data[0].primer_apellido,
-          segundoApellido: data[0].segundo_apellido,
-          telefono: data[0].telefono,
-          correo: data[0].correo_electronico,
-          nombreUsuario: data[0].nombre_usuario,
-          contrasenia: data[0].contrasenia
-        });
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Error al obtener al administrador:', error);
         setIsLoading(false);
-      });
+      }
+    };
+    fetchData();
   }, []);
   
-
-  //Data para el fetch de actualizacion
   const data = {
     name: values.nombre,
     surname: values.primerApellido,
@@ -138,7 +133,6 @@ const ProfileAdmin = ({ onCancelClick}) => {
   const onConfirmClick = async () => {
     setIsFormSubmitted(true);
   
-    // Validación 1: Campos no vacíos
     for (const key in values) {
       if (values[key] === "") {
         setRecords('Por favor complete todos los campos.');
@@ -146,32 +140,29 @@ const ProfileAdmin = ({ onCancelClick}) => {
       }
     }
 
-    // Validación 2: Correo con formato válido
     if (!validateEmail(values.correo)) {
-      //setRecords('El correo electrónico no es válido.');
       return;
     }
 
-    // Validar si el correo electrónico fue modificado
     if (values.correo !== originalEmail) {
-      // Realizar la verificación de existencia del nuevo correo electrónico
-      const emailExists = await checkEmailExists(values.correo);
-      if (emailExists) {
-        setEmailExists(true);
-        // setRecords('El correo electrónico ya está en uso.');
-        return;
-      } else {
-        setEmailExists(false);
+      try {
+        const emailExists = await checkEmailExists(values.correo);
+        if (emailExists) {
+          setEmailExists(true);
+          return;
+        } else {
+          setEmailExists(false);
+        }
+      } catch (error) {
+        console.error('Error al verificar la existencia del correo electrónico:', error);
       }
     }
   
-    // Validación 4: Teléfono válido
     if (!validatePhone(values.telefono)) {
       setRecords('Teléfono no válido (10 dígitos).');
       return;
     }
 
-    // Validación 5: Contraseña válida
     const passwordValidationResult = validatePassword(values.contrasenia);
     if (passwordValidationResult !== true) {
       setPasswordError(passwordValidationResult);
@@ -179,57 +170,54 @@ const ProfileAdmin = ({ onCancelClick}) => {
     }
   
     setIsLoading(true);
-    // Si todas las validaciones son correctas, proceder a actualizar
     updateAdminData();
   };
 
-  const updateAdminData = () => {
+  const updateAdminData = async () => {
     setIsLoading(true);
-    fetch(`http://localhost:3000/admin/`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => {
+    try {
+      const response = await fetch(`http://localhost:3000/admin/`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
       if (response.ok) {
         setIsLoading(false);
         setLoadingMessage('El administrador se actualizó correctamente.');
         setTimeout(() => {
-          setLoadingMessage(''); // Oculta el mensaje después de unos segundos
+          setLoadingMessage(''); 
           window.location.reload();
         }, 2000); 
       } else {
         throw new Error('No se pudo actualizar al administrador');
       }
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('Error al actualizar al administrador:', error);
       alert("Error al actualizar al administrador");
       window.location.reload();
       setIsLoading(false);
-    });
+    }
   };
 
-
   return (
-      <div>
+    <div>
       {isLoading && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
         </div>
       )}
-        <div className="profile-admin-form">
-          <div className='centrar-admin'>
+      <div className="profile-admin-form">
+        <div className='centrar-admin'>
           <h4 className='h4profile'>Editar perfil</h4>
           <h5 className='h5profile'>*Campos requeridos</h5>
           <label className='titles-datos-admin'>Edite sus datos personales</label>
           <div className="form-section-profile">
             <div className="column-admin-profile">
               <label className={`titles-admin ${isFormSubmitted && !values.nombre && 'red-label'}`}>
-                  Nombre*
-                </label>
+                Nombre*
+              </label>
               <input
                 className={`inputs-profile-admin ${isFormSubmitted && !values.nombre && 'red-input'}`}
                 type="text"
@@ -240,13 +228,13 @@ const ProfileAdmin = ({ onCancelClick}) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur}
-                style={values.nombre ? {  backgroundColor: '#EFF6FF' } : null}
+                style={values.nombre ? { backgroundColor: '#EFF6FF' } : null}
               />
             </div>
             <div className="column-admin-profile">
               <label className={`titles-admin ${isFormSubmitted && !values.primerApellido && 'red-label'}`}>
-                  Primer apellido*
-                </label>
+                Primer apellido*
+              </label>
               <input
                 className={`inputs-profile-admin ${isFormSubmitted && !values.primerApellido && 'red-input'}`}
                 type="text"
@@ -257,7 +245,7 @@ const ProfileAdmin = ({ onCancelClick}) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur}
-                style={values.primerApellido ? {  backgroundColor: '#EFF6FF' } : null}  
+                style={values.primerApellido ? { backgroundColor: '#EFF6FF' } : null}  
               />
             </div>
             <div className="column-admin-profile">
@@ -274,7 +262,7 @@ const ProfileAdmin = ({ onCancelClick}) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur} 
-                style={values.segundoApellido ? {  backgroundColor: '#EFF6FF' } : null} 
+                style={values.segundoApellido ? { backgroundColor: '#EFF6FF' } : null} 
               />
             </div>
           </div>
@@ -293,11 +281,11 @@ const ProfileAdmin = ({ onCancelClick}) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus}
                 onBlur={handleInputBlur}   
-                style={values.correo ? {  backgroundColor: '#EFF6FF' } : null}
+                style={values.correo ? { backgroundColor: '#EFF6FF' } : null}
               />
               {values.correo && !validateEmail(values.correo) && isFormSubmitted && (
-                  <p className="error-message-farmer">Correo electrónico inválido.</p>
-                )}
+                <p className="error-message-farmer">Correo electrónico inválido.</p>
+              )}
               {emailExists && values.correo !== originalEmail && (
                 <p className="email-exists-Fr">El correo ya está en uso.</p>
               )}
@@ -314,7 +302,6 @@ const ProfileAdmin = ({ onCancelClick}) => {
                 placeholder="Ingrese su número telefónico"
                 value={values.telefono}
                 onChange={(e) => {
-                  // Filtra solo dígitos y limita a 10 caracteres
                   const phoneNumber = e.target.value.replace(/\D/g, '').slice(0, 10);
                   setValues(prevState => ({
                     ...prevState,
@@ -323,7 +310,7 @@ const ProfileAdmin = ({ onCancelClick}) => {
                 }}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur}  
-                style={values.telefono ? {  backgroundColor: '#EFF6FF' } : null} 
+                style={values.telefono ? { backgroundColor: '#EFF6FF' } : null} 
               />
             </div>
             <div></div>
@@ -333,8 +320,8 @@ const ProfileAdmin = ({ onCancelClick}) => {
           <div className="form-section-profile">
             <div className="column-admin-profile">
               <label className={`titles-admin ${isFormSubmitted && !values.nombreUsuario && 'red-label'}`}>
-                  Nombre de usuario*
-                </label>
+                Nombre de usuario*
+              </label>
               <input
                 className={`inputs-profile-admin2 ${isFormSubmitted && !values.nombreUsuario && 'red-input'}`}
                 type="text"
@@ -345,12 +332,12 @@ const ProfileAdmin = ({ onCancelClick}) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur} 
-                style={values.nombreUsuario ? {  backgroundColor: '#EFF6FF' } : null}
+                style={values.nombreUsuario ? { backgroundColor: '#EFF6FF' } : null}
               />
             </div>
             <div className="column-admin-profile">
               <label className={`titles-admin ${isFormSubmitted && !values.contrasenia && 'red-label'}`}>
-                 Contraseña*
+                Contraseña*
               </label>
               <input
                 className={`inputs-profile-admin2 ${isFormSubmitted && !values.contrasenia && 'red-input'}`}
@@ -360,40 +347,38 @@ const ProfileAdmin = ({ onCancelClick}) => {
                 placeholder="Contraseña"
                 value={values.contrasenia}
                 onChange={(e) => handleInputChange(e)}
-                  onFocus={handleInputFocus} 
-                  onBlur={async () => {
-                    if (values.contrasenia) {
-                      const validationMessage = validatePassword(values.contrasenia);
-                      if (validationMessage !== true) {
-                        setPasswordError(validationMessage);
-                      }
+                onFocus={handleInputFocus} 
+                onBlur={async () => {
+                  if (values.contrasenia) {
+                    const validationMessage = validatePassword(values.contrasenia);
+                    if (validationMessage !== true) {
+                      setPasswordError(validationMessage);
                     }
-                  }}
-                  style={values.contrasenia ? {  backgroundColor: '#EFF6FF' } : null}
-                />
-                
-                {isFormSubmitted && !values.contrasenia && <p className="error-password">Por favor ingrese una contraseña.</p>}
-                {passwordError && <p className="error-password">{passwordError}</p>}
+                  }
+                }}
+                style={values.contrasenia ? { backgroundColor: '#EFF6FF' } : null}
+              />
+              {isFormSubmitted && !values.contrasenia && <p className="error-password">Por favor ingrese una contraseña.</p>}
+              {passwordError && <p className="error-password">{passwordError}</p>}
             </div>
           </div>
           <div className="password-rules-admin">
             <label>*La contraseña debe ser mínimo de 8 caracteres.</label>
-              <br/>
-              <label>*Debe incluir al menos: una mayúscula, número y un símbolo (Todos son válidos).</label>
+            <br />
+            <label>*Debe incluir al menos: una mayúscula, número y un símbolo (Todos son válidos).</label>
           </div>
           <div className='button-container-profile'>
-              <button className='button-admin' type="submit"  onClick={onConfirmClick} >Guardar</button>
-              <button className='button-admin ' onClick={onCancelClick}>Cancelar</button>
-            </div>
-            {records && !isInputFocused && <p className='error-message'>{records}</p>}
+            <button className='button-admin' type="submit" onClick={onConfirmClick}>Guardar</button>
+            <button className='button-admin ' onClick={onCancelClick}>Cancelar</button>
+          </div>
+          {records && !isInputFocused && <p className='error-msg-profile-admin'>{records}</p>}
         </div>
         {loadingMessage && (
-        <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification"/>
-      )}
-        </div>
-        </div>
-      );
-  };
-  
-  export default ProfileAdmin;
-  
+          <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification" />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ProfileAdmin;

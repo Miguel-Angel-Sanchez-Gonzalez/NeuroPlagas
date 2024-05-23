@@ -62,7 +62,6 @@ const RegisterFarmer = ({ onCancelClick }) => {
       console.error('Error al verificar la existencia del correo electrónico:', error);
       alert('Error al verificar la existencia del correo electrónico');
     }
-
   };
 
   //VALIDACIONES

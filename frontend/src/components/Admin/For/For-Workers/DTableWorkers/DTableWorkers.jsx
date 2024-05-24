@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faSearch, faPencilAlt, faTrash,} from "@fortawesome/free-solid-svg-icons";
+import {faSearch, faPencilAlt, faTrash, faList,} from "@fortawesome/free-solid-svg-icons";
 import "./DTableWorkers.css";
 import RegisterWorker from "../CRUD/Register/RegisterWorker";
 import EditWorker from "../CRUD/Edit/EditWorker";
@@ -40,8 +40,17 @@ const DTableWorkers = () => {
       width: "160px",
     },
     {
-      name: "Invernadero",
+      name: "Ver invernaderos",
       selector: (row) => row.id_invernadero,
+      selector: (row) => row.id_invernadero,
+      cell: (row) => (
+        <div>
+          {row.id_invernadero}
+          <button className="verInvernaderos-button">
+            <FontAwesomeIcon icon={faList} size="lg" />
+          </button>
+        </div>
+      ),
       width: "140px",
     },
     {

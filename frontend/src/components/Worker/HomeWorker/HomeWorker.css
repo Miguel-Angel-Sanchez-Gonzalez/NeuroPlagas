@@ -7,35 +7,35 @@
     font-family: 'Montserrat';
 }
 
-.navbar-container-worker {
+.navbar-container-farmer {
   width: 100%;
   padding: 10px 0;
   background: #c62426;
   color: white;
 }
 
-.dashboard-worker {
+.dashboard-farmer {
     display: flex;
     gap: 10px;
-    width: 100%; /* Asegura que el dashboard no se extienda más allá del ancho del .worker */
+    width: 100%; /* Asegura que el dashboard no se extienda más allá del ancho del .farmer */
     overflow: auto; 
 }
 
-.table-container-worker {
+.table-container-farmer {
     width: 75%;
     overflow: auto; /* Permite desplazamiento si el contenido interno es muy ancho */
 }
 
-.h2worker {
+.h2farmer {
   margin-left: 15px;
   margin-bottom: 20px;
 }
 
-.rol-worker {
+.rol-farmer {
   color: #c62426;
 }
 
-.space-worker {
+.space-farmer {
   padding: 15px;
   margin-top: 10px;
 }

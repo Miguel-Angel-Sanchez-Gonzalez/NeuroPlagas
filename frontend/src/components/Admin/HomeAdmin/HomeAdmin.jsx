@@ -13,10 +13,9 @@ import DTableBeds from "../For/For-Beds/DTableBeds/DTableBeds";
 import { Route, Routes } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import DTableImagesA from "../For/For-ImagesAnalized/DTableImagesAnalized/DTableImagesA";
+import DTableWorkerGreen from "../For/For-Workers/For-WorkerGreen/DTableWorkerGreen/DTableWorkerGreen";
 
 const HomeAdmin = () => {
-  const { idGreenhouse, nameGreenhouse, nameFarmer } = useParams();
-
   const [showProfileAdmin, setShowProfileAdmin] = React.useState(false);
   const handleConfigureProfileClick = () => {
     setShowProfileAdmin(true);
@@ -38,15 +37,19 @@ const HomeAdmin = () => {
             <Routes>
               <Route path="/agricultores" element={<DTableFarmers />} />
               <Route path="/invernaderos" element={<DTableGreenhouses />} />
-              <Route
-                path="/invernaderos/:idGreenhouse"
-                element={<DTableBeds />}
-              />
-              <Route
-                path="/invernaderos/:idGreenhouse/imagenesAnalizadas/:idBed"
-                element={<DTableImagesA />}
-              />
+                  <Route
+                    path="/invernaderos/:idGreenhouse"
+                    element={<DTableBeds />}
+                  />
+                  <Route
+                    path="/invernaderos/:idGreenhouse/imagenesAnalizadas/:idBed"
+                    element={<DTableImagesA />}
+                  />
               <Route path="/trabajadores" element={<DTableWorkers />} />
+                  <Route
+                    path="/trabajadores/:nameWorker"
+                    element={<DTableWorkerGreen />}
+                  />
               <Route path="/reportes" element={<Dashboard />} />
               <Route path="/plagas" element={<DTablePlagues />} />
               <Route path="/enfermedades" element={<DTableDiseases />} />

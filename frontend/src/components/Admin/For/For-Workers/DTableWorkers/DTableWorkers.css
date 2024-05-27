@@ -85,14 +85,14 @@ input{
 }
 
 
-.action-button {
-  background: none;
+.verInvernaderos-button {
+  background: #c62426;
+  color: #fff;
   border: none;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
+  align-items: right;
   margin-left: 10px;
-  padding: 5px 10px;
+  padding: 5px 20px;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 15x;
 }

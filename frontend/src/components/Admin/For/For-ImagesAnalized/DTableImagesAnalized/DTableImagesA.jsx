@@ -88,8 +88,7 @@ const DTableImagesA = () => {
   const getImageAByIdBed = async (idBed) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`
-      );
+        `http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`);
       if (!response.ok) {
         throw new Error("La respuesta de la red no fue exitosa");
       }

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faSearch, faPencilAlt, faTrash, faList,} from "@fortawesome/free-solid-svg-icons";
 import "./DTableWorkers.css";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faSearch, faPencilAlt, faTrash,} from "@fortawesome/free-solid-svg-icons";
 import RegisterWorker from "../CRUD/Register/RegisterWorker";
 import EditWorker from "../CRUD/Edit/EditWorker";
 import DeleteWorker from "../CRUD/Delete/DeleteWorker";
@@ -13,6 +14,7 @@ const DTableWorkers = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredWorkers, setFilteredWorkers] = useState([]);
   const [idWorker, setIDWorker] = useState("");
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -41,22 +43,21 @@ const DTableWorkers = () => {
     },
     {
       name: "Ver invernaderos",
-      selector: (row) => row.id_invernadero,
-      selector: (row) => row.id_invernadero,
       cell: (row) => (
         <div>
           {row.id_invernadero}
-          <button className="verInvernaderos-button">
-            <FontAwesomeIcon icon={faList} size="lg" />
+          <button className="verInvernaderos-button" 
+           onClick={() => handleShowGWorkers(row)}>
+           Listar
           </button>
         </div>
       ),
-      width: "140px",
+      width: "120px",
     },
     {
       name: "Teléfono",
       selector: (row) => row.telefono,
-      width: "140px",
+      width: "130px",
     },
     {
       name: "Correo electrónico",
@@ -72,7 +73,7 @@ const DTableWorkers = () => {
     {
       name: "Contraseña",
       selector: (row) => "********",
-      width: "110px",
+      width: "100px",
     },
     {
       name: "Acciones",
@@ -163,6 +164,21 @@ const DTableWorkers = () => {
     //console.log("ID del registro a eliminar:", row.id_trabajador);
     setShowDeleteWorker(true);
     setIDWorker(row.id_trabajador);
+  };
+
+  //Para ver la tabla de invernaderos 
+  const handleShowGWorkers = (row) => {
+    try {
+      navigate(`/homeAdmin/trabajadores/${row.nombre}`, {
+        state: {
+          idWorker: row.id_trabajador,
+          nameWorker: row.nombre
+        },
+      });
+    } catch (error) {
+      console.error('Error al navegar a la sección de lo invernaderos asignados a un trabajador:', error);
+      alert('Error al intentar mostrar los invernaderos asignados a un trabajador');
+    }
   };
 
   const paginacionOpciones = {

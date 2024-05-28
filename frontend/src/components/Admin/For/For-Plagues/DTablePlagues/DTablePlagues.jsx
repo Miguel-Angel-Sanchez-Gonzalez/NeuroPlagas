@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTablePlagues.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faPencilAlt,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import RegisterPlague from "../CRUD/Register/RegisterPlague";
 import EditPlague from "../CRUD/Edit/EditPlague";
 import DeletePlague from "../CRUD/Delete/DeletePlague";
@@ -79,21 +83,20 @@ const DTablePlagues = () => {
   }, []);
 
   async function getPlagues() {
-    try{
+    try {
       const response = await fetch(`http://localhost:3000/plague/`);
       if (response.status === 200) {
         const data = await response.json();
         setPlagues(data);
         setFilteredPlagues(data);
       } else {
-        throw new Error('Error al obtener las plagas');
+        throw new Error("Error al obtener las plagas");
       }
     } catch (error) {
       console.error("Error al cargar los datos de las plagas:", error);
-      alert('Error al obtener las plagas, inténtelo más tarte:')
+      alert("Error al obtener las plagas, inténtelo más tarte:");
     }
   }
-
 
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
@@ -155,7 +158,6 @@ const DTablePlagues = () => {
         columns={columns}
         data={filteredPlagues}
         responsive={true}
-        selectableRows
         fixedHeader
         pagination
         paginationComponentOptions={paginacionOpciones}
@@ -180,8 +182,8 @@ const DTablePlagues = () => {
         }
         noDataComponent={
           <div className="no-beds-message">
-                  Aún no hay enfermedades registradas
-                </div>
+            Aún no hay enfermedades registradas
+          </div>
         }
       />
       {showRegisterPlague && (

@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTableGreenhouses.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faSearch, faPencilAlt, faTrash, faEye,} from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faPencilAlt,
+  faTrash,
+  faEye,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import RegisterGreenhouse from "../CRUD/Register/RegisterGreenhouse";
 import EditGreenhouse from "../CRUD/Edit/EditGreenhouse";
@@ -13,7 +18,6 @@ const DTableGreenhouses = () => {
   const [filteredGreenhouses, setFilteredGreenhouses] = useState([]);
   const [idGreenhouse, setIDGreenhouse] = useState("");
   const navigate = useNavigate();
-
 
   const columns = [
     {
@@ -100,14 +104,13 @@ const DTableGreenhouses = () => {
         setGreenhouses(data);
         setFilteredGreenhouses(data);
       } else {
-        throw new Error('Error al obtener los invernaderos');
+        throw new Error("Error al obtener los invernaderos");
       }
     } catch (error) {
-      console.error('Error al obtener los invernaderos:', error);
-      alert('Error al obtener los invernaderos, inténtelo más tarte:')
+      console.error("Error al obtener los invernaderos:", error);
+      alert("Error al obtener los invernaderos, inténtelo más tarte:");
     }
   }
-  
 
   const handleFilter = (event) => {
     try {
@@ -127,11 +130,10 @@ const DTableGreenhouses = () => {
         setFilteredGreenhouses(greenhouses);
       }
     } catch (error) {
-      console.error('Error durante el filtrado:', error);
-      alert('Error durante el filtrado de invernaderos');
+      console.error("Error durante el filtrado:", error);
+      alert("Error durante el filtrado de invernaderos");
     }
   };
-  
 
   const handleRegisterClick = () => {
     setshowRegisterGreenh(true);
@@ -154,7 +156,7 @@ const DTableGreenhouses = () => {
 
   const handleShowBeds = (row) => {
     try {
-      navigate(`/homeAdmin/invernaderos/${row.id_invernadero}`, {
+      navigate(`/homeAdmin/invernaderos/camas`, {
         state: {
           idGreenhouse: row.id_invernadero,
           nameGreenhouse: row.nombre,
@@ -162,8 +164,8 @@ const DTableGreenhouses = () => {
         },
       });
     } catch (error) {
-      console.error('Error al navegar a la sección de camas:', error);
-      alert('Error al intentar mostrar las camas del invernadero');
+      console.error("Error al navegar a la sección de camas:", error);
+      alert("Error al intentar mostrar las camas del invernadero");
     }
   };
 
@@ -190,7 +192,6 @@ const DTableGreenhouses = () => {
         //Considerando el filtro
         data={filteredGreenhouses}
         responsive={true}
-        selectableRows
         fixedHeader
         pagination
         paginationComponentOptions={paginacionOpciones}
@@ -214,9 +215,7 @@ const DTableGreenhouses = () => {
           </div>
         }
         noDataComponent={
-          <div className="no-beds-message">
-            No hay invernaderos registrados
-          </div>
+          <div className="no-beds-message">No hay invernaderos registrados</div>
         }
       />
       {showRegisterGreenh && (

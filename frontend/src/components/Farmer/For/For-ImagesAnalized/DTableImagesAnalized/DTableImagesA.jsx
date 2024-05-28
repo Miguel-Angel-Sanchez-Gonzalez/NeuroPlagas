@@ -3,13 +3,13 @@ import DataTable from "react-data-table-component";
 import "./DTableImagesA.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faEye } from "@fortawesome/free-solid-svg-icons";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 //FARMER
 const DTableImagesA = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredImagesA, setFilteredImagesA] = useState([]);
-
+  const [isLoaded, setIsLoaded] = useState(false);
   //Para ver las imagenes analizadas de una cama
   const location = useLocation();
   const { nameGreenhouse, nameFarmer, numberBed, idBed } = location.state || [];
@@ -71,8 +71,34 @@ const DTableImagesA = () => {
   const [imagesAnalized, setImagesAnalized] = useState([]);
 
   useEffect(() => {
-    getImageAByIdBed();
-  }, []);
+    if (!isLoaded) {
+      getImageAByIdBed();
+    }
+  }, [isLoaded]);
+
+  const handleChooseImage = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      sendImageToBackend(file);
+    }
+  };
+
+  const sendImageToBackend = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+      const response = await fetch(
+        `http://localhost:3000/analyzeimage/web/${idBed}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (response.status === 200) {
+        setIsLoaded(false);
+      }
+    } catch (error) {}
+  };
 
   const getImageAByIdBed = async () => {
     try {
@@ -84,6 +110,7 @@ const DTableImagesA = () => {
         console.log("Respuesta del servidor:", data);
         setImagesAnalized(data);
         setFilteredImagesA(data);
+        setIsLoaded(true);
       }
     } catch (error) {
       console.error(
@@ -161,6 +188,16 @@ const DTableImagesA = () => {
                 Aún no hay imagenes analizadas
               </div>
             }
+          />
+        </div>
+
+        <div style={{ marginTop: "5%", alignContent: "center" }}>
+          <h3>Analiza una imagen</h3>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleChooseImage}
+            id="fileInput"
           />
         </div>
       </div>

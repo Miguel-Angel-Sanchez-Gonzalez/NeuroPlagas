@@ -113,10 +113,10 @@ const Login = () => {
         navigate("/homeAdmin/agricultores");
         break;
       case "farmer":
-        navigate("/homeFarmer");
+        navigate("/homeFarmer/notificaciones");
         break;
       case "worker":
-        navigate("/homeWorker");
+        navigate("/homeWorker/notificaciones");
         break;
       default:
         navigate("/login");

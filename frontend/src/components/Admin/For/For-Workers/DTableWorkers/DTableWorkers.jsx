@@ -3,7 +3,11 @@ import DataTable from "react-data-table-component";
 import "./DTableWorkers.css";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faSearch, faPencilAlt, faTrash,} from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faPencilAlt,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import RegisterWorker from "../CRUD/Register/RegisterWorker";
 import EditWorker from "../CRUD/Edit/EditWorker";
 import DeleteWorker from "../CRUD/Delete/DeleteWorker";
@@ -46,9 +50,11 @@ const DTableWorkers = () => {
       cell: (row) => (
         <div>
           {row.id_invernadero}
-          <button className="verInvernaderos-button" 
-           onClick={() => handleShowGWorkers(row)}>
-           Listar
+          <button
+            className="verInvernaderos-button"
+            onClick={() => handleShowGWorkers(row)}
+          >
+            Listar
           </button>
         </div>
       ),
@@ -115,10 +121,10 @@ const DTableWorkers = () => {
         setWorkers(data);
         setFilteredWorkers(data);
       } else {
-        throw new Error('Error al obtener los trabajadores');
+        throw new Error("Error al obtener los trabajadores");
       }
     } catch (error) {
-      console.error('Error al obtener los trabajadores:', error);
+      console.error("Error al obtener los trabajadores:", error);
     }
   }
 
@@ -166,18 +172,23 @@ const DTableWorkers = () => {
     setIDWorker(row.id_trabajador);
   };
 
-  //Para ver la tabla de invernaderos 
+  //Para ver la tabla de invernaderos
   const handleShowGWorkers = (row) => {
     try {
       navigate(`/homeAdmin/trabajadores/${row.nombre}`, {
         state: {
           idWorker: row.id_trabajador,
-          nameWorker: row.nombre
+          nameWorker: row.nombre,
         },
       });
     } catch (error) {
-      console.error('Error al navegar a la sección de lo invernaderos asignados a un trabajador:', error);
-      alert('Error al intentar mostrar los invernaderos asignados a un trabajador');
+      console.error(
+        "Error al navegar a la sección de lo invernaderos asignados a un trabajador:",
+        error
+      );
+      alert(
+        "Error al intentar mostrar los invernaderos asignados a un trabajador"
+      );
     }
   };
 
@@ -204,7 +215,6 @@ const DTableWorkers = () => {
         //se está considerando el filtro
         data={filteredWorkers}
         responsive={true}
-        selectableRows
         fixedHeader
         pagination
         paginationComponentOptions={paginacionOpciones}

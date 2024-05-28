@@ -37,19 +37,16 @@ const HomeAdmin = () => {
             <Routes>
               <Route path="/agricultores" element={<DTableFarmers />} />
               <Route path="/invernaderos" element={<DTableGreenhouses />} />
-                  <Route
-                    path="/invernaderos/:idGreenhouse"
-                    element={<DTableBeds />}
-                  />
-                  <Route
-                    path="/invernaderos/:idGreenhouse/imagenesAnalizadas/:idBed"
-                    element={<DTableImagesA />}
-                  />
+              <Route path="/invernaderos/camas" element={<DTableBeds />} />
+              <Route
+                path="/invernaderos/camas/imagenes-analizadas/"
+                element={<DTableImagesA />}
+              />
               <Route path="/trabajadores" element={<DTableWorkers />} />
-                  <Route
-                    path="/trabajadores/:nameWorker"
-                    element={<DTableWorkerGreen />}
-                  />
+              <Route
+                path="/trabajadores/:nameWorker"
+                element={<DTableWorkerGreen />}
+              />
               <Route path="/reportes" element={<Dashboard />} />
               <Route path="/plagas" element={<DTablePlagues />} />
               <Route path="/enfermedades" element={<DTableDiseases />} />

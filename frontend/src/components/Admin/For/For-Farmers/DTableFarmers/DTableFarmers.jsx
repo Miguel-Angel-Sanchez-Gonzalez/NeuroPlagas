@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTableFarmers.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faSearch, faPencilAlt, faTrash,} from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faPencilAlt,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from "react-router-dom";
 import RegisterFarmer from "../CRUD/Register/RegisterFarmer";
 import EditFarmer from "../CRUD/Edit/EditFarmer";
@@ -87,7 +91,7 @@ const DTableFarmers = () => {
   const [showEditFarmer, setShowEditFarmer] = useState(false); //Form de edicion
   const [showDeleteFarmer, setshowDeleteFarmer] = useState(false); //Form de eliminacion
   const [farmers, setFarmers] = useState([]);
-  
+
   const location = useLocation();
   useEffect(() => {
     // console.log("Cargue los agricultores en la tabla");
@@ -104,14 +108,13 @@ const DTableFarmers = () => {
         setFarmers(data);
         setFilteredFarmers(data);
       } else {
-        throw new Error('Error al obtener a los agricultores');
+        throw new Error("Error al obtener a los agricultores");
       }
     } catch (error) {
       console.error("Error al cargar los datos de los agricultores:", error);
-      alert('Error al obtener a los agricultores, inténtelo más tarte:')
+      alert("Error al obtener a los agricultores, inténtelo más tarte:");
     }
   }
-  
 
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
@@ -185,7 +188,6 @@ const DTableFarmers = () => {
           //se está considerando el filtro
           data={filteredFarmers}
           responsive={true}
-          selectableRows
           fixedHeader
           pagination
           paginationComponentOptions={paginacionOpciones}

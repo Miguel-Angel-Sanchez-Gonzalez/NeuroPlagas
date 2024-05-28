@@ -2,20 +2,18 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTableImagesA.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faSearch, faEye} from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faEye } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useParams } from "react-router-dom";
 
 const DTableImagesA = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredImagesA, setFilteredImagesA] = useState([]);
-  const [nameGreenhouse, setNameGreenhouse] = useState("");
-  const [nameFarmer, setNameFarmer] = useState("");
-  const [numberBed, setNumberBed] = useState("");
 
   //Para ver las imagenes analizadas de una cama
   const location = useLocation();
 
-  const { idBed } = useParams();
+  const { idGreenhouse, nameGreenhouse, nameFarmer, idBed, numberBed } =
+    location.state || [];
 
   const columns = [
     {
@@ -28,8 +26,8 @@ const DTableImagesA = () => {
       name: "Nombre de lo detectado",
       cell: (row) => {
         const detected = [...row.detected.plagues, ...row.detected.diseases]; // Combinar arrays de plagas y enfermedades
-        console.log("Plagas"+row.detected.plagues)
-        console.log("Enfermedades" +row.detected.diseases)
+        console.log("Plagas" + row.detected.plagues);
+        console.log("Enfermedades" + row.detected.diseases);
         return detected.join(", "); // Unir todo en un solo string separado por comas
       },
       sortable: true,
@@ -70,25 +68,18 @@ const DTableImagesA = () => {
     },
   ];
 
-  const data = [];
-
   //const [showDataTableBeds, setshowDataTableBeds] = useState(false); //Form para ver las camas de un invernadero
-  const [imagesAnalized, setImagesAnalized] = useState(data);
+  const [imagesAnalized, setImagesAnalized] = useState([]);
 
   useEffect(() => {
-    if (location.state) {
-      const { nameGreenhouse, nameFarmer, numberBed } = location.state;
-      setNameGreenhouse(nameGreenhouse);
-      setNameFarmer(nameFarmer);
-      setNumberBed(numberBed);
-    }
-    getImageAByIdBed(idBed);
-  }, [location.state, idBed]);
+    getImageAByIdBed();
+  }, []);
 
-  const getImageAByIdBed = async (idBed) => {
+  const getImageAByIdBed = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`);
+        `http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`
+      );
       if (!response.ok) {
         throw new Error("La respuesta de la red no fue exitosa");
       }
@@ -169,7 +160,6 @@ const DTableImagesA = () => {
             columns={columns}
             data={filteredImagesA}
             responsive={true}
-            selectableRows
             fixedHeader
             pagination
             paginationComponentOptions={paginacionOpciones}

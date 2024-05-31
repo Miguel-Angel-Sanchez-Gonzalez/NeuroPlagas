@@ -9,6 +9,9 @@ import {
   DatePicker,
   CategoryBar,
   Legend,
+  Button,
+  Dialog, 
+  DialogPanel,
   BarList,
   FunnelChart,
 } from "@tremor/react";
@@ -17,6 +20,9 @@ import "./Dashboard.css"; // Importa el archivo CSS
 import dataBarbie from "../../movie-barbie.json";
 import dataOppenheimer from "../../movie-oppenheimer.json";
 import ComboBoxGreenHouse from "./ComboBoxGreenHouse/ComboBoxGreenHouse";
+import { RiInformationLine } from 'react-icons/ri';
+import {RiQuestionnaireFill} from '@remixicon/react';
+
 
 const Dashboard = () => {
   const chartData = dataBarbie.domestic_daily.map(({ revenue, date }) => {
@@ -62,6 +68,7 @@ const Dashboard = () => {
   const [selectedGreenhouseName, setSelectedGreenhouseName] = useState("");
   const [numPlagas, setNumPlagas] = useState("0");
   const [numEnfermedades, setNumEnfermedades] = useState("0");
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const handleSelectionChange = (
     selectedGreenhouseName,
@@ -96,11 +103,42 @@ const Dashboard = () => {
 
   return (
     <div className="main-div bg-gray-100">
-      <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 mb-8">
+      {/* Filtros */}
+      <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 mb-3">
         <Text className="text-lg-medium md:mt-4">Seleccione invernadero</Text>
         <ComboBoxGreenHouse onChange={handleSelectionChange} />
         <Text className="text-lg-medium md:mt-4">Seleccione una fecha</Text>
-        <DatePicker className="md:mt-4" />
+        <DatePicker className="md:mt-4" maxDate={new Date()} />
+        <Button
+          variant="secondary"
+          icon={RiQuestionnaireFill}
+          onClick={() => setIsOpen(true)}
+        >
+          Ayuda
+        </Button>
+        <Dialog open={isOpen} onClose={() => setIsOpen(false)} static={true}>
+          <DialogPanel>
+            <h3 className="text-lg font-semibold text-tremor-content-strong dark:text-dark-tremor-content-strong">
+              Ayuda para el Usuario
+            </h3>
+            <p className="mt-2 leading-6 text-tremor-default text-tremor-content dark:text-dark-tremor-content">
+              <strong>Seleccione Invernadero:</strong> Use la lista desplegable
+              para elegir el invernadero que desea analizar. Al seleccionar un
+              invernadero, los gráficos y datos se actualizarán para mostrar la
+              información correspondiente a ese invernadero.
+            </p>
+            <p className="mt-2 leading-6 text-tremor-default text-tremor-content dark:text-dark-tremor-content">
+              <strong>Seleccione una Fecha:</strong> Utilice el calendario para
+              elegir una fecha. Puede seleccionar una fecha en el pasado para
+              ver las plagas y enfermedades detectadas desde esa fecha hasta el
+              día actual. Las fechas futuras no están disponibles para la
+              selección.
+            </p>
+            <Button className="mt-8 w-full" onClick={() => setIsOpen(false)}>
+              Entendido!
+            </Button>
+          </DialogPanel>
+        </Dialog>
       </div>
 
       {selectedGreenhouseId ? (
@@ -112,7 +150,10 @@ const Dashboard = () => {
             </Section>
 
             <Section>
-              <CardMetric title="Total de Enfermedades" value={numEnfermedades} />
+              <CardMetric
+                title="Total de Enfermedades"
+                value={numEnfermedades}
+              />
             </Section>
 
             <Section>
@@ -151,7 +192,7 @@ const Dashboard = () => {
 
           <Card>
             <Title className="text-medium">
-              Plagas y enfermedades a través del tiempo
+              Deteccion de Plagas y enfermedades a través del tiempo
             </Title>
             <LineChart
               className="mt-6"

@@ -44,8 +44,8 @@ module.exports = {
         // dark mode
         "dark-tremor": {
           brand: {
-            faint: "#f6405a", // custom
-            muted: "#f6405a", // blue-950
+            faint: "#4b5563", // custom -- COLOR DE FONDO DEL BOTON DE AYUDA
+            muted: "#3b82f6", // blue-950
             subtle: "#86bceb", // blue-800
             DEFAULT: "#3b82f6", // blue-500
             emphasis: "#60a5fa", // blue-400

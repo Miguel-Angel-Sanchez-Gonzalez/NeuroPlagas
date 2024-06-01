@@ -11,18 +11,16 @@ import {
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import RegisterBed from "../CRUD/Register/RegisterBed";
 import EditBed from "../CRUD/Edit/EditBed";
+import DeleteBed from "../CRUD/Delete/DeleteBed";
 
 const DTableBeds = ({ isLoading, noBedsMessage }) => {
   const [inputValue, setInputValue] = useState("");
   const [filteredBeds, setFilteredBeds] = useState([]);
   const [idBed, setIDBed] = useState(null); // Inicializar como null para evitar problemas de referencia
-  const [idGreenhouse, setIDGreenhouse] = useState("");
-  const [nameGreenhouse, setNameGreenhouse] = useState("");
-  const [nameFarmer, setNameFarmer] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
-  const { idGreenhouse: paramIdGreenhouse } = useParams();
 
+  const { idGreenhouse, nameGreenhouse, nameFarmer } = location.state;
   const columns = [
     {
       name: "ID",
@@ -72,22 +70,16 @@ const DTableBeds = ({ isLoading, noBedsMessage }) => {
 
   const [showRegisterBed, setShowRegisterBed] = useState(false);
   const [showEditBed, setShowEditBed] = useState(false);
+  const [showDeleteBed, setShowDeleteBed] = useState(false);
   const [beds, setBeds] = useState([]);
-
+  const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    if (location.state) {
-      const { idGreenhouse, nameGreenhouse, nameFarmer } = location.state;
-      setIDGreenhouse(idGreenhouse);
-      setNameGreenhouse(nameGreenhouse);
-      setNameFarmer(nameFarmer);
-      getBedByIdGreenhouse(idGreenhouse);
-    } else if (paramIdGreenhouse) {
-      setIDGreenhouse(paramIdGreenhouse);
-      getBedByIdGreenhouse(paramIdGreenhouse);
+    if (!isLoaded) {
+      getBedByIdGreenhouse();
     }
-  }, [location.state, paramIdGreenhouse]);
+  }, [isLoaded]);
 
-  const getBedByIdGreenhouse = async (idGreenhouse) => {
+  const getBedByIdGreenhouse = async () => {
     try {
       const response = await fetch(
         `http://localhost:3000/bed/greenhouse/${idGreenhouse}`
@@ -96,12 +88,15 @@ const DTableBeds = ({ isLoading, noBedsMessage }) => {
         const data = await response.json();
         setBeds(data);
         setFilteredBeds(data);
-      } else {
-        throw new Error("Error al obtener las camas");
+        setIsLoaded(true);
+      }
+      if (response.status === 404) {
+        setBeds([]);
+        setFilteredBeds([]);
+        setIsLoaded(true);
       }
     } catch (error) {
       console.error("Error al obtener las camas:", error);
-      alert("Error al obtener las camas:");
     }
   };
 
@@ -126,6 +121,8 @@ const DTableBeds = ({ isLoading, noBedsMessage }) => {
   const handleCancelClick = () => {
     setShowRegisterBed(false);
     setShowEditBed(false);
+    setShowDeleteBed(false);
+    setIsLoaded(false);
   };
 
   const handleEditClick = (row) => {
@@ -135,6 +132,7 @@ const DTableBeds = ({ isLoading, noBedsMessage }) => {
 
   const handleDeleteClick = (row) => {
     setIDBed(row.id_cama);
+    setShowDeleteBed(true);
     // Aquí puedes agregar la lógica para mostrar un modal de confirmación de eliminación
   };
 
@@ -227,7 +225,13 @@ const DTableBeds = ({ isLoading, noBedsMessage }) => {
           idGreenhouse={idGreenhouse}
         />
       )}
-      {/* Aquí puedes agregar el componente para la eliminación de camas */}
+      {showDeleteBed && idBed !== null && (
+        <DeleteBed
+          onCancelClick={handleCancelClick}
+          idBed={idBed}
+          idGreenhouse={idGreenhouse}
+        />
+      )}
     </div>
   );
 };

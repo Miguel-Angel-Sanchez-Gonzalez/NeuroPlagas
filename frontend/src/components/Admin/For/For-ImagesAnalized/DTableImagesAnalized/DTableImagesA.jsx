@@ -8,13 +8,9 @@ import { useLocation, useParams } from "react-router-dom";
 const DTableImagesA = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredImagesA, setFilteredImagesA] = useState([]);
-
-  //Para ver las imagenes analizadas de una cama
   const location = useLocation();
-
   const { idGreenhouse, nameGreenhouse, nameFarmer, idBed, numberBed } =
     location.state || [];
-
   const columns = [
     {
       name: "ID",
@@ -67,36 +63,56 @@ const DTableImagesA = () => {
       width: "90px",
     },
   ];
-
-  //const [showDataTableBeds, setshowDataTableBeds] = useState(false); //Form para ver las camas de un invernadero
   const [imagesAnalized, setImagesAnalized] = useState([]);
-
+  const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    getImageAByIdBed();
-  }, []);
+    if (!isLoaded) {
+      getImageAByIdBed();
+    }
+  }, [isLoaded]);
 
   const getImageAByIdBed = async () => {
     try {
       const response = await fetch(
         `http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`
       );
-      if (!response.ok) {
-        throw new Error("La respuesta de la red no fue exitosa");
+      if (response.status === 200 || response.status === 404) {
+        const data = await response.json();
+        setImagesAnalized(Array.isArray(data) ? data : []);
+        setFilteredImagesA(Array.isArray(data) ? data : []);
+        setIsLoaded(true);
       }
-      const data = await response.json();
-      console.log("Respuesta del servidor:", data);
-      setImagesAnalized(Array.isArray(data) ? data : []);
-      setFilteredImagesA(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error(
         "Error al obtener las imágenes analizadas de la cama:",
         error
       );
-      setImagesAnalized([]);
-      setFilteredImagesA([]);
+    }
+  };
+  const handleChooseImage = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      sendImageToBackend(file);
     }
   };
 
+  const sendImageToBackend = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+      const response = await fetch(
+        `http://localhost:3000/analyzeimage/web/${idBed}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        setIsLoaded(false);
+      }
+    } catch (error) {}
+  };
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
     setInputValue(value);
@@ -168,6 +184,15 @@ const DTableImagesA = () => {
                 Aún no hay imagenes analizadas
               </div>
             }
+          />
+        </div>
+        <div style={{ marginTop: "5%", alignContent: "center" }}>
+          <h3>Analiza una imagen</h3>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleChooseImage}
+            id="fileInput"
           />
         </div>
       </div>

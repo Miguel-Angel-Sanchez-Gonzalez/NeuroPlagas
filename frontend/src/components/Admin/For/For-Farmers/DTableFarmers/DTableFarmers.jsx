@@ -91,12 +91,14 @@ const DTableFarmers = () => {
   const [showEditFarmer, setShowEditFarmer] = useState(false); //Form de edicion
   const [showDeleteFarmer, setshowDeleteFarmer] = useState(false); //Form de eliminacion
   const [farmers, setFarmers] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const location = useLocation();
   useEffect(() => {
-    // console.log("Cargue los agricultores en la tabla");
-    getFarmers();
-  }, [location]);
+    if (!isLoaded) {
+      getFarmers();
+    }
+  }, [isLoaded]);
 
   /*FUNCIONES*/
   async function getFarmers() {
@@ -104,15 +106,17 @@ const DTableFarmers = () => {
       const response = await fetch(`http://localhost:3000/farmer/`);
       if (response.status === 200) {
         const data = await response.json();
-        //se están cargando los datos
         setFarmers(data);
         setFilteredFarmers(data);
-      } else {
-        throw new Error("Error al obtener a los agricultores");
+        setIsLoaded(true);
+      }
+      if (response.status === 404) {
+        setFarmers([]);
+        setFilteredFarmers([]);
+        setIsLoaded(true);
       }
     } catch (error) {
       console.error("Error al cargar los datos de los agricultores:", error);
-      alert("Error al obtener a los agricultores, inténtelo más tarte:");
     }
   }
 
@@ -145,6 +149,7 @@ const DTableFarmers = () => {
     setShowRegisterFarmer(false);
     setShowEditFarmer(false);
     setshowDeleteFarmer(false);
+    setIsLoaded(false);
   };
 
   const handleEditClick = (row) => {

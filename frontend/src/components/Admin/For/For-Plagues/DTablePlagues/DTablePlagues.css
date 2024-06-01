@@ -79,19 +79,19 @@ input {
 }
 /* DTablePlagues.css */
 .custom-table-plagues .rdt_TableRow {
-  height: 100px; /* Ajusta según tus necesidades */
+  height: 200px; /* Ajusta según tus necesidades */
 }
 
 .custom-table-plagues .rdt_TableCell {
   white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 10px; /* Ajusta según tus necesidades */
+  padding: 10px;
   word-wrap: break-word;
 }
 
 .custom-table-plagues .rdt_TableCell div[data-tag="allowRowEvents"] {
-  width: 100%;
+  width: auto;
   white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis;

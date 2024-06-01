@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import LoginNotification from "../LoginNotifications/LoginNotifications";
 import PasswordRecovery from "../LoginRecoveryPassword/PasswordRecovery/PasswordRecovery";
@@ -7,7 +7,7 @@ import PasswordRecovery from "../LoginRecoveryPassword/PasswordRecovery/Password
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [setIsLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showRecovery, setShowRecovery] = useState(false);
   const [loadingUserData, setLoadingUserData] = useState(false);

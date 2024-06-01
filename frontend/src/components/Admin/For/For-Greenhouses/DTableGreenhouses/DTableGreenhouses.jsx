@@ -18,6 +18,7 @@ const DTableGreenhouses = () => {
   const [filteredGreenhouses, setFilteredGreenhouses] = useState([]);
   const [idGreenhouse, setIDGreenhouse] = useState("");
   const navigate = useNavigate();
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const columns = [
     {
@@ -83,16 +84,18 @@ const DTableGreenhouses = () => {
     },
   ];
 
-  const data = [];
-
   const [showRegisterGreenh, setshowRegisterGreenh] = useState(false); //Form de register
   const [showEditGreenh, setshowEditGreenh] = useState(false); //Form de edicion
   const [showDeleteGreenh, setshowDeleteGreenh] = useState(false); //Form de eliminacion
-  const [greenhouses, setGreenhouses] = useState(data);
+  const [greenhouses, setGreenhouses] = useState([]);
 
   useEffect(() => {
-    getGreenhouses();
-  }, []);
+    console.log(`IsLoaded en useEffect  es: ${isLoaded}`);
+    if (!isLoaded) {
+      console.log("Pase a cargar los datos de invernadero");
+      getGreenhouses();
+    }
+  }, [isLoaded]);
 
   /*FUNCIONES*/
   async function getGreenhouses() {
@@ -103,12 +106,16 @@ const DTableGreenhouses = () => {
         //se están cargando los datos
         setGreenhouses(data);
         setFilteredGreenhouses(data);
-      } else {
-        throw new Error("Error al obtener los invernaderos");
+        setIsLoaded(true);
+      }
+      if (response.status === 404) {
+        console.log("No regreso datos la respuesta del invernadero");
+        setGreenhouses([]);
+        setFilteredGreenhouses([]);
+        setIsLoaded(true);
       }
     } catch (error) {
       console.error("Error al obtener los invernaderos:", error);
-      alert("Error al obtener los invernaderos, inténtelo más tarte:");
     }
   }
 
@@ -140,13 +147,18 @@ const DTableGreenhouses = () => {
   };
 
   const handleCancelClick = () => {
+    console.log("Entre al handle Cancel CLick con", isLoaded);
     setshowRegisterGreenh(false);
     setshowEditGreenh(false);
+    setshowDeleteGreenh(false);
+    setIsLoaded(false);
+    console.log("Sali del handle Cancel CLick con", isLoaded);
   };
 
   const handleEditClick = (row) => {
     setIDGreenhouse(row.id_invernadero);
     setshowEditGreenh(true);
+    setIsLoaded(false);
   };
 
   const handleDeleteClick = (row) => {

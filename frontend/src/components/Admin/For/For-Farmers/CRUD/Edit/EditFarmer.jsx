@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./EditFarmer.css";
 import AddNotification from "../../../../../LoginNotifications/AddNotification";
+import { toast } from "react-toastify";
 
 const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
   const [records, setRecords] = useState("");
@@ -62,7 +63,10 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
       const data = await response.json();
       return data.exists;
     } catch (error) {
-      console.error("Error al verificar la existencia del correo electrónico:", error);
+      console.error(
+        "Error al verificar la existencia del correo electrónico:",
+        error
+      );
       throw error;
     }
   };
@@ -102,7 +106,6 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
 
   //Para el fetch de recuperacion de data del farmer, mostrar los datos del agricultor
   useEffect(() => {
-    console.log("Cargue el componente de aca");
     getFarmerById();
   }, [idFarmer]);
 
@@ -127,8 +130,11 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
         throw new Error("Error al obtener los datos del agricultor");
       }
     } catch (error) {
-      console.error("Hubo un error al obtener los datos del agricultor:", error);
-      setRecords('Hubo un error al obtener los datos del agricultor.');
+      console.error(
+        "Hubo un error al obtener los datos del agricultor:",
+        error
+      );
+      setRecords("Hubo un error al obtener los datos del agricultor.");
     }
   };
 
@@ -158,7 +164,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
 
       // Validación 2: Correo con formato válido
       if (!validateEmail(values.correo)) {
-        setRecords('El correo electrónico no es válido.');
+        setRecords("El correo electrónico no es válido.");
         return;
       }
 
@@ -168,7 +174,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
         const emailExists = await checkEmailExists(values.correo);
         if (emailExists) {
           setEmailExists(true);
-          setRecords('El correo electrónico ya está en uso.');
+          setRecords("El correo electrónico ya está en uso.");
           return;
         } else {
           setEmailExists(false);
@@ -192,7 +198,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
       updateFarmerData();
     } catch (error) {
       console.error("Error en la validación de los datos:", error);
-      setRecords('Hubo un error al validar los datos.');
+      setRecords("Hubo un error al validar los datos.");
     }
   };
 
@@ -206,25 +212,24 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
         },
         body: JSON.stringify(data),
       });
-
-      if (response.ok) {
+      if (response.status === 200) {
+        toast.success(`El agricultor se actualizó correctamente`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
+        onCancelClick();
         setIsLoading(false);
-        setLoadingMessage("El agricultor se actualizó correctamente.");
-        setTimeout(() => {
-          setLoadingMessage(""); // Oculta el mensaje después de unos segundos
-          window.location.reload();
-        }, 2000);
-      } else {
-        throw new Error("No se pudo actualizar el agricultor");
       }
     } catch (error) {
-      console.error("Error al actualizar el agricultor:", error);
-      alert("Error al actualizar el agricultor");
-      window.location.reload();
+      toast.error(`Hubo un problema ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
       setIsLoading(false);
     }
   };
-
 
   return (
     <div>

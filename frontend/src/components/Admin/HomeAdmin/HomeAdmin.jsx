@@ -11,9 +11,8 @@ import Dashboard from "../../Dashboard/Dashboard";
 import "./HomeAdmin.css"; // Importa tus estilos CSS aquí
 import DTableBeds from "../For/For-Beds/DTableBeds/DTableBeds";
 import { Route, Routes } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import DTableImagesA from "../For/For-ImagesAnalized/DTableImagesAnalized/DTableImagesA";
-import DTableWorkerGreen from "../For/For-Workers/For-WorkerGreen/DTableWorkerGreen/DTableWorkerGreen";
+import DTableWorkerGreen from "../For/For-WorkerGreen/DTableWorkerGreen/DTableWorkerGreen";
 
 const HomeAdmin = () => {
   const [showProfileAdmin, setShowProfileAdmin] = React.useState(false);

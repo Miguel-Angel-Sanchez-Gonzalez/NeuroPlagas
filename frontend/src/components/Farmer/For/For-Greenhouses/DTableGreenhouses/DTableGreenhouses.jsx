@@ -103,12 +103,14 @@ const DTableGreenhouses = () => {
         setGreenhouses(data);
         setFilteredGreenhouses(data);
         setIsLoaded(true);
-      } else {
-        throw new Error("Error al obtener los invernaderos");
+      }
+      if (response.status === 404) {
+        setGreenhouses([]);
+        setFilteredGreenhouses([]);
+        setIsLoaded(true);
       }
     } catch (error) {
       console.error("Error al obtener los invernaderos:", error);
-      alert("Error al obtener los invernaderos, inténtelo más tarte:");
     }
   }
 

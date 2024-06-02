@@ -92,9 +92,13 @@ const DTableBeds = ({ isLoading, noBedsMessage }) => {
         setFilteredBeds(data);
         setIsLoaded(true);
       }
+      if (response.status === 404) {
+        setBeds([]);
+        setFilteredBeds([]);
+        setIsLoaded(true);
+      }
     } catch (error) {
       console.error("Error al obtener las camas:", error);
-      alert("Error al obtener las camas:" + error);
     }
   };
 

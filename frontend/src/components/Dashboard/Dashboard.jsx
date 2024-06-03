@@ -71,6 +71,8 @@ const Dashboard = () => {
   const [numEnfermedades, setNumEnfermedades] = useState("0");
   const [numTratadas, setNumTratadas] = useState("0");
   const [numSinVer, setNumSinVer] = useState("0");
+  const [plagasData, setPlagasData] = useState([]);
+  const [enfermedadesData, setEnfermedadesData] = useState([]);
 
 
   const [isOpen, setIsOpen] = React.useState(false);
@@ -106,7 +108,7 @@ const Dashboard = () => {
         console.error("Error fetching data:", error);
       });
 
-      // Fetch Obtiene el estado de las imágenes
+    // Fetch Obtiene el estado de las imágenes
     fetch(
       `http://localhost:3000/dashboard/getTotalImagesAnalizedByStatus/${selectedGreenhouseId}`
     )
@@ -122,8 +124,8 @@ const Dashboard = () => {
           setNumTratadas("0");
           setNumSinVer("0");
         } else {
-          const tratada = data.find(item => item.Estado === "Tratada");
-          const sinVer = data.find(item => item.Estado === "Sin ver");
+          const tratada = data.find((item) => item.Estado === "Tratada");
+          const sinVer = data.find((item) => item.Estado === "Sin ver");
 
           setNumTratadas(tratada ? tratada.Cantidad : "0");
           setNumSinVer(sinVer ? sinVer.Cantidad : "0");
@@ -135,6 +137,50 @@ const Dashboard = () => {
         setNumSinVer("0");
       });
 
+    // Fetch Obtiene el conteo de plagas
+    fetch(
+      `http://localhost:3000/dashboard/getCountPlagues/${selectedGreenhouseId}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          console.log("Invernadero sin datos de plagas");
+          setPlagasData([]);
+        } else {
+          setPlagasData(
+            data.map((plaga) => ({
+              name: plaga.Nombre,
+              sales: plaga.Cantidad,
+            }))
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+
+
+    // Fetch Obtiene el conteo de enfermedades
+    fetch(
+      `http://localhost:3000/dashboard/getCountDiseases/${selectedGreenhouseId}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          console.log("Invernadero sin datos de enfermedades");
+          setEnfermedadesData([]);
+        } else {
+          setEnfermedadesData(
+            data.map((enfermedad) => ({
+              name: enfermedad.Nombre,
+              sales: enfermedad.Cantidad,
+            }))
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   };
 
   // Calcula el porcentaje de amenazas tratadas
@@ -210,23 +256,25 @@ const porcentajeSinVer = totalAmenazas > 0 ? (parseInt(numSinVer) / totalAmenaza
           </div>
           {/* Fila 2 */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-8">
-            <Section>
+          <Section>
               <CardDonut
                 title={`Plagas en el ${selectedGreenhouseName}`}
-                data={sales}
-                valueFormatter={valueFormatter}
+                data={plagasData}
+                valueFormatter={addCommasToNumber}
+                variant="pie"
               />
             </Section>
 
             <Section>
               <CardDonut
                 title={`Enfermedades en el ${selectedGreenhouseName}`}
-                data={sales}
-                valueFormatter={valueFormatter}
+                data={enfermedadesData}
+                valueFormatter={addCommasToNumber}
               />
             </Section>
-          </div>
 
+          </div>
+          {/* Fila 3 */}
           <Card>
             <Title className="text-medium">
               Deteccion de Plagas y enfermedades a través del tiempo
@@ -236,7 +284,7 @@ const porcentajeSinVer = totalAmenazas > 0 ? (parseInt(numSinVer) / totalAmenaza
               data={chartData}
               index="date"
               categories={["Barbie", "Oppenheimer"]}
-              colors={["purple", "fuchsia"]}
+              colors={["violet", "indigo"]}
               yAxisWidth={100}
               valueFormatter={addCommasToNumber}
             />

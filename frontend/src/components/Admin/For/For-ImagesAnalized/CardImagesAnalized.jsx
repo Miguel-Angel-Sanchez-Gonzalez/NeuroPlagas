@@ -7,45 +7,45 @@ function CardImagesAnalized() {
   const { idAnalizedImage, imageUrl, detected, types } = location.state || {};
   const [recommendations, setRecommendations] = useState({ plaga: [], enfermedad: [] });
   const [actions, setActions] = useState({ plaga: [], enfermedad: [] });
-  const [setIsLoaded] = useState(false); // Declarar isLoaded correctamente
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const getRAndAByIdAnalizedImage = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/analizedImage/solutions/${idAnalizedImage}`
-        );
-        if (response.status === 200) {
-          const data = await response.json();
-          const plagueData = data.filter(item => item.tipo === "plaga");
-          const plagueRecommendations = plagueData.flatMap(item => item.recomendaciones);
-          const plagueActions = plagueData.flatMap(item => item.acciones);
-  
-          const diseaseData = data.filter(item => item.tipo === "enfermedad");
-          const diseaseRecommendations = diseaseData.flatMap(item => item.recomendaciones);
-          const diseaseActions = diseaseData.flatMap(item => item.acciones);
-  
-          setRecommendations({ plaga: plagueRecommendations, enfermedad: diseaseRecommendations });
-          setActions({ plaga: plagueActions, enfermedad: diseaseActions });
-          setIsLoaded(true);
-        } else if (response.status === 404) {
-          console.log('No se encontraron las recomendaciones y/o acciones para la imagen.');
-          setIsLoaded(true);
-        }
-      } catch (error) {
-        console.error(
-          "Error al obtener las recomendaciones y acciones de la plaga o enfermedad:",
-          error
-        );
-        setIsLoaded(true); 
+  const getRAndAByIdAnalizedImage = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/analizedImage/solutions/${idAnalizedImage}`
+      );
+      if (response.status === 200) {
+        const data = await response.json();
+        const plagueData = data.filter(item => item.tipo === "plaga");
+        const plagueRecommendations = plagueData.flatMap(item => item.recomendaciones);
+        const plagueActions = plagueData.flatMap(item => item.acciones);
+
+        const diseaseData = data.filter(item => item.tipo === "enfermedad");
+        const diseaseRecommendations = diseaseData.flatMap(item => item.recomendaciones);
+        const diseaseActions = diseaseData.flatMap(item => item.acciones);
+
+        setRecommendations({ plaga: plagueRecommendations, enfermedad: diseaseRecommendations });
+        setActions({ plaga: plagueActions, enfermedad: diseaseActions });
+        setIsLoaded(true);
+      } else if (response.status === 404) {
+        console.log('No se encontraron las recomendaciones y/o acciones para la imagen.');
+        setIsLoaded(true);
       }
-    };
-  
-    if (idAnalizedImage) {
-      getRAndAByIdAnalizedImage();
+    } catch (error) {
+      console.error(
+        "Error al obtener las recomendaciones y acciones de la plaga o enfermedad:",
+        error
+      );
+      setIsLoaded(true); // Asegurando que setIsLoaded se actualice incluso en caso de error.
     }
-  }, [idAnalizedImage, setIsLoaded]); 
-  
+  };
+
+  if (idAnalizedImage) {
+    getRAndAByIdAnalizedImage();
+  }
+}, [idAnalizedImage]); // Agregar setIsLoaded al array de dependencias
+
   return (
     <div>
       <h1 className='title'>Imágenes detectadas</h1>

@@ -12,6 +12,7 @@ import {
   Button,
   Dialog, 
   DialogPanel,
+  ProgressBar,
   BarList,
   FunnelChart,
 } from "@tremor/react";
@@ -68,6 +69,10 @@ const Dashboard = () => {
   const [selectedGreenhouseName, setSelectedGreenhouseName] = useState("");
   const [numPlagas, setNumPlagas] = useState("0");
   const [numEnfermedades, setNumEnfermedades] = useState("0");
+  const [numTratadas, setNumTratadas] = useState("0");
+  const [numSinVer, setNumSinVer] = useState("0");
+
+
   const [isOpen, setIsOpen] = React.useState(false);
 
   const handleSelectionChange = (
@@ -77,6 +82,7 @@ const Dashboard = () => {
     setSelectedGreenhouseId(selectedGreenhouseId);
     setSelectedGreenhouseName(selectedGreenhouseName);
 
+    // Fetch Obtiene numero de plagas
     fetch(
       `http://localhost:3000/dashboard/getTotalPlaguesByIdGreenhouse/${selectedGreenhouseId}`
     )
@@ -88,6 +94,7 @@ const Dashboard = () => {
         console.error("Error fetching data:", error);
       });
 
+    // Fetch Obtiene numero de enfermedades
     fetch(
       `http://localhost:3000/dashboard/getTotalDiseasesByIdGreenhouse/${selectedGreenhouseId}`
     )
@@ -98,8 +105,43 @@ const Dashboard = () => {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-    console.log("Nombre actual actualizado: " , selectedGreenhouseName);  
+
+      // Fetch Obtiene el estado de las imágenes
+    fetch(
+      `http://localhost:3000/dashboard/getTotalImagesAnalizedByStatus/${selectedGreenhouseId}`
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.message) {
+          console.log("Invernadero sin datos de imágenes analizadas");
+          setNumTratadas("0");
+          setNumSinVer("0");
+        } else {
+          const tratada = data.find(item => item.Estado === "Tratada");
+          const sinVer = data.find(item => item.Estado === "Sin ver");
+
+          setNumTratadas(tratada ? tratada.Cantidad : "0");
+          setNumSinVer(sinVer ? sinVer.Cantidad : "0");
+        }
+      })
+      .catch((error) => {
+        console.log("Invernadero sin datos de imágenes analizadas");
+        setNumTratadas("0");
+        setNumSinVer("0");
+      });
+
   };
+
+  // Calcula el porcentaje de amenazas tratadas
+const totalAmenazas = parseInt(numTratadas) + parseInt(numSinVer);
+const porcentajeTratadas = totalAmenazas > 0 ? (parseInt(numTratadas) / totalAmenazas) * 100 : 0;
+const porcentajeSinVer = totalAmenazas > 0 ? (parseInt(numSinVer) / totalAmenazas) * 100 : 0;
+
 
   return (
     <div className="main-div bg-gray-100">
@@ -156,26 +198,21 @@ const Dashboard = () => {
               />
             </Section>
 
-            <Section>
-              <Card className="mx-auto max-w-sm">
-                <p className="text-tremor-default text-tremor-content dark:text-dark-tremor-content flex items-center justify-between">
-                  <span>Estado del {selectedGreenhouseName}</span>
-                  <span>{numPlagas}%</span>
-                </p>
-                <CategoryBar
-                  values={[40, 30, 20, 10]}
-                  colors={["emerald", "yellow", "orange", "rose"]}
-                  markerValue={numPlagas}
-                  className="mt-3"
-                />
-              </Card>
-            </Section>
+            <Card className="mx-auto max-w-sm">
+              <h5 className="mb-2">Estado de las Amenazas</h5>
+              <p className="text-tremor-default text-tremor-content dark:text-dark-tremor-content flex items-center justify-between">
+                <span> {porcentajeTratadas.toFixed(1)}% Tratado</span>
+                <span>{porcentajeSinVer.toFixed(1)}% Sin ver</span>
+              </p>
+              <ProgressBar value={porcentajeTratadas} color="teal" className="mt-3" />
+            </Card>
+
           </div>
           {/* Fila 2 */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-8">
             <Section>
               <CardDonut
-                title={`Distribución de plagas en el invernadero ${selectedGreenhouseName}`}
+                title={`Plagas en el ${selectedGreenhouseName}`}
                 data={sales}
                 valueFormatter={valueFormatter}
               />
@@ -183,7 +220,7 @@ const Dashboard = () => {
 
             <Section>
               <CardDonut
-                title={`Distribución de enfermedades en el invernadero ${selectedGreenhouseName}`}
+                title={`Enfermedades en el ${selectedGreenhouseName}`}
                 data={sales}
                 valueFormatter={valueFormatter}
               />

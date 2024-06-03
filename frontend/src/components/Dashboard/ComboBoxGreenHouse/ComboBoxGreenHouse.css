@@ -7,18 +7,30 @@
 
 .combobox-greenhouse select {
   width: 100%;
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: 12px 15px;
+  border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 16px;
-  font-family: Arial, sans-serif;
+  font-family: 'Montserrat', sans-serif; /* Cambia a Montserrat */
   background-color: #f9f9f9;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  appearance: none; /* Remove default dropdown arrow */
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23ccc" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* Custom dropdown arrow */
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px 16px;
 }
 
 .combobox-greenhouse select:focus {
   outline: none;
   border-color: #9FC5E8; /* Blue color */
   box-shadow: 0 0 5px rgba(205, 230, 255, 0.5); /* Blue shadow */
+}
+
+.combobox-greenhouse option {
+  font-family: 'Montserrat', sans-serif; /* Cambia a Montserrat */
+  font-size: 16px;
+  padding: 10px;
+  background-color: #ffffff;
 }

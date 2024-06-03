@@ -44,16 +44,16 @@ module.exports = {
         // dark mode
         "dark-tremor": {
           brand: {
-            faint: "#4b5563", // custom -- COLOR DE FONDO DEL BOTON DE AYUDA
+            faint: "#396488", // custom -- COLOR DE FONDO DEL BOTON DE AYUDA
             muted: "#3b82f6", // blue-950
             subtle: "#86bceb", // blue-800
-            DEFAULT: "#3b82f6", // blue-500
+            DEFAULT: "#3b82f6", // blue-500 -- COLOR DE BASE PARA ELEMENTOS COMO BOTONES
             emphasis: "#60a5fa", // blue-400
             inverted: "#030712", // gray-950
           },
           background: {
             muted: "#9FC5E8", // custom  -- COLOR DE FONDO DEL CALENDARIO
-            subtle: "#3b82f6", // gray-800
+            subtle: "#1883C4", // gray-800 -- COLOR DE ACENTO DEL CALENDARIO
             DEFAULT: "#cde6ff", // gray-900 -- COLOR DE FONDO
             emphasis: "#6ab7ff", // gray-300
             emphasis2: "#4698ff", // blue-400

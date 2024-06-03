@@ -68,12 +68,21 @@
 
 .image-uploader-container {
   margin-top: 7%;
-  margin-left: 40px;
 }
 
 
 /* Nueva clase para el contenedor de la tabla y el image-uploader */
 .content-container {
   display: flex;
+}
+
+
+.buttonImage{
+  padding: 10px 15px;
+  color: white;
+  background-color: #c62426;
+  border: 2px solid #c62426;
+  border-radius: 10px;
+  margin: 10px;
 }
 

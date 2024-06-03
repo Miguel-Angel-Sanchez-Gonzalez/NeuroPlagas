@@ -3,17 +3,17 @@ import DataTable from "react-data-table-component";
 import "./DTableImagesA.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faEye } from "@fortawesome/free-solid-svg-icons";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
-import Dropzone from "react-dropzone";
 
 const DTableImagesA = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredImagesA, setFilteredImagesA] = useState([]);
-  const [files, setAcceptedFiles] = useState([]);
+  const [setAcceptedFiles] = useState([]);
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const { idGreenhouse, nameGreenhouse, nameFarmer, idBed, numberBed } =
+  const { nameGreenhouse, nameFarmer, idBed, numberBed } =
     location.state || [];
 
   const columns = [
@@ -61,38 +61,38 @@ const DTableImagesA = () => {
       name: "Imagen",
       cell: (row) => (
         <div className="icons-container">
-          <FontAwesomeIcon icon={faEye} className="view-icon" size="lg" />
+          <FontAwesomeIcon icon={faEye} onClick={() => handleShowCardImages(row)} className="view-icon" size="lg" />
         </div>
       ),
       width: "90px",
     },
   ];
+
   const [imagesAnalized, setImagesAnalized] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  
   useEffect(() => {
+    const getImageAByIdBed = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`
+        );
+        if (response.status === 200 || response.status === 404) {
+          const data = await response.json();
+          setImagesAnalized(Array.isArray(data) ? data : []);
+          setFilteredImagesA(Array.isArray(data) ? data : []);
+          setIsLoaded(true);
+        }
+      } catch (error) {
+        console.error("Error al obtener las imágenes analizadas de la cama:", error);
+      }
+    };
+
     if (!isLoaded) {
       getImageAByIdBed();
     }
-  }, [isLoaded]);
-
-  const getImageAByIdBed = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`
-      );
-      if (response.status === 200 || response.status === 404) {
-        const data = await response.json();
-        setImagesAnalized(Array.isArray(data) ? data : []);
-        setFilteredImagesA(Array.isArray(data) ? data : []);
-        setIsLoaded(true);
-      }
-    } catch (error) {
-      console.error(
-        "Error al obtener las imágenes analizadas de la cama:",
-        error
-      );
-    }
-  };
+  }, [isLoaded, idBed]);
+  
   const onDrop = useCallback((acceptedFiles) => {
     console.log(acceptedFiles[0]);
     // Do something with the files
@@ -135,6 +135,31 @@ const DTableImagesA = () => {
       setFilteredImagesA(imagesAnalized);
     }
   };
+
+  const handleShowCardImages = (row) => {
+    const types = [];
+  
+    if (row.detected.plagues.length > 0) {
+      types.push("Plaga");
+    }
+  
+    if (row.detected.diseases.length > 0) {
+      types.push("Enfermedad");
+    }
+  
+   // const detectedName = [...row.detected.plagues, ...row.detected.diseases].join(", ");
+  
+    navigate(`/homeAdmin/invernaderos/camas/imagenes-analizadas/ver-imagen`, {
+      state: {
+        idAnalizedImage: row.id_analizedImage,
+        imageUrl:  row.image,
+        detected: row.detected,
+        types: types, // Pasamos los tipos de detecciones
+        //detectedName: detectedName // Pasamos el nombre de lo detectado
+      },
+    });
+  };
+
 
   const paginacionOpciones = {
     rowsPerPageText: "Filas por página",
@@ -230,14 +255,14 @@ const DTableImagesA = () => {
                 }}
               />
             )}
+              <button
+              type="button"
+              className="buttonImage"
+              onClick={sendImageToBackend}
+            >
+              Analizar imagen
+            </button>
           </div>
-          <button
-            type="button"
-            className="buttonInvernadero"
-            onClick={sendImageToBackend}
-          >
-            Analizar imagen
-          </button>
         </div>
       </div>
     </div>

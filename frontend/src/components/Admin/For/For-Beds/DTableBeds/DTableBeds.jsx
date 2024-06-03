@@ -8,7 +8,7 @@ import {
   faTrash,
   faEye,
 } from "@fortawesome/free-solid-svg-icons";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import RegisterBed from "../CRUD/Register/RegisterBed";
 import EditBed from "../CRUD/Edit/EditBed";
 import DeleteBed from "../CRUD/Delete/DeleteBed";

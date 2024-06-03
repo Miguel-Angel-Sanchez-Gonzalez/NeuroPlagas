@@ -13,6 +13,7 @@ import DTableBeds from "../For/For-Beds/DTableBeds/DTableBeds";
 import { Route, Routes } from "react-router-dom";
 import DTableImagesA from "../For/For-ImagesAnalized/DTableImagesAnalized/DTableImagesA";
 import DTableWorkerGreen from "../For/For-WorkerGreen/DTableWorkerGreen/DTableWorkerGreen";
+import CardImagesAnalized from "../For/For-ImagesAnalized/CardImagesAnalized";
 
 const HomeAdmin = () => {
   const [showProfileAdmin, setShowProfileAdmin] = React.useState(false);
@@ -40,6 +41,10 @@ const HomeAdmin = () => {
               <Route
                 path="/invernaderos/camas/imagenes-analizadas/"
                 element={<DTableImagesA />}
+              />
+              <Route
+                path="/invernaderos/camas/imagenes-analizadas/ver-imagen"
+                element={<CardImagesAnalized/>}
               />
               <Route path="/trabajadores" element={<DTableWorkers />} />
               <Route

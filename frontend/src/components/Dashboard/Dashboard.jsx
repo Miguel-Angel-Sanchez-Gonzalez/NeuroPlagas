@@ -7,64 +7,19 @@ import {
   DonutChart,
   LineChart,
   DatePicker,
-  CategoryBar,
-  Legend,
   Button,
   Dialog, 
   DialogPanel,
   ProgressBar,
-  BarList,
-  FunnelChart,
+  Legend
 } from "@tremor/react";
 import { useEffect, useState } from "react";
 import "./Dashboard.css"; // Importa el archivo CSS
-import dataBarbie from "../../movie-barbie.json";
-import dataOppenheimer from "../../movie-oppenheimer.json";
 import ComboBoxGreenHouse from "./ComboBoxGreenHouse/ComboBoxGreenHouse";
-import { RiInformationLine } from 'react-icons/ri';
-import {RiQuestionnaireFill} from '@remixicon/react';
-
+import { RiQuestionnaireFill } from '@remixicon/react';
 
 const Dashboard = () => {
-  const chartData = dataBarbie.domestic_daily.map(({ revenue, date }) => {
-    const oppenheimer = dataOppenheimer.domestic_daily.find(
-      (opp) => opp.date === date
-    );
-    return {
-      date,
-      Barbie: revenue,
-      Oppenheimer: oppenheimer?.revenue,
-    };
-  });
-
-  const addCommasToNumber = (number) => {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-
-  const sales = [
-    { name: "New York", sales: 980 },
-    { name: "London", sales: 456 },
-    { name: "Hong Kong", sales: 390 },
-    { name: "San Francisco", sales: 240 },
-    { name: "Singapore", sales: 190 },
-  ];
-
-  const valueFormatter = (number) =>
-    `$ ${Intl.NumberFormat("us").format(number).toString()}`;
-
-  const datahero = [
-    { name: "/home", value: 456 },
-    { name: "/imprint", value: 351 },
-    { name: "/cancellation", value: 51 },
-  ];
-
-  const chartdata = [
-    { name: "opens", value: 200 },
-    { name: "visitors", value: 351 },
-    { name: "added to cart", value: 191 },
-    { name: "orders", value: 10 },
-  ];
-
+  const [chartData, setChartData] = useState([]);
   const [selectedGreenhouseId, setSelectedGreenhouseId] = useState(null);
   const [selectedGreenhouseName, setSelectedGreenhouseName] = useState("");
   const [numPlagas, setNumPlagas] = useState("0");
@@ -73,14 +28,15 @@ const Dashboard = () => {
   const [numSinVer, setNumSinVer] = useState("0");
   const [plagasData, setPlagasData] = useState([]);
   const [enfermedadesData, setEnfermedadesData] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [noDataMessage, setNoDataMessage] = useState(""); // Nuevo estado para el mensaje de "sin datos"
 
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  const addCommasToNumber = (number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
-  const handleSelectionChange = (
-    selectedGreenhouseName,
-    selectedGreenhouseId
-  ) => {
+  const handleSelectionChange = (selectedGreenhouseName, selectedGreenhouseId) => {
     setSelectedGreenhouseId(selectedGreenhouseId);
     setSelectedGreenhouseName(selectedGreenhouseName);
 
@@ -159,7 +115,6 @@ const Dashboard = () => {
         console.error("Error fetching data:", error);
       });
 
-
     // Fetch Obtiene el conteo de enfermedades
     fetch(
       `http://localhost:3000/dashboard/getCountDiseases/${selectedGreenhouseId}`
@@ -181,13 +136,43 @@ const Dashboard = () => {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+
+      // Función para convertir fechas de "DD-MM-YYYY" a objetos Date
+      const parseDate = (dateString) => {
+        const [day, month, year] = dateString.split("-");
+        return new Date(year, month - 1, day);
+      };
+
+      fetch(`http://localhost:3000/dashboard/totalPlaguesDiseases/${selectedGreenhouseId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          setChartData([]);
+          setNoDataMessage("Sin datos periódicos de detecciones en este invernadero"); // Establecer mensaje de "sin datos"
+        } else {
+          const transformedData = data.map((item) => ({
+            date: item.fecha,
+            Plagas: parseInt(item.Cantidad_Plagas),
+            Enfermedades: parseInt(item.Cantidad_Enfermedades),
+          }));
+    
+          // Ordenar los datos por fecha
+          transformedData.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+          setChartData(transformedData);
+          setNoDataMessage(""); // Limpiar mensaje de "sin datos" si hay datos
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+    
+
   };
 
   // Calcula el porcentaje de amenazas tratadas
-const totalAmenazas = parseInt(numTratadas) + parseInt(numSinVer);
-const porcentajeTratadas = totalAmenazas > 0 ? (parseInt(numTratadas) / totalAmenazas) * 100 : 0;
-const porcentajeSinVer = totalAmenazas > 0 ? (parseInt(numSinVer) / totalAmenazas) * 100 : 0;
-
+  const totalAmenazas = parseInt(numTratadas) + parseInt(numSinVer);
+  const porcentajeTratadas = totalAmenazas > 0 ? (parseInt(numTratadas) / totalAmenazas) * 100 : 0;
+  const porcentajeSinVer = totalAmenazas > 0 ? (parseInt(numSinVer) / totalAmenazas) * 100 : 0;
 
   return (
     <div className="main-div bg-gray-100">
@@ -228,7 +213,7 @@ const porcentajeSinVer = totalAmenazas > 0 ? (parseInt(numSinVer) / totalAmenaza
           </DialogPanel>
         </Dialog>
       </div>
-
+  
       {selectedGreenhouseId ? (
         <>
           {/* Fila 1 */}
@@ -236,14 +221,14 @@ const porcentajeSinVer = totalAmenazas > 0 ? (parseInt(numSinVer) / totalAmenaza
             <Section>
               <CardMetric title="Total de Plagas" value={numPlagas} />
             </Section>
-
+  
             <Section>
               <CardMetric
                 title="Total de Enfermedades"
                 value={numEnfermedades}
               />
             </Section>
-
+  
             <Card className="mx-auto max-w-sm">
               <h5 className="mb-2">Estado de las Amenazas</h5>
               <p className="text-tremor-default text-tremor-content dark:text-dark-tremor-content flex items-center justify-between">
@@ -252,11 +237,11 @@ const porcentajeSinVer = totalAmenazas > 0 ? (parseInt(numSinVer) / totalAmenaza
               </p>
               <ProgressBar value={porcentajeTratadas} color="teal" className="mt-3" />
             </Card>
-
           </div>
+          
           {/* Fila 2 */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-8">
-          <Section>
+            <Section>
               <CardDonut
                 title={`Plagas en el ${selectedGreenhouseName}`}
                 data={plagasData}
@@ -264,7 +249,7 @@ const porcentajeSinVer = totalAmenazas > 0 ? (parseInt(numSinVer) / totalAmenaza
                 variant="pie"
               />
             </Section>
-
+  
             <Section>
               <CardDonut
                 title={`Enfermedades en el ${selectedGreenhouseName}`}
@@ -272,22 +257,28 @@ const porcentajeSinVer = totalAmenazas > 0 ? (parseInt(numSinVer) / totalAmenaza
                 valueFormatter={addCommasToNumber}
               />
             </Section>
-
           </div>
+          
           {/* Fila 3 */}
           <Card>
             <Title className="text-medium">
-              Deteccion de Plagas y enfermedades a través del tiempo
+              Historial de Detección de Plagas y Enfermedades
             </Title>
-            <LineChart
-              className="mt-6"
-              data={chartData}
-              index="date"
-              categories={["Barbie", "Oppenheimer"]}
-              colors={["violet", "indigo"]}
-              yAxisWidth={100}
-              valueFormatter={addCommasToNumber}
-            />
+            {chartData.length > 0 ? (
+              <LineChart
+                className="mt-6"
+                data={chartData}
+                index="date"
+                categories={["Plagas", "Enfermedades"]}
+                colors={["violet", "indigo"]}
+                yAxisWidth={100}
+                valueFormatter={addCommasToNumber}
+              />
+            ) : (
+              <Text className="text-lg-medium text-center mt-8">
+                {noDataMessage}
+              </Text>
+            )}
           </Card>
         </>
       ) : (
@@ -297,6 +288,7 @@ const porcentajeSinVer = totalAmenazas > 0 ? (parseInt(numSinVer) / totalAmenaza
       )}
     </div>
   );
+  
 };
 
 const Section = ({ children }) => (

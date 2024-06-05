@@ -1,15 +1,13 @@
 .projcard-container {
     display: flex; /* Convertir el contenedor en un flex container */
-    justify-content: space-between; /* Distribuir los elementos en dos columnas */
-    gap: 20px; /* Espacio entre las columnas */
-    margin-left: auto;
-    margin-right: auto;
+    justify-content: center; /* Distribuir los elementos en dos columnas */
+    
     width: 100%; /* Ancho deseado del contenedor */
   }
   
   .image-detail-container {
     position: relative; /* Añadido para establecer un contexto de posición */
-    width: calc(50% - 10px); /* Ancho de cada tarjeta con espacio entre ellas */
+    width: 100%; /* Ancho de cada tarjeta con espacio entre ellas */
     height: auto;
     border-radius: 10px;
     background-color: #fff;
@@ -21,7 +19,7 @@
     transition: box-shadow 0.2s ease;
     display: flex; /* Hacemos que sea un flex container */
   }
-  
+
   .image-detail-container:last-child {
     margin-right: 0; /* No agregar margen a la última tarjeta */
   }
@@ -71,23 +69,51 @@
     margin-left: 30px;
   }
 
-  .title{
+.title {
     text-align: center;
     margin-bottom: 10px;
-  }
-  
- /* CardImagesAnalized.css */
-.loading-container {
-    display: flex;
+    color: #c62426;
+}
+
+.nameDetected {
+    text-align: center;
+    color: #c62426;
+}
+
+@media (max-width: 768px) {
+ .image-detail-container {
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh; /* Altura completa de la ventana */
   }
-  
-  .loading-container p {
-    margin-top: 10px;
-    font-size: 18px;
-    color: #4fa94d; /* Mismo color que el spinner */
+ .image-detail-container.image-container {
+    flex: 0 0 100%;
   }
-  
+ .image-detail-container.details-container {
+    margin-left: 0;
+  }
+}
+
+/* Medium screens (max-width: 992px) */
+@media (max-width: 992px) {
+ .image-detail-container {
+    flex-direction: row;
+  }
+ .image-detail-container.image-container {
+    flex: 0 0 30%;
+  }
+ .image-detail-container.details-container {
+    margin-left: 20px;
+  }
+}
+
+/* Large screens (min-width: 1200px) */
+@media (min-width: 1200px) {
+ .image-detail-container {
+    flex-direction: row;
+  }
+ .image-detail-container.image-container {
+    flex: 0 0 40%;
+  }
+ .image-detail-container.details-container {
+    margin-left: 30px;
+  }
+}

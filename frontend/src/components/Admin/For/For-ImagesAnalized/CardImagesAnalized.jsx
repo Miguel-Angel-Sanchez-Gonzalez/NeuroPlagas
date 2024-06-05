@@ -1,95 +1,144 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import './CardImagesAnalized.css'; // Asegúrate de importar el archivo CSS
+import { toast } from "react-toastify";
+import './CardImagesAnalized.css';
 
 function CardImagesAnalized() {
   const location = useLocation();
-  const { idAnalizedImage, imageUrl, detected, types } = location.state || {};
-  const [recommendations, setRecommendations] = useState({ plaga: [], enfermedad: [] });
-  const [actions, setActions] = useState({ plaga: [], enfermedad: [] });
+  const { idAnalizedImage, idBed } = location.state || {};
+  const [data, setData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+  const [statusImage, setStatusImage] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
 
-  useEffect(() => {
-  const getRAndAByIdAnalizedImage = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/analizedImage/solutions/${idAnalizedImage}`
-      );
-      if (response.status === 200) {
-        const data = await response.json();
-        const plagueData = data.filter(item => item.tipo === "plaga");
-        const plagueRecommendations = plagueData.flatMap(item => item.recomendaciones);
-        const plagueActions = plagueData.flatMap(item => item.acciones);
-
-        const diseaseData = data.filter(item => item.tipo === "enfermedad");
-        const diseaseRecommendations = diseaseData.flatMap(item => item.recomendaciones);
-        const diseaseActions = diseaseData.flatMap(item => item.acciones);
-
-        setRecommendations({ plaga: plagueRecommendations, enfermedad: diseaseRecommendations });
-        setActions({ plaga: plagueActions, enfermedad: diseaseActions });
-        setIsLoaded(true);
-      } else if (response.status === 404) {
-        console.log('No se encontraron las recomendaciones y/o acciones para la imagen.');
-        setIsLoaded(true);
-      }
-    } catch (error) {
-      console.error(
-        "Error al obtener las recomendaciones y acciones de la plaga o enfermedad:",
-        error
-      );
-      setIsLoaded(true); // Asegurando que setIsLoaded se actualice incluso en caso de error.
+  const handleOnChange = () => {
+    setIsChecked(prevChecked =>!prevChecked);
+    if (isChecked) {
+      updateStatus('Sin ver');
+    } else {
+      updateStatus('Tratada');
     }
   };
 
-  if (idAnalizedImage) {
-    getRAndAByIdAnalizedImage();
-  }
-}, [idAnalizedImage]); // Agregar setIsLoaded al array de dependencias
+  useEffect(() => {
+    const getRAndAByIdAnalizedImage = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/analizedImage/solutions/${idAnalizedImage}`);
+
+        if (response.status === 200) {
+          const data = await response.json();
+          setData(data);
+
+          const responseImage = await fetch(`http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`);
+          if (responseImage.status === 200) {
+            const fImage = await responseImage.json();
+            const image = fImage.find(img => img.id_analizedImage === idAnalizedImage)?.image;
+            const status = fImage.find(state => state.id_analizedImage === idAnalizedImage)?.status;
+
+            setImageUrl(image);
+            setStatusImage(status)
+            
+            // Actualizar isChecked según el estado de la imagen
+            if (status === 'Tratada') {
+              setIsChecked(true);
+            } else {
+              setIsChecked(false);
+            }
+
+          } else if (responseImage.status === 404) {
+            console.log('No se encontraron las imágenes del lecho para la imagen analizada.');
+          } else {
+            console.error(`Error al obtener la imagen del lecho con id ${idBed}:`, responseImage.statusText);
+          }
+
+          setIsLoaded(true);
+        } else if (response.status === 404) {
+          console.log('No se encontraron las recomendaciones y/o acciones para la imagen.');
+        } else {
+          console.error("Error al obtener las recomendaciones y acciones de la plaga o enfermedad:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error al obtener las recomendaciones y acciones de la plaga o enfermedad:", error);
+        setIsLoaded(true); // Asegurando que setIsLoaded se actualice incluso en caso de error.
+      }
+    };
+
+    if (idAnalizedImage) {
+      getRAndAByIdAnalizedImage();
+    }
+
+  }, [idAnalizedImage, idBed]);
+
+  const updateStatus = (newStatus) => {
+    fetch(`http://localhost:3000/analizedImage/${idAnalizedImage}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status: newStatus }),
+    })
+   .then((response) => {
+        if (response.status === 200) {
+          toast.success(`El invernadero se actualizó correctamente.`, {
+            position: "top-center",
+            autoClose: 2000,
+            theme: "colored",
+          });
+          setStatusImage(newStatus);
+        }
+      })
+   .catch((error) => {
+        toast.error(`${error}`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
+      });
+  };
+
 
   return (
     <div>
       <h1 className='title'>Imágenes detectadas</h1>
+        <div>
+          <input type="checkbox" 
+            name="myCheckbox" 
+            value="checkboxStatus"
+            checked={isChecked}
+            onChange={handleOnChange}
+            />
+          <label htmlFor="myCheckbox">Marcar como tratada</label>
+        </div>
       <div className="projcard-container">
-        {types && types.map((type, index) => (
-          <div className="image-detail-container" key={index}>
+        {isLoaded? (
+          <div className="image-detail-container">
             <div className="image-container">
-              {type === "Plaga" && (
-                <img src={imageUrl} alt="Imagen de Plaga" />
-              )}
-              {type === "Enfermedad" && detected && detected.diseaseImageUrl && (
-                <img src={detected.diseaseImageUrl} alt="Imagen de Enfermedad" />
-              )}
+              <img src={imageUrl} alt="Imagen detectada" />
             </div>
             <div className="details-container">
-              <div className="card">
-                <h3>{type === "Plaga" ? "Plagas" : "Enfermedades"}</h3>
-                <ul>
-                  {detected && detected[type.toLowerCase() + "s"] && detected[type.toLowerCase() + "s"].map((item, index) => (
-                    <li key={index}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              {(type === "Plaga" || type === "Enfermedad") && (
-                <div className="recommendations-container">
-                  <h5>Recomendaciones</h5>
-                  <ul>
-                    {recommendations[type.toLowerCase()].map((recommendation, index) => (
-                      <li key={index}>{recommendation}</li>
-                    ))}
-                  </ul>
+              {data.map((item, index) => (
+                <div key={index}>
+                  <h3 className='nameDetected'>{item.nombre}</h3>
+                  <p><strong>Estado:</strong> {statusImage}</p>
+                  <p><strong>Tipo:</strong> {item.tipo}</p>
+                  <p><strong>Nombre Científico:</strong> {item.nombre_cientifico}</p>
+                  <p><strong>Descripción:</strong> {item.descripcion}</p>
+                  <div className="recommendations-container">
+                    <h4>Recomendaciones:</h4>
+                    <p>{item.recomendaciones}</p>
+                  </div>
                   <div className="actions-container">
-                    <h5>Acciones</h5>
-                    <ul>
-                      {actions[type.toLowerCase()].map((action, index) => (
-                        <li key={index}>{action}</li>
-                      ))}
-                    </ul>
+                    <h4>Acciones:</h4>
+                    <p>{item.acciones}</p>
                   </div>
                 </div>
-              )}
+              ))}
             </div>
           </div>
-        ))}
+        ) : (
+          <div>Cargando...</div>
+        )}
       </div>
     </div>
   );

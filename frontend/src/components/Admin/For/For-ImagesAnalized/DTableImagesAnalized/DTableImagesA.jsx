@@ -91,11 +91,10 @@ const DTableImagesA = () => {
     if (!isLoaded) {
       getImageAByIdBed();
     }
-  }, [isLoaded, idBed]);
-  
+  }, [isLoaded]);
+
   const onDrop = useCallback((acceptedFiles) => {
     console.log(acceptedFiles[0]);
-    // Do something with the files
   }, []);
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
     useDropzone({ onDrop });
@@ -137,25 +136,12 @@ const DTableImagesA = () => {
   };
 
   const handleShowCardImages = (row) => {
-    const types = [];
-  
-    if (row.detected.plagues.length > 0) {
-      types.push("Plaga");
-    }
-  
-    if (row.detected.diseases.length > 0) {
-      types.push("Enfermedad");
-    }
-  
-   // const detectedName = [...row.detected.plagues, ...row.detected.diseases].join(", ");
-  
     navigate(`/homeAdmin/invernaderos/camas/imagenes-analizadas/ver-imagen`, {
       state: {
         idAnalizedImage: row.id_analizedImage,
-        imageUrl:  row.image,
-        detected: row.detected,
-        types: types, // Pasamos los tipos de detecciones
-        //detectedName: detectedName // Pasamos el nombre de lo detectado
+        // detected: row.detected,
+        // imageUrl: row.image,
+        idBed: idBed,
       },
     });
   };

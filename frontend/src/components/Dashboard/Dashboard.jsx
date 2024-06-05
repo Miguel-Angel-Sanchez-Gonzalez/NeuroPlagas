@@ -29,7 +29,7 @@ const Dashboard = () => {
   const [plagasData, setPlagasData] = useState([]);
   const [enfermedadesData, setEnfermedadesData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [noDataMessage, setNoDataMessage] = useState(""); // Nuevo estado para el mensaje de "sin datos"
+  const [noDataMessage, setNoDataMessage] = useState(""); 
 
 
   const addCommasToNumber = (number) => {
@@ -49,7 +49,7 @@ const Dashboard = () => {
         setNumPlagas(data);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Error al obtener los datos:", error);
       });
 
     // Fetch Obtiene numero de enfermedades
@@ -61,7 +61,7 @@ const Dashboard = () => {
         setNumEnfermedades(data);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Error al obtener los datos:", error);
       });
 
     // Fetch Obtiene el estado de las imágenes
@@ -76,7 +76,6 @@ const Dashboard = () => {
       })
       .then((data) => {
         if (data.message) {
-          console.log("Invernadero sin datos de imágenes analizadas");
           setNumTratadas("0");
           setNumSinVer("0");
         } else {
@@ -88,7 +87,6 @@ const Dashboard = () => {
         }
       })
       .catch((error) => {
-        console.log("Invernadero sin datos de imágenes analizadas");
         setNumTratadas("0");
         setNumSinVer("0");
       });
@@ -112,7 +110,7 @@ const Dashboard = () => {
         }
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Error al obtener datos:", error);
       });
 
     // Fetch Obtiene el conteo de enfermedades
@@ -134,7 +132,7 @@ const Dashboard = () => {
         }
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Error al obtener datos:", error);
       });
 
       // Función para convertir fechas de "DD-MM-YYYY" a objetos Date
@@ -163,7 +161,7 @@ const Dashboard = () => {
         }
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Error al obtener datos:", error);
       });
     
 

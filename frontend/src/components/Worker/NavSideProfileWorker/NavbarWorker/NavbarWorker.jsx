@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { HiMenu } from "react-icons/hi";
-import './NavbarWorker.css';  // Importa el archivo de estilos CSS
+import "./NavbarWorker.css"; // Importa el archivo de estilos CSS
 
-const NavbarWorker = ({onConfigureProfileClick}) => {
-  const storedUsername = localStorage.getItem('username');
-  const storedLastname = localStorage.getItem('lastname');
-  const storedSecondLastname = localStorage.getItem('secondlastname');
-  const storedEmail = localStorage.getItem('email');
+const NavbarWorker = ({ onConfigureProfileClick }) => {
+  const storedUsername = localStorage.getItem("username");
+  const storedLastname = localStorage.getItem("lastname");
+  const storedSecondLastname = localStorage.getItem("secondlastname");
+  const storedEmail = localStorage.getItem("email");
 
   const [showProfileAdmin, setshowProfileAdmin] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
@@ -29,15 +29,20 @@ const NavbarWorker = ({onConfigureProfileClick}) => {
     setMenuVisible(!menuVisible);
   };
 
+  // const handleProfile = () => {
+  //   // Lógica para configurar perfil
+  //   console.log('Configurar perfil');
+  // };
+
   const handleLogout = () => {
     //Reset de variables
-    localStorage.setItem('token', '');  
-    localStorage.setItem('username', '');
-    localStorage.setItem('lastname', '');
-    localStorage.setItem('secondlastname', '');
-    localStorage.setItem('email', '');
+    localStorage.setItem("token", "");
+    localStorage.setItem("username", "");
+    localStorage.setItem("lastname", "");
+    localStorage.setItem("secondlastname", "");
+    localStorage.setItem("email", "");
     // Redirige al usuario a la página de inicio de sesión
-    window.location.href = '/login'; 
+    window.location.href = "/login";
   };
 
   // const handleProfileFormCancel = () => {
@@ -45,26 +50,29 @@ const NavbarWorker = ({onConfigureProfileClick}) => {
   // };
 
   return (
-    <div >
-      <div className='menu--nav-worker'>
-      <img src="/images/tomatito.png" alt="" /> {/*Imagen*/}
-        <h2>Tomi-Plagas y Enfermedades </h2>              {/*Titulo*/}
-        <div className='notify-worker' ref={menuRef}>
-            <HiMenu className='icon' onClick={toggleMenu}/>   
-            {menuVisible && (
-              <div className="menu-options-worker">
-                <p onClick={onConfigureProfileClick}>Configurar perfil</p> {/* Llama a la función desde las props */}
-                <p onClick={handleLogout}>Cerrar sesión</p>
-              </div>
-            )}
+    <div>
+      <div className="menu--nav-farmer">
+        <img src="/images/tomatito.png" alt="" /> {/*Imagen*/}
+        <h2>Tomi-Plagas y Enfermedades </h2> {/*Titulo*/}
+        <div className="notify-farmer" ref={menuRef}>
+          <HiMenu className="icon" onClick={toggleMenu} />
+          {menuVisible && (
+            <div className="menu-options-farmer">
+              <p onClick={onConfigureProfileClick}>Configurar perfil</p>{" "}
+              {/* Llama a la función desde las props */}
+              <p onClick={handleLogout}>Cerrar sesión</p>
+            </div>
+          )}
         </div>
-        <div className='user-info-worker'>
-          <label>{storedUsername +" "+ storedLastname +" "+ storedSecondLastname}</label>
+        <div className="user-info-farmer">
+          <label>
+            {storedUsername + " " + storedLastname + " " + storedSecondLastname}
+          </label>
           <br />
           <label>{storedEmail}</label>
         </div>
       </div>
-      
+
       {/*showProfileAdmin && <ProfileAdmin onCancelClick={handleProfileFormCancel} />*/}
     </div>
   );

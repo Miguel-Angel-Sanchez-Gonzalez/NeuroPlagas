@@ -18,9 +18,9 @@ const RegisterPlague = ({ onCancelClick }) => {
     acciones: ""
   });
 
-  const handleInputChange = (e) =>{
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setValues(values => ({
+    setValues((values) => ({
       ...values,
       [name]: value,
     }));
@@ -28,6 +28,7 @@ const RegisterPlague = ({ onCancelClick }) => {
       setPlagueExists(false);
     }
   };
+  
 
   const handleInputFocus = () => {
     setIsInputFocused(true); 
@@ -45,64 +46,65 @@ const RegisterPlague = ({ onCancelClick }) => {
 
   /*VER SI LA PLAGA EXISTE*/
   async function checkPlagueExists(plagueName){
-      const response = await fetch(`http://localhost:3000/plague/checkExist/${plagueName}`)
-      const data = await response.json()
-      //se están cargando los datos
-      return data.exists;
-  } 
+    const response = await fetch(`http://localhost:3000/plague/checkExist/${plagueName}`);
+    const data = await response.json();
+    return data.exists;
+  }
+  
 
   const handleSubmit = async (e) => {
-      e.preventDefault();
-      setIsFormSubmitted(true); 
-
-      for (const key in values) {
-        if (values[key] === "") {
-          setRecords('Por favor complete todos los campos.');
-          return;
-        }
+    e.preventDefault();
+    setIsFormSubmitted(true); 
+  
+    for (const key in values) {
+      if (values[key] === "") {
+        setRecords('Por favor complete todos los campos.');
+        return;
       }
-        
-        //Validando que la enfermedad exista
-        //const plagueExists = await checkPlagueExists(values.nombreEnfermedad);
-        if (plagueExists) {
-          setPlagueExists(true);
-          return;
-        }
-
-        setIsLoading(true);
-        const data = {
-          name: values.nombrePlaga,
-          nameScientific: values.nombreCientifico,
-          description: values.descripcion,
-          recommendations: values.recomendaciones,
-          actions: values.acciones
-        };
-
-
-        //Se esta haciendo la promesa
-        //Post para insertar datos de plaga
-          const response = await fetch('http://localhost:3000/plague/', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-          }) 
-            if (response){
-              const responseData = await response.json();
-              const { id } = responseData; // Obtiene el ID del agricultor del backend
-              setIsLoading(false);
-              setLoadingMessage('Se ha agregado correctamente la plaga.');
-              setTimeout(() => {
-              setLoadingMessage(''); // Oculta el mensaje después de unos segundos
-              window.location.reload();
-              }, 2000);
-            } else {
-              setRecords('Hubo un problema al agregar la plaga. Por favor, inténtelo de nuevo más tarde.');
-              setIsLoading(false);
-            }
-        
+    }
+    
+    if (plagueExists) {
+      setPlagueExists(true);
+      return;
+    }
+  
+    setIsLoading(true);
+    const data = {
+      name: values.nombrePlaga,
+      nameScientific: values.nombreCientifico,
+      description: values.descripcion,
+      recommendations: values.recomendaciones,
+      actions: values.acciones
+    };
+  
+    try {
+      const response = await fetch('http://localhost:3000/plague/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+  
+      if (response.ok) {
+        const responseData = await response.json();
+        const { id } = responseData;
+        setIsLoading(false);
+        setLoadingMessage('Se ha agregado correctamente la plaga.');
+        setTimeout(() => {
+          setLoadingMessage('');
+          window.location.reload();
+        }, 2000);
+      } else {
+        setRecords('Hubo un problema al agregar la plaga. Por favor, inténtelo de nuevo más tarde.');
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setRecords('Error en la comunicación con el servidor.');
+      setIsLoading(false);
+    }
   };
+  
 
 
   return (
@@ -134,10 +136,11 @@ const RegisterPlague = ({ onCancelClick }) => {
                 onBlur={async () => {
                   handleInputBlur();
                   if (values.nombrePlaga) {
-                    const plagueExists = await checkPlagueExists(values.nombrePlaga);
-                    setPlagueExists(plagueExists);
+                    const exists = await checkPlagueExists(values.nombrePlaga);
+                    setPlagueExists(exists);
                   }
                 }}
+                
               />
               {plagueExists && <p className="plague-exists">La plaga ya fue registrada.</p>}
             </div>
@@ -215,11 +218,11 @@ const RegisterPlague = ({ onCancelClick }) => {
                  {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
               <button className='button-plague-r ' onClick={onCancelClick}>Cancelar</button>
             </div>
-              {records && !isInputFocused && <p className='error-message'>{records}</p>}
-            </div>
+            {records && !isInputFocused && <p className='error-message-plague-r'>{records}</p>}
             {loadingMessage && (
-            <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification"/>
-          )}
+              <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification" />
+            )}
+            </div>
         </div>
       </div>
   );

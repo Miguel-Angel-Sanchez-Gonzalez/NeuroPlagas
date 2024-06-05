@@ -96,10 +96,17 @@
   cursor: pointer; 
 }
 
-.error-message,
 .email-exists-profile {
   margin-top: 7px;
   margin-left: 5px;
+  text-align: left;
+  color: #c62426;
+  font-size: medium;
+}
+
+.error-msg-profile-admin{
+  margin-top: 17px;
+  margin-left: 15px;
   text-align: left;
   color: #c62426;
   font-size: medium;

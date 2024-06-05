@@ -4,79 +4,68 @@ import AddNotification from '../../../../../LoginNotifications/AddNotification';
 
 const EditBed = ({ onCancelClick, idGreenhouse, idBed }) => {
   const [records, setRecords] = useState('');
-  const [bedExists, setBedExists] = useState(false);
-  const [isInputFocused, setIsInputFocused] = useState(false); // Nuevo estado para controlar el enfoque en los inputs
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Nuevo estado para rastrear si el formulario se ha enviado
+  const [isInputFocused, setIsInputFocused] = useState(false);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
-  const [originalName, setOriginalName] = useState('');
-
 
   const [values, setValues] = useState({
-    numeroCama: "",
-    tipoCultivo: ""
+    numeroCama: '',
+    tipoCultivo: ''
   });
 
-
-  const handleInputChange = (e) =>{
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues(values => ({
       ...values,
       [name]: value,
     }));
-    // if (name === 'numeroCama') {
-    //   setBedExists(false);
-    // }
   };
 
   const handleInputFocus = () => {
-    setIsInputFocused(true); // Actualiza el estado cuando un input recibe enfoque
-    setRecords(''); // Borra el mensaje de error
+    setIsInputFocused(true);
+    setRecords('');
   };
 
   const handleInputBlur = () => {
-    setIsInputFocused(false); // Actualiza el estado cuando un input pierde el enfoque
+    setIsInputFocused(false);
   };
 
-
-
-  //Para obtener la data del Greenhouse y setearla en los INPUT
   useEffect(() => {
-    const getGreenhouseById = () => {
-      fetch(`http://localhost:3000/bed/${idBed}`)
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          }
+    const getGreenhouseById = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/bed/${idBed}`);
+        if (!response.ok) {
           throw new Error('Error al obtener la cama seleccionada');
-        })
-        .then(data => {
-          console.log("Datos recibidos:", data);
+        }
+        const data = await response.json();
+        console.log("Datos recibidos:", data);
+
+        if (data.length > 0) {
+          const bedData = data[0];
           setValues({
-            numeroCama: data.numero_cama,
-            tipoCultivo: data.tipo_cultivo
+            numeroCama: bedData.numero_cama || '',
+            tipoCultivo: bedData.tipo_cultivo || ''
           });
-        })
-        .catch(error => {
-          console.error('Error al obtener la cama:', error);
-          setIsLoading(false);
-        });
+        } else {
+          console.error('No se encontraron datos para la cama seleccionada');
+        }
+      } catch (error) {
+        console.error('Error al obtener la cama:', error);
+        setIsLoading(false);
+      }
     };
     getGreenhouseById();
-  }, [idGreenhouse]);
+  }, [idBed]);
 
-  
-  //Data para el fetch de actualizacion
   const data = {
-    idGreenhouse : idGreenhouse,
+    idGreenhouse: idGreenhouse,
     numberBed: values.numeroCama,
     typeCrop: values.tipoCultivo
   };
 
   const onConfirmClick = async () => {
     setIsFormSubmitted(true);
-  
-    // Validación específica para cada campo
     if (values.numeroCama === "" || values.tipoCultivo === "") {
       setRecords('Por favor complete todos los campos.');
       return;
@@ -84,32 +73,30 @@ const EditBed = ({ onCancelClick, idGreenhouse, idBed }) => {
     updateBedData();
   };
 
-  const updateBedData = () => {
+  const updateBedData = async () => {
     setIsLoading(true);
-    fetch(`http://localhost:3000/bed/${idBed}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => {
-      if (response.ok) {
-        setIsLoading(false);
-        setLoadingMessage('La cama se actualizó correctamente.');
-        setTimeout(() => {
-          setLoadingMessage(''); // Oculta el mensaje después de unos segundos
-          window.location.reload();
-        }, 2000); 
-      } else {
+    try {
+      const response = await fetch(`http://localhost:3000/bed/${idBed}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      if (!response.ok) {
         throw new Error('No se pudo actualizar la cama seleccionada');
       }
-    })
-    .catch(error => {
+      setIsLoading(false);
+      setLoadingMessage('La cama se actualizó correctamente.');
+      setTimeout(() => {
+        setLoadingMessage('');
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
       console.error('Error al actualizar la cama seleccionada:', error);
       alert("Error al actualizar la cama seleccionada");
       setIsLoading(false);
-    });
+    }
   };
 
   return (
@@ -119,8 +106,8 @@ const EditBed = ({ onCancelClick, idGreenhouse, idBed }) => {
           <div className="loading-spinner"></div>
         </div>
       )}
-        <div className="edit-bed-container">
-          <div className='centrar-bed'>
+      <div className="edit-bed-container">
+        <div className='centrar-bed'>
           <h4 className='h4edit-bed'>Edite cama</h4>
           <h5 className='h5edit-bed'>*Campos requeridos</h5>
           <label className='label-dato-bed'>Edite una nueva cama</label>
@@ -137,9 +124,9 @@ const EditBed = ({ onCancelClick, idGreenhouse, idBed }) => {
                 placeholder="Ingrese el número de cama"
                 value={values.numeroCama}
                 onChange={handleInputChange}
-                onFocus={handleInputFocus} 
-                onBlur={handleInputBlur} 
-                style={values.numeroCama ? {  backgroundColor: '#EFF6FF' } : null}   
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
+                style={values.numeroCama ? { backgroundColor: '#EFF6FF' } : null}
               />
             </div>
             <div className="column-edit-bed">
@@ -154,25 +141,24 @@ const EditBed = ({ onCancelClick, idGreenhouse, idBed }) => {
                 placeholder="Ingrese el tipo de cultivo"
                 value={values.tipoCultivo}
                 onChange={handleInputChange}
-                onFocus={handleInputFocus} 
-                onBlur={handleInputBlur} 
-                style={values.tipoCultivo ? {  backgroundColor: '#EFF6FF' } : null}   
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
+                style={values.tipoCultivo ? { backgroundColor: '#EFF6FF' } : null}
               />
             </div>
           </div>
-          
+
           <div className='button-container-bed '>
-              <button className='button-bed' type="submit" onClick={onConfirmClick}>Guardar</button>
-              {/* {isLoading ? 'Enviando..' : 'Enviar'} */}
-              <button className='button-bed ' onClick={onCancelClick}>Cancelar</button>
-            </div>
-            {records && !isInputFocused && <p className='error-message-bed-e'>{records}</p>}
-            </div>
-            {loadingMessage && (
-            <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification"/>
-          )}
+            <button className='button-bed' type="submit" onClick={onConfirmClick}>Guardar</button>
+            <button className='button-bed ' onClick={onCancelClick}>Cancelar</button>
+          </div>
+          {records && !isInputFocused && <p className='error-message-bed-e'>{records}</p>}
         </div>
-        </div>
+        {loadingMessage && (
+          <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification" />
+        )}
+      </div>
+    </div>
   );
 };
 

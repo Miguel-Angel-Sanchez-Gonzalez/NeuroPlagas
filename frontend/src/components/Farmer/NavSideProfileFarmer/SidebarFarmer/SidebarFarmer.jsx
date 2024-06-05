@@ -1,44 +1,80 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faPersonDigging, faChartBar, faWarehouse, faBug, faVirus } from '@fortawesome/free-solid-svg-icons';
-import './SidebarFarmer.css';
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link, useLocation } from "react-router-dom";
+import "./SidebarFarmer.css";
+import {
+  faHomeUser,
+  faWarehouse,
+  faPersonDigging,
+  faChartBar,
+  faBug,
+  faVirus,
+  faBell,
+} from "@fortawesome/free-solid-svg-icons";
 
-const SidebarFarmer = ({ setActiveSection, activeSection }) => {
-    const handleItemClick = (section) => {
-        setActiveSection(section);
-    };
+const SidebarFarmer = () => {
+  const { pathname } = useLocation();
+  return (
+    <div className="menu-farmer">
+      <div className="menu-list-farmer">
+        <Link
+          to="/homeFarmer/notificaciones"
+          className={`item-farmer ${
+            pathname.includes("notificaciones") ? "active" : ""
+          }`}
+        >
+          <FontAwesomeIcon icon={faBell} className="icon" />
+          Notificaciones
+        </Link>
+        <Link
+          to="/homeFarmer/invernaderos"
+          className={`item-farmer ${
+            pathname.includes("invernaderos") ? "active" : ""
+          }`}
+        >
+          <FontAwesomeIcon icon={faWarehouse} className="icon" />
+          Invernadero
+        </Link>
+        <Link
+          to="/homeFarmer/trabajadores"
+          className={`item-farmer ${
+            pathname.includes("trabajadores") ? "active" : ""
+          }`}
+        >
+          <FontAwesomeIcon icon={faPersonDigging} className="icon" />
+          Trabajador
+        </Link>
+        <Link
+          to="/homeFarmer/reportes"
+          className={`item-farmer ${
+            pathname.includes("reportes") ? "active" : ""
+          }`}
+        >
+          <FontAwesomeIcon icon={faChartBar} className="icon" />
+          Reporte
+        </Link>
 
-    return (
-        <div className='menu-farmer'>
-            <div className='menu-list-farmer'>
-                <a href="#" onClick={() => handleItemClick('notifications')} className={`item-farmer ${activeSection === 'notifications' ? 'active' : ''}`}>
-                    <FontAwesomeIcon icon={faBell} className='icon'/> {/* Icono de notificaciones */}
-                    Notificaciones
-                </a>
-                <a href="#" onClick={() => handleItemClick('greenhouses')} className={`item-farmer ${activeSection === 'greenhouses' ? 'active' : ''}`}>
-                    <FontAwesomeIcon icon={faWarehouse} className='icon'/> {/* Icono de invernadero */}
-                    Invernadero
-                </a>
-                <a href="#" onClick={() => handleItemClick('workers')} className={`item-farmer ${activeSection === 'workers' ? 'active' : ''}`}>
-                    <FontAwesomeIcon icon={faPersonDigging} className='icon'/> {/* Icono de trabajador */}
-                    Trabajador
-                </a>
-                <a href="#" onClick={() => handleItemClick('reporte')} className={`item-farmer ${activeSection === 'reporte' ? 'active' : ''}`}>
-                    <FontAwesomeIcon icon={faChartBar} className='icon'/> {/* Icono de reporte */}
-                    Reporte
-                </a>
-                <a href="#" onClick={() => handleItemClick('plagues')} className={`item-farmer ${activeSection === 'plagues' ? 'active' : ''}`}>
-                    <FontAwesomeIcon icon={faBug} className='icon'/> {/* Icono de plaga */}
-                    Plaga
-                </a>
-                <a href="#" onClick={() => handleItemClick('diseases')} className={`item-farmer ${activeSection === 'diseases' ? 'active' : ''}`}>
-                    <FontAwesomeIcon icon={faVirus} className='icon'/> {/* Icono de enfermedad */}
-                    Enfermedad
-                </a>
-            </div>
-        </div>
-    );
+        <Link
+          to="/homeFarmer/plagas"
+          className={`item-farmer ${
+            pathname.includes("plagas") ? "active" : ""
+          }`}
+        >
+          <FontAwesomeIcon icon={faBug} className="icon" />
+          Plaga
+        </Link>
+        <Link
+          to="/homeFarmer/enfermedades"
+          className={`item-farmer ${
+            pathname.includes("enfermedades") ? "active" : ""
+          }`}
+        >
+          <FontAwesomeIcon icon={faVirus} className="icon" />
+          Enfermedad
+        </Link>
+      </div>
+    </div>
+  );
 };
 
 export default SidebarFarmer;
-

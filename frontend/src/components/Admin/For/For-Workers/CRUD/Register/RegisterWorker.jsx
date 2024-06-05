@@ -46,15 +46,21 @@ const RegisterWorker = ({ onCancelClick }) => {
 
   
   const checkEmailExists = async (email) => {
-    const response = await fetch(`http://localhost:3000/login/check_email_existence`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email: email })
-    });
-    const data = await response.json();
-    return data.exists;
+    try {
+      const response = await fetch(`http://localhost:3000/login/check_email_existence`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email })
+      });
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error('Error al verificar la existencia del correo electrónico:', error);
+      alert('Error al verificar la existencia del correo electrónico');
+    }
+
   };
   
   //VALIDACIONES
@@ -93,7 +99,6 @@ const RegisterWorker = ({ onCancelClick }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsFormSubmitted(true); 
-
     
 
     for (const key in values) {
@@ -110,24 +115,28 @@ const RegisterWorker = ({ onCancelClick }) => {
     }
 
     //Validando que el correo exista
-    const emailExists = await checkEmailExists(values.correo);
-    if (emailExists) {
-      setEmailExists(true);
+    try {
+      const emailExists = await checkEmailExists(values.correo);
+      if (emailExists) {
+        setEmailExists(true);
+        return;
+      }
+    } catch (error) {
+      console.error('Error al validar la existencia del correo electrónico:', error);
       return;
     }
-    
-    // const phoneValidate = validatePhone(values.telefono);
+  
     if (!validatePhone(values.telefono)) {
       setRecords('Teléfono no válido (10 dígitos).');
       return;
     }
-
+  
     const passwordValidationResult = validatePassword(values.contrasenia);
     if (passwordValidationResult !== true) {
       setPasswordError(passwordValidationResult);
       return;
     }
-
+  
     // Validacion para saber si ya ha seleccionado un agricultor
     if (idFarmer === '') {
       setRecords('Por favor selecciona un agriculor');
@@ -149,26 +158,30 @@ const RegisterWorker = ({ onCancelClick }) => {
 
     //Se esta haciendo la promesa
     //Post para insertar los datos de un agricultor
-    const response = await fetch(`http://localhost:3000/worker/${idFarmer}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })    
-        if (response){
-          const responseData = await response.json();
-          const { id } = responseData; // Obtiene el ID del agricultor del backend
-          setIsLoading(false);
-          setLoadingMessage('Se ha agregado correctamente el trabajador.');
-          setTimeout(() => {
-          setLoadingMessage(''); // Oculta el mensaje después de unos segundos
-          window.location.reload();
-          }, 2000); // Mostrar el mensaje durante 3 segundos
-        } else {
-          setRecords('Por favor, inténtelo de nuevo más tarde.');
-          setIsLoading(false); // Agregar para detener la pantalla de carga
-        }
+    try {
+      const response = await fetch(`http://localhost:3000/worker/${idFarmer}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });  
+      if (!response.ok) {
+        throw new Error('Error al agregar el trabajador.');
+      }
+      const responseData = await response.json();
+      const { id } = responseData;
+      setIsLoading(false);
+      setLoadingMessage('Se ha agregado correctamente el trabajador.');
+      setTimeout(() => {
+        setLoadingMessage('');
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      console.error('Error al agregar el trabajador:', error);
+      setRecords('Por favor, inténtelo de nuevo más tarde.');
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -350,11 +363,11 @@ const RegisterWorker = ({ onCancelClick }) => {
 
             </div>
           </div>
-            <div className='button-container-admin'>
+            <div className='btn-cont-admin-worker-r'>
                 <button className='button-worker' type="submit" onClick={handleSubmit}>Guardar</button>
                 <button className='button-worker ' onClick={onCancelClick}>Cancelar</button>
             </div>
-                {records && !isInputFocused && <p className='error-message'>{records}</p>}
+                {records && !isInputFocused && <p className='error-message-worker-r'>{records}</p>}
             </div>
             {loadingMessage && (
             <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification"/>

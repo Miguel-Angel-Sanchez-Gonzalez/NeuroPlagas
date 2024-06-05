@@ -81,11 +81,12 @@
   margin-top: 10px;
 }
 
-.button-container-admin {
+.btn-cont-admin-dis-r {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 12px;
+  margin-top: 17px;
+  margin-left: 15px;
   margin-right: 12px;
 }
 
@@ -103,9 +104,9 @@
   border-color: #c62426;
 }
 
-.error-message-disease{
-  margin-top: 15px;
-  margin-left: 12px;
+.error-message-disease-r{
+  margin-top: 17px;
+  margin-left: 20px;
   text-align: justify;
   color: #c62426;
   font-size: medium;

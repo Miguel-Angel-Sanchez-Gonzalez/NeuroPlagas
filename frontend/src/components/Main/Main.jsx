@@ -29,64 +29,56 @@ function parseJwt(token) {
 
 const Main = () => {
   const token = localStorage.getItem("token");
-  const tokenExistAndNotEmpty = token && token !== "";
-  const tokenIsValid =
-    tokenExistAndNotEmpty && parseJwt(token).exp * 1000 > Date.now();
-
-  const isLoggedIn = token && token !== "";
-
-  let rolUsuario = null;
-  if (tokenIsValid) {
-    const decodedToken = parseJwt(token);
-    rolUsuario = decodedToken.rolUsuario;
-  }
+  const decodedToken = token ? parseJwt(token) : null;
+  const userRole = decodedToken ? decodedToken.rolUsuario : null;
+  const tokenIsValid = decodedToken && decodedToken.exp * 1000 > Date.now();
 
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route
-        path="/homeAdmin/*"
-        element={
-          <ProtectedRoute>
-            <HomeAdmin />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/homeFarmer/*"
-        element={
-          <ProtectedRoute>
-            <HomeFarmer />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/homeWorker/*"
-        element={
-          <ProtectedRoute>
-            <HomeWorker />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/"
-        element={
-          tokenIsValid ? (
-            rolUsuario === "admin" ? (
-              <Navigate to="/homeAdmin/agricultores" />
-            ) : rolUsuario === "farmer" ? (
-              <Navigate to="/homeFarmer/notificaciones" />
-            ) : rolUsuario === "worker" ? (
-              <Navigate to="/homeWorker/notificaciones" />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/homeAdmin/*"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <HomeAdmin/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/homeFarmer/*"
+          element={
+            <ProtectedRoute allowedRoles={['farmer']}>
+              <HomeFarmer />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/homeWorker/*"
+          element={
+            <ProtectedRoute allowedRoles={['worker']}>
+              <HomeWorker />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            tokenIsValid ? (
+              userRole === "admin" ? (
+                <Navigate to="/homeAdmin/agricultores" replace />
+              ) : userRole === "farmer" ? (
+                <Navigate to="/homeFarmer/notificaciones" replace />
+              ) : userRole === "worker" ? (
+                <Navigate to="/homeWorker/notificaciones" replace />
+              ) : (
+                <Navigate to="/login" replace />
+              )
             ) : (
-              <Navigate to="/login" />
+              <Navigate to="/login" replace />
             )
-          ) : (
-            <Navigate to="/login" />
-          )
-        }
-      />
-    </Routes>
+          }
+        />
+      </Routes>
   );
 };
 

@@ -4,24 +4,23 @@ import "./DTableWorkerGreen.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLocation, useParams } from "react-router-dom";
 import { faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
+import AsignGreenhouse from "../AsignedDelete/Asign/AsignGreenhouse";
 
 /*Trabajadores*/
 
 const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
   const [inputValue, setInputValue] = useState("");
   const [filteredGreenWorker, setFilteredGreenWorker] = useState([]);
-  const [idWorker, setIDWorker] = useState("");
+  const [modalState, setModalState] = useState({ idWorker: "", idFarmer: "" });
   const [nameWorker, setNameWorker] = useState("");
 
-  //Para ver las imagenes analizadas de una cama
   const location = useLocation();
-
-  const { idWorker: paramIdWorker } = useParams();
+  const { idWorker: paramIdWorker, idFarmer: paramIdFarmer } = useParams();
 
   const columns = [
     {
       name: "ID",
-      selector: (row) => row.id_invernadero,
+      selector: (row) => row.id_trabajadorinvernadero,
       sortable: true,
       width: "65px",
     },
@@ -48,7 +47,7 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
       cell: (row) => (
         <FontAwesomeIcon
           icon={faTrash}
-          onClick={() => handleDeleteClick(row)}
+          //onClick={() => handleDeleteClick(row)}
           className="delete-icon"
           size="lg"
         />
@@ -57,20 +56,24 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
     },
   ];
 
-  const [showDeleteWorker, setShowDeleteWorker] = useState(false); //Form de eliminacion
+  const [showAssignGreenhouse, setShowSelectGreenhouse] = useState(false);
+  const [showDeleteWorkerGreen, setShowDeleteWorkerGreen] = useState(false); //Form de eliminacion
   const [greenWorkers, setGreenWorker] = useState([]);
 
   useEffect(() => {
-    if (location.state) {
-      const { idWorker, nameWorker } = location.state;
-      setIDWorker(idWorker);
-      setNameWorker(nameWorker);
-      getGreenhouseByIdWorker(idWorker);
-    } else if (paramIdWorker) {
-      setIDWorker(paramIdWorker);
-      getGreenhouseByIdWorker(paramIdWorker);
+    const workerId = location.state?.idWorker || paramIdWorker;
+    const workerName = location.state?.nameWorker;
+    const farmerId = location.state?.idFarmer || paramIdFarmer;
+    if (workerId) {
+      setModalState((prevState) => ({
+        ...prevState,
+        idWorker: workerId,
+        idFarmer: farmerId || prevState.idFarmer,
+      }));
+      setNameWorker(workerName);
+      getGreenhouseByIdWorker(workerId);
     }
-  }, [location.state, paramIdWorker]);
+  }, [location.state, paramIdWorker, paramIdFarmer]);
 
   /*FUNCIONES*/
   const getGreenhouseByIdWorker = async (idWorker) => {
@@ -104,15 +107,15 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
     }
   };
 
-  const handleAsignGreenhouse = (row) => {
-    setIDWorker(row.id_trabajador);
+  const handleAsignGreenhouse = () => {
+    setShowSelectGreenhouse(true);
   };
 
-  const handleDeleteClick = (row) => {
-    //console.log("ID del registro a eliminar:", row.id_trabajador);
-    setShowDeleteWorker(true);
-    setIDWorker(row.id_trabajador);
-  };
+  // const handleDeleteClick = (row) => {
+  //   //console.log("ID del registro a eliminar:", row.id_trabajador);
+  //   setShowDeleteWorker(true);
+  //   setIDWorker(row.id_trabajador);
+  // };
 
   const paginacionOpciones = {
     rowsPerPageText: "Filas por página",
@@ -152,8 +155,7 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
               <button
                 type="button"
                 className="buttonWorkgreen"
-                onClick={handleAsignGreenhouse}
-              >
+                onClick={handleAsignGreenhouse}>
                 Asignar invernadero
               </button>
             </div>
@@ -179,6 +181,13 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
           )}
         </div>
       </div>
+      {showAssignGreenhouse && (
+        <AsignGreenhouse
+          onCancelClick={() => setShowSelectGreenhouse(false)}
+          idWorker={modalState.idWorker}
+          idFarmer={modalState.idFarmer}
+        />
+      )}
       {/* {showDeleteWorker && (
               <DeleteWorker onCancelClick={handleCancelClick} idWorker={idWorker} />
           )} */}

@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import "./DTableWorkers.css";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faPencilAlt,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faPencilAlt, faTrash} from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
+import "./DTableWorkers.css";
 import RegisterWorker from "../CRUD/Register/RegisterWorker";
 import EditWorker from "../CRUD/Edit/EditWorker";
 import DeleteWorker from "../CRUD/Delete/DeleteWorker";
@@ -18,6 +15,7 @@ const DTableWorkers = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredWorkers, setFilteredWorkers] = useState([]);
   const [idWorker, setIDWorker] = useState("");
+
   const navigate = useNavigate();
 
   const columns = [
@@ -49,7 +47,6 @@ const DTableWorkers = () => {
       name: "Ver invernaderos",
       cell: (row) => (
         <div>
-          {row.id_invernadero}
           <button
             className="verInvernaderos-button"
             onClick={() => handleShowGWorkers(row)}
@@ -107,26 +104,29 @@ const DTableWorkers = () => {
   const [showEditWorker, setShowEditWorker] = useState(false); //Form de edicion
   const [showDeleteWorker, setShowDeleteWorker] = useState(false); //Form de eliminacion
   const [workers, setWorkers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    getWorkers();
-  }, []);
-
-  /*FUNCIONES*/
-  async function getWorkers() {
-    try {
-      const response = await fetch(`http://localhost:3000/worker/`);
-      if (response.status === 200) {
-        const data = await response.json();
-        setWorkers(data);
-        setFilteredWorkers(data);
-      } else {
-        throw new Error("Error al obtener los trabajadores");
+    const getWorkers = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/worker/`);
+        if (response.status === 200) {
+          const data = await response.json();
+          setWorkers(data);
+          setFilteredWorkers(data);
+        } else if (response.status === 404) {
+          setWorkers([]);
+          setFilteredWorkers([]);
+        }
+      } catch (error) {
+        console.error("Error al obtener los trabajadores:", error);
+        toast.error("Hubo un problema al cargar los datos de los trabajadores. Por favor, inténtelo nuevamente más tarde.");
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error("Error al obtener los trabajadores:", error);
-    }
-  }
+    };
+      getWorkers();
+  }, []);
 
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
@@ -237,12 +237,16 @@ const DTableWorkers = () => {
             </button>
           </div>
         }
-        noDataComponent={
-          <div style={{ marginTop: "15%" }}>
-            Aún no hay agricultores registrados
-          </div>
-        }
-      />
+        noDataComponent={isLoading ? ( // Mostrar mensaje de carga si isLoading es true
+              <div className="no-beds-message">
+                Espere un momento, los datos de los trabajadores se están cargando...
+              </div>
+            ) : (
+              <div className="no-beds-message">
+                Aún no se han registrado trabajadores.
+              </div>
+            )}
+        />
       {showRegisterWorker && (
         <RegisterWorker onCancelClick={handleCancelClick} />
       )}{" "}

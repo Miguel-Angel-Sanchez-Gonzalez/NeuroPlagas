@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import "./DTableBeds.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faPencilAlt,
-  faTrash,
-  faEye,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faPencilAlt, faTrash, faEye} from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "./DTableBeds.css";
+import DataTable from "react-data-table-component";
 import RegisterBed from "../CRUD/Register/RegisterBed";
 import EditBed from "../CRUD/Edit/EditBed";
 import DeleteBed from "../CRUD/Delete/DeleteBed";
 
-const DTableBeds = ({ isLoading, noBedsMessage }) => {
+const DTableBeds = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredBeds, setFilteredBeds] = useState([]);
   const [idBed, setIDBed] = useState(null); // Inicializar como null para evitar problemas de referencia
+  
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -72,33 +69,31 @@ const DTableBeds = ({ isLoading, noBedsMessage }) => {
   const [showEditBed, setShowEditBed] = useState(false);
   const [showDeleteBed, setShowDeleteBed] = useState(false);
   const [beds, setBeds] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  useEffect(() => {
-    if (!isLoaded) {
-      getBedByIdGreenhouse();
-    }
-  }, [isLoaded]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const getBedByIdGreenhouse = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/bed/greenhouse/${idGreenhouse}`
-      );
-      if (response.status === 200) {
-        const data = await response.json();
-        setBeds(data);
-        setFilteredBeds(data);
-        setIsLoaded(true);
+  useEffect(() => {
+    const getBedByIdGreenhouse = async () => {
+      try {
+        setIsLoading(true); // Indicar que se están cargando las camas
+        const response = await fetch(`http://localhost:3000/bed/greenhouse/${idGreenhouse}`);
+        if (response.status === 200) {
+          const data = await response.json();
+          setBeds(data);
+          setFilteredBeds(data);
+        } else if (response.status === 404) {
+          setBeds([]);
+          setFilteredBeds([]);
+        }
+      } catch (error) {
+        console.error("Error al obtener las camas:", error);
+        toast.error("Hubo un problema al cargar los datos de las camas. Por favor, inténtelo nuevamente más tarde.");
+      } finally {
+        setIsLoading(false);
       }
-      if (response.status === 404) {
-        setBeds([]);
-        setFilteredBeds([]);
-        setIsLoaded(true);
-      }
-    } catch (error) {
-      console.error("Error al obtener las camas:", error);
-    }
-  };
+    };
+    getBedByIdGreenhouse();
+}, [idGreenhouse]);
+
 
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
@@ -122,7 +117,7 @@ const DTableBeds = ({ isLoading, noBedsMessage }) => {
     setShowRegisterBed(false);
     setShowEditBed(false);
     setShowDeleteBed(false);
-    setIsLoaded(false);
+    setIsLoading(false);
   };
 
   const handleEditClick = (row) => {
@@ -133,7 +128,6 @@ const DTableBeds = ({ isLoading, noBedsMessage }) => {
   const handleDeleteClick = (row) => {
     setIDBed(row.id_cama);
     setShowDeleteBed(true);
-    // Aquí puedes agregar la lógica para mostrar un modal de confirmación de eliminación
   };
 
   const handleShowImageAnalized = (row) => {
@@ -191,11 +185,6 @@ const DTableBeds = ({ isLoading, noBedsMessage }) => {
               </button>
             </div>
           </div>
-          {isLoading ? (
-            <div className="loading-message">
-              Espere un momento, se están cargando las camas...
-            </div>
-          ) : filteredBeds.length > 0 ? (
             <DataTable
               columns={columns}
               data={filteredBeds}
@@ -203,13 +192,16 @@ const DTableBeds = ({ isLoading, noBedsMessage }) => {
               fixedHeader
               pagination
               paginationComponentOptions={paginacionOpciones}
-            />
-          ) : (
-            <div className="no-beds-message">
-              {noBedsMessage ||
-                "Aún no se han registrado camas para este invernadero."}
-            </div>
-          )}
+              noDataComponent={isLoading ? ( // Mostrar mensaje de carga si isLoading es true
+              <div className="no-beds-message">
+                Espere un momento, los datos de las camas se están cargando...
+              </div>
+            ) : (
+              <div className="no-beds-message">
+                Aún no se han registrado camas en este invernadero.
+              </div>
+            )}
+          />
         </div>
       </div>
       {showRegisterBed && (

@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faPencilAlt,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
 import "./DTableDiseases.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faPencilAlt, faTrash} from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 import RegisterDisease from "../CRUD/Register/RegisterDisease";
 import EditDisease from "../CRUD/Edit/EditDisease";
 import DeleteDisease from "../CRUD/Delete/DeleteDisease";
@@ -75,33 +72,34 @@ const DTableDiseases = () => {
     },
   ];
 
-  const data = [];
-
   const [showRegisterDisease, setShowRegisterDisease] = useState(false); //Form de register
   const [showEditDisease, setShowEditDisease] = useState(false); //Form de edicion
   const [showDeleteDisease, setShowDeleteDisease] = useState(false); //Form de eliminacion
-  const [diseases, setDiseases] = useState(data);
+  const [diseases, setDiseases] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    const getDiseases = async () => {
+      try {
+        setIsLoading(true); // Indicar que se están cargando las enfermedades
+        const response = await fetch(`http://localhost:3000/disease`);
+        if (response.status === 200) {
+          const data = await response.json();
+          setDiseases(data);
+          setFilteredDiseases(data);
+        } else if (response.status === 404) {
+          setDiseases([]);
+          setFilteredDiseases([]);
+        }
+      } catch (error) {
+        console.error("Error al obtener las enfermades:", error);
+        toast.error("Hubo un problema al cargar los datos de las enfermedades. Por favor, inténtelo nuevamente más tarde.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
     getDiseases();
   }, []);
-
-  /*FUNCIONES*/
-  async function getDiseases() {
-    try {
-      const response = await fetch(`http://localhost:3000/disease`);
-      if (response.status === 200) {
-        const data = await response.json();
-        setDiseases(data);
-        setFilteredDiseases(data);
-      } else {
-        throw new Error("Error al obtener las enfermedades");
-      }
-    } catch (error) {
-      console.error("Error al cargar los datos de las enfermedades:", error);
-      alert("Error al obtener las enfermedades, inténtelo más tarte:");
-    }
-  }
 
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
@@ -166,10 +164,9 @@ const DTableDiseases = () => {
         //considerando el filtro
         data={filteredDiseases}
         responsive={true}
-        fixedHeader
         pagination
         paginationPerPage={4} // Número de filas por página fijo
-        paginationRowsPerPageOptions={[4]} // Deshabilita el selector de filas por página mostrando solo 10
+        paginationRowsPerPageOptions={[4,12]} // Deshabilita el selector de filas por página mostrando solo 10
         paginationComponentOptions={paginacionOpciones}
         actions={
           <div className="header-table-disease">
@@ -190,12 +187,16 @@ const DTableDiseases = () => {
             </button>
           </div>
         }
-        noDataComponent={
-          <div className="no-beds-message">
-            Aún no hay enfermedades registradas
-          </div>
-        }
-      />
+        noDataComponent={isLoading ? ( // Mostrar mensaje de carga si isLoading es true
+              <div className="no-beds-message">
+                Espere un momento, las enfermedades se están cargando...
+              </div>
+            ) : (
+              <div className="no-beds-message">
+                Aún no se han registrado enfermedades.
+              </div>
+            )}
+          />
       {showRegisterDisease && (
         <RegisterDisease onCancelClick={handleCancelClick} />
       )}{" "}

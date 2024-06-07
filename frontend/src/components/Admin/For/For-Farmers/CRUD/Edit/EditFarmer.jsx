@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import "./EditFarmer.css";
 import AddNotification from "../../../../../LoginNotifications/AddNotification";
-import { toast } from "react-toastify";
+
 
 const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
   const [records, setRecords] = useState("");

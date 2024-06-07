@@ -8,15 +8,16 @@
 }
 
 .navbar-container-admin {
-width: 100%;
-padding: 10px 0;
-background: #c62426;
-color: white;
+  width: 100%;
+  padding: 10px 0;
+  background: #c62426;
+  color: white;
 }
 
 .dashboard-admin {
   display: flex;
   gap: 10px;
+  height: max-content;
   width: 100%; /* Asegura que el dashboard no se extienda más allá del ancho del .admin */
   overflow: auto; /* Añade desplazamiento si es necesario */
 }

@@ -4,6 +4,7 @@ import "./DTableWorkerGreen.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLocation, useParams } from "react-router-dom";
 import { faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 import AsignGreenhouse from "../AsignedDelete/Asign/AsignGreenhouse";
 import DeleteWorkerGreen from "../AsignedDelete/Delete/DeleteWorkerGreen"; 
 
@@ -50,11 +51,11 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
         <FontAwesomeIcon
           icon={faTrash}
           onClick={() => handleDeleteGreenhouse(row)}
-          className="delete-icon"
+          className="delete-icon-workergreen"
           size="lg"
         />
       ),
-      width: "100px",
+      width: "auto",
     },
   ];
 
@@ -87,11 +88,13 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
         const data = await response.json();
         setGreenWorker(data);
         setFilteredGreenWorker(data);
-      } else {
-        throw new Error("Error al obtener los invernaderos del trabajador");
+      } else if (response.status === 404) {
+        setGreenWorker([]);
+        setFilteredGreenWorker([]);
       }
     } catch (error) {
-      console.error("Error al obtener los invernaderos del trabajador:", error);
+      console.error("Error al obtener los invernaderos asignados a este trabajador:", error);
+      toast.error("Hubo un problema al cargar los invernaderos asignados a este trabajador. Por favor, inténtelo más tarde.");
     }
   };
 

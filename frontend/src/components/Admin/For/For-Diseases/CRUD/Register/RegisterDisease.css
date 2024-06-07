@@ -9,12 +9,11 @@
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 505px;
+  width: 515px;
   max-width: 100%; /* Para hacerlo responsivo */
   display: flex;
   flex-direction: column;
 }
-
 .centrar-disease {
   padding: 5px;
 }
@@ -55,7 +54,7 @@
 }
 
 .textarea-disease-r {
-  height: 100px;
+  height: 150px;
 }
 
 .textarea-disease-r2 {
@@ -85,9 +84,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 17px;
+  margin-top: 20px;
   margin-left: 15px;
   margin-right: 12px;
+  padding: 10px;
 }
 
 .button-disease-r {

@@ -57,7 +57,7 @@ const AsignGreenhouse = ({ onCancelClick, idWorker, idFarmer }) => {
       )}
       <div className="register-bed-container">
         <div className="centrar-bed">
-          <h4 className="h4register-bed">Asignar invernadero al agricultor</h4>
+          <h4 className="h4register-bed">Asignar invernadero al trabajador</h4>
           <h5 className="h5register-bed">*Campo requerido</h5>
           <label className="label-dato-bed">Por favor, seleccione un invernadero</label>
           <ComboBoxGreenHouse onChange={handleSelectionChange} />

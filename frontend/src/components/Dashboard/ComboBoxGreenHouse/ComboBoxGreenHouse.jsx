@@ -4,6 +4,7 @@ import './ComboBoxGreenHouse.css';
 const ComboBoxGreenHouse = ({ onChange }) => {
   const [greenhouses, setGreenhouses] = useState([]);
   const [selectedGreenhouse, setSelectedGreenhouse] = useState('');
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     // Fetch data from the endpoint
@@ -15,22 +16,34 @@ const ComboBoxGreenHouse = ({ onChange }) => {
       .catch(error => console.error('Error al cargar los invernaderos:', error));
   }, []);
 
-  const handleChange = (event) => {
-    const value = event.target.value;
-    setSelectedGreenhouse(value);
-    onChange(value, event.target.selectedOptions[0].dataset.id);
+  const handleOptionClick = (greenhouse) => {
+    setSelectedGreenhouse(greenhouse.nombre);
+    onChange(greenhouse.nombre, greenhouse.id_invernadero);
+    setIsActive(false);
   };
 
   return (
-    <div className="combobox-greenhouse">
-      <select value={selectedGreenhouse} onChange={handleChange}>
-        <option value="" disabled>Invernaderos</option>
-        {greenhouses.map((greenhouse, index) => (
-          <option key={index} value={greenhouse.nombre} data-id={greenhouse.id_invernadero}>
-            {greenhouse.nombre}
-          </option>
-        ))}
-      </select>
+    <div className="dropdown">
+      <div
+        className="dropdown-btn"
+        style={selectedGreenhouse ? { backgroundColor: '#EFF6FF' } : null}
+        onClick={() => setIsActive(!isActive)}
+      >
+        {selectedGreenhouse || "Invernaderos"}
+      </div>
+      {isActive && (
+        <div className="dropdown-content">
+          {greenhouses.map((greenhouse) => (
+            <div
+              key={greenhouse.id_invernadero}
+              onClick={() => handleOptionClick(greenhouse)}
+              className="dropdown-option"
+            >
+              {greenhouse.nombre}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -8,13 +8,13 @@ import {
   LineChart,
   DatePicker,
   Button,
-  Dialog, 
+  Dialog,
   DialogPanel,
   ProgressBar,
   Legend
 } from "@tremor/react";
 import { useEffect, useState } from "react";
-import "./Dashboard.css"; // Importa el archivo CSS
+import "./Dashboard.css";
 import ComboBoxGreenHouse from "./ComboBoxGreenHouse/ComboBoxGreenHouse";
 import { RiQuestionnaireFill } from '@remixicon/react';
 
@@ -30,7 +30,7 @@ const Dashboard = () => {
   const [enfermedadesData, setEnfermedadesData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [noDataMessage, setNoDataMessage] = useState(""); 
-
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const addCommasToNumber = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -39,6 +39,7 @@ const Dashboard = () => {
   const handleSelectionChange = (selectedGreenhouseName, selectedGreenhouseId) => {
     setSelectedGreenhouseId(selectedGreenhouseId);
     setSelectedGreenhouseName(selectedGreenhouseName);
+    setSelectedDate(null); // Clear the selected date when changing greenhouse
 
     // Fetch Obtiene numero de plagas
     fetch(
@@ -135,13 +136,13 @@ const Dashboard = () => {
         console.error("Error al obtener datos:", error);
       });
 
-      // Función para convertir fechas de "DD-MM-YYYY" a objetos Date
-      const parseDate = (dateString) => {
-        const [day, month, year] = dateString.split("-");
-        return new Date(year, month - 1, day);
-      };
+    // Función para convertir fechas de "DD-MM-YYYY" a objetos Date
+    const parseDate = (dateString) => {
+      const [day, month, year] = dateString.split("-");
+      return new Date(year, month - 1, day);
+    };
 
-      fetch(`http://localhost:3000/dashboard/totalPlaguesDiseases/${selectedGreenhouseId}`)
+    fetch(`http://localhost:3000/dashboard/totalPlaguesDiseases/${selectedGreenhouseId}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.message) {
@@ -153,7 +154,7 @@ const Dashboard = () => {
             Plagas: parseInt(item.Cantidad_Plagas),
             Enfermedades: parseInt(item.Cantidad_Enfermedades),
           }));
-    
+
           // Ordenar los datos por fecha
           transformedData.sort((a, b) => parseDate(a.date) - parseDate(b.date));
           setChartData(transformedData);
@@ -163,9 +164,44 @@ const Dashboard = () => {
       .catch((error) => {
         console.error("Error al obtener datos:", error);
       });
-    
-
   };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  
+    if (selectedGreenhouseId && date) {
+      const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+      console.log("Fecha formateada:", formattedDate);
+  
+      fetch(`http://localhost:3000/dashboard/getTotalPlaguesDiseasesDetectedByDate/${selectedGreenhouseId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ date: formattedDate }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.message || data.length === 0) {
+            setChartData([]);
+            setNoDataMessage("Sin datos de detección para la fecha seleccionada");
+          } else {
+            const transformedData = data.map((item) => ({
+              date: item.fecha,
+              Plagas: parseInt(item.Cantidad_Plagas),
+              Enfermedades: parseInt(item.Cantidad_Enfermedades),
+            }));
+  
+            setChartData(transformedData);
+            setNoDataMessage(""); // Clear no data message if there are data
+          }
+        })
+        .catch((error) => {
+          console.error("Error al obtener datos:", error);
+        });
+    }
+  };
+  
 
   // Calcula el porcentaje de amenazas tratadas
   const totalAmenazas = parseInt(numTratadas) + parseInt(numSinVer);
@@ -179,7 +215,11 @@ const Dashboard = () => {
         <Text className="text-lg-medium md:mt-4">Seleccione invernadero</Text>
         <ComboBoxGreenHouse onChange={handleSelectionChange} />
         <Text className="text-lg-medium md:mt-4">Seleccione una fecha</Text>
-        <DatePicker className="md:mt-4" maxDate={new Date()} />
+        <DatePicker
+          className="md:mt-4"
+          maxDate={new Date()}
+          onValueChange={handleDateChange}
+        />
         <Button
           variant="secondary"
           icon={RiQuestionnaireFill}
@@ -211,7 +251,7 @@ const Dashboard = () => {
           </DialogPanel>
         </Dialog>
       </div>
-  
+
       {selectedGreenhouseId ? (
         <>
           {/* Fila 1 */}
@@ -219,14 +259,14 @@ const Dashboard = () => {
             <Section>
               <CardMetric title="Total de Plagas" value={numPlagas} />
             </Section>
-  
+
             <Section>
               <CardMetric
                 title="Total de Enfermedades"
                 value={numEnfermedades}
               />
             </Section>
-  
+
             <Card className="mx-auto max-w-sm">
               <h5 className="mb-2">Estado de las Amenazas</h5>
               <p className="text-tremor-default text-tremor-content dark:text-dark-tremor-content flex items-center justify-between">
@@ -236,7 +276,7 @@ const Dashboard = () => {
               <ProgressBar value={porcentajeTratadas} color="teal" className="mt-3" />
             </Card>
           </div>
-          
+
           {/* Fila 2 */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-8">
             <Section>
@@ -247,7 +287,7 @@ const Dashboard = () => {
                 variant="pie"
               />
             </Section>
-  
+
             <Section>
               <CardDonut
                 title={`Enfermedades en el ${selectedGreenhouseName}`}
@@ -256,7 +296,7 @@ const Dashboard = () => {
               />
             </Section>
           </div>
-          
+
           {/* Fila 3 */}
           <Card>
             <Title className="text-medium">
@@ -286,7 +326,7 @@ const Dashboard = () => {
       )}
     </div>
   );
-  
+
 };
 
 const Section = ({ children }) => (
@@ -320,6 +360,5 @@ const CardDonut = ({ title, data, valueFormatter }) => (
     </div>
   </Card>
 );
-
 
 export default Dashboard;

@@ -168,6 +168,40 @@ const Dashboard = () => {
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
+
+    const parseDate = (dateString) => {
+      const [day, month, year] = dateString.split("-");
+      return new Date(year, month - 1, day);
+    };
+  
+    if (!date) {
+      // Si la fecha es null, cargar el historial completo de detecciones
+      fetch(
+        `http://localhost:3000/dashboard/totalPlaguesDiseases/${selectedGreenhouseId}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.message) {
+            setChartData([]);
+            setNoDataMessage("Sin datos periódicos de detecciones en este invernadero");
+          } else {
+            const transformedData = data.map((item) => ({
+              date: item.fecha,
+              Plagas: parseInt(item.Cantidad_Plagas),
+              Enfermedades: parseInt(item.Cantidad_Enfermedades),
+            }));
+  
+            // Ordenar los datos por fecha
+            transformedData.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+            setChartData(transformedData);
+            setNoDataMessage(""); // Limpiar mensaje de "sin datos" si hay datos
+          }
+        })
+        .catch((error) => {
+          console.error("Error al obtener datos:", error);
+        });
+      return;
+    }
   
     if (selectedGreenhouseId && date) {
       const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
@@ -193,7 +227,7 @@ const Dashboard = () => {
             }));
   
             setChartData(transformedData);
-            setNoDataMessage(""); // Clear no data message if there are data
+            setNoDataMessage(""); // Limpiar mensaje de "sin datos" si hay datos
           }
         })
         .catch((error) => {
@@ -201,6 +235,7 @@ const Dashboard = () => {
         });
     }
   };
+  
   
 
   // Calcula el porcentaje de amenazas tratadas

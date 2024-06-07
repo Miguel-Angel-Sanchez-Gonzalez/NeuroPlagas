@@ -1,15 +1,16 @@
+import React, { useCallback, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTableImagesA.css";
-import React, { useCallback, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faEye } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
+import { toast } from "react-toastify";
 
 const DTableImagesA = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredImagesA, setFilteredImagesA] = useState([]);
-  const [setAcceptedFiles] = useState([]);
+  
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -87,6 +88,7 @@ const DTableImagesA = () => {
         }
       } catch (error) {
         console.error("Error al obtener las imágenes analizadas de la cama:", error);
+        toast.error("Hubo un problema al cargar las imágenes analizadas. Por favor, inténtelo nuevamente más tarde.");
       } finally {
         setIsLoading(false); // Indicar que se han terminado de cargar las imágenes (ya sea con éxito o error)
       }
@@ -203,12 +205,12 @@ const DTableImagesA = () => {
               pagination
               paginationComponentOptions={paginacionOpciones}
               noDataComponent={isLoading ? ( // Mostrar mensaje de carga si isLoading es true
-              <div className="loading-message">
-                Espere un momento, las imágenes se están cargando...
+              <div className="no-beds-message">
+                Espere un momento, las imágenes analizadas se están cargando...
               </div>
             ) : (
               <div className="no-beds-message">
-                Aún no se han analizado imágenes en esta cama
+                Aún no se han analizado imágenes en esta cama.
               </div>
             )}
           />

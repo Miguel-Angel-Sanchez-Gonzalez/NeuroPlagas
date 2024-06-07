@@ -75,6 +75,10 @@
   border-color: #2f31758e;
 }
 
+.delete-icon-workergreen{
+  margin-left: 20px;
+  color: #c62426;
+}
 
 .no-workgreen-message {
   text-align: center;

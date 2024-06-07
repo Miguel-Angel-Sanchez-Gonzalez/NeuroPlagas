@@ -2,13 +2,9 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTableGreenhouses.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faPencilAlt,
-  faTrash,
-  faEye,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faPencilAlt, faTrash, faEye} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import RegisterGreenhouse from "../CRUD/Register/RegisterGreenhouse";
 import EditGreenhouse from "../CRUD/Edit/EditGreenhouse";
 import DeleteGreenhouse from "../CRUD/Delete/DeleteGreenhouse";
@@ -17,8 +13,8 @@ const DTableGreenhouses = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredGreenhouses, setFilteredGreenhouses] = useState([]);
   const [idGreenhouse, setIDGreenhouse] = useState("");
+
   const navigate = useNavigate();
-  const [isLoaded, setIsLoaded] = useState(false);
 
   const columns = [
     {
@@ -88,36 +84,31 @@ const DTableGreenhouses = () => {
   const [showEditGreenh, setshowEditGreenh] = useState(false); //Form de edicion
   const [showDeleteGreenh, setshowDeleteGreenh] = useState(false); //Form de eliminacion
   const [greenhouses, setGreenhouses] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    console.log(`IsLoaded en useEffect  es: ${isLoaded}`);
-    if (!isLoaded) {
-      console.log("Pase a cargar los datos de invernadero");
-      getGreenhouses();
-    }
-  }, [isLoaded]);
-
-  /*FUNCIONES*/
-  async function getGreenhouses() {
-    try {
-      const response = await fetch(`http://localhost:3000/greenhouse/`);
-      if (response.status === 200) {
-        const data = await response.json();
-        //se están cargando los datos
-        setGreenhouses(data);
-        setFilteredGreenhouses(data);
-        setIsLoaded(true);
+    const getGreenhouses = async () => {
+      try {
+        setIsLoading(true); // Indicar que se están cargando los invernaderos
+        const response = await fetch(`http://localhost:3000/greenhouse/`);
+        if (response.status === 200) {
+          const data = await response.json();
+          //se están cargando los datos
+          setGreenhouses(data);
+          setFilteredGreenhouses(data);
+        } else if (response.status === 404) { 
+          setGreenhouses([]);
+          setFilteredGreenhouses([]);
+        }
+      } catch (error) {
+        console.error("Error al cargar los datos de los invernaderos:", error);
+        toast.error("Hubo un problema al cargar los datos de los invernaderos. Por favor, inténtelo nuevamente más tarde.");
+      } finally {
+        setIsLoading(false);
       }
-      if (response.status === 404) {
-        console.log("No regreso datos la respuesta del invernadero");
-        setGreenhouses([]);
-        setFilteredGreenhouses([]);
-        setIsLoaded(true);
-      }
-    } catch (error) {
-      console.error("Error al obtener los invernaderos:", error);
-    }
-  }
+    };
+    getGreenhouses();
+  }, []);
 
   const handleFilter = (event) => {
     try {
@@ -147,18 +138,15 @@ const DTableGreenhouses = () => {
   };
 
   const handleCancelClick = () => {
-    console.log("Entre al handle Cancel CLick con", isLoaded);
     setshowRegisterGreenh(false);
     setshowEditGreenh(false);
     setshowDeleteGreenh(false);
-    setIsLoaded(false);
-    console.log("Sali del handle Cancel CLick con", isLoaded);
+    console.log("Sali del handle Cancel CLick con");
   };
 
   const handleEditClick = (row) => {
     setIDGreenhouse(row.id_invernadero);
     setshowEditGreenh(true);
-    setIsLoaded(false);
   };
 
   const handleDeleteClick = (row) => {
@@ -226,10 +214,16 @@ const DTableGreenhouses = () => {
             </button>
           </div>
         }
-        noDataComponent={
-          <div className="no-beds-message">No hay invernaderos registrados</div>
-        }
-      />
+        noDataComponent={isLoading ? ( // Mostrar mensaje de carga si isLoading es true
+              <div className="no-beds-message">
+                Espere un momento, los datos de los invernaderos se están cargando...
+              </div>
+            ) : (
+              <div className="no-beds-message">
+                Aún no se han registrado invernaderos.
+              </div>
+            )}
+        />
       {showRegisterGreenh && (
         <RegisterGreenhouse onCancelClick={handleCancelClick} />
       )}

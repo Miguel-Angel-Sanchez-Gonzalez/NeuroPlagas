@@ -2,11 +2,8 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTablePlagues.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faPencilAlt,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faPencilAlt, faTrash} from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 import RegisterPlague from "../CRUD/Register/RegisterPlague";
 import EditPlague from "../CRUD/Edit/EditPlague";
 import DeletePlague from "../CRUD/Delete/DeletePlague";
@@ -77,27 +74,31 @@ const DTablePlagues = () => {
   const [showEditPlague, setShowEditPlague] = useState(false);
   const [showDeletePlague, setShowDeletePlague] = useState(false);
   const [plagues, setPlagues] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   
 
   useEffect(() => {
+    const getPlagues = async () => {
+      try {
+        setIsLoading(true); // Indicar que se están cargando las plagas
+        const response = await fetch(`http://localhost:3000/plague/`);
+        if (response.status === 200) {
+          const data = await response.json();
+          setPlagues(data);
+          setFilteredPlagues(data);
+        } else if (response.status === 404) { 
+          setPlagues([]);
+          setFilteredPlagues([]);
+        }
+      } catch (error) {
+        console.error("Error al cargar los datos de las plagas:", error);
+        toast.error("Hubo un problema al cargar los datos de las plagas. Por favor, inténtelo nuevamente más tarde.");
+      } finally {
+          setIsLoading(false);
+      }
+    };
     getPlagues();
   }, []);
-
-  async function getPlagues() {
-    try {
-      const response = await fetch(`http://localhost:3000/plague/`);
-      if (response.status === 200) {
-        const data = await response.json();
-        setPlagues(data);
-        setFilteredPlagues(data);
-      } else {
-        throw new Error("Error al obtener las plagas");
-      }
-    } catch (error) {
-      console.error("Error al cargar los datos de las plagas:", error);
-      alert("Error al obtener las plagas, inténtelo más tarte:");
-    }
-  }
 
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
@@ -160,8 +161,9 @@ const DTablePlagues = () => {
         columns={columns}
         data={filteredPlagues}
         responsive={true}
-        paginationPerPage={4} 
-        pagination={true}
+        pagination
+        paginationPerPage={4} // Número de filas por página fijo
+        paginationRowsPerPageOptions={[4,12]} 
         paginationComponentOptions={paginacionOpciones}
         actions={
           <div className="header-table-plagues">
@@ -182,12 +184,16 @@ const DTablePlagues = () => {
             </button>
           </div>
         }
-        noDataComponent={
-          <div className="no-beds-message">
-            Aún no hay enfermedades registradas
-          </div>
-        }
-      />
+        noDataComponent={isLoading ? ( // Mostrar mensaje de carga si isLoading es true
+              <div className="no-beds-message">
+                Espere un momento, las datos de las plagas se están cargando...
+              </div>
+            ) : (
+              <div className="no-beds-message">
+                Aún no se han registrado plagas.
+              </div>
+            )}
+        />
       {showRegisterPlague && (
         <RegisterPlague onCancelClick={handleCancelClick} />
       )}

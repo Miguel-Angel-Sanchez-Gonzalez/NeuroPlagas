@@ -2,12 +2,8 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTableFarmers.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faPencilAlt,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-import { useLocation } from "react-router-dom";
+import { faSearch, faPencilAlt, faTrash} from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 import RegisterFarmer from "../CRUD/Register/RegisterFarmer";
 import EditFarmer from "../CRUD/Edit/EditFarmer";
 import DeleteFarmer from "../CRUD/Delete/DeleteFarmer";
@@ -91,34 +87,30 @@ const DTableFarmers = () => {
   const [showEditFarmer, setShowEditFarmer] = useState(false); //Form de edicion
   const [showDeleteFarmer, setshowDeleteFarmer] = useState(false); //Form de eliminacion
   const [farmers, setFarmers] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const location = useLocation();
   useEffect(() => {
-    if (!isLoaded) {
-      getFarmers();
-    }
-  }, [isLoaded]);
-
-  /*FUNCIONES*/
-  async function getFarmers() {
-    try {
-      const response = await fetch(`http://localhost:3000/farmer/`);
-      if (response.status === 200) {
-        const data = await response.json();
-        setFarmers(data);
-        setFilteredFarmers(data);
-        setIsLoaded(true);
+    const getFarmers = async () => {
+      try {
+        setIsLoading(true); // Indicar que se están cargando los agricultores
+        const response = await fetch(`http://localhost:3000/farmer/`);
+        if (response.status === 200) {
+          const data = await response.json();
+          setFarmers(data);
+          setFilteredFarmers(data);
+        } else if (response.status === 404) { 
+          setFarmers([]);
+          setFilteredFarmers([]);
+        }
+      } catch (error) {
+        console.error("Error al cargar los datos de los agricultores:", error);
+        toast.error("Hubo un problema al cargar los datos de los agricultores. Por favor, inténtelo nuevamente más tarde.");
+      } finally {
+        setIsLoading(false);
       }
-      if (response.status === 404) {
-        setFarmers([]);
-        setFilteredFarmers([]);
-        setIsLoaded(true);
-      }
-    } catch (error) {
-      console.error("Error al cargar los datos de los agricultores:", error);
-    }
-  }
+    };
+    getFarmers();
+  }, []);
 
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
@@ -149,7 +141,6 @@ const DTableFarmers = () => {
     setShowRegisterFarmer(false);
     setShowEditFarmer(false);
     setshowDeleteFarmer(false);
-    setIsLoaded(false);
   };
 
   const handleEditClick = (row) => {
@@ -215,12 +206,16 @@ const DTableFarmers = () => {
               </button>
             </div>
           }
-          noDataComponent={
-            <div className="no-beds-message">
-              Aún no hay agricultores registrados
-            </div>
-          }
-        />
+          noDataComponent={isLoading ? ( // Mostrar mensaje de carga si isLoading es true
+              <div className="no-beds-message">
+                Espere un momento, las datos de los agricultores se están cargando...
+              </div>
+            ) : (
+              <div className="no-beds-message">
+                Aún no se han registrado agricultores en este invernadero.
+              </div>
+            )}
+          />
         {showRegisterFarmer && (
           <RegisterFarmer onCancelClick={handleCancelClick} />
         )}

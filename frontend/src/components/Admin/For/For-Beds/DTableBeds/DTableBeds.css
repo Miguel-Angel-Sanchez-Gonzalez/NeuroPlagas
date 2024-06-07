@@ -1,6 +1,7 @@
 .table-bed-admin {
   display: flex;
   align-items: inherit;
+  height: autos;
   
 }
 

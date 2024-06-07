@@ -77,6 +77,7 @@ const DTablePlagues = () => {
   const [showEditPlague, setShowEditPlague] = useState(false);
   const [showDeletePlague, setShowDeletePlague] = useState(false);
   const [plagues, setPlagues] = useState([]);
+  
 
   useEffect(() => {
     getPlagues();
@@ -143,10 +144,11 @@ const DTablePlagues = () => {
     selectAllRowsItemText: "Todos",
   };
 
+  
   return (
     <div className="table-plagues-admin">
       <DataTable
-        className="custom-table-plagues"
+        className="design-table-plagues"
         title={
           <div>
             <h4>Plagas</h4>
@@ -158,8 +160,8 @@ const DTablePlagues = () => {
         columns={columns}
         data={filteredPlagues}
         responsive={true}
-        fixedHeader
-        pagination
+        paginationPerPage={4} 
+        pagination={true}
         paginationComponentOptions={paginacionOpciones}
         actions={
           <div className="header-table-plagues">

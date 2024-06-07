@@ -9,18 +9,15 @@
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 505px;
+  width: 515px;
   max-width: 100%; /* Para hacerlo responsivo */
   display: flex;
   flex-direction: column;
 }
 
-.centrar-plague {
-  padding: 5px;
-}
 
 .h4edit-plague {
-  padding-top: 20px;
+  margin-top: 10px;
   margin-bottom: 20px;
   text-align: center;
 }
@@ -55,7 +52,7 @@
 }
 
 .textarea-plague-e {
-  height: 100px;
+  height: 150px;
 }
 
 .textarea-plague-e2 {

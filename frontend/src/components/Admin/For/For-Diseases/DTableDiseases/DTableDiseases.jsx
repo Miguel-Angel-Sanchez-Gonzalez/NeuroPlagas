@@ -40,7 +40,7 @@ const DTableDiseases = () => {
       name: "Descripción",
       selector: (row) => row.descripcion,
       sortable: true,
-      width: "300px",
+      width: "350px",
     },
     {
       name: "Recomendaciones",
@@ -51,7 +51,7 @@ const DTableDiseases = () => {
     {
       name: "Acciones a tomar",
       selector: (row) => row.acciones,
-      width: "300px",
+      width: "250px",
     },
     {
       name: "Acciones",
@@ -153,7 +153,7 @@ const DTableDiseases = () => {
   return (
     <div className="table-disease-admin">
       <DataTable
-        className="custom-table-disease"
+        className="design-table-disease"
         title={
           <div>
             <h4>Enfermedades</h4>
@@ -168,6 +168,8 @@ const DTableDiseases = () => {
         responsive={true}
         fixedHeader
         pagination
+        paginationPerPage={4} // Número de filas por página fijo
+        paginationRowsPerPageOptions={[4]} // Deshabilita el selector de filas por página mostrando solo 10
         paginationComponentOptions={paginacionOpciones}
         actions={
           <div className="header-table-disease">

@@ -77,23 +77,16 @@ input {
   max-width: 40%;
 }
 
-/* DTablePlagues.css */
-.custom-table-disease .rdt_TableRow {
-  height: 100px; /* Ajusta según tus necesidades */
+/* DTableDisease.css */
+.design-table-disease .rdt_TableRow {
+  height: 130px; /* Altura para las filas */
 }
-
-.custom-table-disease .rdt_TableCell {
+.design-table-disease .rdt_TableCell,
+.design-table-disease .rdt_TableCell div[data-tag="allowRowEvents"] {
   white-space: normal;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding: 10px; /* Ajusta según tus necesidades */
-  word-wrap: break-word;
-}
-
-.custom-table-disease .rdt_TableCell div[data-tag="allowRowEvents"] {
-  width: 100%;
-  white-space: normal;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: auto; /* Sale un scroll si el texto no cabe en la celda */
   text-align: justify;
+  max-height: 100%;
+  text-overflow: initial; /* Elimina la truncación del texto */
+  word-wrap: break-word; /* Evita el desboramiento del texto */
 }

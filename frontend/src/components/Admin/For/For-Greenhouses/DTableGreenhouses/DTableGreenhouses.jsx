@@ -217,6 +217,13 @@ const DTableGreenhouses = () => {
               onChange={handleFilter}
               className="searchDisease"
             />
+            <button
+              type="button"
+              className="buttonInvernadero"
+              onClick={handleRegisterClick}
+            >
+              Registrar invernadero
+            </button>
           </div>
         }
         noDataComponent={

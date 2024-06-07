@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTableImagesA.css";
+import React, { useCallback, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faEye } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -69,29 +69,31 @@ const DTableImagesA = () => {
   ];
 
   const [imagesAnalized, setImagesAnalized] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
     const getImageAByIdBed = async () => {
       try {
+        setIsLoading(true); // Indicar que se están cargando las imágenes
         const response = await fetch(
           `http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`
         );
-        if (response.status === 200 || response.status === 404) {
+        if (response.status === 200) {
           const data = await response.json();
           setImagesAnalized(Array.isArray(data) ? data : []);
           setFilteredImagesA(Array.isArray(data) ? data : []);
-          setIsLoaded(true);
+        } else if (response.status === 404) {
+          setFilteredImagesA([]); // Si no se encuentran imágenes, establecer filteredImagesA como un array vacío
         }
       } catch (error) {
         console.error("Error al obtener las imágenes analizadas de la cama:", error);
+      } finally {
+        setIsLoading(false); // Indicar que se han terminado de cargar las imágenes (ya sea con éxito o error)
       }
     };
 
-    if (!isLoaded) {
-      getImageAByIdBed();
-    }
-  }, [isLoaded]);
+    getImageAByIdBed();
+  }, [idBed]);
 
   const onDrop = useCallback((acceptedFiles) => {
     console.log(acceptedFiles[0]);
@@ -104,7 +106,7 @@ const DTableImagesA = () => {
     try {
       const formData = new FormData();
       formData.append("image", acceptedFiles[0]);
-      setAcceptedFiles([]);
+      //setAcceptedFiles([]);
       console.log(formData);
       const response = await fetch(
         `http://localhost:3000/analyzeimage/web/${idBed}`,
@@ -115,7 +117,8 @@ const DTableImagesA = () => {
       );
       console.log(response);
       if (response.status === 200) {
-        setIsLoaded(false);
+        //setIsLoaded(iba)
+        isLoading(false);
       }
     } catch (error) {}
   };
@@ -199,12 +202,16 @@ const DTableImagesA = () => {
               fixedHeader
               pagination
               paginationComponentOptions={paginacionOpciones}
-              noDataComponent={
-                <div className="no-beds-message">
-                  Aún no hay imágenes analizadas
-                </div>
-              }
-            />
+              noDataComponent={isLoading ? ( // Mostrar mensaje de carga si isLoading es true
+              <div className="loading-message">
+                Espere un momento, las imágenes se están cargando...
+              </div>
+            ) : (
+              <div className="no-beds-message">
+                Aún no se han analizado imágenes en esta cama
+              </div>
+            )}
+          />
           </div>
         </div>
         <div className="image-uploader-container">
@@ -212,7 +219,7 @@ const DTableImagesA = () => {
             className="image-uploader"
             {...getRootProps({ onClick: (event) => event.stopPropagation() })}
             style={{
-              height: "250px",
+              height: "auto",
               width: "300px",
               display: "flex",
               justifyContent: "center",
@@ -220,21 +227,25 @@ const DTableImagesA = () => {
               flexDirection: "column",
             }}
           >
-            <h3>Analiza una imagen</h3>
+            
             <input {...getInputProps()} />
             {isDragActive ? (
               <p>Suelta la imagen aquí...</p>
             ) : (
-              <p>
-                Arrastra y suelta una imagen aquí o haz clic para seleccionar
-              </p>
+              <div>
+                <h3>Analiza una imagen</h3>
+                <p>
+                  
+                  Arrastra y suelta una imagen aquí o haz clic para seleccionar
+                </p>
+              </div>
             )}
             {acceptedFiles[0] && (
               <img
                 src={URL.createObjectURL(acceptedFiles[0])}
                 alt=""
                 style={{
-                  marginTop: "20px",
+                  marginTop: "10px",
                   maxWidth: "60%",
                   maxHeight: "200px",
                   background: "#dd585a2c",

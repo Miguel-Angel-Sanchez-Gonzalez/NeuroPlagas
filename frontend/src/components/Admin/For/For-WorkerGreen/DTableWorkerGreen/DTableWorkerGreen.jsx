@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLocation, useParams } from "react-router-dom";
 import { faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
 import AsignGreenhouse from "../AsignedDelete/Asign/AsignGreenhouse";
+import DeleteWorkerGreen from "../AsignedDelete/Delete/DeleteWorkerGreen"; 
 
 /*Trabajadores*/
 
@@ -13,6 +14,7 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
   const [filteredGreenWorker, setFilteredGreenWorker] = useState([]);
   const [modalState, setModalState] = useState({ idWorker: "", idFarmer: "" });
   const [nameWorker, setNameWorker] = useState("");
+  const [idWorkerGreenhouse, setIDWorkerGreenhouse] = useState("");
 
   const location = useLocation();
   const { idWorker: paramIdWorker, idFarmer: paramIdFarmer } = useParams();
@@ -47,7 +49,7 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
       cell: (row) => (
         <FontAwesomeIcon
           icon={faTrash}
-          //onClick={() => handleDeleteClick(row)}
+          onClick={() => handleDeleteGreenhouse(row)}
           className="delete-icon"
           size="lg"
         />
@@ -111,11 +113,16 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
     setShowSelectGreenhouse(true);
   };
 
-  // const handleDeleteClick = (row) => {
-  //   //console.log("ID del registro a eliminar:", row.id_trabajador);
-  //   setShowDeleteWorker(true);
-  //   setIDWorker(row.id_trabajador);
-  // };
+  //Eliminar un invernadero asignado
+  const handleDeleteGreenhouse = (row) => {
+    setIDWorkerGreenhouse(row.id_trabajadorinvernadero)
+    setShowDeleteWorkerGreen(true);
+  };
+
+  //Cancelar la eliminacion de invernadero
+  const handleCancelClick = () => {
+    setShowDeleteWorkerGreen(false);
+  }
 
   const paginacionOpciones = {
     rowsPerPageText: "Filas por página",
@@ -188,9 +195,9 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
           idFarmer={modalState.idFarmer}
         />
       )}
-      {/* {showDeleteWorker && (
-              <DeleteWorker onCancelClick={handleCancelClick} idWorker={idWorker} />
-          )} */}
+      {showDeleteWorkerGreen && (
+              <DeleteWorkerGreen onCancelClick={handleCancelClick} idWorkerGreenhouse={idWorkerGreenhouse} />
+          )}
     </div>
   );
 };

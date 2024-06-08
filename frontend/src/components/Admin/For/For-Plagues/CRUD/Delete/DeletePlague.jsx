@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { toast } from "react-toastify";
 import "./DeletePlague.css";
 
 const DeletePlague = ({ onCancelClick, idPlague }) => {
@@ -12,17 +13,21 @@ const DeletePlague = ({ onCancelClick, idPlague }) => {
         },
       });
 
-        if (response.ok) {
-          alert("La plaga se eliminó correctamente");
-          onCancelClick();
-          window.location.reload();
-        } else {
-          alert("Error al eliminar la plaga");
-        }
-      } catch(error) {
-        console.error("Error al eliminar la plaga:", error);
-        alert("Error al eliminar la plaga");
+      if (response.status === 200) {
+        toast.success(`Se ha eliminado la plaga`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
+        onCancelClick();
       }
+    } catch (error) {
+      toast.error(`Hubo un problema al eliminar la plaga: ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
+    }
   };
 
   return (

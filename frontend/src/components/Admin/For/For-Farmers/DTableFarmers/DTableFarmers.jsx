@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTableFarmers.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faPencilAlt,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import {faSearch, faPencilAlt, faTrash} from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import RegisterFarmer from "../CRUD/Register/RegisterFarmer";
 import EditFarmer from "../CRUD/Edit/EditFarmer";
@@ -18,7 +14,8 @@ const DTableFarmers = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredFarmers, setFilteredFarmers] = useState([]);
   const [idFarmer, setIDFarmer] = useState("");
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isDataLoaded, setDataLoaded] = useState(false);
+  
   const columns = [
     {
       name: "ID",
@@ -94,10 +91,10 @@ const DTableFarmers = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!isLoaded) {
+    if (!isDataLoaded) {
       getFarmers();
     }
-  }, [isLoaded]);
+  }, [isDataLoaded]);
 
   const getFarmers = async () => {
     try {
@@ -111,7 +108,7 @@ const DTableFarmers = () => {
         setFarmers([]);
         setFilteredFarmers([]);
       }
-      setIsLoaded(true);
+      setDataLoaded(true);
     } catch (error) {
       console.error("Error al cargar los datos de los agricultores:", error);
       toast.error(
@@ -121,6 +118,7 @@ const DTableFarmers = () => {
       setIsLoading(false);
     }
   };
+  
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
     setInputValue(value);
@@ -150,7 +148,7 @@ const DTableFarmers = () => {
     setShowRegisterFarmer(false);
     setShowEditFarmer(false);
     setshowDeleteFarmer(false);
-    setIsLoaded(false);
+    setDataLoaded(false);
   };
 
   const handleEditClick = (row) => {

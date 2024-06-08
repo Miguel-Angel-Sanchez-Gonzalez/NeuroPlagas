@@ -172,7 +172,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
         onCancelClick();
       }
     } catch (error) {
-      toast.error(`Hubo un error ${error}`, {
+      toast.error(`Hubo un error al registrar al agricultor: ${error}`, {
         position: "top-center",
         autoClose: 2000,
         theme: "colored",

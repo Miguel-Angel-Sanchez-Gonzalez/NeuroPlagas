@@ -4,6 +4,7 @@ import AddNotification from "../../../../../LoginNotifications/AddNotification";
 import GreenhouseType from "../../ComboBox/GreenhouseType";
 import ResponsibleFarmerAndWorker from "../../../For-Workers/ComboBox/ResponsibleFarmerAndWorker";
 import { toast } from "react-toastify";
+
 const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
   const [records, setRecords] = useState("");
   const [greenhouseExists, setGreenhouseExists] = useState(false);
@@ -156,15 +157,16 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
     }
   };
 
-  const updateGreenhouseData = () => {
-    fetch(`http://localhost:3000/greenhouse/${idGreenhouse}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
+  const updateGreenhouseData = async() => {
+    setIsLoading(true);
+    try{
+      const response = await fetch(`http://localhost:3000/greenhouse/${idGreenhouse}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
         if (response.status === 200) {
           setIsLoading(false);
           toast.success(`El invernadero se actualizó correctamente.`, {
@@ -173,15 +175,16 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
             theme: "colored",
           });
           onCancelClick();
+          setIsLoading(false);
         }
-      })
-      .catch((error) => {
-        toast.error(`${error}`, {
+      } catch(error) {
+        toast.error(`Error al editar al agricultor, inténtelo más tarde: ${error}`, {
           position: "top-center",
           autoClose: 2000,
           theme: "colored",
         });
-      });
+        setIsLoading(false);
+      }
   };
 
   return (

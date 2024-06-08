@@ -114,10 +114,11 @@
   font-size: 14px;
 }
 .error-message-worker-r {
-  margin-top: 17px;
-  margin-left: 20px;
+  margin-top: 7px;
+  margin-left: 5px;
   text-align: left;
   color: #c62426;
+  font-size: medium;
 }
 
 .error-password {

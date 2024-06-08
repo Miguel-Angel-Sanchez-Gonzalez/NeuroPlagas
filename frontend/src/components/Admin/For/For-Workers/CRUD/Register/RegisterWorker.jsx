@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './RegisterWorker.css';
 import AddNotification from '../../../../../LoginNotifications/AddNotification';
 import ResponsibleFarmerAndWorker from '../../ComboBox/ResponsibleFarmerAndWorker';
+import { toast } from "react-toastify";
 
 const RegisterWorker = ({ onCancelClick }) => {
   const [records, setRecords] = useState('');
@@ -166,20 +167,21 @@ const RegisterWorker = ({ onCancelClick }) => {
         },
         body: JSON.stringify(data)
       });  
-      if (!response.ok) {
-        throw new Error('Error al agregar el trabajador.');
+      if (response.status === 201) {
+        setIsLoading(false);
+        toast.success(`Se ha registrado al trabajador`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
+        onCancelClick();
       }
-      const responseData = await response.json();
-      const { id } = responseData;
-      setIsLoading(false);
-      setLoadingMessage('Se ha agregado correctamente el trabajador.');
-      setTimeout(() => {
-        setLoadingMessage('');
-        window.location.reload();
-      }, 2000);
     } catch (error) {
-      console.error('Error al agregar el trabajador:', error);
-      setRecords('Por favor, inténtelo de nuevo más tarde.');
+      toast.error(`Hubo un error al registrar al trabajador: ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
       setIsLoading(false);
     }
   };
@@ -271,7 +273,7 @@ const RegisterWorker = ({ onCancelClick }) => {
                   }}
                 />
                 {values.correo && !validateEmail(values.correo) && isFormSubmitted && (
-                  <p className="error-message-worker">Correo electrónico inválido.</p>
+                  <p className="error-message-worker-r">Correo electrónico inválido.</p>
                 )}
                 {emailExists && 
                 <p className="email-exists-r">El correo ya existe.</p>}    
@@ -376,5 +378,6 @@ const RegisterWorker = ({ onCancelClick }) => {
         </div>
     );
   };
+  
 
 export default RegisterWorker;

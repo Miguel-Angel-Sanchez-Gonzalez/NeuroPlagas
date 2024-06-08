@@ -1,39 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { toast } from "react-toastify";
 import './DeleteWorkerGreen.css';
-import AddNotification from '../../../../../LoginNotifications/AddNotification';
 
 const DeleteWorkerGreen = ({ onCancelClick, idWorkerGreenhouse }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState('');
 
-
-  const onConfirmClick = () => {
-    
-    fetch(`http://localhost:3000/worker/deleteAsignGreenhouse/${idWorkerGreenhouse}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => {
-        if (response.ok) {
-          setIsLoading(true);
-          setLoadingMessage('El invernadero se ha desasignado con éxito.');
-          setTimeout(() => {
-            setLoadingMessage('');
-            window.location.reload();
-          }, 2000);
-        } else {
-          alert("Error al desasignar el invernadero");
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('Error al desasignar el invernadero:', error);
-        alert("Error al desasignar el invernadero");
-        setIsLoading(false);
+  const onConfirmClick = async () => {
+    try{
+    const response = await fetch(`http://localhost:3000/worker/deleteAsignGreenhouse/${idWorkerGreenhouse}`, {
+      method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-  }
+
+      if (response.status === 200) {
+        toast.success(`El invernadero se ha desasignado con éxito.`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
+        onCancelClick();
+      }
+    } catch (error) {
+      toast.error(`Hubo un problema al desasignar el invernadero:${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
+    }
+  };
   
   return (
     <div className="delete-farmer-form ">
@@ -45,9 +40,6 @@ const DeleteWorkerGreen = ({ onCancelClick, idWorkerGreenhouse }) => {
         <button className='button-delete-farmer' type="submit" onClick={onConfirmClick}>Desasignar</button>
         <button className='btn-delete-farmer-cancel' onClick={onCancelClick}>Cancelar</button>
       </div>
-      {loadingMessage && (
-            <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification" />
-          )}
     </div>
   );
 };

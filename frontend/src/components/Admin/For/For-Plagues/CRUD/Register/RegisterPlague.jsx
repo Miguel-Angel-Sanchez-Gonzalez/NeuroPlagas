@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './RegisterPlague.css';
 import AddNotification from '../../../../../LoginNotifications/AddNotification';
+import { toast } from "react-toastify";
 
 const RegisterPlague = ({ onCancelClick }) => {
   const [records, setRecords] = useState('');
@@ -86,21 +87,21 @@ const RegisterPlague = ({ onCancelClick }) => {
         body: JSON.stringify(data)
       });
   
-      if (response.ok) {
-        const responseData = await response.json();
-        const { id } = responseData;
+      if (response.status === 201) {
         setIsLoading(false);
-        setLoadingMessage('Se ha agregado correctamente la plaga.');
-        setTimeout(() => {
-          setLoadingMessage('');
-          window.location.reload();
-        }, 2000);
-      } else {
-        setRecords('Hubo un problema al agregar la plaga. Por favor, inténtelo de nuevo más tarde.');
-        setIsLoading(false);
+        toast.success(`Se ha registrado la plaga`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
+        onCancelClick();
       }
     } catch (error) {
-      setRecords('Error en la comunicación con el servidor.');
+      toast.error(`Hubo un error al registrar la plaga: ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
       setIsLoading(false);
     }
   };

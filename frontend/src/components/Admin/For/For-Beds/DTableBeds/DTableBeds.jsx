@@ -13,7 +13,9 @@ const DTableBeds = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredBeds, setFilteredBeds] = useState([]);
   const [idBed, setIDBed] = useState(null); // Inicializar como null para evitar problemas de referencia
+  const [isDataLoaded, setDataLoaded] = useState(false);
   
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -84,6 +86,7 @@ const DTableBeds = () => {
           setBeds([]);
           setFilteredBeds([]);
         }
+        setDataLoaded(true);
       } catch (error) {
         console.error("Error al obtener las camas:", error);
         toast.error("Hubo un problema al cargar los datos de las camas. Por favor, inténtelo nuevamente más tarde.");
@@ -91,8 +94,10 @@ const DTableBeds = () => {
         setIsLoading(false);
       }
     };
-    getBedByIdGreenhouse();
-}, [idGreenhouse]);
+    if (!isDataLoaded) {
+      getBedByIdGreenhouse();
+    }
+}, [idGreenhouse, isDataLoaded]);
 
 
   const handleFilter = (event) => {
@@ -117,7 +122,7 @@ const DTableBeds = () => {
     setShowRegisterBed(false);
     setShowEditBed(false);
     setShowDeleteBed(false);
-    setIsLoading(false);
+    setDataLoaded(false);
   };
 
   const handleEditClick = (row) => {

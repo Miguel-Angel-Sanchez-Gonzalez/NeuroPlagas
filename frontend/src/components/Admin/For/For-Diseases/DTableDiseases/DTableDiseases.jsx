@@ -14,6 +14,8 @@ const DTableDiseases = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredDiseases, setFilteredDiseases] = useState([]);
   const [idDisease, setIDDisease] = useState("");
+  const [isDataLoaded, setDataLoaded] = useState(false);
+  
 
   const columns = [
     {
@@ -91,6 +93,7 @@ const DTableDiseases = () => {
           setDiseases([]);
           setFilteredDiseases([]);
         }
+        setDataLoaded(true);
       } catch (error) {
         console.error("Error al obtener las enfermades:", error);
         toast.error("Hubo un problema al cargar los datos de las enfermedades. Por favor, inténtelo nuevamente más tarde.");
@@ -98,8 +101,10 @@ const DTableDiseases = () => {
         setIsLoading(false);
       }
     };
-    getDiseases();
-  }, []);
+    if (!isDataLoaded) {
+      getDiseases();
+    }
+  }, [isDataLoaded]);
 
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
@@ -129,6 +134,7 @@ const DTableDiseases = () => {
     setShowRegisterDisease(false);
     setShowEditDisease(false);
     setShowDeleteDisease(false);
+    setDataLoaded(false);
   };
 
   const handleEditClick = (row) => {

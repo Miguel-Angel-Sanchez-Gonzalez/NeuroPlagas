@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from "react";
+import { toast } from "react-toastify";
 import './DeleteDisease.css';
 
 const DeleteDisease = ({ onCancelClick, idDisease }) => {
@@ -9,20 +10,23 @@ const DeleteDisease = ({ onCancelClick, idDisease }) => {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
       });
-
-      if (response.ok) {
-        alert("La enfermedad se eliminó correctamente");
+      if (response.status === 200) {
+        toast.success(`Se ha eliminado la enfermedad`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
         onCancelClick();
-        window.location.reload();
-      } else {
-        alert("Error al eliminar la enfermedad");
       }
-    } catch(error) {
-        console.error('Error al eliminar la enfermedad:', error);
-        alert("Error al eliminar la enfermedad");
-      }
+    } catch (error) {
+      toast.error(`Hubo un problema al eliminar la enfermedad: ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
+    }
   };
 
   return (

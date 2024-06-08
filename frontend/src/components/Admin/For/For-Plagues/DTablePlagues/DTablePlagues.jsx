@@ -12,6 +12,8 @@ const DTablePlagues = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredPlagues, setFilteredPlagues] = useState([]);
   const [idPlague, setIDPlague] = useState("");
+  const [isDataLoaded, setDataLoaded] = useState(false);
+  
 
   const columns = [
     {
@@ -90,6 +92,7 @@ const DTablePlagues = () => {
           setPlagues([]);
           setFilteredPlagues([]);
         }
+        setDataLoaded(true);
       } catch (error) {
         console.error("Error al cargar los datos de las plagas:", error);
         toast.error("Hubo un problema al cargar los datos de las plagas. Por favor, inténtelo nuevamente más tarde.");
@@ -97,8 +100,10 @@ const DTablePlagues = () => {
           setIsLoading(false);
       }
     };
-    getPlagues();
-  }, []);
+    if (!isDataLoaded) {
+      getPlagues();
+    }
+  }, [isDataLoaded]);
 
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
@@ -126,6 +131,7 @@ const DTablePlagues = () => {
     setShowRegisterPlague(false);
     setShowEditPlague(false);
     setShowDeletePlague(false);
+    setDataLoaded(false);
   };
 
   const handleEditClick = (row) => {

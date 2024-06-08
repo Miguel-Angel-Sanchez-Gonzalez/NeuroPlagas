@@ -15,6 +15,7 @@ const DTableWorkers = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredWorkers, setFilteredWorkers] = useState([]);
   const [idWorker, setIDWorker] = useState("");
+  const [isDataLoaded, setDataLoaded] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,22 +27,22 @@ const DTableWorkers = () => {
       width: "65px",
     },
     {
-      name: "Nombre",
+      name: "Nombre(s)",
       selector: (row) => row.nombre,
       sortable: true,
-      width: "100px",
+      width: "150px",
     },
     {
       name: "Primer apellido",
       selector: (row) => row.primer_apellido,
       sortable: true,
-      width: "160px",
+      width: "150px",
     },
     {
       name: "Segundo apellido",
       selector: (row) => row.segundo_apellido,
       sortable: true,
-      width: "160px",
+      width: "150px",
     },
     {
       name: "Ver invernaderos",
@@ -109,6 +110,7 @@ const DTableWorkers = () => {
   useEffect(() => {
     const getWorkers = async () => {
       try {
+        setIsLoading(true); // Indicar que se están cargando los trabajadores
         const response = await fetch(`http://localhost:3000/worker/`);
         if (response.status === 200) {
           const data = await response.json();
@@ -118,6 +120,7 @@ const DTableWorkers = () => {
           setWorkers([]);
           setFilteredWorkers([]);
         }
+        setDataLoaded(true);
       } catch (error) {
         console.error("Error al obtener los trabajadores:", error);
         toast.error("Hubo un problema al cargar los datos de los trabajadores. Por favor, inténtelo nuevamente más tarde.");
@@ -125,8 +128,10 @@ const DTableWorkers = () => {
         setIsLoading(false);
       }
     };
+    if (!isDataLoaded) {
       getWorkers();
-  }, []);
+    }
+  }, [isDataLoaded]);
 
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
@@ -158,6 +163,7 @@ const DTableWorkers = () => {
     setShowRegisterWorker(false);
     setShowEditWorker(false);
     setShowDeleteWorker(false);
+    setDataLoaded(false);
   };
 
   const handleEditClick = (row) => {

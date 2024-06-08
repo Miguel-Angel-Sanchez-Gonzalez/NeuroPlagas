@@ -21,7 +21,7 @@ const DeleteFarmer = ({ onCancelClick, idFarmer }) => {
         onCancelClick();
       }
     } catch (error) {
-      toast.error(`Hubo un problema ${error}`, {
+      toast.error(`Hubo un problema al eliminar al agricultor: ${error}`, {
         position: "top-center",
         autoClose: 2000,
         theme: "colored",

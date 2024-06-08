@@ -1,29 +1,34 @@
 import React from 'react';
+import { toast } from "react-toastify";
 import './DeleteWorker.css';
 
 const DeleteWorker = ({ onCancelClick, idWorker }) => {
 
-  const onConfirmClick = () => {
-    fetch(`http://localhost:3000/worker/${idWorker}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => {
-        if (response.ok) {
-          alert("El trabajador se eliminó correctamente");
-          onCancelClick();
-          window.location.reload();
-        } else {
-          alert("Error al eliminar el trabajador");
-        }
-      })
-      .catch(error => {
-        console.error('Error al eliminar el trabajador:', error);
-        alert("Error al eliminar el trabajador");
+  const onConfirmClick = async () => {
+    try{
+    const response = await fetch(`http://localhost:3000/worker/${idWorker}`, {
+      method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-  }
+
+      if (response.status === 200) {
+        toast.success(`Se ha eliminado al trabajor`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
+        onCancelClick();
+      }
+    } catch (error) {
+      toast.error(`Hubo un problema al eliminar al trabajador:${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
+    }
+  };
   
   return (
     <div className="delete-farmer-form ">

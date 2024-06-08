@@ -47,9 +47,9 @@ function CardImagesAnalized() {
             }
 
           } else if (responseImage.status === 404) {
-            console.log('No se encontraron las imágenes del lecho para la imagen analizada.');
+            console.log('No se encontraron las imágenes analizadas.');
           } else {
-            console.error(`Error al obtener la imagen del lecho con id ${idBed}:`, responseImage.statusText);
+            console.error(`Error al obtener la imagen con id ${idBed}:`, responseImage.statusText);
           }
 
           setIsLoaded(true);
@@ -80,7 +80,7 @@ function CardImagesAnalized() {
     })
    .then((response) => {
         if (response.status === 200) {
-          toast.success(`El invernadero se actualizó correctamente.`, {
+          toast.success(`El estado de la imagen se actualizó correctamente.`, {
             position: "top-center",
             autoClose: 2000,
             theme: "colored",
@@ -101,14 +101,16 @@ function CardImagesAnalized() {
   return (
     <div>
       <h1 className='title'>Imágenes detectadas</h1>
-        <div>
+        <div className="checkbox-container">
           <input type="checkbox" 
+            className='checkbox-images'
+            id="myCheckbox"
             name="myCheckbox" 
             value="checkboxStatus"
             checked={isChecked}
             onChange={handleOnChange}
             />
-          <label htmlFor="myCheckbox">Marcar como tratada</label>
+          <label htmlFor="myCheckbox">{isChecked ? "Desmarcar como tratada" : "Marcar como tratada"}</label>
         </div>
       <div className="projcard-container">
         {isLoaded? (
@@ -137,7 +139,7 @@ function CardImagesAnalized() {
             </div>
           </div>
         ) : (
-          <div>Cargando...</div>
+          <div className="loading">Cargando imágen...</div>
         )}
       </div>
     </div>

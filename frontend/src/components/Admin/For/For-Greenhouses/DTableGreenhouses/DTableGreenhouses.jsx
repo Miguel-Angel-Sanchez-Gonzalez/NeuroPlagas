@@ -13,7 +13,8 @@ const DTableGreenhouses = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredGreenhouses, setFilteredGreenhouses] = useState([]);
   const [idGreenhouse, setIDGreenhouse] = useState("");
-
+  const [isDataLoaded, setDataLoaded] = useState(false);
+  
   const navigate = useNavigate();
 
   const columns = [
@@ -87,28 +88,32 @@ const DTableGreenhouses = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const getGreenhouses = async () => {
-      try {
-        setIsLoading(true); // Indicar que se están cargando los invernaderos
-        const response = await fetch(`http://localhost:3000/greenhouse/`);
-        if (response.status === 200) {
-          const data = await response.json();
-          //se están cargando los datos
-          setGreenhouses(data);
-          setFilteredGreenhouses(data);
-        } else if (response.status === 404) { 
-          setGreenhouses([]);
-          setFilteredGreenhouses([]);
-        }
-      } catch (error) {
-        console.error("Error al cargar los datos de los invernaderos:", error);
-        toast.error("Hubo un problema al cargar los datos de los invernaderos. Por favor, inténtelo nuevamente más tarde.");
-      } finally {
-        setIsLoading(false);
+    if (!isDataLoaded) {
+      getGreenhouses();
+    }
+  }, [isDataLoaded]);
+
+  const getGreenhouses = async () => {
+    try {
+      setIsLoading(true); // Indicar que se están cargando los invernaderos
+      const response = await fetch(`http://localhost:3000/greenhouse/`);
+      if (response.status === 200) {
+        const data = await response.json();
+        //se están cargando los datos
+        setGreenhouses(data);
+        setFilteredGreenhouses(data);
+      } else if (response.status === 404) { 
+        setGreenhouses([]);
+        setFilteredGreenhouses([]);
       }
-    };
-    getGreenhouses();
-  }, []);
+      setDataLoaded(true);
+    } catch (error) {
+      console.error("Error al cargar los datos de los invernaderos:", error);
+      toast.error("Hubo un problema al cargar los datos de los invernaderos. Por favor, inténtelo nuevamente más tarde.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleFilter = (event) => {
     try {
@@ -141,7 +146,7 @@ const DTableGreenhouses = () => {
     setshowRegisterGreenh(false);
     setshowEditGreenh(false);
     setshowDeleteGreenh(false);
-    console.log("Sali del handle Cancel CLick con");
+    setDataLoaded(false);
   };
 
   const handleEditClick = (row) => {

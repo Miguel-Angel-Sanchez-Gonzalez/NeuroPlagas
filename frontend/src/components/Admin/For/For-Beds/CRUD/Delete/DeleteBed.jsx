@@ -21,7 +21,7 @@ const DeleteBed = ({ onCancelClick, idBed }) => {
         });
       }
     } catch (error) {
-      toast.error(`Hubo un error ${error}`, {
+      toast.error(`Hubo un error al eliminar la cama: ${error}`, {
         position: "top-center",
         autoClose: 2000,
         theme: "colored",

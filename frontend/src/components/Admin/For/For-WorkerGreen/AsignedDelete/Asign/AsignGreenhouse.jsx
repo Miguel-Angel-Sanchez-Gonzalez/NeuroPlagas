@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { toast } from "react-toastify";
 import './AsignGreenhouse.css';
 import AddNotification from '../../../../../LoginNotifications/AddNotification';
 import ComboBoxGreenHouse from '../../../../../Dashboard/ComboBoxGreenHouse/ComboBoxGreenHouse';
@@ -33,16 +34,21 @@ const AsignGreenhouse = ({ onCancelClick, idWorker, idFarmer }) => {
       });
 
       if (response.ok) {
-        setLoadingMessage('Se ha asignado correctamente el invernadero.');
-        setTimeout(() => {
-          setLoadingMessage('');
-          window.location.reload();
-        }, 2000);
+        toast.success('Se ha asignado correctamente el invernadero.', {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
+        onCancelClick();
       } else {
         throw new Error('Error al asignar el invernadero.');
       }
     } catch (error) {
-      alert('Por favor, inténtelo de nuevo más tarde.');
+      toast.error(`Hubo un error al registrar al trabajador: ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
     } finally {
       setIsLoading(false);
     }

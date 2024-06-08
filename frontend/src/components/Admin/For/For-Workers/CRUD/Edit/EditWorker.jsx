@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import "./EditWorker.css";
 import AddNotification from "../../../../../LoginNotifications/AddNotification";
 import ResponsibleFarmerAndWorker from "../../ComboBox/ResponsibleFarmerAndWorker";
@@ -202,31 +203,37 @@ const EditWorker = ({ onCancelClick, idWorker }) => {
     updateWorkerData();
   };
 
-  const updateWorkerData = () => {
+  const updateWorkerData = async () => {
     setIsLoading(true);
-    fetch(`http://localhost:3000/worker/${idWorker}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (response.ok) {
-          setIsLoading(false);
-          setLoadingMessage("El trabajador se actualizó correctamente.");
-          setTimeout(() => {
-            setLoadingMessage(""); // Oculta el mensaje después de unos segundos
-            window.location.reload();
-          }, 2000);
-        } else {
-          throw new Error("No se pudo actualizar el trabajador");
-        }
-      })
-      .catch((error) => {
-        console.error("Error al actualizar el trabajador:", error);
-        alert("Error al actualizar el trabajador");
+    try {
+      const response = await fetch(`http://localhost:3000/worker/${idWorker}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
+      if (response.ok) {
+        toast.success(`El trabajador se actualizó correctamente.`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
+        onCancelClick();
+        setIsLoading(false);
+      } else {
+        const errorMessage = await response.text();
+        throw new Error(`Error al editar al trabajador: ${errorMessage}`);
+      }
+    } catch (error) {
+      toast.error(`Error al editar al trabajador, inténtelo más tarde: ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
+      setIsLoading(false);
+    }
+  
   };
 
   return (

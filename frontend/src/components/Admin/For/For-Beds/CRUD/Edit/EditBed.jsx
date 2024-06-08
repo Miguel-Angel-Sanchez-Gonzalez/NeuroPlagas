@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './EditBed.css';
 import AddNotification from '../../../../../LoginNotifications/AddNotification';
+import { toast } from "react-toastify";
 
 const EditBed = ({ onCancelClick, idGreenhouse, idBed }) => {
   const [records, setRecords] = useState('');
@@ -83,18 +84,21 @@ const EditBed = ({ onCancelClick, idGreenhouse, idBed }) => {
         },
         body: JSON.stringify(data)
       });
-      if (!response.ok) {
-        throw new Error('No se pudo actualizar la cama seleccionada');
+      if (response.status === 200) {
+        toast.success(`La cama se actualizó correctamente`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
+        onCancelClick();
+        setIsLoading(false);
       }
-      setIsLoading(false);
-      setLoadingMessage('La cama se actualizó correctamente.');
-      setTimeout(() => {
-        setLoadingMessage('');
-        window.location.reload();
-      }, 2000);
     } catch (error) {
-      console.error('Error al actualizar la cama seleccionada:', error);
-      alert("Error al actualizar la cama seleccionada");
+      toast.error(`Error al editar la cama, inténtelo más tarde: ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
       setIsLoading(false);
     }
   };

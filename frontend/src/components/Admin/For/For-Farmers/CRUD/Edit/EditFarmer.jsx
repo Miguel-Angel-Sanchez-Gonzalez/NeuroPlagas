@@ -4,7 +4,7 @@ import "./EditFarmer.css";
 import AddNotification from "../../../../../LoginNotifications/AddNotification";
 
 
-const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
+const EditFarmer = ({ onCancelClick, idFarmer }) => {
   const [records, setRecords] = useState("");
   const [emailExists, setEmailExists] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false); // Nuevo estado para controlar el enfoque en los inputs
@@ -223,7 +223,7 @@ const EditFarmer = ({ rowData, onCancelClick, idFarmer }) => {
         setIsLoading(false);
       }
     } catch (error) {
-      toast.error(`Hubo un problema ${error}`, {
+      toast.error(`Error al editar al agricultor, inténtelo más tarde: ${error}`, {
         position: "top-center",
         autoClose: 2000,
         theme: "colored",

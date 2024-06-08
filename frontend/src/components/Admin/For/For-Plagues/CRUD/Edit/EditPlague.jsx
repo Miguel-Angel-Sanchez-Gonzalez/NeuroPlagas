@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./EditPlague.css";
 import AddNotification from "../../../../../LoginNotifications/AddNotification";
+import { toast } from "react-toastify";
 
-const EditPlague = ({ rowData, onCancelClick, idPlague }) => {
+const EditPlague = ({ onCancelClick, idPlague }) => {
   const [records, setRecords] = useState("");
   const [plagueExists, setPlagueExists] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false); // Nuevo estado para controlar el enfoque en los inputs
@@ -105,33 +106,33 @@ const EditPlague = ({ rowData, onCancelClick, idPlague }) => {
     updatePlagueData();
   };
 
-  const updatePlagueData = () => {
-    console.log("Datos a enviar al servidor:", data);
+  const updatePlagueData = async () => {
     setIsLoading(true);
-    fetch(`http://localhost:3000/plague/${idPlague}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (response.ok) {
-          setIsLoading(false);
-          setLoadingMessage("La plaga se actualizó correctamente.");
-          setTimeout(() => {
-            setLoadingMessage(""); // Oculta el mensaje después de unos segundos
-            window.location.reload();
-          }, 2000);
-        } else {
-          throw new Error("No se pudo actualizar la plaga");
-        }
-      })
-      .catch((error) => {
-        console.error("Error al actualizar la plaga:", error);
-        alert("Error al actualizar la plaga");
-        setIsLoading(false);
+    try {
+      const response = await fetch(`http://localhost:3000/plague/${idPlague}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
+      if (response.status === 200) {
+        toast.success(`La plaga se actualizó correctamente`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
+        onCancelClick();
+        setIsLoading(false);
+      }
+    } catch (error) {
+      toast.error(`Error al editar la plaga, inténtelo más tarde: ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
+      setIsLoading(false);
+    }
   };
 
   return (

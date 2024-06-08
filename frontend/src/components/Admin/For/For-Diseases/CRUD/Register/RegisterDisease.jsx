@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './RegisterDisease.css';
 import AddNotification from '../../../../../LoginNotifications/AddNotification';
+import { toast } from "react-toastify";
 
 const RegisterDisease = ({ onCancelClick }) => {
   const [records, setRecords] = useState('');
@@ -83,6 +84,7 @@ const RegisterDisease = ({ onCancelClick }) => {
 
         //Se esta haciendo la promesa
         //Post para insertar datos de enfermedad
+        try{
           const response = await fetch('http://localhost:3000/disease/', {
             method: 'POST',
             headers: {
@@ -90,20 +92,23 @@ const RegisterDisease = ({ onCancelClick }) => {
             },
             body: JSON.stringify(data)
           }) 
-            if (response){
-              const responseData = await response.json();
-              const { id } = responseData; // Obtiene el ID del agricultor del backend
-              setIsLoading(false);
-              setLoadingMessage('Se ha agregado correctamente la enfermedad.');
-              setTimeout(() => {
-              setLoadingMessage(''); // Oculta el mensaje después de unos segundos
-              window.location.reload();
-              }, 2000); 
-            } else {
-              setRecords('Hubo un problema al agregar la enfermedad. Por favor, inténtelo de nuevo más tarde.');
-              setIsLoading(false);
-            }
-        
+          if (response.status === 201) {
+            setIsLoading(false);
+            toast.success(`Se ha registrado la enfermedad`, {
+              position: "top-center",
+              autoClose: 2000,
+              theme: "colored",
+            });
+            onCancelClick();
+          }
+        } catch (error) {
+          toast.error(`Hubo un error al registrar la enfermedad: ${error}`, {
+            position: "top-center",
+            autoClose: 2000,
+            theme: "colored",
+          });
+          setIsLoading(false);
+        }
   };
       
   

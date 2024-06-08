@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTableFarmers.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faPencilAlt, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faPencilAlt,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import RegisterFarmer from "../CRUD/Register/RegisterFarmer";
 import EditFarmer from "../CRUD/Edit/EditFarmer";
@@ -14,7 +18,7 @@ const DTableFarmers = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredFarmers, setFilteredFarmers] = useState([]);
   const [idFarmer, setIDFarmer] = useState("");
-
+  const [isLoaded, setIsLoaded] = useState(false);
   const columns = [
     {
       name: "ID",
@@ -90,28 +94,33 @@ const DTableFarmers = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const getFarmers = async () => {
-      try {
-        setIsLoading(true); // Indicar que se están cargando los agricultores
-        const response = await fetch(`http://localhost:3000/farmer/`);
-        if (response.status === 200) {
-          const data = await response.json();
-          setFarmers(data);
-          setFilteredFarmers(data);
-        } else if (response.status === 404) { 
-          setFarmers([]);
-          setFilteredFarmers([]);
-        }
-      } catch (error) {
-        console.error("Error al cargar los datos de los agricultores:", error);
-        toast.error("Hubo un problema al cargar los datos de los agricultores. Por favor, inténtelo nuevamente más tarde.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getFarmers();
-  }, []);
+    if (!isLoaded) {
+      getFarmers();
+    }
+  }, [isLoaded]);
 
+  const getFarmers = async () => {
+    try {
+      setIsLoading(true); // Indicar que se están cargando los agricultores
+      const response = await fetch(`http://localhost:3000/farmer/`);
+      if (response.status === 200) {
+        const data = await response.json();
+        setFarmers(data);
+        setFilteredFarmers(data);
+      } else if (response.status === 404) {
+        setFarmers([]);
+        setFilteredFarmers([]);
+      }
+      setIsLoaded(true);
+    } catch (error) {
+      console.error("Error al cargar los datos de los agricultores:", error);
+      toast.error(
+        "Hubo un problema al cargar los datos de los agricultores. Por favor, inténtelo nuevamente más tarde."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
     setInputValue(value);
@@ -141,16 +150,15 @@ const DTableFarmers = () => {
     setShowRegisterFarmer(false);
     setShowEditFarmer(false);
     setshowDeleteFarmer(false);
+    setIsLoaded(false);
   };
 
   const handleEditClick = (row) => {
-    //console.log("ID del registro a actualizar:", row.id_agricultor);
     setShowEditFarmer(true);
     setIDFarmer(row.id_agricultor);
   };
 
   const handleDeleteClick = (row) => {
-    //console.log("ID del registro a eliminar:", row.id_agricultor);
     setshowDeleteFarmer(true);
     setIDFarmer(row.id_agricultor);
   };
@@ -206,16 +214,19 @@ const DTableFarmers = () => {
               </button>
             </div>
           }
-          noDataComponent={isLoading ? ( // Mostrar mensaje de carga si isLoading es true
+          noDataComponent={
+            isLoading ? ( // Mostrar mensaje de carga si isLoading es true
               <div className="no-beds-message">
-                Espere un momento, las datos de los agricultores se están cargando...
+                Espere un momento, las datos de los agricultores se están
+                cargando...
               </div>
             ) : (
               <div className="no-beds-message">
                 Aún no se han registrado agricultores en este invernadero.
               </div>
-            )}
-          />
+            )
+          }
+        />
         {showRegisterFarmer && (
           <RegisterFarmer onCancelClick={handleCancelClick} />
         )}

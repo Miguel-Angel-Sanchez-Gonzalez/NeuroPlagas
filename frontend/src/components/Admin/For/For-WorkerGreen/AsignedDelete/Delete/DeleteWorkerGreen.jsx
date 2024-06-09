@@ -2,7 +2,7 @@ import React from 'react';
 import { toast } from "react-toastify";
 import './DeleteWorkerGreen.css';
 
-const DeleteWorkerGreen = ({ onCancelClick, idWorkerGreenhouse }) => {
+const DeleteWorkerGreen = ({ onCancelClick, idWorkerGreenhouse, onUpdateGreenhouses }) => {
 
   const onConfirmClick = async () => {
     try{
@@ -20,6 +20,7 @@ const DeleteWorkerGreen = ({ onCancelClick, idWorkerGreenhouse }) => {
           theme: "colored",
         });
         onCancelClick();
+        onUpdateGreenhouses();  // Actualizar la lista de invernaderos
       }
     } catch (error) {
       toast.error(`Hubo un problema al desasignar el invernadero:${error}`, {

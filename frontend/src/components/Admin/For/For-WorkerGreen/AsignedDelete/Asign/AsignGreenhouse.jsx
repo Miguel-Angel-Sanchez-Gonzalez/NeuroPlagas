@@ -4,14 +4,14 @@ import './AsignGreenhouse.css';
 import AddNotification from '../../../../../LoginNotifications/AddNotification';
 import ComboBoxGreenHouse from '../../../../../Dashboard/ComboBoxGreenHouse/ComboBoxGreenHouse';
 
-const AsignGreenhouse = ({ onCancelClick, idWorker, idFarmer }) => {
+const AsignGreenhouse = ({ onCancelClick, idWorker, idFarmer, onUpdateGreenhouses }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
   const [idGreenhouse, setIdGreenhouse] = useState('');
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   const handleSelectionChange = (selectedGreenhouseName, selectedGreenhouseId) => {
-    setIdGreenhouse(selectedGreenhouseId);  // Asegúrate de que el idGreenhouse se actualiza
+    setIdGreenhouse(selectedGreenhouseId);
   };
 
   const handleSubmit = async (e) => {
@@ -30,7 +30,7 @@ const AsignGreenhouse = ({ onCancelClick, idWorker, idFarmer }) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ idGreenhouse }) // Enviar el id del invernadero seleccionado
+        body: JSON.stringify({ idGreenhouse })
       });
 
       if (response.ok) {
@@ -40,6 +40,7 @@ const AsignGreenhouse = ({ onCancelClick, idWorker, idFarmer }) => {
           theme: "colored",
         });
         onCancelClick();
+        onUpdateGreenhouses();  // Actualizar la lista de invernaderos
       } else {
         throw new Error('Error al asignar el invernadero.');
       }

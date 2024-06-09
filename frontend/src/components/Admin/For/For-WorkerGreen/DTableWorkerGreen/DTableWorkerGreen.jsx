@@ -8,15 +8,12 @@ import { toast } from "react-toastify";
 import AsignGreenhouse from "../AsignedDelete/Asign/AsignGreenhouse";
 import DeleteWorkerGreen from "../AsignedDelete/Delete/DeleteWorkerGreen"; 
 
-/*Trabajadores*/
-
 const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
   const [inputValue, setInputValue] = useState("");
   const [filteredGreenWorker, setFilteredGreenWorker] = useState([]);
   const [modalState, setModalState] = useState({ idWorker: "", idFarmer: "" });
   const [nameWorker, setNameWorker] = useState("");
   const [idWorkerGreenhouse, setIDWorkerGreenhouse] = useState("");
-
   const location = useLocation();
   const { idWorker: paramIdWorker, idFarmer: paramIdFarmer } = useParams();
 
@@ -60,7 +57,7 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
   ];
 
   const [showAssignGreenhouse, setShowSelectGreenhouse] = useState(false);
-  const [showDeleteWorkerGreen, setShowDeleteWorkerGreen] = useState(false); //Form de eliminacion
+  const [showDeleteWorkerGreen, setShowDeleteWorkerGreen] = useState(false);
   const [greenWorkers, setGreenWorker] = useState([]);
 
   useEffect(() => {
@@ -78,7 +75,6 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
     }
   }, [location.state, paramIdWorker, paramIdFarmer]);
 
-  /*FUNCIONES*/
   const getGreenhouseByIdWorker = async (idWorker) => {
     try {
       const response = await fetch(
@@ -116,16 +112,14 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
     setShowSelectGreenhouse(true);
   };
 
-  //Eliminar un invernadero asignado
   const handleDeleteGreenhouse = (row) => {
-    setIDWorkerGreenhouse(row.id_trabajadorinvernadero)
+    setIDWorkerGreenhouse(row.id_trabajadorinvernadero);
     setShowDeleteWorkerGreen(true);
   };
 
-  //Cancelar la eliminacion de invernadero
   const handleCancelClick = () => {
     setShowDeleteWorkerGreen(false);
-  }
+  };
 
   const paginacionOpciones = {
     rowsPerPageText: "Filas por página",
@@ -134,13 +128,16 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
     selectAllRowsItemText: "Todos",
   };
 
+  const handleUpdateGreenhouses = () => {
+    getGreenhouseByIdWorker(modalState.idWorker);
+  };
+
   return (
     <div className="table-workgreen-admin">
       <div className="right-content-workgreen">
         <h1 className="h2green-workgreen">
           Trabajador <span className="name-greenworker"> {nameWorker}</span>
         </h1>
-
         <div className="only-table-workgreen">
           <div className="title-and-search-workgreen">
             <div>
@@ -165,7 +162,8 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
               <button
                 type="button"
                 className="buttonWorkgreen"
-                onClick={handleAsignGreenhouse}>
+                onClick={handleAsignGreenhouse}
+              >
                 Asignar invernadero
               </button>
             </div>
@@ -196,11 +194,16 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
           onCancelClick={() => setShowSelectGreenhouse(false)}
           idWorker={modalState.idWorker}
           idFarmer={modalState.idFarmer}
+          onUpdateGreenhouses={handleUpdateGreenhouses}
         />
       )}
       {showDeleteWorkerGreen && (
-              <DeleteWorkerGreen onCancelClick={handleCancelClick} idWorkerGreenhouse={idWorkerGreenhouse} />
-          )}
+        <DeleteWorkerGreen
+          onCancelClick={handleCancelClick}
+          idWorkerGreenhouse={idWorkerGreenhouse}
+          onUpdateGreenhouses={handleUpdateGreenhouses}
+        />
+      )}
     </div>
   );
 };

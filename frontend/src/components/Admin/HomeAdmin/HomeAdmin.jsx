@@ -39,7 +39,7 @@ const HomeAdmin = () => {
       <div className="dashboard-admin">
         <SidebarAdmin />
         <div className="table-container-admin">
-          <div className="">
+          <div className="space-admin">
           <Routes>
             {/* Sirve para ver las rutas anidadas*/}
             <Route index element={<RedirectToAgricultores />} />

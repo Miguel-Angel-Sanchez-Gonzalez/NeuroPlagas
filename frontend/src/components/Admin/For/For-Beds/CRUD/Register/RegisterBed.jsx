@@ -51,7 +51,7 @@ const RegisterBed = ({ onCancelClick, idGreenhouse }) => {
       idGreenhouse: idGreenhouse,
     };
     try {
-      const response = await fetch("http://localhost:3000/bed/", {
+      const response = await fetch(`http://localhost:3000/bed/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,7 +62,7 @@ const RegisterBed = ({ onCancelClick, idGreenhouse }) => {
       if (response.status === 201) {
         onCancelClick();
         setIsLoading(false);
-        toast.success(`Se ha registrado la cama`, {
+        toast.success("Se ha registrado la cama", {
           position: "top-center",
           autoClose: 2000,
           theme: "colored",
@@ -70,7 +70,7 @@ const RegisterBed = ({ onCancelClick, idGreenhouse }) => {
       }
       setIsLoading(false);
     } catch (error) {
-      toast.error(`Hubo un error ${error}`, {
+      toast.error("Hubo un error ${error}", {
         position: "top-center",
         autoClose: 2000,
         theme: "colored",

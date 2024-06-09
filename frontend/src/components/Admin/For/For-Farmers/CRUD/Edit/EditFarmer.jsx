@@ -175,7 +175,7 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
         const emailExists = await checkEmailExists(values.correo);
         if (emailExists) {
           setEmailExists(true);
-          setRecords("El correo electrónico ya está en uso.");
+        
           return;
         } else {
           setEmailExists(false);

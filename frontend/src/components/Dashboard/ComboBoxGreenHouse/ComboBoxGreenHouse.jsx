@@ -25,19 +25,19 @@ const ComboBoxGreenHouse = ({ onChange }) => {
   return (
     <div className="dropdown">
       <div
-        className="dropdown-btn"
+        className="dropdown-btn-greenhouse"
         style={selectedGreenhouse ? { backgroundColor: '#EFF6FF' } : null}
         onClick={() => setIsActive(!isActive)}
       >
         {selectedGreenhouse || "Invernaderos"}
       </div>
       {isActive && (
-        <div className="dropdown-content">
+        <div className="dropdown-content-greenhouse">
           {greenhouses.map((greenhouse) => (
             <div
               key={greenhouse.id_invernadero}
               onClick={() => handleOptionClick(greenhouse)}
-              className="dropdown-option"
+              className="dropdown-option-gren"
             >
               {greenhouse.nombre}
             </div>

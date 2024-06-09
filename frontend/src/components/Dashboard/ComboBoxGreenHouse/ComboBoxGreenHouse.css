@@ -6,7 +6,9 @@
   margin-left: 5px;
 }
 
-.dropdown-btn {
+.dropdown-btn-greenhouse {
+  margin-top: 20px;
+  margin-left: 20px;
   padding: 8px;
   background-color: #fff;
   border: 2px solid #d4d0d0;
@@ -16,37 +18,38 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  width: 98%;
   font-size: 14.5px;
 }
 
-.dropdown-btn:hover {
+.dropdown-btn-greenhouse:hover {
   cursor: pointer;
 }
 
-.dropdown-content {
+.dropdown-content-greenhouse {
+  margin-left: 20px;
   display: none;
   position: absolute;
   background-color: #fff;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   z-index: 1;
-  width: 100%;
+  width: 98%;
   cursor: pointer;
   font-size: 15px;
 }
 
-.dropdown-content .dropdown-option {
+.dropdown-content-greenhouse .dropdown-option-gren {
   padding: 10px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.dropdown-content .dropdown-option:hover {
+.dropdown-content-greenhouse .dropdown-option-gren:hover {
   background-color: #ecaeaf;
 }
 
-.dropdown:hover .dropdown-content {
+.dropdown:hover .dropdown-content-greenhouse {
   display: block;
 }
 

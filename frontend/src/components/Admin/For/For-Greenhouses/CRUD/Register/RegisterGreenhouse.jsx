@@ -279,13 +279,6 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
             <p className="error-message-greenhouse-r">{records}</p>
           )}
         </div>
-        {loadingMessage && (
-          <AddNotification
-            message={loadingMessage}
-            onClose={() => setLoadingMessage("")}
-            className="farmer-notification"
-          />
-        )}
       </div>
     </div>
   );

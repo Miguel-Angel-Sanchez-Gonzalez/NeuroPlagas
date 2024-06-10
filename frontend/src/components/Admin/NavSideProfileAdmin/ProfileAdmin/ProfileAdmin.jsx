@@ -175,6 +175,7 @@ const ProfileAdmin = ({ onCancelClick }) => {
 
   const updateAdminData = async () => {
     setIsLoading(true);
+    console.log("la data que entro es: " , data);
     try {
       const response = await fetch(`http://localhost:3000/admin/`, {
         method: 'PATCH',
@@ -196,7 +197,7 @@ const ProfileAdmin = ({ onCancelClick }) => {
     } catch (error) {
       console.error('Error al actualizar al administrador:', error);
       alert("Error al actualizar al administrador");
-      window.location.reload();
+      //window.location.reload();
       setIsLoading(false);
     }
   };

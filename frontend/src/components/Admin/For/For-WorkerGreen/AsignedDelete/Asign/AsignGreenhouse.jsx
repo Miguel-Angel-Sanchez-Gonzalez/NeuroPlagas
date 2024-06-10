@@ -6,7 +6,6 @@ import ComboBoxGreenHouse from '../../../../../Dashboard/ComboBoxGreenHouse/Comb
 
 const AsignGreenhouse = ({ onCancelClick, idWorker, idFarmer, onUpdateGreenhouses }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState('');
   const [idGreenhouse, setIdGreenhouse] = useState('');
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
@@ -14,17 +13,48 @@ const AsignGreenhouse = ({ onCancelClick, idWorker, idFarmer, onUpdateGreenhouse
     setIdGreenhouse(selectedGreenhouseId);
   };
 
+  const checkGreenhouseAssignment = async (idWorker, idGreenhouse) => {
+    try {
+      const response = await fetch(`http://localhost:3000/worker/existsAsignGreenhouse/${idWorker}/${idGreenhouse}`);
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error("Error al comprobar la asignación del invernadero:", error);
+      toast.success('Error al comprobar la asignación del invernadero.', {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
+      return false;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsFormSubmitted(true);
 
     if (!idGreenhouse) {
-      setLoadingMessage('Por favor, seleccione un invernadero antes de guardar.');
+      toast.info('Por favor, seleccione un invernadero antes de guardar.', {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
       return;
     }
 
     setIsLoading(true);
     try {
+      const alreadyAssigned = await checkGreenhouseAssignment(idWorker, idGreenhouse);
+      if (alreadyAssigned) {
+        toast.warning('No se puede asignar este invernadero porque ya está asignado a este trabajador.', {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
+        setIsLoading(false);
+        return;
+      }
+
       const response = await fetch(`http://localhost:3000/worker/asigngreenhouse/${idWorker}`, {
         method: 'POST',
         headers: {
@@ -42,10 +72,14 @@ const AsignGreenhouse = ({ onCancelClick, idWorker, idFarmer, onUpdateGreenhouse
         onCancelClick();
         onUpdateGreenhouses();  // Actualizar la lista de invernaderos
       } else {
-        throw new Error('Error al asignar el invernadero.');
+        toast.error('Error al asignar el invernadero.', {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
       }
     } catch (error) {
-      toast.error(`Hubo un error al registrar al trabajador: ${error}`, {
+      toast.error(`Hubo un error: ${error}`, {
         position: "top-center",
         autoClose: 2000,
         theme: "colored",
@@ -72,9 +106,6 @@ const AsignGreenhouse = ({ onCancelClick, idWorker, idFarmer, onUpdateGreenhouse
             <button className="button-bed" type="submit" onClick={handleSubmit}>Guardar</button>
             <button className="button-bed" onClick={onCancelClick}>Cancelar</button>
           </div>
-          {loadingMessage && (
-            <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification" />
-          )}
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { HiMenu } from "react-icons/hi";
 import './NavbarAdmin.css';
 import ProfileAdmin from '../ProfileAdmin/ProfileAdmin';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
 
 const NavbarAdmin = ({ onConfigureProfileClick }) => {
   const [user, setUser] = useState({

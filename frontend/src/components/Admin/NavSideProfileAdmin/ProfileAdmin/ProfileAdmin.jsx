@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ProfileAdmin.css';
-import AddNotification from '../../../LoginNotifications/AddNotification';
+import { toast } from "react-toastify";
 
 const ProfileAdmin = ({ onCancelClick }) => {
   const [records, setRecords] = useState('');
@@ -8,7 +8,6 @@ const ProfileAdmin = ({ onCancelClick }) => {
   const [isInputFocused, setIsInputFocused] = useState(false); 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false); 
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [originalEmail, setOriginalEmail] = useState('');
 
@@ -58,7 +57,11 @@ const ProfileAdmin = ({ onCancelClick }) => {
       return data.exists;
     } catch (error) {
       console.error('Error al verificar la existencia del correo electrónico:', error);
-      alert('Error al verificar la existencia del correo electrónico');
+      toast.error('Error al verificar la existencia del correo electrónico.', {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
     }
   };
 
@@ -110,9 +113,18 @@ const ProfileAdmin = ({ onCancelClick }) => {
             contrasenia: data[0].contrasenia
           });
         } else {
-          throw new Error('Error al obtener al administrador');
+          toast.error('Error al obtener al administrador.', {
+            position: "top-center",
+            autoClose: 2000,
+            theme: "colored",
+          });
         }
       } catch (error) {
+        toast.error('Error al obtener al administrador.', {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
         console.error('Error al obtener al administrador:', error);
         setIsLoading(false);
       }
@@ -154,6 +166,11 @@ const ProfileAdmin = ({ onCancelClick }) => {
           setEmailExists(false);
         }
       } catch (error) {
+        toast.error('Error al verificar la existencia del correo electrónico.', {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
         console.error('Error al verificar la existencia del correo electrónico:', error);
       }
     }
@@ -186,18 +203,30 @@ const ProfileAdmin = ({ onCancelClick }) => {
       });
       if (response.ok) {
         setIsLoading(false);
-        setLoadingMessage('El administrador se actualizó correctamente.');
-        setTimeout(() => {
-          setLoadingMessage(''); 
-          window.location.reload();
-        }, 2000); 
+        localStorage.setItem('username', data.name);
+        localStorage.setItem('lastname', data.surname);
+        localStorage.setItem('secondlastname', data.secondSurname);
+        localStorage.setItem('email', data.email);
+        toast.success('El administrador se actualizó correctamente.', {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+          onClose: onCancelClick // Llama a onCancelClick aquí
+        });
       } else {
-        throw new Error('No se pudo actualizar al administrador');
+        toast.error('No se pudo actualizar al administrador.', {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
       }
     } catch (error) {
       console.error('Error al actualizar al administrador:', error);
-      alert("Error al actualizar al administrador");
-      //window.location.reload();
+      toast.error('Error al actualizar al administrador.', {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
       setIsLoading(false);
     }
   };
@@ -374,9 +403,6 @@ const ProfileAdmin = ({ onCancelClick }) => {
           </div>
           {records && !isInputFocused && <p className='error-msg-profile-admin'>{records}</p>}
         </div>
-        {loadingMessage && (
-          <AddNotification message={loadingMessage} onClose={() => setLoadingMessage('')} className="farmer-notification" />
-        )}
       </div>
     </div>
   );

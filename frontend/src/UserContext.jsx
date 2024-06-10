@@ -1,9 +1,8 @@
-// UserContext.js
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState } from 'react';
 
-export const UserContext = createContext();
+const UserContext = createContext();
 
-export const UserProvider = ({ children }) => {
+const UserProvider = ({ children }) => {
   const [user, setUser] = useState({
     username: localStorage.getItem('username') || '',
     lastname: localStorage.getItem('lastname') || '',
@@ -11,26 +10,33 @@ export const UserProvider = ({ children }) => {
     email: localStorage.getItem('email') || ''
   });
 
-  const updateUser = (newUserData) => {
-    setUser(newUserData);
-    localStorage.setItem('username', newUserData.username);
-    localStorage.setItem('lastname', newUserData.lastname);
-    localStorage.setItem('secondlastname', newUserData.secondLastname);
-    localStorage.setItem('email', newUserData.email);
+  const updateUser = (userData) => {
+    setUser(userData);
+    localStorage.setItem('username', userData.username);
+    localStorage.setItem('lastname', userData.lastname);
+    localStorage.setItem('secondlastname', userData.secondLastname);
+    localStorage.setItem('email', userData.email);
   };
 
-  useEffect(() => {
+  const logoutUser = () => {
     setUser({
-      username: localStorage.getItem('username') || '',
-      lastname: localStorage.getItem('lastname') || '',
-      secondLastname: localStorage.getItem('secondlastname') || '',
-      email: localStorage.getItem('email') || ''
+      username: '',
+      lastname: '',
+      secondLastname: '',
+      email: ''
     });
-  }, []);
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('lastname');
+    localStorage.removeItem('secondlastname');
+    localStorage.removeItem('email');
+  };
 
   return (
-    <UserContext.Provider value={{ user, updateUser }}>
+    <UserContext.Provider value={{ user, updateUser, logoutUser }}>
       {children}
     </UserContext.Provider>
   );
 };
+
+export { UserContext, UserProvider };

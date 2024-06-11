@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import "./DTableImagesA.css";
+import "./DTableImagesAW.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faEye } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
 
-const DTableImagesA = () => {
+const DTableImagesAW = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredImagesA, setFilteredImagesA] = useState([]);
   
@@ -141,7 +141,7 @@ const DTableImagesA = () => {
   };
 
   const handleShowCardImages = (row) => {
-    navigate(`/homeAdmin/invernaderos/camas/imagenes-analizadas/ver-imagen`, {
+    navigate(`/homeWorker/invernaderos/camas/imagenes-analizadas/ver-imagen`, {
       state: {
         idAnalizedImage: row.id_analizedImage,
         // detected: row.detected,
@@ -269,4 +269,4 @@ const DTableImagesA = () => {
   );
 };
 
-export default DTableImagesA;
+export default DTableImagesAW;

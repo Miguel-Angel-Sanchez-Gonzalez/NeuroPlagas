@@ -2,24 +2,16 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useLocation } from "react-router-dom";
 import "./SidebarWorker.css";
-import {
-  faHomeUser,
-  faWarehouse,
-  faPersonDigging,
-  faChartBar,
-  faBug,
-  faVirus,
-  faBell,
-} from "@fortawesome/free-solid-svg-icons";
+import {faWarehouse, faBug, faVirus, faBell} from "@fortawesome/free-solid-svg-icons";
 
 const SidebarWorker = () => {
   const { pathname } = useLocation();
   return (
-    <div className="menu-farmer">
-      <div className="menu-list-farmer">
+    <div className="menu-worker">
+      <div className="menu-list-worker">
         <Link
           to="/homeWorker/notificaciones"
-          className={`item-farmer ${
+          className={`item-worker ${
             pathname.includes("notificaciones") ? "active" : ""
           }`}
         >
@@ -28,27 +20,16 @@ const SidebarWorker = () => {
         </Link>
         <Link
           to="/homeWorker/invernaderos"
-          className={`item-farmer ${
+          className={`item-worker ${
             pathname.includes("invernaderos") ? "active" : ""
           }`}
         >
           <FontAwesomeIcon icon={faWarehouse} className="icon" />
           Invernadero
         </Link>
-
-        <Link
-          to="/homeWorker/reportes"
-          className={`item-farmer ${
-            pathname.includes("reportes") ? "active" : ""
-          }`}
-        >
-          <FontAwesomeIcon icon={faChartBar} className="icon" />
-          Reporte
-        </Link>
-
         <Link
           to="/homeWorker/plagas"
-          className={`item-farmer ${
+          className={`item-worker ${
             pathname.includes("plagas") ? "active" : ""
           }`}
         >
@@ -57,7 +38,7 @@ const SidebarWorker = () => {
         </Link>
         <Link
           to="/homeWorker/enfermedades"
-          className={`item-farmer ${
+          className={`item-worker ${
             pathname.includes("enfermedades") ? "active" : ""
           }`}
         >

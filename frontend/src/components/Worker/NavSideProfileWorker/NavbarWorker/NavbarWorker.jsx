@@ -39,19 +39,19 @@ const NavbarWorker = ({ onConfigureProfileClick }) => {
 
   return (
     <div>
-      <div className="menu--nav-farmer">
+      <div className="menu--nav-worker">
         <img src="/images/tomatito.png" alt="" /> {/*Imagen*/}
         <h2>Tomi-Plagas y Enfermedades </h2> {/*Titulo*/}
-        <div className="notify-farmer" ref={menuRef}>
+        <div className="notify-worker" ref={menuRef}>
           <HiMenu className="icon" onClick={toggleMenu} />
           {menuVisible && (
-            <div className="menu-options-farmer">
+            <div className="menu-options-worker">
               <p onClick={onConfigureProfileClick}>Configurar perfil</p>
               <p onClick={handleLogout}>Cerrar sesión</p>
             </div>
           )}
         </div>
-        <div className="user-info-farmer">
+        <div className="user-info-worker">
         <label>{`${user.username} ${user.lastname} ${user.secondLastname}`}</label>
           <br />
           <label>{user.email}</label>

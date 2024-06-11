@@ -48,7 +48,7 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
         <FontAwesomeIcon
           icon={faTrash}
           onClick={() => handleDeleteGreenhouse(row)}
-          className="delete-icon"
+          className="delete-icon-workgren"
           size="lg"
         />
       ),

@@ -1,14 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHomeUser,
-  faWarehouse,
-  faPersonDigging,
-  faChartBar,
-  faBug,
-  faVirus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faHomeUser, faWarehouse, faPersonDigging, faChartBar, faBug, faVirus,} from "@fortawesome/free-solid-svg-icons";
 import "./SidebarAdmin.css";
 
 const SidebarAdmin = () => {

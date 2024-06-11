@@ -2,15 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useLocation } from "react-router-dom";
 import "./SidebarFarmer.css";
-import {
-  faHomeUser,
-  faWarehouse,
-  faPersonDigging,
-  faChartBar,
-  faBug,
-  faVirus,
-  faBell,
-} from "@fortawesome/free-solid-svg-icons";
+import {faWarehouse, faPersonDigging, faChartBar, faBug, faVirus, faBell,} from "@fortawesome/free-solid-svg-icons";
 
 const SidebarFarmer = () => {
   const { pathname } = useLocation();

@@ -1,23 +1,23 @@
-/* .navbar-container-farmer {
+/* .navbar-container-worker {
   width: 100%;
   padding: 10px;
   margin-left: 0px;
   background: #c62426;
 } */
 
-.menu--nav-farmer {
+.menu--nav-worker {
   display: flex;
   align-items: center;
   color: white;
   width: 100%;
 }
 
-.menu--nav-farmer img {
+.menu--nav-worker img {
   width: 60px; /* Ajusta el tamaño de la imagen según sea necesario */
   margin-left: 20px; /* Añade un margen derecho para separar la imagen del título */
 }
 
-.notify-farmer{
+.notify-worker{
   position: relative;
   background: #c62426;
   border-radius: 10px;
@@ -28,12 +28,12 @@
   margin-right: 40px;
 }
 
-.notify-farmer .icon {
+.notify-worker .icon {
   font-size: 30px;
   transition: 0.2s ease-in-out;
 }
 
-.menu-options-farmer {
+.menu-options-worker {
   position: absolute;
   background-color: #fff; /* Fondo blanco */
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1); /* Sombra */
@@ -44,14 +44,14 @@
   margin-left: -60px;
 }
 
-.menu-options-farmer p {
+.menu-options-worker p {
   margin: 5px 0; /* Añade espacio entre las opciones del menú */
   padding: 8px; /* Añade espacio alrededor del texto */
   cursor: pointer; /* Cambia el cursor al pasar sobre las opciones */
   transition: background-color 0.3s ease; /* Transición suave para el cambio de color de fondo */
 }
 
-.menu-options-farmer p:hover {
+.menu-options-worker p:hover {
   background-color: #f5f5f5; /* Cambia el color de fondo al pasar el cursor sobre las opciones */
 }
 
@@ -61,9 +61,9 @@
   cursor: pointer;
 }
 
-.user-info-farmer {
+.user-info-worker {
   position: absolute;
-  right: 160px; /* Centra horizontalmente */
+  right: 110px; /* Centra horizontalmente */
   transform: translateY(-10%); /* Ajusta el centro */
   font-weight: 600;
 }

@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Routes, useNavigate, Navigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
 import "./HomeAdmin.css";
 import NavbarAdmin from "../NavSideProfileAdmin/NavbarAdmin/NavbarAdmin";
 import SidebarAdmin from "../NavSideProfileAdmin/SidebarAdmin/SidebarAdmin";
@@ -20,8 +20,7 @@ const RedirectToAgricultores = () => {
 };
 
 const HomeAdmin = () => {
-  const [showProfileAdmin, setShowProfileAdmin] = React.useState(false);
-  const navigate = useNavigate(); 
+  const [showProfileAdmin, setShowProfileAdmin] = useState(false);
 
   const handleConfigureProfileClick = () => {
     setShowProfileAdmin(true);
@@ -41,7 +40,6 @@ const HomeAdmin = () => {
         <div className="table-container-admin">
           <div className="space-admin">
           <Routes>
-            {/* Sirve para ver las rutas anidadas*/}
             <Route index element={<RedirectToAgricultores />} />
               <Route path="/agricultores" element={<DTableFarmers />} />
               <Route path="/invernaderos" element={<DTableGreenhouses />} />

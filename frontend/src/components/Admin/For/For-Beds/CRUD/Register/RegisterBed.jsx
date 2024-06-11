@@ -147,7 +147,7 @@ const RegisterBed = ({ onCancelClick, idGreenhouse }) => {
             </div>
           </div>
 
-          <div className="button-container-bed ">
+          <div className="button-container-bed-r ">
             <button className="button-bed" type="submit" onClick={handleSubmit}>
               Guardar
             </button>

@@ -19,7 +19,9 @@ const DTableNotifications = () => {
   const navigate = useNavigate();
   const idFarmer = localStorage.getItem("idFarmer");
   const [isLoaded, setIsLoaded] = useState(false);
+  const idWorker = localStorage.getItem("idWorker");
 
+  console.log(idWorker);
   const columns = [
     {
       name: "ID",
@@ -83,6 +85,7 @@ const DTableNotifications = () => {
   const [showEditGreenh, setshowEditGreenh] = useState(false); //Form de edicion
   const [showDeleteGreenh, setshowDeleteGreenh] = useState(false); //Form de eliminacion
   const [greenhouses, setGreenhouses] = useState([]);
+  const [idWorkerGreen, setIDWorkerGreen] = useState("");
 
   useEffect(() => {
     if (!isLoaded) {
@@ -237,7 +240,11 @@ const DTableNotifications = () => {
     //     />
     //   )} */}
     // </div>
-    <div>En construccion</div>
+    <div>En construccion
+      
+
+    </div>
+    
   );
 };
 

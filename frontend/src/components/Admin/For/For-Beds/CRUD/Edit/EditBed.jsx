@@ -152,7 +152,7 @@ const EditBed = ({ onCancelClick, idGreenhouse, idBed }) => {
             </div>
           </div>
 
-          <div className='button-container-bed '>
+          <div className='button-container-bed-e '>
             <button className='button-bed' type="submit" onClick={onConfirmClick}>Guardar</button>
             <button className='button-bed ' onClick={onCancelClick}>Cancelar</button>
           </div>

@@ -1,18 +1,25 @@
 import React, { useState } from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
+import "./HomeWorker.css";
 import NavbarWorker from "../NavSideProfileWorker/NavbarWorker/NavbarWorker";
 import SidebarWorker from "../NavSideProfileWorker/SidebarWorker/SidebarWorker";
-import "./HomeWorker.css";
-import { Route, Routes } from "react-router-dom";
-import DTableGreenhouses from "../For/For-Greenhouses/DTableGreenhouses/DTableGreenhouses";
-import DTableBeds from "../For/For-Beds/DTableBeds/DTableBeds";
+import DTableNotifications from "../For/For-Notifications/DTableNotifications/DTableNotifications";
+import DTableAssgndGreenhouse from "../For/For-Greenhouses/DTableAssgndGreenhouse/DTableAssgndGreenhouse";
+import DTableBedsW from "../For/For-Beds/DTableBeds/DTableBedsW";
 import ProfileWorker from "../NavSideProfileWorker/ProfileWorker/ProfileWorker";
-import DTableImagesA from "../For/For-ImagesAnalized/DTableImagesAnalized/DTableImagesA";
-import DTablePlagues from "../For/For-Plagues/DTablePlagues/DTablePlagues";
-import DTableDiseases from "../For/For-Diseases/DTableDiseases/DTableDiseases";
-import DTableNotifications from "../../Farmer/For/For-Notifications/DTableNotifications/DTableNotifications";
+import DTableImagesAW from "../For/For-ImagesAnalized/DTableImagesAnalized/DTableImagesAW";
+import CardImagesAnalizedW from "../For/For-ImagesAnalized/CardImagesAnalizedW";
+import DTablePlaguesW from "../For/For-Plagues/DTablePlagues/DTablePlaguesW";
+import DTableDiseasesW from "../For/For-Diseases/DTableDiseases/DTableDiseasesW";
+
+const RedirectToNotificaciones = () => {
+  return <Navigate to="/homeWorker/notificaciones" replace />;
+};
+
+
 const HomeWorker = () => {
   const idWorker = localStorage.getItem("idWorker");
-  const [activeSection, setActiveSection] = useState("notifications"); // Establece la sección activa inicialmente como 'farmers'
+
   const [showProfileWorker, setshowProfileWorker] = useState(false);
 
   const handleConfigureProfileClick = () => {
@@ -23,29 +30,30 @@ const HomeWorker = () => {
     setshowProfileWorker(false);
   };
 
-
   return (
     <div>
-      <div className="navbar-container-farmer">
+      <div className="navbar-container-worker">
         <NavbarWorker onConfigureProfileClick={handleConfigureProfileClick} />
       </div>
-      <div className="dashboard-farmer">
-        <SidebarWorker
-          setActiveSection={setActiveSection}
-          activeSection={activeSection}
-        />
-        <div className="table-container-farmer">
-          <div className="space-farmer">
+      <div className="dashboard-worker">
+        <SidebarWorker />
+        <div className="table-container-worker">
+          <div className="space-worker">
             <Routes>
+            <Route index element={<RedirectToNotificaciones />} />
               <Route path="/notificaciones" element={<DTableNotifications />} />
-              <Route path="/invernaderos" element={<DTableGreenhouses />} />
-              <Route path="/invernaderos/camas" element={<DTableBeds />} />
+              <Route path="/invernaderos" element={<DTableAssgndGreenhouse />} />
+              <Route path="/invernaderos/camas" element={<DTableBedsW />} />
               <Route
-                path="/invernaderos/camas/imagenes-analizadas"
-                element={<DTableImagesA />}
+                path="/invernaderos/camas/imagenes-analizadas/"
+                element={<DTableImagesAW />}
               />
-              <Route path="/plagas/" element={<DTablePlagues />} />
-              <Route path="/enfermedades/" element={<DTableDiseases />} />
+              <Route
+                path="/invernaderos/camas/imagenes-analizadas/ver-imagen"
+                element={<CardImagesAnalizedW />}
+              />
+              <Route path="/plagas/" element={<DTablePlaguesW />} />
+              <Route path="/enfermedades/" element={<DTableDiseasesW />} />
             </Routes>
           </div>
         </div>

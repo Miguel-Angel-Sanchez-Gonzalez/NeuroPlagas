@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import "./DTableGreenhouses.css";
+import "./DTableNotifications.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faPencilAlt,
-  faTrash,
-  faEye,
-} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import RegisterGreenhouse from "../CRUD/Register/RegisterGreenhouse";
-import EditGreenhouse from "../CRUD/Edit/EditGreenhouse";
-import DeleteGreenhouse from "../CRUD/Delete/DeleteGreenhouse";
+import { faSearch, faPencilAlt, faTrash, faEye,} from "@fortawesome/free-solid-svg-icons";
+
 //WORKER
-const DTableGreenhouses = () => {
+const DTableNotifications = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredGreenhouses, setFilteredGreenhouses] = useState([]);
   const [idGreenhouse, setIDGreenhouse] = useState("");
@@ -145,12 +138,12 @@ const DTableGreenhouses = () => {
   };
 
   const handleEditClick = (row) => {
-    setIDGreenhouse(row.id_invernadero);
+    //setIDGreenhouse(row.id_invernadero);
     setshowEditGreenh(true);
   };
 
   const handleDeleteClick = (row) => {
-    setIDGreenhouse(row.id_invernadero);
+    //setIDGreenhouse(row.id_invernadero);
     setshowDeleteGreenh(true);
   };
 
@@ -242,4 +235,4 @@ const DTableGreenhouses = () => {
   );
 };
 
-export default DTableGreenhouses;
+export default DTableNotifications;

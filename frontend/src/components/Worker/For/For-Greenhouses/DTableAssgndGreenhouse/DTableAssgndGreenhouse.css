@@ -1,6 +1,7 @@
-.table-bed-admin {
+.table-bed-worker {
   display: flex;
   align-items: inherit;
+  height: autos;
   
 }
 
@@ -8,8 +9,8 @@
   padding-right: 10px;
 }
 
-.back-icon {
-  margin-top: 10px;
+.view-icon-workergren {
+  margin-left: 15px;
   cursor: pointer;
   color: #c62426;
 }

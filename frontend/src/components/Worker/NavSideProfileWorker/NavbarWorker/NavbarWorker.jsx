@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { HiMenu } from "react-icons/hi";
 import "./NavbarWorker.css"; // Importa el archivo de estilos CSS
-
+import ProfileWorker from '../ProfileWorker/ProfileWorker';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../../../UserContext';
 
@@ -37,7 +37,6 @@ const NavbarWorker = ({ onConfigureProfileClick }) => {
   };
 
 
-
   return (
     <div>
       <div className="menu--nav-farmer">
@@ -47,7 +46,7 @@ const NavbarWorker = ({ onConfigureProfileClick }) => {
           <HiMenu className="icon" onClick={toggleMenu} />
           {menuVisible && (
             <div className="menu-options-farmer">
-              <p onClick={onConfigureProfileClick}>Configurar perfil</p>{" "}
+              <p onClick={onConfigureProfileClick}>Configurar perfil</p>
               <p onClick={handleLogout}>Cerrar sesión</p>
             </div>
           )}
@@ -59,7 +58,7 @@ const NavbarWorker = ({ onConfigureProfileClick }) => {
         </div>
       </div>
 
-      {/* {showProfileAdmin && <ProfileAdmin onCancelClick={handleProfileFormCancel} />} */}
+      {showProfileWorker && <ProfileWorker onCancelClick={handleProfileFormCancel} idWorker={1}/>}
     </div>
   );
 };

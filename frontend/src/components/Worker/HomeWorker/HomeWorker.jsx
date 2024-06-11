@@ -5,11 +5,13 @@ import "./HomeWorker.css";
 import { Route, Routes } from "react-router-dom";
 import DTableGreenhouses from "../For/For-Greenhouses/DTableGreenhouses/DTableGreenhouses";
 import DTableBeds from "../For/For-Beds/DTableBeds/DTableBeds";
+import ProfileWorker from "../NavSideProfileWorker/ProfileWorker/ProfileWorker";
 import DTableImagesA from "../For/For-ImagesAnalized/DTableImagesAnalized/DTableImagesA";
 import DTablePlagues from "../For/For-Plagues/DTablePlagues/DTablePlagues";
 import DTableDiseases from "../For/For-Diseases/DTableDiseases/DTableDiseases";
 import DTableNotifications from "../../Farmer/For/For-Notifications/DTableNotifications/DTableNotifications";
 const HomeWorker = () => {
+  const idWorker = localStorage.getItem("idWorker");
   const [activeSection, setActiveSection] = useState("notifications"); // Establece la sección activa inicialmente como 'farmers'
   const [showProfileWorker, setshowProfileWorker] = useState(false);
 
@@ -20,6 +22,7 @@ const HomeWorker = () => {
   const handleProfileFormCancel = () => {
     setshowProfileWorker(false);
   };
+
 
   return (
     <div>
@@ -47,7 +50,9 @@ const HomeWorker = () => {
           </div>
         </div>
       </div>
-      {/*showProfileAdmin && <ProfileAdmin onCancelClick={handleProfileFormCancel} />*/}
+      {showProfileWorker && (
+        <ProfileWorker onCancelClick={handleProfileFormCancel} idWorker={idWorker}/>
+      )}
     </div>
   );
 };

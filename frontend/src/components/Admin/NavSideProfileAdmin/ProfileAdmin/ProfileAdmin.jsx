@@ -3,7 +3,7 @@ import './ProfileAdmin.css';
 import { toast } from "react-toastify";
 import { UserContext } from '../../../../UserContext';
 
-const ProfileAdmin = ({ onCancelClick, onSave }) => {
+const ProfileAdmin = ({ onCancelClick }) => {
   const { user, updateUser } = useContext(UserContext);
   const [records, setRecords] = useState('');
   const [emailExists, setEmailExists] = useState(false);
@@ -220,6 +220,7 @@ const ProfileAdmin = ({ onCancelClick, onSave }) => {
         body: JSON.stringify(data)
       });
       if (response.ok) {
+        onCancelClick();
         setIsLoading(false);
         toast.success('El administrador se actualizó correctamente.', {
           position: "top-center",
@@ -232,8 +233,8 @@ const ProfileAdmin = ({ onCancelClick, onSave }) => {
               secondLastname: data.secondSurname,
               email: data.email
             });
-            if (onSave) onSave(data);
-            if (onCancelClick) onCancelClick();
+            // if (onSave) onSave(data);
+            // if (onCancelClick) onCancelClick();
           }
           
         });

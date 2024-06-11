@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { toast } from "react-toastify";
 import "./ProfileWorker";
 // import AddNotification from "../../../../../LoginNotifications/AddNotification";
+import { UserContext } from '../../../../UserContext';
 
 const ProfileWorker = ({ onCancelClick, idWorker }) => {
+  const { user, updateUser } = useContext(UserContext);
   const [records, setRecords] = useState("");
   const [idFarmer, setIdFarmer] = useState("");
   const [emailExists, setEmailExists] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false); // Nuevo estado para controlar el enfoque en los inputs
   const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Nuevo estado para rastrear si el formulario se ha enviado
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [originalEmail, setOriginalEmail] = useState("");
-  const [idAgricultorResponsable, setidAgricultorResponsable] = useState("");
 
   const [values, setValues] = useState({
     nombre: "",
@@ -213,13 +213,25 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
         body: JSON.stringify(data),
       });
       if (response.ok) {
-        toast.success(`El trabajador se actualizó correctamente.`, {
+        onCancelClick();
+        setIsLoading(false);
+        toast.success('El trabajador se actualizó correctamente.', {
           position: "top-center",
           autoClose: 2000,
           theme: "colored",
+          onClose: () => {
+            updateUser({
+              username: data.name,
+              lastname: data.surname,
+              secondLastname: data.secondSurname,
+              email: data.email
+            });
+            // if (onSave) onSave(data);
+            // if (onCancelClick) onCancelClick();
+          }
+          
         });
-        onCancelClick();
-        setIsLoading(false);
+
       } else {
         const errorMessage = await response.text();
         throw new Error(`Error al editar al trabajador: ${errorMessage}`);

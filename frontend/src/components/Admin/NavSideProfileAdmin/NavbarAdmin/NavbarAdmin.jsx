@@ -21,7 +21,7 @@ const NavbarAdmin = ({ onConfigureProfileClick }) => {
       email: localStorage.getItem('email') || ''
     };
     updateUser(storedUser);
-  }, [updateUser]);
+  }, []);
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
@@ -45,7 +45,7 @@ const NavbarAdmin = ({ onConfigureProfileClick }) => {
           <HiMenu className='icon' onClick={toggleMenu} />
           {menuVisible && (
             <div className="menu-options-admin">
-              <p onClick={onConfigureProfileClick}>Configurar perfil</p> {/* Llama a la función desde las props */}
+              <p onClick={onConfigureProfileClick}>Configurar perfil</p>
               <p onClick={handleLogout}>Cerrar sesión</p>
             </div>
           )}

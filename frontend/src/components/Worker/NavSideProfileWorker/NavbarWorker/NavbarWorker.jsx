@@ -1,53 +1,42 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { HiMenu } from "react-icons/hi";
 import "./NavbarWorker.css"; // Importa el archivo de estilos CSS
 
-const NavbarWorker = ({ onConfigureProfileClick }) => {
-  const storedUsername = localStorage.getItem("username");
-  const storedLastname = localStorage.getItem("lastname");
-  const storedSecondLastname = localStorage.getItem("secondlastname");
-  const storedEmail = localStorage.getItem("email");
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../../../UserContext';
 
-  const [showProfileAdmin, setshowProfileAdmin] = useState(false);
+const NavbarWorker = ({ onConfigureProfileClick }) => {
+  const { user, updateUser, logoutUser } = useContext(UserContext);
+  const [showProfileWorker, setshowProfileWorker] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setMenuVisible(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+    // Actualiza el contexto con los datos de localStorage al cargar el componente
+    const storedUser = {
+      username: localStorage.getItem('username') || '',
+      lastname: localStorage.getItem('lastname') || '',
+      secondLastname: localStorage.getItem('secondlastname') || '',
+      email: localStorage.getItem('email') || ''
     };
+    updateUser(storedUser);
   }, []);
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
 
-  // const handleProfile = () => {
-  //   // Lógica para configurar perfil
-  //   console.log('Configurar perfil');
-  // };
-
   const handleLogout = () => {
-    //Reset de variables
-    localStorage.setItem("token", "");
-    localStorage.setItem("username", "");
-    localStorage.setItem("lastname", "");
-    localStorage.setItem("secondlastname", "");
-    localStorage.setItem("email", "");
-    // Redirige al usuario a la página de inicio de sesión
-    window.location.href = "/login";
+    logoutUser();
+    navigate('/login');
   };
 
-  // const handleProfileFormCancel = () => {
-  //   setshowProfileAdmin(false);
-  // };
+  const handleProfileFormCancel = () => {
+    setshowProfileWorker(false);
+  };
+
+
 
   return (
     <div>
@@ -59,21 +48,18 @@ const NavbarWorker = ({ onConfigureProfileClick }) => {
           {menuVisible && (
             <div className="menu-options-farmer">
               <p onClick={onConfigureProfileClick}>Configurar perfil</p>{" "}
-              {/* Llama a la función desde las props */}
               <p onClick={handleLogout}>Cerrar sesión</p>
             </div>
           )}
         </div>
         <div className="user-info-farmer">
-          <label>
-            {storedUsername + " " + storedLastname + " " + storedSecondLastname}
-          </label>
+        <label>{`${user.username} ${user.lastname} ${user.secondLastname}`}</label>
           <br />
-          <label>{storedEmail}</label>
+          <label>{user.email}</label>
         </div>
       </div>
 
-      {/*showProfileAdmin && <ProfileAdmin onCancelClick={handleProfileFormCancel} />*/}
+      {/* {showProfileAdmin && <ProfileAdmin onCancelClick={handleProfileFormCancel} />} */}
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./RegisterWorker.css";
 import AddNotification from "../../../../../LoginNotifications/AddNotification";
+import { toast } from "react-toastify";
 
 const RegisterWorker = ({ onCancelClick }) => {
   const [records, setRecords] = useState("");
@@ -166,18 +167,20 @@ const RegisterWorker = ({ onCancelClick }) => {
         body: JSON.stringify(data),
       });
       if (response.status === 201) {
-        console.log("La respuesta es 201 entre aca");
         setIsLoading(false);
-
-        setTimeout(() => {
-          setLoadingMessage("Se ha agregado correctamente el trabajador.");
-          onCancelClick();
-        }, 1500);
-        setLoadingMessage("");
+        toast.success(`Se ha registrado al trabajador`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
+        onCancelClick();
       }
     } catch (error) {
-      console.error("Error al agregar el trabajador:", error);
-      setRecords("Por favor, inténtelo de nuevo más tarde.");
+      toast.error(`Hubo un error al registrar al trabajador: ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
       setIsLoading(false);
     }
   };

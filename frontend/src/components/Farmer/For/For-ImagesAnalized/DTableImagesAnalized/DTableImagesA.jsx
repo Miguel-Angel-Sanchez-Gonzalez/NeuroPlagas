@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTableImagesA.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faEye } from "@fortawesome/free-solid-svg-icons";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDropzone } from "react-dropzone";
+import { toast } from "react-toastify";
 
 //FARMER
 const DTableImagesA = () => {
@@ -12,7 +14,8 @@ const DTableImagesA = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   //Para ver las imagenes analizadas de una cama
   const location = useLocation();
-  const { nameGreenhouse, nameFarmer, numberBed, idBed } = location.state || [];
+  const { nameGreenhouse, numberBed, idBed } = location.state || [];
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -60,13 +63,27 @@ const DTableImagesA = () => {
       name: "Imagen",
       cell: (row) => (
         <div className="icons-container">
-          <FontAwesomeIcon icon={faEye} className="view-icon" size="lg" />
+          <FontAwesomeIcon
+            icon={faEye}
+            onClick={() => handleShowCardImages(row)}
+            className="view-icon"
+            size="lg"
+          />
         </div>
       ),
       width: "90px",
     },
   ];
-
+  const handleShowCardImages = (row) => {
+    navigate(`/homeFarmer/invernaderos/camas/imagenes-analizadas/ver-imagen`, {
+      state: {
+        idAnalizedImage: row.id_analizedImage,
+        // detected: row.detected,
+        // imageUrl: row.image,
+        idBed: idBed,
+      },
+    });
+  };
   //const [showDataTableBeds, setshowDataTableBeds] = useState(false); //Form para ver las camas de un invernadero
   const [imagesAnalized, setImagesAnalized] = useState([]);
 
@@ -83,10 +100,13 @@ const DTableImagesA = () => {
     }
   };
 
-  const sendImageToBackend = async (file) => {
+  const sendImageToBackend = async (e) => {
+    e.preventDefault();
     try {
       const formData = new FormData();
-      formData.append("image", file);
+      formData.append("image", acceptedFiles[0]);
+      //setAcceptedFiles([]);
+      console.log(formData);
       const response = await fetch(
         `http://localhost:3000/analyzeimage/web/${idBed}`,
         {
@@ -94,10 +114,22 @@ const DTableImagesA = () => {
           body: formData,
         }
       );
+      console.log(response);
       if (response.status === 200) {
         setIsLoaded(false);
+        toast.success(`Se ha analizado la imagen`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
       }
-    } catch (error) {}
+    } catch (error) {
+      toast.error(`Hubo un error ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
+    }
   };
 
   const getImageAByIdBed = async () => {
@@ -107,7 +139,7 @@ const DTableImagesA = () => {
       );
       if (response.status === 200) {
         const data = await response.json();
-        console.log("Respuesta del servidor:", data);
+        // console.log("Respuesta del servidor:", data);
         setImagesAnalized(data);
         setFilteredImagesA(data);
         setIsLoaded(true);
@@ -141,7 +173,11 @@ const DTableImagesA = () => {
     selectAllRowsItem: true,
     selectAllRowsItemText: "Todos",
   };
-
+  const onDrop = useCallback((acceptedFiles) => {
+    console.log(acceptedFiles[0]);
+  }, []);
+  const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
+    useDropzone({ onDrop });
   return (
     <div className="table-imagesA-admin">
       <div className="right-content-imageA">
@@ -191,14 +227,50 @@ const DTableImagesA = () => {
           />
         </div>
 
-        <div style={{ marginTop: "5%", alignContent: "center" }}>
-          <h3>Analiza una imagen</h3>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleChooseImage}
-            id="fileInput"
-          />
+        <div className="image-uploader-container">
+          <div
+            className="image-uploader"
+            {...getRootProps({ onClick: (event) => event.stopPropagation() })}
+            style={{
+              height: "auto",
+              width: "300px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <input {...getInputProps()} />
+            {isDragActive ? (
+              <p>Suelta la imagen aquí...</p>
+            ) : (
+              <div>
+                <h3>Analiza una imagen</h3>
+                <p>
+                  Arrastra y suelta una imagen aquí o haz clic para seleccionar
+                </p>
+              </div>
+            )}
+            {acceptedFiles[0] && (
+              <img
+                src={URL.createObjectURL(acceptedFiles[0])}
+                alt=""
+                style={{
+                  marginTop: "10px",
+                  maxWidth: "60%",
+                  maxHeight: "200px",
+                  background: "#dd585a2c",
+                }}
+              />
+            )}
+            <button
+              type="button"
+              className="buttonImage"
+              onClick={sendImageToBackend}
+            >
+              Analizar imagen
+            </button>
+          </div>
         </div>
       </div>
     </div>

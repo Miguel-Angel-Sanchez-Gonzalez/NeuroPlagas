@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./EditWorker.css";
 import AddNotification from "../../../../../LoginNotifications/AddNotification";
+import { toast } from "react-toastify";
 
 const EditWorker = ({ onCancelClick, idWorker }) => {
   const [records, setRecords] = useState("");
@@ -211,20 +212,26 @@ const EditWorker = ({ onCancelClick, idWorker }) => {
       body: JSON.stringify(data),
     })
       .then((response) => {
-        if (response.ok) {
+        if (response.status === 200) {
+          toast.success(`El trabajador se actualizó correctamente.`, {
+            position: "top-center",
+            autoClose: 2000,
+            theme: "colored",
+          });
+          onCancelClick();
           setIsLoading(false);
-          setLoadingMessage("El trabajador se actualizó correctamente.");
-          setTimeout(() => {
-            setLoadingMessage(""); // Oculta el mensaje después de unos segundos
-            onCancelClick();
-          }, 1500);
-        } else {
-          throw new Error("No se pudo actualizar el trabajador");
         }
       })
       .catch((error) => {
-        console.error("Error al actualizar el trabajador:", error);
-        alert("Error al actualizar el trabajador");
+        toast.error(
+          `Error al editar al trabajador, inténtelo más tarde: ${error}`,
+          {
+            position: "top-center",
+            autoClose: 2000,
+            theme: "colored",
+          }
+        );
+        setIsLoading(false);
       });
   };
 

@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
   faPencilAlt,
   faTrash,
-  faList,
 } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 import "./DTableWorkers.css";
 import RegisterWorker from "../CRUD/Register/RegisterWorker";
 import EditWorker from "../CRUD/Edit/EditWorker";
 import DeleteWorker from "../CRUD/Delete/DeleteWorker";
 
 /*Trabajadores*/
-
+//FARMER
 const DTableWorkers = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredWorkers, setFilteredWorkers] = useState([]);
   const [idWorker, setIDWorker] = useState("");
-  const idFarmer = localStorage.getItem("idFarmer");
+  const [isDataLoaded, setDataLoaded] = useState(false);
+
+  const navigate = useNavigate();
+
   const columns = [
     {
       name: "ID",
@@ -27,41 +31,41 @@ const DTableWorkers = () => {
       width: "65px",
     },
     {
-      name: "Nombre",
+      name: "Nombre(s)",
       selector: (row) => row.nombre,
       sortable: true,
-      width: "100px",
+      width: "150px",
     },
     {
       name: "Primer apellido",
       selector: (row) => row.primer_apellido,
       sortable: true,
-      width: "160px",
+      width: "150px",
     },
     {
       name: "Segundo apellido",
       selector: (row) => row.segundo_apellido,
       sortable: true,
-      width: "160px",
+      width: "150px",
     },
     {
       name: "Ver invernaderos",
-      selector: (row) => row.id_invernadero,
-      selector: (row) => row.id_invernadero,
       cell: (row) => (
         <div>
-          {row.id_invernadero}
-          <button className="verInvernaderos-button">
-            <FontAwesomeIcon icon={faList} size="lg" />
+          <button
+            className="verInvernaderos-button"
+            onClick={() => handleShowGWorkers(row)}
+          >
+            Listar
           </button>
         </div>
       ),
-      width: "140px",
+      width: "120px",
     },
     {
       name: "Teléfono",
       selector: (row) => row.telefono,
-      width: "140px",
+      width: "130px",
     },
     {
       name: "Correo electrónico",
@@ -77,7 +81,7 @@ const DTableWorkers = () => {
     {
       name: "Contraseña",
       selector: (row) => "********",
-      width: "110px",
+      width: "100px",
     },
     {
       name: "Acciones",
@@ -100,35 +104,43 @@ const DTableWorkers = () => {
       width: "90px",
     },
   ];
-  const [isLoaded, setIsLoaded] = useState(false);
   const [showRegisterWorker, setShowRegisterWorker] = useState(false); //Form de register
   const [showEditWorker, setShowEditWorker] = useState(false); //Form de edicion
   const [showDeleteWorker, setShowDeleteWorker] = useState(false); //Form de eliminacion
   const [workers, setWorkers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const idFarmer = localStorage.getItem("idFarmer");
 
   useEffect(() => {
-    if (!isLoaded) {
+    if (!isDataLoaded) {
       getWorkers();
     }
-  }, [isLoaded]);
+  }, [isDataLoaded]);
 
-  /*FUNCIONES*/
-  async function getWorkers() {
+  const getWorkers = async () => {
     try {
+      setIsLoading(true); // Indicar que se están cargando los trabajadores
       const response = await fetch(
-        `http://localhost:3000/farmer/getWorkers/${idFarmer}`
+        `http://localhost:3000/farmer/getworkers/${idFarmer}`
       );
       if (response.status === 200) {
         const data = await response.json();
         setWorkers(data);
         setFilteredWorkers(data);
-        setIsLoaded(true);
+      } else if (response.status === 404) {
+        setWorkers([]);
+        setFilteredWorkers([]);
       }
+      setDataLoaded(true);
     } catch (error) {
       console.error("Error al obtener los trabajadores:", error);
+      toast.error(
+        "Hubo un problema al cargar los datos de los trabajadores. Por favor, inténtelo nuevamente más tarde."
+      );
+    } finally {
+      setIsLoading(false);
     }
-  }
-
+  };
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
     setInputValue(value);
@@ -159,7 +171,7 @@ const DTableWorkers = () => {
     setShowRegisterWorker(false);
     setShowEditWorker(false);
     setShowDeleteWorker(false);
-    setIsLoaded(false);
+    setDataLoaded(false);
   };
 
   const handleEditClick = (row) => {
@@ -172,6 +184,26 @@ const DTableWorkers = () => {
     //console.log("ID del registro a eliminar:", row.id_trabajador);
     setShowDeleteWorker(true);
     setIDWorker(row.id_trabajador);
+  };
+
+  //Para ver la tabla de invernaderos
+  const handleShowGWorkers = (row) => {
+    try {
+      navigate(`/homeFarmer/trabajadores/invernaderos`, {
+        state: {
+          idWorker: row.id_trabajador,
+          nameWorker: row.nombre,
+        },
+      });
+    } catch (error) {
+      console.error(
+        "Error al navegar a la sección de lo invernaderos asignados a un trabajador:",
+        error
+      );
+      alert(
+        "Error al intentar mostrar los invernaderos asignados a un trabajador"
+      );
+    }
   };
 
   const paginacionOpciones = {
@@ -189,7 +221,7 @@ const DTableWorkers = () => {
             {" "}
             <h4>Trabajadores</h4>
             <label className="description-worker">
-              Lista de todos los trabajadores que tienes registrado
+              Lista de todos los trabajadores que existen en el sistema
             </label>
           </div>
         }
@@ -220,9 +252,16 @@ const DTableWorkers = () => {
           </div>
         }
         noDataComponent={
-          <div style={{ marginTop: "15%" }}>
-            Aún no hay agricultores registrados
-          </div>
+          isLoading ? ( // Mostrar mensaje de carga si isLoading es true
+            <div className="no-beds-message">
+              Espere un momento, los datos de los trabajadores se están
+              cargando...
+            </div>
+          ) : (
+            <div className="no-beds-message">
+              Aún no se han registrado trabajadores.
+            </div>
+          )
         }
       />
       {showRegisterWorker && (

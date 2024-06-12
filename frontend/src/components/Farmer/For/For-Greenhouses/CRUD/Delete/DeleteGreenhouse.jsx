@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import "./DeleteGreenhouse.css";
 
 const DeleteGreenhouse = ({ onCancelClick, idGreenhouse }) => {
@@ -11,15 +12,27 @@ const DeleteGreenhouse = ({ onCancelClick, idGreenhouse }) => {
         },
       })
         .then((response) => {
-          if (response.ok) {
+          if (response.status === 200) {
+            toast.success("Se ha eliminado el invernadero", {
+              position: "top-center",
+              autoClose: 2000,
+              theme: "colored",
+            });
             onCancelClick();
           } else {
-            throw new Error("Error al eliminar el invernadero");
+            toast.error(`Ha surgido un problema al eliminar el invernadero: `, {
+              position: "top-center",
+              autoClose: 2000,
+              theme: "colored",
+            });
           }
         })
         .catch((error) => {
-          console.error("Error al eliminar el invernadero:", error);
-          alert("Error al eliminar el invernadero");
+          toast.error(`Ha surgido un problema al eliminar el invernadero: `, {
+            position: "top-center",
+            autoClose: 2000,
+            theme: "colored",
+          });
         });
     } catch (error) {
       console.error("Error al eliminar el invernadero:", error);

@@ -1,4 +1,5 @@
 import React from "react";
+import { toast } from "react-toastify";
 import "./DeleteWorker.css";
 
 const DeleteWorker = ({ onCancelClick, idWorker }) => {
@@ -10,15 +11,21 @@ const DeleteWorker = ({ onCancelClick, idWorker }) => {
       },
     })
       .then((response) => {
-        if (response.ok) {
+        if (response.status === 200) {
+          toast.success(`Se ha eliminado al trabajor`, {
+            position: "top-center",
+            autoClose: 2000,
+            theme: "colored",
+          });
           onCancelClick();
-        } else {
-          alert("Error al eliminar el trabajador");
         }
       })
       .catch((error) => {
-        console.error("Error al eliminar el trabajador:", error);
-        alert("Error al eliminar el trabajador");
+        toast.error(`Hubo un problema al eliminar al trabajador:${error}`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
       });
   };
 

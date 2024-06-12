@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./RegisterBed.css";
 import AddNotification from "../../../../../LoginNotifications/AddNotification";
+import { toast } from "react-toastify";
 
 const RegisterBed = ({ onCancelClick, idGreenhouse }) => {
   const [records, setRecords] = useState("");
@@ -53,27 +54,30 @@ const RegisterBed = ({ onCancelClick, idGreenhouse }) => {
       idGreenhouse: idGreenhouse,
     };
 
-    //Se esta haciendo la promesa
-    //Post para insertar los datos de un invernadero
-    const response = await fetch("http://localhost:3000/bed/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    if (response) {
-      const responseData = await response.json();
-      const { id } = responseData; // Obtiene el ID del agricultor del backend
-      setIsLoading(false);
-      setLoadingMessage("Se ha agregado correctamente la cama.");
-      setTimeout(() => {
-        setLoadingMessage(""); // Oculta el mensaje después de unos segundos
+    try {
+      const response = await fetch("http://localhost:3000/bed/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (response.status === 201) {
         onCancelClick();
-      }, 1500); // Mostrar el mensaje durante 3 segundos
-    } else {
-      alert("Por favor, inténtelo de nuevo más tarde.");
-      setIsLoading(false); // Agregar para detener la pantalla de carga
+        setIsLoading(false);
+        toast.success("Se ha registrado la cama", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
+      }
+      setIsLoading(false);
+    } catch (error) {
+      toast.error(`Hubo un error ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
     }
   };
 

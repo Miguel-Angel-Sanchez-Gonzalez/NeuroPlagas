@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./EditGreenhouse.css";
 import AddNotification from "../../../../../LoginNotifications/AddNotification";
 import GreenhouseType from "../../ComboBox/GreenhouseType";
+import { toast } from "react-toastify";
 
 const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
   const [records, setRecords] = useState("");
@@ -142,19 +143,27 @@ const EditGreenhouse = ({ onCancelClick, idGreenhouse }) => {
       body: JSON.stringify(data),
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("No se pudo actualizar el invernadero");
-        }
-        setIsLoading(false);
-        setLoadingMessage("El invernadero se actualizó correctamente.");
-        setTimeout(() => {
+        if (response.status === 200) {
+          setIsLoading(false);
+          toast.success(`El invernadero se actualizó correctamente.`, {
+            position: "top-center",
+            autoClose: 2000,
+            theme: "colored",
+          });
           onCancelClick();
-          setLoadingMessage("");
-        }, 1500);
+          setIsLoading(false);
+        }
       })
       .catch((error) => {
-        console.error("Error al actualizar el invernadero:", error);
-        alert("Error al actualizar el invernadero");
+        toast.error(
+          `Error al editar al agricultor, inténtelo más tarde: ${error}`,
+          {
+            position: "top-center",
+            autoClose: 2000,
+            theme: "colored",
+          }
+        );
+        setIsLoading(false);
       });
   };
 

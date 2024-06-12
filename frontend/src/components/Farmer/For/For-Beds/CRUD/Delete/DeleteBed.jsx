@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import "./DeleteBed.css";
 
 const DeleteGreenhouse = ({ onCancelClick, idBed }) => {
@@ -10,13 +11,21 @@ const DeleteGreenhouse = ({ onCancelClick, idBed }) => {
       },
     })
       .then((response) => {
-        if (response.ok) {
+        if (response.status === 200) {
           onCancelClick();
-        } else {
+          toast.success(`Se ha eliminado la cama`, {
+            position: "top-center",
+            autoClose: 2000,
+            theme: "colored",
+          });
         }
       })
       .catch((error) => {
-        console.error("Error al eliminar la cama:", error);
+        toast.error(`Hubo un error al eliminar la cama: ${error}`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
       });
   };
 

@@ -4,6 +4,7 @@ import AddNotification from "../../../../../LoginNotifications/AddNotification";
 import GreenhouseType from "../../ComboBox/GreenhouseType";
 
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const RegisterGreenhouse = ({ onCancelClick }) => {
   const [records, setRecords] = useState("");
@@ -112,19 +113,21 @@ const RegisterGreenhouse = ({ onCancelClick }) => {
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        throw new Error("Error al agregar el invernadero");
-      }
-
-      setIsLoading(false);
-      setLoadingMessage("Se ha agregado correctamente el invernadero.");
-      setTimeout(() => {
-        setLoadingMessage("");
+      if (response.status === 201) {
+        setIsLoading(false);
+        toast.success(`Se ha registrado el invernadero`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
         onCancelClick();
-      }, 1500);
+      }
     } catch (error) {
-      console.error("Error al agregar el invernadero:", error);
-      setRecords("Por favor, inténtelo de nuevo más tarde.");
+      toast.error(`Hubo un problema ${error.message}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
       setIsLoading(false);
     }
   };

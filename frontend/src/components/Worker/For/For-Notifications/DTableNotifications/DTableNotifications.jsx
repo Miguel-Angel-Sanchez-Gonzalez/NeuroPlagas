@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTableNotifications.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faCheck } from "@fortawesome/free-solid-svg-icons";
 import NotificationSwitch from "../NotificationSwitch/NotificationSwitch";
 import { useNavigate } from "react-router-dom";
 
@@ -13,8 +13,10 @@ const DTableNotifications = () => {
   const idWorker = localStorage.getItem("idWorker");
   const [isLoaded, setIsLoaded] = useState(false);
   const [status, setStatus] = useState("Sin ver");
-  const [idGreenhouse, setIDGreenhouse] = useState("");
+  const [errorLoading, setErrorLoading] = useState(false); // Nuevo estado para controlar el error al cargar notificaciones
   const navigate = useNavigate();
+  const [id_imagenanalizada, setIDimagenanalizada] = useState("");
+  const [Statusimagenanalizada, setStatusimagenanalizada] = useState("");
 
   const columns = [
     {
@@ -66,21 +68,18 @@ const DTableNotifications = () => {
       width: "240px",
     },
     {
-      name: "Acciones",
+      name: "Cambiar estado",
       cell: (row) => (
         <div className="icons-container">
-          <input type="checkbox" />
-        </div>, 
-
         <FontAwesomeIcon
-        icon={faEye}
-        onClick={() => handleDetailNotifications(row)}
+        icon={faCheck}
+        onClick={() => handleChangeNotification(row)}
         className="view-icon-workergren"
         size="lg"
         />
-        
+        </div>
       ),
-      width: "100px",
+      width: "150px",
     },
   ];
 
@@ -105,9 +104,11 @@ const DTableNotifications = () => {
       }
     } catch (error) {
       console.error("Error al obtener las notificaciones:", error);
-      // alert("Error al obtener las notificaciones, inténtelo más tarte:");
+      setFilteredNotifications([]);
+      setIsLoaded(true); 
     }
   }
+  
 
   const handleFilter = (event) => {
     try {
@@ -136,6 +137,38 @@ const DTableNotifications = () => {
         fecha: row.fecha
       },
     });
+  };
+
+  const handleChangeNotification = async (row) => {
+    setIDimagenanalizada(row.id_imagenanalizada);
+    setStatusimagenanalizada(row.estado);
+
+    const confirmation = window.confirm("¿Estás seguro de que deseas cambiar el estado de esta notificación?");
+    if (!confirmation) {
+      return;
+    }
+
+    const newStatus = row.estado === "Sin ver" ? "Tratada" : "Sin ver";
+
+    try {
+      const response = await fetch(`http://localhost:3000/analizedImage/${row.id_imagenanalizada}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (response.status === 200) {
+        alert("Estado actualizado correctamente");
+        getNotifications();
+      } else {
+        throw new Error("Error al actualizar el estado");
+      }
+    } catch (error) {
+      console.error("Error al actualizar el estado:", error);
+      alert("Error al actualizar el estado, inténtelo más tarde.");
+    }
   };
 
   const handleStatusChange = async (newStatus) => {
@@ -167,6 +200,15 @@ const DTableNotifications = () => {
         fixedHeader
         pagination
         paginationComponentOptions={paginacionOpciones}
+        noDataComponent={
+          isLoaded ? (
+            <div className="no-notifications-message">
+              No hay notificaciones {status.toLowerCase()} registradas
+            </div>
+          ) : (
+            <div className="loading-message">Cargando...</div>
+          )
+        }
         actions={
           <div className="header-table-worker">
             <FontAwesomeIcon icon={faSearch} className="search" />
@@ -178,11 +220,6 @@ const DTableNotifications = () => {
               className="searchNotification"
             />
             <NotificationSwitch onChange={handleStatusChange} />
-          </div>
-        }
-        noDataComponent={
-          <div className="no-notifications-message">
-            No hay notificaciones registradas
           </div>
         }
       />

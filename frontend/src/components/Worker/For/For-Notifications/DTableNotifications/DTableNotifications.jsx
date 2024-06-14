@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTableNotifications.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faEye } from "@fortawesome/free-solid-svg-icons";
 import NotificationSwitch from "../NotificationSwitch/NotificationSwitch";
+import { useNavigate } from "react-router-dom";
 
 //WORKER
 const DTableNotifications = () => {
@@ -12,6 +13,8 @@ const DTableNotifications = () => {
   const idWorker = localStorage.getItem("idWorker");
   const [isLoaded, setIsLoaded] = useState(false);
   const [status, setStatus] = useState("Sin ver");
+  const [idGreenhouse, setIDGreenhouse] = useState("");
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -67,7 +70,15 @@ const DTableNotifications = () => {
       cell: (row) => (
         <div className="icons-container">
           <input type="checkbox" />
-        </div>
+        </div>, 
+
+        <FontAwesomeIcon
+        icon={faEye}
+        onClick={() => handleDetailNotifications(row)}
+        className="view-icon-workergren"
+        size="lg"
+        />
+        
       ),
       width: "100px",
     },
@@ -117,6 +128,14 @@ const DTableNotifications = () => {
       console.error("Error durante el filtrado:", error);
       alert("Error durante el filtrado de invernaderos " + error);
     }
+  };
+
+  const handleDetailNotifications = (row) => {
+    navigate(`/homeWorker/notificaciones/detalles`, {
+      state: {
+        fecha: row.fecha
+      },
+    });
   };
 
   const handleStatusChange = async (newStatus) => {

@@ -6,14 +6,13 @@ import { faSearch, faCheck } from "@fortawesome/free-solid-svg-icons";
 import NotificationSwitch from "../NotificationSwitch/NotificationSwitch";
 import { useNavigate } from "react-router-dom";
 
-//WORKER
 const DTableNotifications = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredNotifications, setFilteredNotifications] = useState([]);
   const idWorker = localStorage.getItem("idWorker");
   const [isLoaded, setIsLoaded] = useState(false);
   const [status, setStatus] = useState("Sin ver");
-  const [errorLoading, setErrorLoading] = useState(false); // Nuevo estado para controlar el error al cargar notificaciones
+  const [errorLoading, setErrorLoading] = useState(false);
   const navigate = useNavigate();
   const [id_imagenanalizada, setIDimagenanalizada] = useState("");
   const [Statusimagenanalizada, setStatusimagenanalizada] = useState("");
@@ -71,12 +70,12 @@ const DTableNotifications = () => {
       name: "Cambiar estado",
       cell: (row) => (
         <div className="icons-container">
-        <FontAwesomeIcon
-        icon={faCheck}
-        onClick={() => handleChangeNotification(row)}
-        className="view-icon-workergren"
-        size="lg"
-        />
+          <FontAwesomeIcon
+            icon={faCheck}
+            onClick={() => handleChangeNotification(row)}
+            className="view-icon-workergren"
+            size="lg"
+          />
         </div>
       ),
       width: "150px",
@@ -105,10 +104,9 @@ const DTableNotifications = () => {
     } catch (error) {
       console.error("Error al obtener las notificaciones:", error);
       setFilteredNotifications([]);
-      setIsLoaded(true); 
+      setIsLoaded(true);
     }
   }
-  
 
   const handleFilter = (event) => {
     try {
@@ -134,7 +132,7 @@ const DTableNotifications = () => {
   const handleDetailNotifications = (row) => {
     navigate(`/homeWorker/notificaciones/detalles`, {
       state: {
-        fecha: row.fecha
+        fecha: row.fecha,
       },
     });
   };
@@ -143,7 +141,9 @@ const DTableNotifications = () => {
     setIDimagenanalizada(row.id_imagenanalizada);
     setStatusimagenanalizada(row.estado);
 
-    const confirmation = window.confirm("¿Estás seguro de que deseas cambiar el estado de esta notificación?");
+    const confirmation = window.confirm(
+      "¿Estás seguro de que deseas cambiar el estado de esta notificación?"
+    );
     if (!confirmation) {
       return;
     }
@@ -151,13 +151,16 @@ const DTableNotifications = () => {
     const newStatus = row.estado === "Sin ver" ? "Tratada" : "Sin ver";
 
     try {
-      const response = await fetch(`http://localhost:3000/analizedImage/${row.id_imagenanalizada}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
+      const response = await fetch(
+        `http://localhost:3000/analizedImage/${row.id_imagenanalizada}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status: newStatus }),
+        }
+      );
 
       if (response.status === 200) {
         alert("Estado actualizado correctamente");
@@ -219,7 +222,10 @@ const DTableNotifications = () => {
               onChange={handleFilter}
               className="searchNotification"
             />
-            <NotificationSwitch onChange={handleStatusChange} />
+            <div className="switch-container">
+              <span className="switch-label">{status}</span>
+              <NotificationSwitch onChange={handleStatusChange} />
+            </div>
           </div>
         }
       />

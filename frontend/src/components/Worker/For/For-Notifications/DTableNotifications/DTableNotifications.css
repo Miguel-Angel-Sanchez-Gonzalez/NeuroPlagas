@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-  
+
 /* CSS para hacer responsivo el DataTable */
 .table-greenhouse-worker {
   margin-top: 10px;
@@ -8,14 +8,12 @@
   max-height: 70%;
 }
 
-
-.header-table-greenhouse{
+.header-table-greenhouse {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
   background-color: #fff;
-  
 }
 
 .search {
@@ -24,13 +22,13 @@
   color: #c62426;
   align-items: right;
 }
-  
-.icon:hover{
-  transform: scale(1.5,1.5);
-   cursor: pointer;
+
+.icon:hover {
+  transform: scale(1.5, 1.5);
+  cursor: pointer;
 }
-  
-.buttonInvernadero{
+
+.buttonInvernadero {
   padding: 10px 15px;
   color: white;
   background-color: #c62426;
@@ -38,7 +36,7 @@
   border-radius: 10px;
 }
 
-input{
+input {
   padding: 10px 20px;
   margin: 0 10px;
   outline: none;
@@ -46,8 +44,7 @@ input{
   color: black;
 }
 
-
-::placeholder{
+::placeholder {
   color: black;
 }
 
@@ -57,7 +54,6 @@ input{
   align-items: center;
   height: 100%; /* Asegura que la altura de la celda sea ocupada por los iconos */
 }
-
 
 .edit-icon {
   margin-right: 5px; /* Ajusta la separación entre el icono de editar y el de eliminar */
@@ -75,7 +71,7 @@ input{
   cursor: pointer;
 }
 
-.view-icon{
+.view-icon {
   margin-left: 8px; /* Ajusta la separación entre el icono de eliminar y otros elementos */
   justify-content: center;
   color: #c62426;
@@ -83,12 +79,42 @@ input{
   cursor: pointer;
 }
 
-.description-greenhouse{
+.description-greenhouse {
   display: block;
   font-size: 15px;
   margin-top: 10px;
 }
 
-.searchGreenhouse{
+.searchGreenhouse {
   max-width: 30%;
+}
+
+/* Estilos adicionales para el NotificationSwitch */
+.header-table-worker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.searchNotification {
+  margin-right: 10px;
+}
+
+.switch-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.switch-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #c62426;
+}
+
+.MuiSwitch-root {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+  border-radius: 20px; /* Asegura que las esquinas sean redondeadas */
+  background-color: white; /* Asegura el fondo blanco */
+  padding: 5px; /* Espaciado alrededor del switch */
 }

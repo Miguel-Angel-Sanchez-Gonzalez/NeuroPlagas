@@ -113,8 +113,8 @@ input {
 }
 
 .MuiSwitch-root {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra sutil */
-  border-radius: 20px; /* Asegura que las esquinas sean redondeadas */
-  background-color: white; /* Asegura el fondo blanco */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Sombra */
+  border-radius: 20px; /* Esquinas sean redondeadas */
+  background-color: white; /* Fondo blanco */
   padding: 5px; /* Espaciado alrededor del switch */
 }

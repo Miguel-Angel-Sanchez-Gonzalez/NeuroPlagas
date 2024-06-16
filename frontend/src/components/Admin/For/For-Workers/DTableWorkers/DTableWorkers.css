@@ -96,3 +96,13 @@ input{
   border-radius: 5px;
   font-size: 15x;
 }
+
+.rol-worker {
+  color: #c62426;
+  font-size: 20px;
+}
+
+.rol-worker2 {
+  color: #c62426;
+  font-size: 32px;
+}

@@ -14,8 +14,6 @@ const DTableNotifications = () => {
   const [status, setStatus] = useState("Sin ver");
   const [errorLoading, setErrorLoading] = useState(false);
   const navigate = useNavigate();
-  const [id_imagenanalizada, setIDimagenanalizada] = useState("");
-  const [Statusimagenanalizada, setStatusimagenanalizada] = useState("");
 
   const columns = [
     {
@@ -138,9 +136,6 @@ const DTableNotifications = () => {
   };
 
   const handleChangeNotification = async (row) => {
-    setIDimagenanalizada(row.id_imagenanalizada);
-    setStatusimagenanalizada(row.estado);
-
     const confirmation = window.confirm(
       "¿Estás seguro de que deseas cambiar el estado de esta notificación?"
     );
@@ -187,48 +182,52 @@ const DTableNotifications = () => {
 
   return (
     <div className="table-greenhouse-worker">
-      <div>
-        <h2 className="h2worker">
-          Tus <span className="rol-admin">notificaciones</span>
-        </h2>
-        <p className="subtitle">
-          Actualmente mostrando notificaciones {status.toLowerCase()}
-        </p>
-      </div>
-      <DataTable
-        title={null}
-        columns={columns}
-        data={filteredNotifications}
-        responsive={true}
-        fixedHeader
-        pagination
-        paginationComponentOptions={paginacionOpciones}
-        noDataComponent={
-          isLoaded ? (
-            <div className="no-notifications-message">
-              No hay notificaciones {status.toLowerCase()} registradas
-            </div>
-          ) : (
-            <div className="loading-message">Cargando...</div>
-          )
-        }
-        actions={
-          <div className="header-table-worker">
-            <FontAwesomeIcon icon={faSearch} className="search" />
-            <input
-              type="text"
-              placeholder="Buscar..."
-              value={inputValue}
-              onChange={handleFilter}
-              className="searchNotification"
-            />
-            <div className="switch-container">
-              <span className="switch-label">{status}</span>
-              <NotificationSwitch onChange={handleStatusChange} />
+      <div className="right-content-notification">
+        <h1 className="h1worker">
+          Tus <span className="rol-worker2">notificaciones</span>
+        </h1>
+        <div className="only-table-notification">
+          <div className="title-and-search-notification">
+            <div className="header-table-worker">
+              <div>
+                <h3>
+                  Actualmente mostrando notificaciones{" "}
+                  <span className="rol-worker">{status.toLowerCase()}</span>
+                </h3>
+              </div>
+              <div className="switch-container">
+                <FontAwesomeIcon icon={faSearch} className="search" />
+                <input
+                  type="text"
+                  placeholder="Buscar..."
+                  value={inputValue}
+                  onChange={handleFilter}
+                  className="searchNotification"
+                />
+                <span className="switch-label">{status}</span>
+                <NotificationSwitch onChange={handleStatusChange} />
+              </div>
             </div>
           </div>
-        }
-      />
+          <DataTable
+            columns={columns}
+            data={filteredNotifications}
+            responsive={true}
+            fixedHeader
+            pagination
+            paginationComponentOptions={paginacionOpciones}
+            noDataComponent={
+              isLoaded ? (
+                <div className="no-notifications-message">
+                  No hay notificaciones {status.toLowerCase()} registradas
+                </div>
+              ) : (
+                <div className="loading-message">Cargando...</div>
+              )
+            }
+          />
+        </div>
+      </div>
     </div>
   );
 };

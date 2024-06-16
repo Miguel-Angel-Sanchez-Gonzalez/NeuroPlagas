@@ -6,7 +6,6 @@ import SidebarWorker from "../NavSideProfileWorker/SidebarWorker/SidebarWorker";
 import DTableNotifications from "../For/For-Notifications/DTableNotifications/DTableNotifications";
 import DTableAssgndGreenhouse from "../For/For-Greenhouses/DTableAssgndGreenhouse/DTableAssgndGreenhouse";
 import DTableBedsW from "../For/For-Beds/DTableBeds/DTableBedsW";
-import DetailNotificationsW from "../For/For-Notifications/DetailNotificationsW/DetailNotificationsW";
 import ProfileWorker from "../NavSideProfileWorker/ProfileWorker/ProfileWorker";
 import DTableImagesAW from "../For/For-ImagesAnalized/DTableImagesAnalized/DTableImagesAW";
 import CardImagesAnalizedW from "../For/For-ImagesAnalized/CardImagesAnalizedW";
@@ -43,7 +42,6 @@ const HomeWorker = () => {
             <Routes>
             <Route index element={<RedirectToNotificaciones />} />
               <Route path="/notificaciones" element={<DTableNotifications />} />
-              <Route path="/notificaciones/detalles" element={<DetailNotificationsW />} />
               <Route path="/invernaderos" element={<DTableAssgndGreenhouse />} />
               <Route path="/invernaderos/camas" element={<DTableBedsW />} />
               <Route

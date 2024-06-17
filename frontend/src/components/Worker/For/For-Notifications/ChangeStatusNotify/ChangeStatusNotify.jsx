@@ -1,0 +1,65 @@
+import React from "react";
+import { toast } from "react-toastify";
+import "./ChangeStatusNotify.css";
+
+const ChangeStatusNotify = ({ onCancelClick, notification }) => {
+  const handleChangeStatus = async () => {
+
+    const newStatus = notification.estado === "Sin ver" ? "Tratada" : "Sin ver";
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/analizedImage/${notification.id_imagenanalizada}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status: newStatus }),
+        }
+      );
+
+      if (response.status === 200) {
+        toast.success("Estado actualizado correctamente", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
+        onCancelClick();
+        // Aquí podrías agregar una función para actualizar la lista de notificaciones si es necesario
+      } else {
+        throw new Error("Error al actualizar el estado");
+      }
+    } catch (error) {
+      toast.error("Error al actualizar el estado, inténtelo más tarde.", {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
+      console.error("Error al actualizar el estado:", error);
+    }
+  };
+
+  return (
+    <div className="change-status-notify-form">
+      <div className="container-change-status">
+        <h4 className="h4-change-status">Cambiar estado de notificación</h4>
+        <label>¿Está seguro que desea cambiar el estado de esta notificación?</label>
+      </div>
+      <div className="button-container-notify">
+        <button
+          className="button-change-status"
+          type="submit"
+          onClick={handleChangeStatus}
+        >
+          Cambiar Estado
+        </button>
+        <button className="btn-cancel-notify" onClick={onCancelClick}>
+          Cancelar
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default ChangeStatusNotify;

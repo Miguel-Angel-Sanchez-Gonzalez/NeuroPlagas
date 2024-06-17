@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faCheck } from "@fortawesome/free-solid-svg-icons";
 import NotificationSwitch from "../NotificationSwitch/NotificationSwitch";
 import { useNavigate } from "react-router-dom";
+import ChangeStatusNotify from "../ChangeStatusNotify/ChangeStatusNotify"; 
 
 const DTableNotifications = () => {
   const [inputValue, setInputValue] = useState("");
@@ -14,6 +15,9 @@ const DTableNotifications = () => {
   const [status, setStatus] = useState("Sin ver");
   const [errorLoading, setErrorLoading] = useState(false);
   const navigate = useNavigate();
+
+  const [showChangeStatusNotify, setShowChangeStatusNotify] = useState(false); 
+  const [selectedNotification, setSelectedNotification] = useState(null); 
 
   const columns = [
     {
@@ -135,38 +139,15 @@ const DTableNotifications = () => {
     });
   };
 
-  const handleChangeNotification = async (row) => {
-    const confirmation = window.confirm(
-      "¿Estás seguro de que deseas cambiar el estado de esta notificación?"
-    );
-    if (!confirmation) {
-      return;
-    }
+  const handleChangeNotification = (row) => {
+    setSelectedNotification(row);
+    setShowChangeStatusNotify(true);
+  };
 
-    const newStatus = row.estado === "Sin ver" ? "Tratada" : "Sin ver";
-
-    try {
-      const response = await fetch(
-        `http://localhost:3000/analizedImage/${row.id_imagenanalizada}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ status: newStatus }),
-        }
-      );
-
-      if (response.status === 200) {
-        alert("Estado actualizado correctamente");
-        getNotifications();
-      } else {
-        throw new Error("Error al actualizar el estado");
-      }
-    } catch (error) {
-      console.error("Error al actualizar el estado:", error);
-      alert("Error al actualizar el estado, inténtelo más tarde.");
-    }
+  const handleCancelClick = () => {
+    setShowChangeStatusNotify(false);
+    setSelectedNotification(null);
+    getNotifications(); // Refrescar la lista de notificaciones después de actualizar el estado
   };
 
   const handleStatusChange = async (newStatus) => {
@@ -228,6 +209,12 @@ const DTableNotifications = () => {
           />
         </div>
       </div>
+      {showChangeStatusNotify && selectedNotification && (
+        <ChangeStatusNotify
+          onCancelClick={handleCancelClick}
+          notification={selectedNotification}
+        />
+      )}
     </div>
   );
 };

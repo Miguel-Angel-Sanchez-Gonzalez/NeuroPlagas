@@ -4,7 +4,6 @@ import "./DTableNotifications.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faCheck } from "@fortawesome/free-solid-svg-icons";
 import NotificationSwitch from "../NotificationSwitch/NotificationSwitch";
-import { useNavigate } from "react-router-dom";
 import ChangeStatusNotify from "../ChangeStatusNotify/ChangeStatusNotify"; 
 
 const DTableNotifications = () => {
@@ -13,9 +12,6 @@ const DTableNotifications = () => {
   const idWorker = localStorage.getItem("idWorker");
   const [isLoaded, setIsLoaded] = useState(false);
   const [status, setStatus] = useState("Sin ver");
-  const [errorLoading, setErrorLoading] = useState(false);
-  const navigate = useNavigate();
-
   const [showChangeStatusNotify, setShowChangeStatusNotify] = useState(false); 
   const [selectedNotification, setSelectedNotification] = useState(null); 
 
@@ -129,14 +125,6 @@ const DTableNotifications = () => {
       console.error("Error durante el filtrado:", error);
       alert("Error durante el filtrado de invernaderos " + error);
     }
-  };
-
-  const handleDetailNotifications = (row) => {
-    navigate(`/homeWorker/notificaciones/detalles`, {
-      state: {
-        fecha: row.fecha,
-      },
-    });
   };
 
   const handleChangeNotification = (row) => {

@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 import "./ChangeStatusNotify.css";
 
 const ChangeStatusNotify = ({ onCancelClick, notification }) => {
   const handleChangeStatus = async () => {
-
     const newStatus = notification.estado === "Sin ver" ? "Tratada" : "Sin ver";
 
     try {
@@ -26,7 +25,6 @@ const ChangeStatusNotify = ({ onCancelClick, notification }) => {
           theme: "colored",
         });
         onCancelClick();
-        // Aquí podrías agregar una función para actualizar la lista de notificaciones si es necesario
       } else {
         throw new Error("Error al actualizar el estado");
       }
@@ -39,6 +37,19 @@ const ChangeStatusNotify = ({ onCancelClick, notification }) => {
       console.error("Error al actualizar el estado:", error);
     }
   };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleChangeStatus();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
 
   return (
     <div className="change-status-notify-form">

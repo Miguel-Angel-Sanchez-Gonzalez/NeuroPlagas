@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTableNotifications.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faCheck, faBellSlash, faBell } from "@fortawesome/free-solid-svg-icons";
 import NotificationSwitch from "../NotificationSwitch/NotificationSwitch";
 import ChangeStatusNotify from "../ChangeStatusNotify/ChangeStatusNotify"; 
 
@@ -69,7 +69,7 @@ const DTableNotifications = () => {
       cell: (row) => (
         <div className="icons-container">
           <FontAwesomeIcon
-            icon={faCheck}
+            icon={status === "Sin ver" ? faBell : faBellSlash}
             onClick={() => handleChangeNotification(row)}
             className="view-icon-workergren"
             size="lg"

@@ -27,7 +27,7 @@ const DTableFarmers = () => {
       name: "Nombre",
       selector: (row) => row.nombre,
       sortable: true,
-      width: "auto",
+      width: "200px",
     },
     {
       name: "Primer apellido",
@@ -49,13 +49,13 @@ const DTableFarmers = () => {
     {
       name: "Correo electrónico",
       selector: (row) => row.correo_electronico,
-      width: "220px",
+      width: "230px",
     },
     {
       name: "Usuario",
       selector: (row) => row.nombre_usuario,
       sortable: true,
-      width: "100px",
+      width: "150px",
     },
     // {
     //   name: "Contraseña",

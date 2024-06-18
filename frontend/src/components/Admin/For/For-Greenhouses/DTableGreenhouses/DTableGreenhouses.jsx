@@ -33,7 +33,7 @@ const DTableGreenhouses = () => {
       name: "Nombre del invernadero",
       selector: (row) => row.nombre,
       sortable: true,
-      width: "280px",
+      width: "300px",
     },
     {
       name: "Tipo de invernadero",
@@ -45,7 +45,7 @@ const DTableGreenhouses = () => {
       name: "Humedad",
       selector: (row) => row.humedad,
       sortable: true,
-      width: "110px",
+      width: "130px",
     },
     {
       name: "Tamaño",

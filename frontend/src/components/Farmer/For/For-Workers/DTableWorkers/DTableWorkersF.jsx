@@ -30,7 +30,7 @@ const DTableWorkersF = () => {
       name: "Nombre(s)",
       selector: (row) => row.nombre,
       sortable: true,
-      width: "150px",
+      width: "180px",
     },
     {
       name: "Primer apellido",
@@ -56,7 +56,7 @@ const DTableWorkersF = () => {
           </button>
         </div>
       ),
-      width: "120px",
+      width: "135px",
     },
     {
       name: "Teléfono",
@@ -72,13 +72,13 @@ const DTableWorkersF = () => {
       name: "Usuario",
       selector: (row) => row.nombre_usuario,
       sortable: true,
-      width: "100px",
+      width: "120px",
     },
-    {
-      name: "Contraseña",
-      selector: (row) => "********",
-      width: "100px",
-    },
+    // {
+    //   name: "Contraseña",
+    //   selector: (row) => "********",
+    //   width: "100px",
+    // },
     {
       name: "Acciones",
       cell: (row) => (

@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTableNotifications.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faCheck, faBellSlash, faBell } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faBellSlash,
+  faBell,
+} from "@fortawesome/free-solid-svg-icons";
 import NotificationSwitch from "../NotificationSwitch/NotificationSwitch";
-import ChangeStatusNotify from "../ChangeStatusNotify/ChangeStatusNotify"; 
+import ChangeStatusNotify from "../ChangeStatusNotify/ChangeStatusNotify";
 
 const DTableNotifications = () => {
   const [inputValue, setInputValue] = useState("");
@@ -12,8 +16,8 @@ const DTableNotifications = () => {
   const idWorker = localStorage.getItem("idWorker");
   const [isLoaded, setIsLoaded] = useState(false);
   const [status, setStatus] = useState("Sin ver");
-  const [showChangeStatusNotify, setShowChangeStatusNotify] = useState(false); 
-  const [selectedNotification, setSelectedNotification] = useState(null); 
+  const [showChangeStatusNotify, setShowChangeStatusNotify] = useState(false);
+  const [selectedNotification, setSelectedNotification] = useState(null);
 
   const columns = [
     {
@@ -32,13 +36,13 @@ const DTableNotifications = () => {
       name: "Número de cama",
       selector: (row) => row.numero_cama,
       sortable: true,
-      width: "160px",
+      width: "155px",
     },
     {
       name: "Tipo de cultivo",
       selector: (row) => row.tipo_cultivo,
       sortable: true,
-      width: "150px",
+      width: "145px",
     },
     {
       name: "Estado",
@@ -123,7 +127,7 @@ const DTableNotifications = () => {
   const handleCancelClick = () => {
     setShowChangeStatusNotify(false);
     setSelectedNotification(null);
-    getNotifications(); // Refrescar la lista de notificaciones después de actualizar el estado
+    getNotifications();
   };
 
   const handleStatusChange = async (newStatus) => {
@@ -138,52 +142,50 @@ const DTableNotifications = () => {
   };
 
   return (
-    <div className="table-greenhouse-worker">
+    <div className="table-notifications-worker">
       <div className="right-content-notification">
-        <h1 className="h1worker">
-          Tus <span className="rol-worker2">notificaciones</span>
-        </h1>
-        <div className="only-table-notification">
-          <div className="title-and-search-notification">
-            <div className="header-table-worker">
-              <div>
-                <h3>
-                  Actualmente mostrando notificaciones{" "}
-                  <span className="rol-worker">{status.toLowerCase()}</span>
-                </h3>
-              </div>
-              <div className="switch-container">
-                <FontAwesomeIcon icon={faSearch} className="search" />
-                <input
-                  type="text"
-                  placeholder="Buscar..."
-                  value={inputValue}
-                  onChange={handleFilter}
-                  className="searchNotification"
-                />
-                <span className="switch-label">{status}</span>
-                <NotificationSwitch onChange={handleStatusChange} />
-              </div>
-            </div>
+        <div className="title-work-search-notifications">
+          <div>
+            <h3>Notificaciones</h3>
+            <label className="description-plagues">
+              Actualmente mostrando notificaciones{" "}
+              <span className="rol-worker">{status.toLowerCase()}</span>
+            </label>
           </div>
-          <DataTable
-            columns={columns}
-            data={filteredNotifications}
-            responsive={true}
-            fixedHeader
-            pagination
-            paginationComponentOptions={paginacionOpciones}
-            noDataComponent={
-              isLoaded ? (
-                <div className="no-notifications-message">
-                  No hay notificaciones {status.toLowerCase()} registradas
-                </div>
-              ) : (
-                <div className="loading-message">Cargando...</div>
-              )
-            }
-          />
+          <div className="header-table-notifications-wor">
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="icon-plagues"
+              size="lg"
+            />
+            <input
+              type="text"
+              placeholder="Buscar..."
+              value={inputValue}
+              onChange={handleFilter}
+              className="search-plagues"
+            />
+            <span className="switch-label">{status}</span>
+            <NotificationSwitch onChange={handleStatusChange} />
+          </div>
         </div>
+        <DataTable
+          columns={columns}
+          data={filteredNotifications}
+          responsive={true}
+          fixedHeader
+          pagination
+          paginationComponentOptions={paginacionOpciones}
+          noDataComponent={
+            isLoaded ? (
+              <div className="no-notifications-message">
+                No hay notificaciones {status.toLowerCase()} registradas
+              </div>
+            ) : (
+              <div className="loading-message">Cargando...</div>
+            )
+          }
+        />
       </div>
       {showChangeStatusNotify && selectedNotification && (
         <ChangeStatusNotify

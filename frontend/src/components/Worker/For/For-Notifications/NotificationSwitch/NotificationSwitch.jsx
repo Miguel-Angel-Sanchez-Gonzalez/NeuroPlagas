@@ -4,8 +4,8 @@ import { Switch, Box, styled } from '@mui/material';
 const primaryColor = '#c62426';
 
 const StyledSwitch = styled(Switch)(({ theme }) => ({
-  width: 80,
-  height: 40,
+  width: 70,
+  height: 30,
   padding: 0,
   '& .MuiSwitch-switchBase': {
     padding: 1,
@@ -25,8 +25,8 @@ const StyledSwitch = styled(Switch)(({ theme }) => ({
     },
     '& .MuiSwitch-thumb': {
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-      width: 36,
-      height: 36,
+      width: 26,
+      height: 26,
       borderRadius: 18,
     },
   },

@@ -23,6 +23,9 @@ const RegisterBed = ({ onCancelClick, idGreenhouse }) => {
       ...values,
       [name]: value,
     }));
+    // if (name === 'numeroCama') {
+    //   setBedExists(false);
+    // }
   };
 
   const handleInputFocus = () => {
@@ -50,15 +53,15 @@ const RegisterBed = ({ onCancelClick, idGreenhouse }) => {
       typeCrop: values.tipoCultivo,
       idGreenhouse: idGreenhouse,
     };
+
     try {
-      const response = await fetch(`http://localhost:3000/bed/`, {
+      const response = await fetch("http://localhost:3000/bed/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
-      console.log("El estado de respuesta es: ", response.status);
       if (response.status === 201) {
         onCancelClick();
         setIsLoading(false);
@@ -70,7 +73,7 @@ const RegisterBed = ({ onCancelClick, idGreenhouse }) => {
       }
       setIsLoading(false);
     } catch (error) {
-      toast.error("Hubo un error ${error}", {
+      toast.error(`Hubo un error ${error}`, {
         position: "top-center",
         autoClose: 2000,
         theme: "colored",
@@ -147,7 +150,7 @@ const RegisterBed = ({ onCancelClick, idGreenhouse }) => {
             </div>
           </div>
 
-          <div className="button-container-bed-r ">
+          <div className="button-container-bed ">
             <button className="button-bed" type="submit" onClick={handleSubmit}>
               Guardar
             </button>

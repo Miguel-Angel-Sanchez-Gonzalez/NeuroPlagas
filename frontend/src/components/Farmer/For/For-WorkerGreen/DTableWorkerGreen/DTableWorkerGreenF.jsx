@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import "./DTableWorkerGreen.css";
+import "./DTableWorkerGreenF.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLocation, useParams } from "react-router-dom";
 import { faSearch, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import AsignGreenhouse from "../AsignedDelete/Asign/AsignGreenhouse";
 import DeleteWorkerGreen from "../AsignedDelete/Delete/DeleteWorkerGreen";
 //FARMER
-const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
+const DTableWorkerGreenF = ({ isLoading, noGreenworkerMessage }) => {
   const [inputValue, setInputValue] = useState("");
   const [filteredGreenWorker, setFilteredGreenWorker] = useState([]);
   const [modalState, setModalState] = useState({ idWorker: "", idFarmer: "" });
@@ -143,7 +143,7 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
         <h1 className="h2green-workgreen">
           Trabajador <span className="name-greenworker"> {nameWorker}</span>
         </h1>
-        <div className="only-table-workgreen">
+        <div className="only-table-workgreen-f">
           <div className="title-and-search-workgreen">
             <div>
               <h3>Invernaderos asignados</h3>
@@ -213,4 +213,4 @@ const DTableWorkerGreen = ({ isLoading, noGreenworkerMessage }) => {
   );
 };
 
-export default DTableWorkerGreen;
+export default DTableWorkerGreenF;

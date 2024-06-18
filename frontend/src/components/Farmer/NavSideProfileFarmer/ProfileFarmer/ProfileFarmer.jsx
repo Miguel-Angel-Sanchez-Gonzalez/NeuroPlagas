@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { toast } from "react-toastify";
-import "./ProfileWorker";
+import "./ProfileFarmer";
 // import AddNotification from "../../../../../LoginNotifications/AddNotification";
 import { UserContext } from '../../../../UserContext';
 
-const ProfileWorker = ({ onCancelClick, idWorker }) => {
+const ProfileFarmer = ({ onCancelClick, idFarmer }) => {
   const { user, updateUser } = useContext(UserContext);
   const [records, setRecords] = useState("");
-  const [idFarmer, setIdFarmer] = useState("");
   const [emailExists, setEmailExists] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false); // Nuevo estado para controlar el enfoque en los inputs
   const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Nuevo estado para rastrear si el formulario se ha enviado
@@ -102,48 +101,31 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
 
   //Para obtener la data del Worker y setearla en los INPUT
   useEffect(() => {
-    getWorkerById();
-  }, [idWorker]);
+    getFarmerById();
+  }, [idFarmer]);
 
-  const getWorkerById = async () => {
+  const getFarmerById = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/worker/${idWorker}`);
+      const response = await fetch(`http://localhost:3000/farmer/${idFarmer}`);
       if (response.status === 200) {
         const data = await response.json();
-        console.log("Data del trabajador ", data);
+        console.log("Data del agricultor ", data);
         setOriginalEmail(data.correo_electronico);
         setValues({
-          primerApellido: data.primer_apellido,
           nombre: data.nombre,
+          primerApellido: data.primer_apellido,
           segundoApellido: data.segundo_apellido,
           telefono: data.telefono,
           correo: data.correo_electronico,
           nombreUsuario: data.nombre_usuario,
           contrasenia: data.contrasenia,
         });
-        setIdFarmer(data.id_agricultor);
-        const responseAgricultorResponsable = await fetch(
-          `http://localhost:3000/farmer/${data.id_agricultor}`
-        );
-        if (responseAgricultorResponsable.status === 200) {
-          const dataResponseAgricultorResponsable =
-            await responseAgricultorResponsable.json();
-          setValuesFarmer({
-            nombreAgricultorResponsable:
-              dataResponseAgricultorResponsable.nombre +
-              " " +
-              dataResponseAgricultorResponsable.primer_apellido +
-              " " +
-              dataResponseAgricultorResponsable.segundo_apellido,
-          });
-        }
       }
     } catch (error) {}
   };
 
   //Data para el fetch de actualizacion
   const data = {
-    idFarmer: idFarmer,
     name: values.nombre,
     surname: values.primerApellido,
     secondSurname: values.segundoApellido,
@@ -151,7 +133,6 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
     email: values.correo,
     nameUser: values.nombreUsuario,
     password: values.contrasenia,
-    role: "worker",
   };
 
   const onConfirmClick = async () => {
@@ -205,7 +186,7 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
   const updateWorkerData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:3000/worker/${idWorker}`, {
+      const response = await fetch(`http://localhost:3000/farmer/${idFarmer}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -215,7 +196,7 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
       if (response.ok) {
         onCancelClick();
         setIsLoading(false);
-        toast.success('El trabajador se actualizó correctamente.', {
+        toast.success('El agricultor se actualizó correctamente.', {
           position: "top-center",
           autoClose: 2000,
           theme: "colored",
@@ -234,10 +215,10 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
 
       } else {
         const errorMessage = await response.text();
-        throw new Error(`Error al editar al trabajador: ${errorMessage}`);
+        throw new Error(`Error al editar al agricultor: ${errorMessage}`);
       }
     } catch (error) {
-      toast.error(`Error al editar al trabajador, inténtelo más tarde: ${error}`, {
+      toast.error(`Error al editar al agricultor, inténtelo más tarde: ${error}`, {
         position: "top-center",
         autoClose: 2000,
         theme: "colored",
@@ -256,7 +237,7 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
       )}
       <div className="edit-worker-container">
         <div className="centrar-worker">
-          <h4 className="h4edit-worker">Editar trabajador</h4>
+          <h4 className="h4edit-worker">Editar agricultor</h4>
           <h5 className="h5edit-worker">*Campos requeridos</h5>
           <label className="label-dato-worker">
             Edite sus datos personales
@@ -503,16 +484,9 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
             <p className="error-message-worker-e">{records}</p>
           )}
         </div>
-        {/* {loadingMessage && (
-          <AddNotification
-            message={loadingMessage}
-            onClose={() => setLoadingMessage("")}
-            className="farmer-notification"
-          />
-        )} */}
       </div>
     </div>
   );
 };
 
-export default ProfileWorker;
+export default ProfileFarmer;

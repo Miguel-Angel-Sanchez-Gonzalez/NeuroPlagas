@@ -2,11 +2,8 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTablePlagues.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faPencilAlt,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import {faSearch} from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 const DTablePlagues = () => {
   const [inputValue, setInputValue] = useState("");
@@ -43,6 +40,8 @@ const DTablePlagues = () => {
     },
   ];
   const [plagues, setPlagues] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  
 
   useEffect(() => {
     getPlagues();
@@ -50,18 +49,19 @@ const DTablePlagues = () => {
 
   async function getPlagues() {
     try {
+      setIsLoading(true); // Indicar que se están cargando las plagas
       const response = await fetch(`http://localhost:3000/plague/`);
       if (response.status === 200) {
         const data = await response.json();
         setPlagues(data);
         setFilteredPlagues(data);
-      } else {
-        throw new Error("Error al obtener las plagas");
       }
-    } catch (error) {
-      console.error("Error al cargar los datos de las plagas:", error);
-      alert("Error al obtener las plagas, inténtelo más tarte:");
-    }
+      } catch (error) {
+        console.error("Error al cargar los datos de las plagas:", error);
+        toast.error("Hubo un problema al cargar los datos de las plagas. Por favor, inténtelo nuevamente más tarde.");
+      } finally {
+          setIsLoading(false);
+      }
   }
 
   const handleFilter = (event) => {
@@ -91,40 +91,56 @@ const DTablePlagues = () => {
 
   return (
     <div className="table-plagues-admin">
-      <DataTable
-        className="custom-table-plagues"
-        title={
+      <div className="container-adm-pla">
+        <div className="title-adm-search-plagues">
           <div>
-            <h4>Plagas</h4>
-            <label className="description">
+            <h3>Plagas</h3>
+            <label className="description-plagues">
               Lista de plagas en los invernaderos
             </label>
           </div>
-        }
-        columns={columns}
-        data={filteredPlagues}
-        responsive={true}
-        fixedHeader
-        pagination
-        paginationComponentOptions={paginacionOpciones}
-        actions={
-          <div className="header-table-plagues">
-            <FontAwesomeIcon icon={faSearch} className="search" />
+          <div className="header-table-plagues-ad">
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="icon-plagues"
+              size="lg"
+            />
             <input
               type="text"
               placeholder="Buscar..."
               value={inputValue}
               onChange={handleFilter}
-              className="searchPlague"
+              className="search-plagues"
             />
+            {/* <button
+              type="button"
+              className="buttonPlaga"
+              onClick={handleRegisterClick}>
+              Registrar plaga
+            </button> */}
           </div>
-        }
-        noDataComponent={
-          <div className="no-beds-message">
-            Aún no hay enfermedades registradas
-          </div>
-        }
-      />
+        </div>
+          <DataTable
+            columns={columns}
+            data={filteredPlagues}
+            responsive={true}
+            pagination
+            paginationPerPage={4}
+            paginationRowsPerPageOptions={[4, 12]}
+            paginationComponentOptions={paginacionOpciones}
+            noDataComponent={
+              isLoading ? (
+                <div className="no-beds-message">
+                  Espere un momento, los datos de las plagas se están cargando...
+                </div>
+              ) : (
+                <div className="no-beds-message">
+                  Aún no se han registrado plagas.
+                </div>
+              )
+            }
+          />
+        </div>
     </div>
   );
 };

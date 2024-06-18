@@ -10,7 +10,8 @@ import { toast } from "react-toastify";
 const DTableImagesAW = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredImagesA, setFilteredImagesA] = useState([]);
-  
+  const [isLoaded, setIsLoaded] = useState(false);
+  //Para ver las imagenes analizadas de una cama
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -28,7 +29,8 @@ const DTableImagesAW = () => {
       name: "Nombre de lo detectado",
       cell: (row) => {
         const detected = [...row.detected.plagues, ...row.detected.diseases]; // Combinar arrays de plagas y enfermedades
-
+        console.log("Plagas" + row.detected.plagues);
+        console.log("Enfermedades" + row.detected.diseases);
         return detected.join(", "); // Unir todo en un solo string separado por comas
       },
       sortable: true,
@@ -62,7 +64,12 @@ const DTableImagesAW = () => {
       name: "Imagen",
       cell: (row) => (
         <div className="icons-container">
-          <FontAwesomeIcon icon={faEye} onClick={() => handleShowCardImages(row)} className="view-icon" size="lg" />
+          <FontAwesomeIcon
+            icon={faEye}
+            onClick={() => handleShowCardImages(row)}
+            className="view-icon"
+            size="lg"
+          />
         </div>
       ),
       width: "90px",
@@ -73,35 +80,17 @@ const DTableImagesAW = () => {
   const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
-    const getImageAByIdBed = async () => {
-      try {
-        setIsLoading(true); // Indicar que se están cargando las imágenes
-        const response = await fetch(
-          `http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`
-        );
-        if (response.status === 200) {
-          const data = await response.json();
-          setImagesAnalized(Array.isArray(data) ? data : []);
-          setFilteredImagesA(Array.isArray(data) ? data : []);
-        } else if (response.status === 404) {
-          setFilteredImagesA([]); // Si no se encuentran imágenes, establecer filteredImagesA como un array vacío
-        }
-      } catch (error) {
-        console.error("Error al obtener las imágenes analizadas de la cama:", error);
-        toast.error("Hubo un problema al cargar las imágenes analizadas. Por favor, inténtelo nuevamente más tarde.");
-      } finally {
-        setIsLoading(false); // Indicar que se han terminado de cargar las imágenes (ya sea con éxito o error)
-      }
-    };
+    if (!isLoaded) {
+      getImageAByIdBed();
+    }
+  }, [isLoaded]);
 
-    getImageAByIdBed();
-  }, [idBed]);
-
-  const onDrop = useCallback((acceptedFiles) => {
-    console.log(acceptedFiles[0]);
-  }, []);
-  const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
-    useDropzone({ onDrop });
+  const handleChooseImage = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      sendImageToBackend(file);
+    }
+  };
 
   const sendImageToBackend = async (e) => {
     e.preventDefault();
@@ -119,10 +108,42 @@ const DTableImagesAW = () => {
       );
       console.log(response);
       if (response.status === 200) {
-        //setIsLoaded(iba)
-        isLoading(false);
+        setIsLoaded(false);
+        toast.success(`Se ha analizado la imagen`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
       }
-    } catch (error) {}
+    } catch (error) {
+      toast.error(`Hubo un error ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
+    }
+  };
+
+  const getImageAByIdBed = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`
+      );
+      if (response.status === 200) {
+        const data = await response.json();
+        // console.log("Respuesta del servidor:", data);
+        setImagesAnalized(data);
+        setFilteredImagesA(data);
+        setIsLoaded(true);
+      } else if (response.status === 404) {
+        setFilteredImagesA([]); // Si no se encuentran imágenes, establecer filteredImagesA como un array vacío
+      }
+    } catch (error) {
+      console.error("Error al obtener las imágenes analizadas de la cama:", error);
+      toast.error("Hubo un problema al cargar las imágenes analizadas. Por favor, inténtelo nuevamente más tarde.");
+    } finally {
+      setIsLoading(false); // Indicar que se han terminado de cargar las imágenes (ya sea con éxito o error)
+    }
   };
 
   const handleFilter = (event) => {
@@ -139,6 +160,12 @@ const DTableImagesAW = () => {
       setFilteredImagesA(imagesAnalized);
     }
   };
+
+  const onDrop = useCallback((acceptedFiles) => {
+    console.log(acceptedFiles[0]);
+  }, []);
+  const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
+    useDropzone({ onDrop });
 
   const handleShowCardImages = (row) => {
     navigate(`/homeWorker/invernaderos/camas/imagenes-analizadas/ver-imagen`, {

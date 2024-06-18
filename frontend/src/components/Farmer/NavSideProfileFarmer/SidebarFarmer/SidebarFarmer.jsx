@@ -4,14 +4,15 @@ import { Link, useLocation } from "react-router-dom";
 import "./SidebarFarmer.css";
 import {faWarehouse, faPersonDigging, faChartBar, faBug, faVirus, faBell,} from "@fortawesome/free-solid-svg-icons";
 
-const SidebarFarmer = () => {
+const SidebarAdmin = () => {
   const { pathname } = useLocation();
+
   return (
-    <div className="menu-farmer">
-      <div className="menu-list-farmer">
+    <div className="menu-admin">
+      <div className="menu-list-admin">
         <Link
           to="/homeFarmer/notificaciones"
-          className={`item-farmer ${
+          className={`item-admin ${
             pathname.includes("notificaciones") ? "active" : ""
           }`}
         >
@@ -20,7 +21,7 @@ const SidebarFarmer = () => {
         </Link>
         <Link
           to="/homeFarmer/invernaderos"
-          className={`item-farmer ${
+          className={`item-admin ${
             pathname.includes("invernaderos") ? "active" : ""
           }`}
         >
@@ -29,7 +30,7 @@ const SidebarFarmer = () => {
         </Link>
         <Link
           to="/homeFarmer/trabajadores"
-          className={`item-farmer ${
+          className={`item-admin ${
             pathname.includes("trabajadores") ? "active" : ""
           }`}
         >
@@ -38,17 +39,16 @@ const SidebarFarmer = () => {
         </Link>
         <Link
           to="/homeFarmer/reportes"
-          className={`item-farmer ${
+          className={`item-admin ${
             pathname.includes("reportes") ? "active" : ""
           }`}
         >
           <FontAwesomeIcon icon={faChartBar} className="icon" />
           Reporte
         </Link>
-
         <Link
           to="/homeFarmer/plagas"
-          className={`item-farmer ${
+          className={`item-admin ${
             pathname.includes("plagas") ? "active" : ""
           }`}
         >
@@ -57,7 +57,7 @@ const SidebarFarmer = () => {
         </Link>
         <Link
           to="/homeFarmer/enfermedades"
-          className={`item-farmer ${
+          className={`item-admin ${
             pathname.includes("enfermedades") ? "active" : ""
           }`}
         >
@@ -69,4 +69,4 @@ const SidebarFarmer = () => {
   );
 };
 
-export default SidebarFarmer;
+export default SidebarAdmin;

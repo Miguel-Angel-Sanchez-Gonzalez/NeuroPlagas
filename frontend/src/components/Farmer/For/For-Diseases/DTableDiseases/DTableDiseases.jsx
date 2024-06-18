@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faPencilAlt,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSearch,} from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 import "./DTableDiseases.css";
 
 /*Enfermedad*/
@@ -46,6 +43,8 @@ const DTableDiseases = () => {
   ];
 
   const [diseases, setDiseases] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   useEffect(() => {
     getDiseases();
@@ -54,18 +53,20 @@ const DTableDiseases = () => {
   /*FUNCIONES*/
   async function getDiseases() {
     try {
+      setIsLoading(true); // Indicar que se están cargando las enfermedades
       const response = await fetch(`http://localhost:3000/disease`);
       if (response.status === 200) {
         const data = await response.json();
         setDiseases(data);
         setFilteredDiseases(data);
-      } else {
-        throw new Error("Error al obtener las enfermedades");
       }
+      
     } catch (error) {
-      console.error("Error al cargar los datos de las enfermedades:", error);
-      alert("Error al obtener las enfermedades, inténtelo más tarte:");
-    }
+        console.error("Error al obtener las enfermades:", error);
+        toast.error("Hubo un problema al cargar los datos de las enfermedades. Por favor, inténtelo nuevamente más tarde.");
+      } finally {
+        setIsLoading(false);
+      }
   }
 
   const handleFilter = (event) => {
@@ -96,42 +97,57 @@ const DTableDiseases = () => {
   };
 
   return (
-    <div className="table-disease-admin">
-      <DataTable
-        className="custom-table-disease"
-        title={
+    <div className="table-diseases-admin">
+      <div className="container-adm-pla">
+        <div className="title-adm-search-diseases">
           <div>
-            <h4>Enfermedades</h4>
-            <label className="description">
+            <h3>Enfermedades</h3>
+            <label className="description-diseases">
               Lista de enfermedades en los invernaderos
             </label>
           </div>
-        }
-        columns={columns}
-        //considerando el filtro
-        data={filteredDiseases}
-        responsive={true}
-        fixedHeader
-        pagination
-        paginationComponentOptions={paginacionOpciones}
-        actions={
-          <div className="header-table-disease">
-            <FontAwesomeIcon icon={faSearch} className="search" />
+          <div className="header-table-diseases-ad">
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="icon-diseases"
+              size="lg"
+            />
             <input
               type="text"
               placeholder="Buscar..."
               value={inputValue}
               onChange={handleFilter}
-              className="searchDisease"
+              className="search-diseases-adm"
             />
+            {/* <button
+              type="button"
+              className="buttonEnfermedad"
+              onClick={handleRegisterClick}>
+              Registrar enfermedad
+            </button> */}
           </div>
-        }
-        noDataComponent={
-          <div className="no-beds-message">
-            Aún no hay enfermedades registradas
           </div>
-        }
-      />
+          <DataTable
+            columns={columns}
+            data={filteredDiseases}
+            responsive={true}
+            pagination
+            paginationPerPage={4}
+            paginationRowsPerPageOptions={[4, 12]}
+            paginationComponentOptions={paginacionOpciones}
+            noDataComponent={
+              isLoading ? (
+                <div className="no-beds-message">
+                  Espere un momento, los datos de las enfermedades se están cargando...
+                </div>
+              ) : (
+                <div className="no-beds-message">
+                  Aún no se han registrado enfermedades.
+                </div>
+              )
+            }
+          />
+        </div>
     </div>
   );
 };

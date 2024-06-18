@@ -1,121 +1,127 @@
 /* Estilos base */
-.register-bed-container {
+.profile-admin-form {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
   background-color: #fff;
-  padding: 10px;
+  padding: 20px;
   border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%; /* Hacerlo responsivo */
-  max-width: 450px;
+  max-width: 505px;
   display: flex;
   flex-direction: column;
 }
 
-.centrar-bed {
-  margin: 5px;
+.centrar-admin{
+  padding: 5px;
 }
 
-.h4register-bed {
+.h4profile{
   padding-top: 20px;
   margin-bottom: 20px;
   text-align: center;
 }
 
-.h5register-bed {
+.h5profile{
   text-align: right;
   padding-bottom: 10px;
   color: #c62426;
-  margin-right: 25px;
+  margin-right: 15px;
 }
 
-.label-dato-bed {
+.titles-datos-admin{
   font-weight: bold;
-  margin-left: 25px;
+  margin-left: 15px;
 }
 
-.label-bed-r {
+.titles-admin{
   font-size: 14px;
   margin-left: 5px;
 }
 
-.inputs-register-bed{
+.inputs-profile-admin, 
+.inputs-profile-admin2  {
   margin-top: 5px;
   width: 90%; /* Ajusta el ancho a 80% como solicitado */
   padding: 10px;
   border: 2px solid #d4d0d0;
-  margin-left: 5px;
-  margin-bottom: 20px;
+  margin-left: 5px; /* Centra los inputs */
 }
 
-.inputs-register-bed:focus {
+
+.inputs-profile-admin:focus,
+.inputs-profile-admin2:focus {
   border: 2px solid #c62426;
 }
 
-.form-sec-bed-register {
+.form-section-profile {
   display: flex;
   flex-direction: row;
   justify-content: space-between; /* Distribuye los elementos horizontalmente */
   margin-bottom: 10px;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
-.column-register-bed {
+.column-admin-profile {
   flex: 1; /* Ocupa el espacio disponible */
   margin-right: 10px; /* Espacio entre las columnas */
   margin-top: 10px;
 }
 
-.password-rules-bed-r {
+.password-rules-admin {
   display: block;
   padding-top: 4px;
-  margin-left: 15px;
+  margin-left: 12px;
 }
 
-.button-container-bed {
+.button-container-profile {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: 25px;
-  margin-bottom: 20px;
+  margin-left: 15px;
+  margin-right: 20px;
+  margin-top: 25px;
 }
 
-.button-bed {
+.button-admin  {
   width: 150px;
   padding: 12px;
   color: white;
   background-color: #c62426;
   border: 2px solid #c62426;
   border-radius: 10px;
-  cursor: pointer; /* Cambiado desde el selector de etiqueta */
-  margin-left: 25px;
+  cursor: pointer; 
 }
 
-.error-message-bed-r{
-  margin-top: 15px;
-  text-align: left;
-  color: #c62426;
-  font-size: medium;
-  margin-left: 25px;
-}
-
-.bed-exists-r {
-  margin-top: 5px;
+.email-exists-profile {
+  margin-top: 7px;
   margin-left: 5px;
   text-align: left;
   color: #c62426;
-  font-size: 15px;
+  font-size: medium;
+}
+
+.error-msg-profile-admin{
+  margin-top: 17px;
+  margin-left: 15px;
+  text-align: left;
+  color: #c62426;
+  font-size: medium;
 }
 
 .red-label,
 .red-input {
   color: #c62426;
   border-color: #c62426;
+}
+
+/* Estilos adicionales para el botón */
+button {
+  transform: scale(1, 1);
+  cursor: pointer;
 }
 
 /*

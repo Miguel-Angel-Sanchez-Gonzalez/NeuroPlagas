@@ -1,76 +1,63 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { HiMenu } from "react-icons/hi";
-import './NavbarFarmer.css';  // Importa el archivo de estilos CSS
+import './NavbarFarmer.css';
+import ProfileFarmer from '../ProfileFarmer/ProfileFarmer';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../../../UserContext';
 
-const NavbarFarmer = ({onConfigureProfileClick}) => {
-  const storedUsername = localStorage.getItem('username');
-  const storedLastname = localStorage.getItem('lastname');
-  const storedSecondLastname = localStorage.getItem('secondlastname');
-  const storedEmail = localStorage.getItem('email');
-
-  const [showProfileAdmin, setshowProfileAdmin] = useState(false);
+const NavbarFarmer = ({ onConfigureProfileClick }) => {
+  const { user, updateUser, logoutUser } = useContext(UserContext);
+  const [showProfileFarmer, setShowProfileFarmer] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setMenuVisible(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+    // Actualiza el contexto con los datos de localStorage al cargar el componente
+    const storedUser = {
+      username: localStorage.getItem('username') || '',
+      lastname: localStorage.getItem('lastname') || '',
+      secondLastname: localStorage.getItem('secondlastname') || '',
+      email: localStorage.getItem('email') || ''
     };
+    updateUser(storedUser);
   }, []);
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
 
-  // const handleProfile = () => {
-  //   // Lógica para configurar perfil
-  //   console.log('Configurar perfil');
-  // };
-
   const handleLogout = () => {
-    //Reset de variables
-    localStorage.setItem('token', '');  
-    localStorage.setItem('username', '');
-    localStorage.setItem('lastname', '');
-    localStorage.setItem('secondlastname', '');
-    localStorage.setItem('email', '');
-    // Redirige al usuario a la página de inicio de sesión
-    window.location.href = '/login'; 
+    logoutUser();
+    navigate('/login');
   };
 
-  // const handleProfileFormCancel = () => {
-  //   setshowProfileAdmin(false);
-  // };
+  const handleProfileFormCancel = () => {
+    setShowProfileFarmer(false);
+  };
 
   return (
-    <div >
+    <div>
       <div className='menu--nav-farmer'>
-      <img src="/images/tomatito.png" alt="" /> {/*Imagen*/}
-        <h2>Tomi-Plagas y Enfermedades </h2>              {/*Titulo*/}
+        <img src="/images/tomatito.png" alt="" /> {/*Imagen*/}
+        <h2>Tomi-Plagas y Enfermedades </h2> {/*Titulo*/}
         <div className='notify-farmer' ref={menuRef}>
-            <HiMenu className='icon' onClick={toggleMenu}/>   
-            {menuVisible && (
-              <div className="menu-options-farmer">
-                <p onClick={onConfigureProfileClick}>Configurar perfil</p> {/* Llama a la función desde las props */}
-                <p onClick={handleLogout}>Cerrar sesión</p>
-              </div>
-            )}
+          <HiMenu className='icon' onClick={toggleMenu} />
+          {menuVisible && (
+            <div className="menu-options-farmer">
+              <p onClick={onConfigureProfileClick}>Configurar perfil</p>
+              <p onClick={handleLogout}>Cerrar sesión</p>
+            </div>
+          )}
         </div>
         <div className='user-info-farmer'>
-          <label>{storedUsername +" "+ storedLastname +" "+ storedSecondLastname}</label>
+          <label>{`${user.username} ${user.lastname} ${user.secondLastname}`}</label>
           <br />
-          <label>{storedEmail}</label>
+          <label>{user.email}</label>
         </div>
       </div>
-      
-      {/*showProfileAdmin && <ProfileAdmin onCancelClick={handleProfileFormCancel} />*/}
+
+      {showProfileFarmer && <ProfileFarmer onCancelClick={handleProfileFormCancel} />}
     </div>
   );
 };

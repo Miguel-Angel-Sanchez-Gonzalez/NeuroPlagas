@@ -1,19 +1,19 @@
-.table-greenhouse-admin {
+.table-worker-farmer {
   margin-top: 10px;
   overflow-x: auto;
   max-width: 100%;
   max-height: 100%;
 }
 
-.h2green-bed-greenhouse, 
-.h4greenhouse-bed-greenhouse {
+.h2green-bed-worker, 
+.h4worker-bed-worker {
   color: #05073C;
   width: 100%;
   margin-left: 16px;
   margin-bottom: 5px;
 }
 
-.container-adm-green {
+.container-farm-far {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -23,39 +23,39 @@
   max-width: 100%; /* Evita que se corte horizontalmente */
 }
 
-.title-adm-search-greenhouse {
+.title-farm-search-worker {
   display: flex;
   justify-content: space-between; /* Distribuye los elementos horizontalmente */
   align-items: center; /* Centra los elementos verticalmente */
   margin-bottom: 10px; /* Ajusta el margen inferior */
 }
 
-.description-greenhouse {
+.description-worker-farm {
   display: block;
   font-size: 15px;
   margin-top: 10px;
 }
 
-.header-table-greenhouse-ad {
+.header-table-worker-ad-farm{
   display: flex;
   align-items: center;
 }
 
-.icon-greenhouse {
+.icon-worker-f{
   margin-right: 10px;
   color: #c62426;
 }
 
-.search-greenhouse {
+.search-worker-f{
     padding: 12px 16px;
     border: 1px solid #ccc;
     border-radius: 8px;
     outline: none;
-    width: 160px;
+    width: 150px;
     padding-left: 20px;
 }
 
-.search-greenhouse:focus {
+.search-worker-f:focus {
   border-color: #c62426;
 }
 
@@ -75,28 +75,33 @@
   cursor: pointer;
 }
 
-.view-icon {
-  margin-left: 5px; /* Ajusta la separación entre el icono de eliminar y otros elementos */
-  justify-content: center;
-  color: #c62426;
-  transform: scale(1, 1);
+
+.verInvernaderos-button {
+  background: #c62426;
+  color: #fff;
+  border: none;
   cursor: pointer;
+  align-items: right;
+  margin-left: 10px;
+  padding: 5px 20px;
+  border-radius: 5px;
+  font-size: 15x;
 }
 
-.h2admin {
+.h2farmer {
   margin-left: 20px;
   margin: 10px;
   margin-bottom: 15px;
   font-size: 30px;
 }
 
-.rol-admin {
+.rol-farmer {
   color: #c62426;
   font-size: 30px;
 }
 
-.button-greenhouse-adm {
-  width: 175px;
+.button-worker-farm {
+  width: 165px;
   padding: 12px;
   color: white;
   background-color: #c62426;

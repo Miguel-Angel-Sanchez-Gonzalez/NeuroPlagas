@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import "./DTableGreenhouses.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faPencilAlt, faTrash, faEye} from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faPencilAlt,
+  faTrash,
+  faEye,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import RegisterGreenhouse from "../CRUD/Register/RegisterGreenhouse";
@@ -14,7 +19,7 @@ const DTableGreenhouses = () => {
   const [filteredGreenhouses, setFilteredGreenhouses] = useState([]);
   const [idGreenhouse, setIDGreenhouse] = useState("");
   const [isDataLoaded, setDataLoaded] = useState(false);
-  
+
   const navigate = useNavigate();
 
   const columns = [
@@ -102,14 +107,16 @@ const DTableGreenhouses = () => {
         //se están cargando los datos
         setGreenhouses(data);
         setFilteredGreenhouses(data);
-      } else if (response.status === 404) { 
+      } else if (response.status === 404) {
         setGreenhouses([]);
         setFilteredGreenhouses([]);
       }
       setDataLoaded(true);
     } catch (error) {
       console.error("Error al cargar los datos de los invernaderos:", error);
-      toast.error("Hubo un problema al cargar los datos de los invernaderos. Por favor, inténtelo nuevamente más tarde.");
+      toast.error(
+        "Hubo un problema al cargar los datos de los invernaderos. Por favor, inténtelo nuevamente más tarde."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -165,7 +172,7 @@ const DTableGreenhouses = () => {
         state: {
           idGreenhouse: row.id_invernadero,
           nameGreenhouse: row.nombre,
-          nameFarmer: row.nombre_agricultor,
+          namegreenhouse: row.nombre_agricultor,
         },
       });
     } catch (error) {
@@ -183,70 +190,73 @@ const DTableGreenhouses = () => {
 
   return (
     <div className="table-greenhouse-admin">
-      <DataTable
-        title={
+      <div className="container-adm-green">
+        <div className="title-adm-search-greenhouse">
           <div>
-            {" "}
-            <h4>Invernaderos</h4>
+            <h3>Invernaderos</h3>
             <label className="description-greenhouse">
-              Lista de todos los invernaderos que existen en el sistema
+              Lista de todos los invernaderos registrados en el sistema.
             </label>
           </div>
-        }
-        columns={columns}
-        //Considerando el filtro
-        data={filteredGreenhouses}
-        responsive={true}
-        fixedHeader
-        pagination
-        paginationComponentOptions={paginacionOpciones}
-        actions={
-          <div className="header-table-greenhouse">
-            <FontAwesomeIcon icon={faSearch} className="search" />
+          <div className="header-table-greenhouse-ad">
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="icon-greenhouse"
+              size="lg"
+            />
             <input
               type="text"
               placeholder="Buscar..."
               value={inputValue}
               onChange={handleFilter}
-              className="searchDisease"
+              className="search-greenhouse"
             />
             <button
               type="button"
-              className="buttonInvernadero"
+              className="button-greenhouse-adm"
               onClick={handleRegisterClick}
             >
               Registrar invernadero
             </button>
           </div>
-        }
-        noDataComponent={isLoading ? ( // Mostrar mensaje de carga si isLoading es true
-              <div className="no-beds-message">
-                Espere un momento, los datos de los invernaderos se están cargando...
+        </div>
+        <DataTable
+          columns={columns}
+          data={filteredGreenhouses}
+          responsive={true}
+          pagination
+          paginationComponentOptions={paginacionOpciones}
+          noDataComponent={
+            isLoading ? (
+              <div className="no-workgreen-message">
+                Espere un momento, los datos de los invernaderos se están
+                cargando...
               </div>
             ) : (
-              <div className="no-beds-message">
+              <div className="no-workgreen-message">
                 Aún no se han registrado invernaderos.
               </div>
-            )}
+            )
+          }
         />
-      {showRegisterGreenh && (
-        <RegisterGreenhouse onCancelClick={handleCancelClick} />
-      )}
-      {}
-      {showEditGreenh && (
-        <EditGreenhouse
-          onCancelClick={handleCancelClick}
-          idGreenhouse={idGreenhouse}
-        />
-      )}
-      {showDeleteGreenh && (
-        <DeleteGreenhouse
-          onCancelClick={handleCancelClick}
-          idGreenhouse={idGreenhouse}
-        />
-      )}
+        {showRegisterGreenh && (
+          <RegisterGreenhouse onCancelClick={handleCancelClick} />
+        )}
+        {}
+        {showEditGreenh && (
+          <EditGreenhouse
+            onCancelClick={handleCancelClick}
+            idGreenhouse={idGreenhouse}
+          />
+        )}
+        {showDeleteGreenh && (
+          <DeleteGreenhouse
+            onCancelClick={handleCancelClick}
+            idGreenhouse={idGreenhouse}
+          />
+        )}
+      </div>
     </div>
   );
 };
-
 export default DTableGreenhouses;

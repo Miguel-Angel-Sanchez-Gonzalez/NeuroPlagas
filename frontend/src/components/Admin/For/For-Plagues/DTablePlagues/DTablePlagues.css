@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-/* CSS para hacer responsivo el DataTable */
 .table-plagues-admin {
   margin-top: 10px;
   overflow-x: auto;
@@ -7,87 +5,71 @@
   max-height: 100%;
 }
 
-.header-table-plagues {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.h2green-bed-plagues, 
+.h4farmer-bed-plagues {
+  color: #05073C;
+  width: 100%;
+  margin-left: 16px;
+  margin-bottom: 5px;
+}
+
+.container-adm-pla {
+  background: #fff;
   padding: 20px;
-  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(165, 157, 157, 0.123);
+  margin-left: 10px;
+  width: calc(100% - 20px); /* Ajusta el ancho para evitar desbordamiento */
+  max-width: 100%; /* Evita que se corte horizontalmente */
 }
 
-.search {
-  font-size: 20px;
-  transition: 0.5s ease-in-out;
-  color: #c62426;
-}
-
-.icon:hover {
-  transform: scale(1.5);
-  cursor: pointer;
-}
-
-.buttonPlaga {
-  padding: 10px 15px;
-  color: white;
-  background-color: #c62426;
-  border: 2px solid #c62426;
-  border-radius: 10px;
-  
-}
-
-input {
-  padding: 10px 20px;
-  margin: 0 10px;
-  outline: none;
-  border-radius: 6px;
-  color: black;
-}
-
-::placeholder {
-  color: black;
-}
-
-.icons-container {
+.title-adm-search-plagues {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+  justify-content: space-between; /* Distribuye los elementos horizontalmente */
+  align-items: center; /* Centra los elementos verticalmente */
+  margin-bottom: 10px; /* Ajusta el margen inferior */
 }
 
-.edit-icon, .delete-icon {
-  justify-content: center;
-  color: #c62426;
-  cursor: pointer;
-}
-
-.edit-icon {
-  margin-right: 5px;
-}
-
-.delete-icon {
-  margin-left: 5px;
-}
-
-.description {
+.description-plagues {
   display: block;
   font-size: 15px;
   margin-top: 10px;
 }
 
-.searchPlague {
-  max-width: 40%;
+.header-table-plagues-ad {
+  display: flex;
+  align-items: center;
 }
 
-/* DTableplagues.css */
-.design-table-plagues .rdt_TableRow {
-  height: 130px; /* Altura para las filas */
+.icon-plagues {
+  margin-right: 10px;
+  color: #c62426;
 }
-.design-table-plagues .rdt_TableCell,
-.design-table-plagues .rdt_TableCell div[data-tag="allowRowEvents"] {
+
+.search-plagues {
+  padding: 11px 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  width: 190px;
+}
+
+.search-plagues:focus {
+  border-color: #c62426;
+}
+
+/* DTableplaguesW.css */
+
+.table-plagues-admin .rdt_TableRow {
+  min-height: 150px; /* Cambia este valor según el tamaño deseado */
+}
+
+.table-plagues-admin .rdt_TableCell,
+.table-plagues-admin .rdt_TableCell div[data-tag="allowRowEvents"] {
   white-space: normal;
   overflow: auto; /* Sale un scroll si el texto no cabe en la celda */
   text-align: justify;
   max-height: 100%;
   text-overflow: initial; /* Elimina la truncación del texto */
-  word-wrap: break-word; /* Evita el desboramiento del texto */
+  word-wrap: break-word; /* Evita el desbordamiento del texto */
 }

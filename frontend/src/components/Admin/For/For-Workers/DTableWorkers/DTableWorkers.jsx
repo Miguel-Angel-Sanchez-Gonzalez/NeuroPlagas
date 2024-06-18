@@ -61,7 +61,7 @@ const DTableWorkers = () => {
     {
       name: "Teléfono",
       selector: (row) => row.telefono,
-      width: "130px",
+      width: "120px",
     },
     {
       name: "Correo electrónico",
@@ -207,62 +207,64 @@ const DTableWorkers = () => {
 
   return (
     <div className="table-worker-admin">
-      <DataTable
-        title={
+      <div className="container-adm-far">
+        <div className="title-adm-search-worker">
           <div>
-            {" "}
-            <h4>Trabajadores</h4>
+            <h3>Trabajadores</h3>
             <label className="description-worker">
-              Lista de todos los trabajadores que existen en el sistema
+            Lista de todos los trabajadores que existen en el sistema.
             </label>
-          </div>
-        }
-        columns={columns}
-        //se está considerando el filtro
-        data={filteredWorkers}
-        responsive={true}
-        fixedHeader
-        pagination
-        paginationComponentOptions={paginacionOpciones}
-        actions={
-          <div className="header-table-worker">
-            <FontAwesomeIcon icon={faSearch} className="search" />
+            </div>
+          <div className="header-table-worker-ad">
+          <FontAwesomeIcon
+              icon={faSearch}
+              className="icon-worker"
+              size="lg"
+            />
             <input
               type="text"
               placeholder="Buscar..."
               value={inputValue}
               onChange={handleFilter}
-              className="searchWorker"
+              className="search-worker"
             />
-            <button
-              type="button"
-              className="buttonTrabajador"
-              onClick={handleRegisterClick}
-            >
-              Registrar trabajador
-            </button>
+             <button
+                type="button"
+                className="button-worker-adm"
+                onClick={handleRegisterClick}>
+                Registrar trabajador
+             </button>
           </div>
-        }
-        noDataComponent={isLoading ? ( // Mostrar mensaje de carga si isLoading es true
-              <div className="no-beds-message">
-                Espere un momento, los datos de los trabajadores se están cargando...
-              </div>
-            ) : (
-              <div className="no-beds-message">
-                Aún no se han registrado trabajadores.
-              </div>
-            )}
-        />
-      {showRegisterWorker && (
-        <RegisterWorker onCancelClick={handleCancelClick} />
-      )}{" "}
-      {}
-      {showEditWorker && (
-        <EditWorker onCancelClick={handleCancelClick} idWorker={idWorker} />
-      )}
-      {showDeleteWorker && (
-        <DeleteWorker onCancelClick={handleCancelClick} idWorker={idWorker} />
-      )}
+        </div>
+          <DataTable
+            columns={columns}
+            data={filteredWorkers}
+            responsive={true}
+            pagination
+            paginationComponentOptions={paginacionOpciones}
+            noDataComponent={
+              isLoading ? (
+                <div className="no-workgreen-message">
+                  Espere un momento, los datos de los trabajadores se están cargando...
+                </div>
+              ) : (
+                <div className="no-workgreen-message">
+                  Aún no se han registrado trabajadores.
+                </div>
+              )
+            }
+          />
+        {showRegisterWorker && (
+          <RegisterWorker onCancelClick={handleCancelClick} />
+        )}{" "}
+        {}
+        {showEditWorker && (
+          <EditWorker onCancelClick={handleCancelClick} idWorker={idWorker} />
+        )}
+        {showDeleteWorker && (
+          <DeleteWorker onCancelClick={handleCancelClick} idWorker={idWorker} />
+        )}
+      </div>
     </div>
   );
 };

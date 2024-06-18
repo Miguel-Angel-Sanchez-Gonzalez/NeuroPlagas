@@ -155,67 +155,66 @@ const DTableDiseases = () => {
   };
 
   return (
-    <div className="table-disease-admin">
-      <DataTable
-        className="design-table-disease"
-        title={
+    <div className="table-diseases-admin">
+      <div className="container-adm-pla">
+        <div className="title-adm-search-diseases">
           <div>
-            <h4>Enfermedades</h4>
-            <label className="description">
+            <h3>Enfermedades</h3>
+            <label className="description-diseases">
               Lista de enfermedades en los invernaderos
             </label>
           </div>
-        }
-        columns={columns}
-        //considerando el filtro
-        data={filteredDiseases}
-        responsive={true}
-        pagination
-        paginationPerPage={4} // Número de filas por página fijo
-        paginationRowsPerPageOptions={[4,12]} // Deshabilita el selector de filas por página mostrando solo 10
-        paginationComponentOptions={paginacionOpciones}
-        actions={
-          <div className="header-table-disease">
-            <FontAwesomeIcon icon={faSearch} className="search" />
+          <div className="header-table-diseases-ad">
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="icon-diseases"
+              size="lg"
+            />
             <input
               type="text"
               placeholder="Buscar..."
               value={inputValue}
               onChange={handleFilter}
-              className="searchDisease"
+              className="search-diseases-adm"
             />
             <button
               type="button"
               className="buttonEnfermedad"
-              onClick={handleRegisterClick}
-            >
+              onClick={handleRegisterClick}>
               Registrar enfermedad
             </button>
           </div>
-        }
-        noDataComponent={isLoading ? ( // Mostrar mensaje de carga si isLoading es true
-              <div className="no-beds-message">
-                Espere un momento, las enfermedades se están cargando...
-              </div>
-            ) : (
-              <div className="no-beds-message">
-                Aún no se han registrado enfermedades.
-              </div>
-            )}
+          </div>
+          <DataTable
+            columns={columns}
+            data={filteredDiseases}
+            responsive={true}
+            pagination
+            paginationPerPage={4}
+            paginationRowsPerPageOptions={[4, 12]}
+            paginationComponentOptions={paginacionOpciones}
+            noDataComponent={
+              isLoading ? (
+                <div className="no-beds-message">
+                  Espere un momento, los datos de las enfermedades se están cargando...
+                </div>
+              ) : (
+                <div className="no-beds-message">
+                  Aún no se han registrado enfermedades.
+                </div>
+              )
+            }
           />
-      {showRegisterDisease && (
-        <RegisterDisease onCancelClick={handleCancelClick} />
-      )}{" "}
-      {}
-      {showEditDisease && (
-        <EditDisease onCancelClick={handleCancelClick} idDisease={idDisease} />
-      )}
-      {showDeleteDisease && (
-        <DeleteDisease
-          onCancelClick={handleCancelClick}
-          idDisease={idDisease}
-        />
-      )}
+          {showRegisterDisease && (
+            <RegisterDisease onCancelClick={handleCancelClick} />
+          )}
+          {showEditDisease && (
+            <EditDisease onCancelClick={handleCancelClick} idDisease={idDisease} />
+          )}
+          {showDeleteDisease && (
+            <DeleteDisease onCancelClick={handleCancelClick} idDisease={idDisease} />
+          )}
+      </div>
     </div>
   );
 };

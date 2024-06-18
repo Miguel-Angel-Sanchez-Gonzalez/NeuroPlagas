@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faPencilAlt, faTrash, faEye} from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faPencilAlt,
+  faTrash,
+  faEye,
+} from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "./DTableBeds.css";
@@ -14,7 +19,6 @@ const DTableBeds = () => {
   const [filteredBeds, setFilteredBeds] = useState([]);
   const [idBed, setIDBed] = useState(null); // Inicializar como null para evitar problemas de referencia
   const [isDataLoaded, setDataLoaded] = useState(false);
-  
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -77,7 +81,9 @@ const DTableBeds = () => {
     const getBedByIdGreenhouse = async () => {
       try {
         setIsLoading(true); // Indicar que se están cargando las camas
-        const response = await fetch(`http://localhost:3000/bed/greenhouse/${idGreenhouse}`);
+        const response = await fetch(
+          `http://localhost:3000/bed/greenhouse/${idGreenhouse}`
+        );
         if (response.status === 200) {
           const data = await response.json();
           setBeds(data);
@@ -89,7 +95,9 @@ const DTableBeds = () => {
         setDataLoaded(true);
       } catch (error) {
         console.error("Error al obtener las camas:", error);
-        toast.error("Hubo un problema al cargar los datos de las camas. Por favor, inténtelo nuevamente más tarde.");
+        toast.error(
+          "Hubo un problema al cargar los datos de las camas. Por favor, inténtelo nuevamente más tarde."
+        );
       } finally {
         setIsLoading(false);
       }
@@ -97,8 +105,7 @@ const DTableBeds = () => {
     if (!isDataLoaded) {
       getBedByIdGreenhouse();
     }
-}, [idGreenhouse, isDataLoaded]);
-
+  }, [idGreenhouse, isDataLoaded]);
 
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
@@ -190,22 +197,24 @@ const DTableBeds = () => {
               </button>
             </div>
           </div>
-            <DataTable
-              columns={columns}
-              data={filteredBeds}
-              responsive={true}
-              fixedHeader
-              pagination
-              paginationComponentOptions={paginacionOpciones}
-              noDataComponent={isLoading ? ( // Mostrar mensaje de carga si isLoading es true
-              <div className="no-beds-message">
-                Espere un momento, los datos de las camas se están cargando...
-              </div>
-            ) : (
-              <div className="no-beds-message">
-                Aún no se han registrado camas en este invernadero.
-              </div>
-            )}
+          <DataTable
+            columns={columns}
+            data={filteredBeds}
+            responsive={true}
+            fixedHeader
+            pagination
+            paginationComponentOptions={paginacionOpciones}
+            noDataComponent={
+              isLoading ? (
+                <div className="no-beds-message">
+                  Espere un momento, los datos de las camas se están cargando...
+                </div>
+              ) : (
+                <div className="no-beds-message">
+                  Aún no se han registrado camas en este invernadero.
+                </div>
+              )
+            }
           />
         </div>
       </div>
@@ -215,14 +224,14 @@ const DTableBeds = () => {
           idGreenhouse={idGreenhouse}
         />
       )}
-      {showEditBed && idBed !== null && (
+      {showEditBed && (
         <EditBed
           onCancelClick={handleCancelClick}
           idBed={idBed}
           idGreenhouse={idGreenhouse}
         />
       )}
-      {showDeleteBed && idBed !== null && (
+      {showDeleteBed && (
         <DeleteBed
           onCancelClick={handleCancelClick}
           idBed={idBed}

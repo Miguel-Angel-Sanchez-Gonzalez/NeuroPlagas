@@ -32,6 +32,7 @@ const DTablePlagues = () => {
       name: "Nombre científico",
       selector: (row) => row.nombre_cientifico,
       sortable: true,
+      width: "170px",
     },
     {
       name: "Descripción",
@@ -154,63 +155,67 @@ const DTablePlagues = () => {
   
   return (
     <div className="table-plagues-admin">
-      <DataTable
-        className="design-table-plagues"
-        title={
+      <div className="container-adm-pla">
+        <div className="title-adm-search-plagues">
           <div>
-            <h4>Plagas</h4>
-            <label className="description">
+            <h3>Plagas</h3>
+            <label className="description-plagues">
               Lista de plagas en los invernaderos
             </label>
           </div>
-        }
-        columns={columns}
-        data={filteredPlagues}
-        responsive={true}
-        pagination
-        paginationPerPage={4} // Número de filas por página fijo
-        paginationRowsPerPageOptions={[4,12]} 
-        paginationComponentOptions={paginacionOpciones}
-        actions={
-          <div className="header-table-plagues">
-            <FontAwesomeIcon icon={faSearch} className="search" />
+          <div className="header-table-plagues-ad">
+            <FontAwesomeIcon
+              icon={faSearch}
+              className="icon-plagues"
+              size="lg"
+            />
             <input
               type="text"
               placeholder="Buscar..."
               value={inputValue}
               onChange={handleFilter}
-              className="searchPlague"
+              className="search-plagues"
             />
             <button
               type="button"
               className="buttonPlaga"
-              onClick={handleRegisterClick}
-            >
+              onClick={handleRegisterClick}>
               Registrar plaga
             </button>
           </div>
-        }
-        noDataComponent={isLoading ? ( // Mostrar mensaje de carga si isLoading es true
-              <div className="no-beds-message">
-                Espere un momento, las datos de las plagas se están cargando...
-              </div>
-            ) : (
-              <div className="no-beds-message">
-                Aún no se han registrado plagas.
-              </div>
-            )}
-        />
-      {showRegisterPlague && (
-        <RegisterPlague onCancelClick={handleCancelClick} />
-      )}
-      {showEditPlague && (
-        <EditPlague onCancelClick={handleCancelClick} idPlague={idPlague} />
-      )}
-      {showDeletePlague && (
-        <DeletePlague onCancelClick={handleCancelClick} idPlague={idPlague} />
-      )}
+        </div>
+          <DataTable
+            columns={columns}
+            data={filteredPlagues}
+            responsive={true}
+            pagination
+            paginationPerPage={4}
+            paginationRowsPerPageOptions={[4, 12]}
+            paginationComponentOptions={paginacionOpciones}
+            noDataComponent={
+              isLoading ? (
+                <div className="no-beds-message">
+                  Espere un momento, los datos de las plagas se están cargando...
+                </div>
+              ) : (
+                <div className="no-beds-message">
+                  Aún no se han registrado plagas.
+                </div>
+              )
+            }
+          />
+          {showRegisterPlague && (
+            <RegisterPlague onCancelClick={handleCancelClick} />
+          )}
+          {showEditPlague && (
+            <EditPlague onCancelClick={handleCancelClick} idPlague={idPlague} />
+          )}
+          {showDeletePlague && (
+            <DeletePlague onCancelClick={handleCancelClick} idPlague={idPlague} />
+          )}
+      </div>
     </div>
   );
-};
+}  
 
 export default DTablePlagues;

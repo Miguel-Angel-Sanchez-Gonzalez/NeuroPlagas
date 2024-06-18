@@ -169,62 +169,58 @@ const DTableFarmers = () => {
   };
 
   return (
-    <div>
-      <div>
-        <h2 className="h2admin">
+    <div className="table-farmer-admin">
+      <h2 className="h2admin">
           Bienvenido <span className="rol-admin">administrador</span>
-        </h2>
-      </div>
-      <div className="table-farmer-admin">
-        <DataTable
-          title={
-            <div>
-              {" "}
-              <h4>Agricultores</h4>{" "}
-              <label className="description-farmer">
-                Lista de todos los agricultores que existen en el sistema
-              </label>
+      </h2>
+      <div className="container-adm-far">
+        <div className="title-adm-search-farmer">
+          <div>
+            <h3>Agricultores</h3>
+            <label className="description-farmer">
+            Lista de todos los agricultores que existen en el sistema.
+            </label>
             </div>
-          }
-          columns={columns}
-          //se está considerando el filtro
-          data={filteredFarmers}
-          responsive={true}
-          fixedHeader
-          pagination
-          paginationComponentOptions={paginacionOpciones}
-          actions={
-            <div className="header-table-farmer">
-              <FontAwesomeIcon icon={faSearch} className="search" />
-              <input
-                type="text"
-                placeholder="Buscar..."
-                value={inputValue}
-                onChange={handleFilter}
-                className="searchFarmer"
-              />
-              <button
+          <div className="header-table-farmer-ad">
+          <FontAwesomeIcon
+              icon={faSearch}
+              className="icon-farmer"
+              size="lg"
+            />
+            <input
+              type="text"
+              placeholder="Buscar..."
+              value={inputValue}
+              onChange={handleFilter}
+              className="search-farmer"
+            />
+             <button
                 type="button"
-                className="buttonAgricultor"
-                onClick={handleRegisterClick}
-              >
+                className="button-farmer-adm"
+                onClick={handleRegisterClick}>
                 Registrar agricultor
-              </button>
-            </div>
-          }
-          noDataComponent={
-            isLoading ? ( // Mostrar mensaje de carga si isLoading es true
-              <div className="no-beds-message">
-                Espere un momento, las datos de los agricultores se están
-                cargando...
-              </div>
-            ) : (
-              <div className="no-beds-message">
-                Aún no se han registrado agricultores en este invernadero.
-              </div>
-            )
-          }
-        />
+             </button>
+          </div>
+        </div>
+          <DataTable
+            columns={columns}
+            data={filteredFarmers}
+            responsive={true}
+            pagination
+            paginationComponentOptions={paginacionOpciones}
+            noDataComponent={
+              isLoading ? (
+                <div className="no-workgreen-message">
+                  Espere un momento, las datos de los agricultores se están
+                  cargando...
+                </div>
+              ) : (
+                <div className="no-workgreen-message">
+                  Aún no se han registrado agricultores.
+                </div>
+              )
+            }
+          />
         {showRegisterFarmer && (
           <RegisterFarmer onCancelClick={handleCancelClick} />
         )}

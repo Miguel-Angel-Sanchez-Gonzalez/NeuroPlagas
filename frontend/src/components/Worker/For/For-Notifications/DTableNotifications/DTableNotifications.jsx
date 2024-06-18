@@ -20,25 +20,13 @@ const DTableNotifications = () => {
       name: "Fecha",
       selector: (row) => row.fecha,
       sortable: true,
-      width: "120px",
+      width: "100px",
     },
     {
       name: "Nombre Invernadero",
       selector: (row) => row.nombre_invernadero,
       sortable: true,
       width: "180px",
-    },
-    {
-      name: "ID Invernadero",
-      selector: (row) => row.id_invernadero,
-      sortable: true,
-      width: "140px",
-    },
-    {
-      name: "ID cama",
-      selector: (row) => row.id_cama,
-      sortable: true,
-      width: "110px",
     },
     {
       name: "Número de cama",

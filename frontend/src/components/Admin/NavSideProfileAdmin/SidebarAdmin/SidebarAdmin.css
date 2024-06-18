@@ -6,8 +6,7 @@
     padding-top: 33px;
     flex-direction: column;
     gap: 2.3rem;
-    height: auto;
-    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.3); /* Agrega un sombreado interior predeterminado */
+    height: '100%';
     transition: box-shadow 0.3s ease; /* Agrega una transición suave al sombreado */
   }
 

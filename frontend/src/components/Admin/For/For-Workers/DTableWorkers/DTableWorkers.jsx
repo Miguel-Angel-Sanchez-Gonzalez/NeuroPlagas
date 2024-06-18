@@ -56,7 +56,7 @@ const DTableWorkers = () => {
           </button>
         </div>
       ),
-      width: "120px",
+      width: "135px",
     },
     {
       name: "Teléfono",
@@ -72,13 +72,13 @@ const DTableWorkers = () => {
       name: "Usuario",
       selector: (row) => row.nombre_usuario,
       sortable: true,
-      width: "100px",
+      width: "110px",
     },
-    {
-      name: "Contraseña",
-      selector: (row) => "********",
-      width: "100px",
-    },
+    // {
+    //   name: "Contraseña",
+    //   selector: (row) => "********",
+    //   width: "100px",
+    // },
     {
       name: "Acciones",
       cell: (row) => (

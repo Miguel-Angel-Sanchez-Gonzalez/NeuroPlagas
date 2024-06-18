@@ -75,11 +75,20 @@
   transform: scale(1, 1);
   cursor: pointer;
 }
+
+.view-icon {
+  margin-left: 5px; /* Ajusta la separación entre el icono de eliminar y otros elementos */
+  justify-content: center;
+  color: #c62426;
+  transform: scale(1, 1);
+  cursor: pointer;
+}
+
 .h2admin {
-  margin-left: 20px;
   margin: 10px;
-  margin-bottom: 15px;
   font-size: 30px;
+  margin-top: 0px;
+  margin-left: 25px;
 }
 
 .rol-admin {

@@ -54,9 +54,8 @@
 .search-ImageA:focus {
   border-color: #c62426;
 }
-
-.image-uploader {
-  margin-top: 5%;
+.image-uploader-f {
+  margin-top: 10%;
   margin-left: 20px;
   align-content: center;
   border: 2px dashed #c62426;
@@ -66,9 +65,9 @@
   flex: 0 0 auto;
 }
 
-.image-uploader-container {
-  margin-top: 7%;
+.image-uploader-container-f {
   height: auto;
+  margin: 20px;
 }
 
 

@@ -172,7 +172,7 @@ const DTableGreenhouses = () => {
         state: {
           idGreenhouse: row.id_invernadero,
           nameGreenhouse: row.nombre,
-          namegreenhouse: row.nombre_agricultor,
+          nameFarmer: row.nombre_agricultor,
         },
       });
     } catch (error) {

@@ -57,11 +57,11 @@ const DTableFarmers = () => {
       sortable: true,
       width: "100px",
     },
-    {
-      name: "Contraseña",
-      selector: (row) => "********",
-      width: "110px",
-    },
+    // {
+    //   name: "Contraseña",
+    //   selector: (row) => "********",
+    //   width: "110px",
+    // },
     {
       name: "Acciones",
       cell: (row) => (

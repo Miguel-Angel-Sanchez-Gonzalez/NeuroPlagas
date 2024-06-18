@@ -54,7 +54,7 @@
 }
 
 .switch-label {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
   color: #c62426;
   padding: 5px;
@@ -65,4 +65,11 @@
   border-radius: 20px; /* Esquinas sean redondeadas */
   background-color: white; /* Fondo blanco */
   padding: 5px; /* Espaciado alrededor del switch */
+}
+
+.view-icon-notifications{
+  margin-left: 40px;
+  color: #c62426;
+  transform: scale(1, 1);
+  cursor: pointer;
 }

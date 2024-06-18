@@ -16,7 +16,7 @@
 }
 
 .container-change-status {
-  margin: 5px;
+  text-align: center;
 }
 
 .h4-change-status {
@@ -31,13 +31,11 @@
 }
 
 .button-container-notify {
+  margin-top: 10px;
+  padding: 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Distribuye el espacio entre los botones */
   align-items: center;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: 25px;
-  margin-bottom: 20px;
 }
 
 .button-change-status {
@@ -47,9 +45,7 @@
   background-color: #c62426;
   border: 2px solid #c62426;
   border-radius: 10px;
-  cursor: pointer;
-  margin-left: 25px;
-  margin-right: 60px; /* Añadir margen derecho para separación */
+  margin-right: 25px; /* Añadir margen derecho para separación */
 }
 
 .btn-cancel-notify {
@@ -101,3 +97,4 @@ ANIMACION DE CARGA
     transform: rotate(360deg);
   }
 }
+

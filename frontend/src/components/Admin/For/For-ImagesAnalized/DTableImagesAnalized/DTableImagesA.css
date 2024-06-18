@@ -16,7 +16,7 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 3px 8px rgba(165, 157, 157, 0.123);
-  margin-top: 30px;
+  margin-top: 20px;
   margin-left: 10px;
 }
 
@@ -56,7 +56,7 @@
 }
 
 .image-uploader {
-  margin-top: 5%;
+  margin-top: 16%;
   margin-left: 20px;
   align-content: center;
   border: 2px dashed #c62426;
@@ -67,8 +67,8 @@
 }
 
 .image-uploader-container {
-  margin-top: 7%;
   height: auto;
+  margin: 20px;
 }
 
 

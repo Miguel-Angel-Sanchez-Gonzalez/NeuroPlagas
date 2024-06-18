@@ -71,3 +71,18 @@
   border-color: #2f31758e;
 }
 
+.image-uploader-w {
+  margin-top: 16%;
+  margin-left: 20px;
+  align-content: center;
+  border: 2px dashed #c62426;
+  border-radius: 8px;
+  height: auto;
+  text-align: center;
+  flex: 0 0 auto;
+}
+
+.image-uploader-containerw {
+  height: auto;
+  margin: 20px;
+}

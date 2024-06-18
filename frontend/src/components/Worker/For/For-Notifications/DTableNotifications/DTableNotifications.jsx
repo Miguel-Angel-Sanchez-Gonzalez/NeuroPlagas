@@ -22,9 +22,13 @@ const DTableNotifications = () => {
   const columns = [
     {
       name: "Fecha",
-      selector: (row) => row.fecha,
+      selector: (row) => new Date(row.fecha).toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      }),
       sortable: true,
-      width: "100px",
+      width: "140px",
     },
     {
       name: "Nombre Invernadero",
@@ -54,7 +58,7 @@ const DTableNotifications = () => {
       name: "Amenazas detectadas",
       selector: (row) => row.nombres_detectados,
       sortable: true,
-      width: "240px",
+      width: "auto",
     },
     {
       name: "Cambiar estado",
@@ -63,7 +67,7 @@ const DTableNotifications = () => {
           <FontAwesomeIcon
             icon={status === "Sin ver" ? faBell : faBellSlash}
             onClick={() => handleChangeNotification(row)}
-            className="view-icon-workergren"
+            className="view-icon-notifications"
             size="lg"
           />
         </div>
@@ -80,6 +84,7 @@ const DTableNotifications = () => {
 
   async function getNotifications() {
     try {
+      setIsLoaded(true);
       const response = await fetch(
         `http://localhost:3000/worker/getnotifications/${idWorker}/${status}`
       );
@@ -87,7 +92,7 @@ const DTableNotifications = () => {
         const data = await response.json();
         setNotifications(data);
         setFilteredNotifications(data);
-        setIsLoaded(true);
+        
       } else {
         throw new Error("Error al obtener las notificaciones");
       }
@@ -178,7 +183,7 @@ const DTableNotifications = () => {
           paginationComponentOptions={paginacionOpciones}
           noDataComponent={
             isLoaded ? (
-              <div className="no-notifications-message">
+              <div className="no-beds-message">
                 No hay notificaciones {status.toLowerCase()} registradas
               </div>
             ) : (

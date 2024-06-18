@@ -54,15 +54,22 @@
 }
 
 .switch-label {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
   color: #c62426;
   padding: 5px;
 }
 
 .MuiSwitch-root {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Sombra */
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); /* Sombra */
   border-radius: 20px; /* Esquinas sean redondeadas */
   background-color: white; /* Fondo blanco */
   padding: 5px; /* Espaciado alrededor del switch */
+}
+
+.view-icon-notifications{
+  margin-left: 40px;
+  color: #c62426;
+  transform: scale(1, 1);
+  cursor: pointer;
 }

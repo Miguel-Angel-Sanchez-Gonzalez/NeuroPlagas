@@ -55,7 +55,11 @@ const DTableImagesA = () => {
     },
     {
       name: "Fecha",
-      selector: (row) => row.date,
+      selector: (row) => new Date(row.date).toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      }),
       sortable: true,
       width: "150px",
     },
@@ -238,12 +242,12 @@ const DTableImagesA = () => {
           />
         </div>
         </div>
-        <div className="image-uploader-container">
+        <div className="image-uploader-container-f">
           <div
-            className="image-uploader"
+            className="image-uploader-f"
             {...getRootProps({ onClick: (event) => event.stopPropagation() })}
             style={{
-              height: "auto",
+              height: "300px",
               width: "300px",
               display: "flex",
               justifyContent: "center",

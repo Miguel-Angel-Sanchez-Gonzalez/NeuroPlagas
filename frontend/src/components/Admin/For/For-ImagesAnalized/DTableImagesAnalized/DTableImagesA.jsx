@@ -10,7 +10,8 @@ import { toast } from "react-toastify";
 const DTableImagesA = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredImagesA, setFilteredImagesA] = useState([]);
-  
+  const [isLoaded, setIsLoaded] = useState(false);
+  //Para ver las imagenes analizadas de una cama
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -28,7 +29,8 @@ const DTableImagesA = () => {
       name: "Nombre de lo detectado",
       cell: (row) => {
         const detected = [...row.detected.plagues, ...row.detected.diseases]; // Combinar arrays de plagas y enfermedades
-
+        console.log("Plagas" + row.detected.plagues);
+        console.log("Enfermedades" + row.detected.diseases);
         return detected.join(", "); // Unir todo en un solo string separado por comas
       },
       sortable: true,
@@ -62,7 +64,10 @@ const DTableImagesA = () => {
       name: "Imagen",
       cell: (row) => (
         <div className="icons-container">
-          <FontAwesomeIcon icon={faEye} onClick={() => handleShowCardImages(row)} className="view-icon" size="lg" />
+          <FontAwesomeIcon icon={faEye} 
+          onClick={() => handleShowCardImages(row)} 
+          className="view-icon" 
+          size="lg" />
         </div>
       ),
       width: "90px",
@@ -81,8 +86,11 @@ const DTableImagesA = () => {
         );
         if (response.status === 200) {
           const data = await response.json();
-          setImagesAnalized(Array.isArray(data) ? data : []);
-          setFilteredImagesA(Array.isArray(data) ? data : []);
+          // setImagesAnalized(Array.isArray(data) ? data : []);
+          // setFilteredImagesA(Array.isArray(data) ? data : []);
+          setImagesAnalized(data);
+          setFilteredImagesA(data);
+          setIsLoaded(true);
         } else if (response.status === 404) {
           setFilteredImagesA([]); // Si no se encuentran imágenes, establecer filteredImagesA como un array vacío
         }
@@ -94,8 +102,11 @@ const DTableImagesA = () => {
       }
     };
 
-    getImageAByIdBed();
-  }, [idBed]);
+    if (!isLoaded) {
+      getImageAByIdBed();
+    }
+  }, [isLoaded]);
+
 
   const onDrop = useCallback((acceptedFiles) => {
     console.log(acceptedFiles[0]);
@@ -119,10 +130,20 @@ const DTableImagesA = () => {
       );
       console.log(response);
       if (response.status === 200) {
-        //setIsLoaded(iba)
-        isLoading(false);
+        setIsLoaded(false);
+        toast.success(`Se ha analizado la imagen`, {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        });
       }
-    } catch (error) {}
+    } catch (error) {
+      toast.error(`Hubo un error ${error}`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
+    }
   };
 
   const handleFilter = (event) => {
@@ -192,7 +213,7 @@ const DTableImagesA = () => {
                   placeholder="Buscar..."
                   value={inputValue}
                   onChange={handleFilter}
-                  className="search-ImageA"
+                  className="search-bed"
                 />
               </div>
             </div>
@@ -222,7 +243,7 @@ const DTableImagesA = () => {
             className="image-uploader"
             {...getRootProps({ onClick: (event) => event.stopPropagation() })}
             style={{
-              height: "auto",
+              height: "300px",
               width: "300px",
               display: "flex",
               justifyContent: "center",
@@ -238,7 +259,6 @@ const DTableImagesA = () => {
               <div>
                 <h3>Analiza una imagen</h3>
                 <p>
-                  
                   Arrastra y suelta una imagen aquí o haz clic para seleccionar
                 </p>
               </div>

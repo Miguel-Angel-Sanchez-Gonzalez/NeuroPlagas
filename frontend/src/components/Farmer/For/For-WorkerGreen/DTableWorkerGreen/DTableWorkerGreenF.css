@@ -29,13 +29,13 @@
 
 }
 
-.only-table-workgreen {
+.only-table-workgreen-f {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 3px 8px rgba(165, 157, 157, 0.123);
   width: 100%;
-  margin-top: 30px;
+  margin-top: 10px;
   margin-left: 10px;
 }
 

@@ -23,7 +23,7 @@
 }
 
 .table-container-worker {
-  width: 75%; /* Asegúrate de que la suma de este ancho y el de otros elementos no exceda el 100% */
+  width: 78%; /* Asegúrate de que la suma de este ancho y el de otros elementos no exceda el 100% */
   /* overflow: auto; Permite desplazamiento si el contenido interno es muy ancho */
   margin: 20px;
 }

@@ -86,6 +86,8 @@ const DTableImagesA = () => {
   };
   //const [showDataTableBeds, setshowDataTableBeds] = useState(false); //Form para ver las camas de un invernadero
   const [imagesAnalized, setImagesAnalized] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  
 
   useEffect(() => {
     if (!isLoaded) {
@@ -143,12 +145,14 @@ const DTableImagesA = () => {
         setImagesAnalized(data);
         setFilteredImagesA(data);
         setIsLoaded(true);
+      } else if (response.status === 404) {
+        setFilteredImagesA([]); // Si no se encuentran imágenes, establecer filteredImagesA como un array vacío
       }
     } catch (error) {
-      console.error(
-        "Error al obtener las imágenes analizadas de la cama:",
-        error
-      );
+      console.error("Error al obtener las imágenes analizadas de la cama:", error);
+      toast.error("Hubo un problema al cargar las imágenes analizadas. Por favor, inténtelo nuevamente más tarde.");
+    } finally {
+      setIsLoading(false); // Indicar que se han terminado de cargar las imágenes (ya sea con éxito o error)
     }
   };
 
@@ -180,8 +184,9 @@ const DTableImagesA = () => {
     useDropzone({ onDrop });
   return (
     <div className="table-imagesA-admin">
-      <div className="right-content-imageA">
-        <h1 className="h2green-bed-imageA">
+      <div className="content-container">
+        <div className="table-container">
+          <h1 className="h2green-bed-imageA">
           Invernadero{" "}
           <span className="name-bed">
             {" "}
@@ -220,13 +225,19 @@ const DTableImagesA = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             noDataComponent={
-              <div className="no-beds-message">
-                Aún no hay imagenes analizadas
-              </div>
+              isLoading ? (
+                <div className="no-beds-message">
+                  Espere un momento, las imágenes analizadas se están cargando...
+                </div>
+              ) : (
+                <div className="no-beds-message">
+                  Aún no se han analizado imágenes en esta cama.
+                </div>
+              )
             }
           />
         </div>
-
+        </div>
         <div className="image-uploader-container">
           <div
             className="image-uploader"

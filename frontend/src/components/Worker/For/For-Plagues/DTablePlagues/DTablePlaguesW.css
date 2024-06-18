@@ -13,7 +13,7 @@
   margin-bottom: 5px;
 }
 
-.container-wor-pla {
+.container-work-pla {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -23,7 +23,7 @@
   max-width: 100%; /* Evita que se corte horizontalmente */
 }
 
-.title-and-search-plagues {
+.title-work-search-plagues {
   display: flex;
   justify-content: space-between; /* Distribuye los elementos horizontalmente */
   align-items: center; /* Centra los elementos verticalmente */
@@ -36,7 +36,7 @@
   margin-top: 10px;
 }
 
-.header-table-plagues {
+.header-table-plagues-wor {
   display: flex;
   align-items: center;
 }
@@ -47,15 +47,15 @@
 }
 
 .search-plagues {
-  padding: 10px 16px;
+  padding: 11px 16px;
   border: 1px solid #ccc;
   border-radius: 8px;
   outline: none;
-  width: 200px;
+  width: 190px;
 }
 
 .search-plagues:focus {
-  border-color: #2f31758e;
+  border-color: #c62426;
 }
 
 /* DTableplaguesW.css */

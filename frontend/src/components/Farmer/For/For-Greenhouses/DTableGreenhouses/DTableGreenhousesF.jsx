@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import "./DTableGreenhouses.css";
+import "./DTableGreenhousesF.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faPencilAlt,
-  faTrash,
-  faEye,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faPencilAlt, faTrash, faEye} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import RegisterGreenhouse from "../CRUD/Register/RegisterGreenhouse";
 import EditGreenhouse from "../CRUD/Edit/EditGreenhouse";
 import DeleteGreenhouse from "../CRUD/Delete/DeleteGreenhouse";
 //FARMER
-const DTableGreenhouses = () => {
+const DTableGreenhousesF = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredGreenhouses, setFilteredGreenhouses] = useState([]);
   const [idGreenhouse, setIDGreenhouse] = useState("");
@@ -32,19 +28,19 @@ const DTableGreenhouses = () => {
       name: "Nombre del invernadero",
       selector: (row) => row.nombre,
       sortable: true,
-      width: "280px",
+      width: "auto",
     },
     {
       name: "Tipo de invernadero",
       selector: (row) => row.tipo_invernadero,
       sortable: true,
-      width: "180px",
+      width: "200px",
     },
     {
       name: "Humedad",
       selector: (row) => row.humedad,
       sortable: true,
-      width: "110px",
+      width: "130px",
     },
     {
       name: "Tamaño",
@@ -76,7 +72,7 @@ const DTableGreenhouses = () => {
           />
         </div>
       ),
-      width: "100px",
+      width: "110px",
     },
   ];
 
@@ -84,6 +80,7 @@ const DTableGreenhouses = () => {
   const [showEditGreenh, setshowEditGreenh] = useState(false); //Form de edicion
   const [showDeleteGreenh, setshowDeleteGreenh] = useState(false); //Form de eliminacion
   const [greenhouses, setGreenhouses] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!isLoaded) {
@@ -94,6 +91,7 @@ const DTableGreenhouses = () => {
   /*FUNCIONES*/
   async function getGreenhouses() {
     try {
+      setIsLoading(true); // Indicar que se están cargando los invernaderos
       const response = await fetch(
         `http://localhost:3000/greenhouse/farmer/${idFarmer}`
       );
@@ -110,7 +108,10 @@ const DTableGreenhouses = () => {
         setIsLoaded(true);
       }
     } catch (error) {
-      console.error("Error al obtener los invernaderos:", error);
+      console.error("Error al cargar los datos de los invernaderos:", error);
+      toast.error("Hubo un problema al cargar los datos de los invernaderos. Por favor, inténtelo nuevamente más tarde.");
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -177,70 +178,73 @@ const DTableGreenhouses = () => {
     selectAllRowsItemText: "Todos",
   };
 
-  return (
-    <div className="table-greenhouse-farmer">
-      <div>
-        <h2 className="h2admin">
-          Bienvenido <span className="rol-admin">agricultor</span>
-        </h2>
-      </div>
-      <DataTable
-        title={
-          <div>
-            {" "}
-            <h4>Invernaderos</h4>
-            <label className="description-greenhouse">
-              Lista de todos los invernaderos que tienes registrados
-            </label>
-          </div>
-        }
-        columns={columns}
-        //Considerando el filtro
-        data={filteredGreenhouses}
-        responsive={true}
-        fixedHeader
-        pagination
-        paginationComponentOptions={paginacionOpciones}
-        actions={
-          <div className="header-table-greenhouse">
-            <FontAwesomeIcon icon={faSearch} className="search" />
-            <input
-              type="text"
-              placeholder="Buscar..."
-              value={inputValue}
-              onChange={handleFilter}
-              className="searchDisease"
-            />
+   return (
+     <div className="table-green-admin">
+      <div className="container-green-adm">
+       <div className="title-adm-search-green">
+         <div>
+           <h3>Invernaderos</h3>
+           <label className="description-green">
+           Lista de todos los invernaderos registrados en el sistema.
+           </label>
+           </div>
+         <div className="header-table-green-ad">
+         <FontAwesomeIcon
+             icon={faSearch}
+             className="icon-green"
+             size="lg"
+           />
+           <input
+             type="text"
+             placeholder="Buscar..."
+             value={inputValue}
+             onChange={handleFilter}
+             className="search-green"
+           />
             <button
-              type="button"
-              className="buttonInvernadero"
-              onClick={handleRegisterClick}
-            >
-              Registrar invernadero
+               type="button"
+               className="button-green-adm"
+               onClick={handleRegisterClick}>
+               Registrar invernadero
             </button>
-          </div>
-        }
-        noDataComponent={
-          <div className="no-beds-message">No hay invernaderos registrados</div>
-        }
-      />
-      {showRegisterGreenh && (
-        <RegisterGreenhouse onCancelClick={handleCancelClick} />
-      )}
-      {showEditGreenh && (
-        <EditGreenhouse
-          onCancelClick={handleCancelClick}
-          idGreenhouse={idGreenhouse}
-        />
-      )}
-      {showDeleteGreenh && (
-        <DeleteGreenhouse
-          onCancelClick={handleCancelClick}
-          idGreenhouse={idGreenhouse}
-        />
-      )}
-    </div>
+         </div>
+       </div>
+         <DataTable
+           columns={columns}
+           data={filteredGreenhouses}
+           responsive={true}
+           pagination
+           paginationComponentOptions={paginacionOpciones}
+           noDataComponent={
+             isLoading ? (
+               <div className="no-workgreen-message">
+                 Espere un momento, los datos de los invernaderos se están cargando...
+               </div>
+             ) : (
+               <div className="no-workgreen-message">
+                  Aún no se han registrado invernaderos.
+               </div>
+             )
+           }
+         />
+        {showRegisterGreenh && (
+          <RegisterGreenhouse onCancelClick={handleCancelClick} />
+        )}
+        {showEditGreenh && (
+          <EditGreenhouse
+            onCancelClick={handleCancelClick}
+            idGreenhouse={idGreenhouse}
+          />
+        )}
+        {showDeleteGreenh && (
+          <DeleteGreenhouse
+            onCancelClick={handleCancelClick}
+            idGreenhouse={idGreenhouse}
+          />
+        )}
+      </div>
+      </div>
   );
 };
 
-export default DTableGreenhouses;
+export default DTableGreenhousesF;

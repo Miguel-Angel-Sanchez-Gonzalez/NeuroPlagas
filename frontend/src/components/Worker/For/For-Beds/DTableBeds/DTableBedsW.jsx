@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faPencilAlt, faTrash, faEye} from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faEye} from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "./DTableBedsW.css";
 import DataTable from "react-data-table-component";
-import RegisterBed from "../CRUD/Register/RegisterBed";
-import EditBed from "../CRUD/Edit/EditBed";
-import DeleteBed from "../CRUD/Delete/DeleteBed";
 
 const DTableBedsW = () => {
   const [inputValue, setInputValue] = useState("");
@@ -102,12 +99,7 @@ const DTableBedsW = () => {
     }
   };
 
-  // const handleCancelClick = () => {
-  //   setShowRegisterBed(false);
-  //   setShowEditBed(false);
-  //   setShowDeleteBed(false);
-  //   setDataLoaded(false);
-  // };
+
 
   const handleShowImageAnalized = (row) => {
     navigate(`/homeWorker/invernaderos/camas/imagenes-analizadas/`, {

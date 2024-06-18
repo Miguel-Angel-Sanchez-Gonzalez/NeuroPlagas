@@ -226,6 +226,8 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
               secondLastname: data.secondSurname,
               email: data.email
             });
+            // if (onSave) onSave(data);
+            // if (onCancelClick) onCancelClick();
           }
           
         });

@@ -8,8 +8,7 @@ import { toast } from "react-toastify";
 const DTablePlaguesW = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredPlagues, setFilteredPlagues] = useState([]);
-  const [isDataLoaded, setDataLoaded] = useState(false);
-
+  
   const columns = [
     // {
     //   name: "ID",
@@ -102,15 +101,15 @@ const DTablePlaguesW = () => {
   
   return (
     <div className="table-plagues-worker">
-      <div className="container-wor-pla">
-          <div className="title-and-search-plagues">
+      <div className="container-work-pla">
+          <div className="title-work-search-plagues">
             <div>
               <h3>Plagas</h3>
               <label className="description-plagues">
                 Lista de plagas en los invernaderos
               </label>
             </div>
-            <div className="header-table-plagues">
+            <div className="header-table-plagues-wor">
               <FontAwesomeIcon
                 icon={faSearch}
                 className="icon-plagues"

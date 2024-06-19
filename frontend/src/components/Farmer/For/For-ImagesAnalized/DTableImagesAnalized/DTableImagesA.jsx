@@ -140,6 +140,7 @@ const DTableImagesA = () => {
 
   const getImageAByIdBed = async () => {
     try {
+      setIsLoading(true); // Indicar que se están cargando las imágenes
       const response = await fetch(
         `http://localhost:3000/analizedImage/greenhouse/bed/${idBed}`
       );
@@ -192,12 +193,16 @@ const DTableImagesA = () => {
         <div className="table-container">
           <h1 className="h2green-bed-imageA">
           Invernadero{" "}
-          <span className="name-bed">
-            {" "}
-            {nameGreenhouse}, Cama {numberBed}
-          </span>
-        </h1>
-
+            <span className="name-bed">
+              {nameGreenhouse}
+            </span> 
+            <span>, </span>
+              Cama
+              <span> </span>
+            <span className="name-bed">
+               {numberBed}
+            </span>
+          </h1>
         <div className="only-table-imageA">
           <div className="title-and-search-imageA">
             <div>
@@ -247,12 +252,13 @@ const DTableImagesA = () => {
             className="image-uploader-f"
             {...getRootProps({ onClick: (event) => event.stopPropagation() })}
             style={{
-              height: "300px",
+              height: "auto",
               width: "300px",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
+              padding: "20px"
             }}
           >
             <input {...getInputProps()} />

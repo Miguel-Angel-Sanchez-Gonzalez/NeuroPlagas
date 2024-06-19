@@ -273,10 +273,10 @@ const RegisterWorker = ({ onCancelClick }) => {
                   }}
                 />
                 {values.correo && !validateEmail(values.correo) && isFormSubmitted && (
-                  <p className="error-message-worker-r">Correo electrónico inválido.</p>
+                  <p className="error-message-farmer">Correo electrónico inválido.</p>
                 )}
                 {emailExists && 
-                <p className="email-exists-r">El correo ya existe.</p>}    
+                <p className="email-exists-Fr">El correo ya existe.</p>}    
             </div>
             <div className="column-register-worker">
                 <label className={`label-worker-r ${isFormSubmitted && !values.telefono && 'red-label'}`}>

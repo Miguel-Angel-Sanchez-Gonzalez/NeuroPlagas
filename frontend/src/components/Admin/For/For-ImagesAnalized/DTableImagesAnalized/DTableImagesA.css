@@ -61,7 +61,6 @@
 }
 
 .image-uploader {
-  margin-top: 16%;
   margin-left: 20px;
   align-content: center;
   border: 2px dashed #c62426;
@@ -73,7 +72,8 @@
 
 .image-uploader-container {
   height: auto;
-  margin: 20px;
+  padding: 40px;
+  margin-top: 3%;
 }
 
 

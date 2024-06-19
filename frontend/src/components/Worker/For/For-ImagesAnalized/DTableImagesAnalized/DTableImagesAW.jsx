@@ -28,9 +28,7 @@ const DTableImagesAW = () => {
     {
       name: "Nombre de lo detectado",
       cell: (row) => {
-        const detected = [...row.detected.plagues, ...row.detected.diseases]; // Combinar arrays de plagas y enfermedades
-        console.log("Plagas" + row.detected.plagues);
-        console.log("Enfermedades" + row.detected.diseases);
+        const detected = [...row.detected.plagues, ...row.detected.diseases]; 
         return detected.join(", "); // Unir todo en un solo string separado por comas
       },
       sortable: true,
@@ -254,31 +252,36 @@ const DTableImagesAW = () => {
             />
           </div>
         </div>
-        <div className="image-uploader-containerw">
+        <div className="image-uploader-containerw" 
+          style={{ textAlign: "center" }}>
           <div
             className="image-uploader-w"
-            {...getRootProps({ onClick: (event) => event.stopPropagation() })}
-            style={{
-              height: "auto",
-              width: "300px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              padding: "20px"
-            }}
+            {...getRootProps({
+              onClick: (event) => {
+                event.stopPropagation();
+                const input = document.getElementById("fileInput");
+                if (input) input.click();
+              },
+              style: {
+                cursor: isDragActive ? "grabbing" : "pointer",
+                height: "auto",
+                width: "300px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                padding: "20px",
+                margin: "0 auto",
+              },
+            })}
           >
-            
-            <input {...getInputProps()} />
+            <input {...getInputProps()} id="fileInput" style={{ display: "none" }} />
             {isDragActive ? (
               <p>Suelta la imagen aquí...</p>
             ) : (
               <div>
                 <h3>Analiza una imagen</h3>
-                <p>
-                  
-                  Arrastra y suelta una imagen aquí o haz clic para seleccionar
-                </p>
+                <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar</p>
               </div>
             )}
             {acceptedFiles[0] && (
@@ -293,16 +296,24 @@ const DTableImagesAW = () => {
                 }}
               />
             )}
-              <button
+            </div>
+            {acceptedFiles[0] && (
+            <button
               type="button"
               className="buttonImage"
               onClick={sendImageToBackend}
+              style={{
+                marginTop: "20px",
+                display: "block",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
             >
               Analizar imagen
             </button>
+            )}
           </div>
         </div>
-      </div>
       {isAnalyzing && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>

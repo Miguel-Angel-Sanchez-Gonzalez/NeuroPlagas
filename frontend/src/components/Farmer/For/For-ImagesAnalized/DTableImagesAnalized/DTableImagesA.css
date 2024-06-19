@@ -55,7 +55,6 @@
   border-color: #c62426;
 }
 .image-uploader-f {
-  margin-top: 10%;
   margin-left: 20px;
   align-content: center;
   border: 2px dashed #c62426;
@@ -67,7 +66,8 @@
 
 .image-uploader-container-f {
   height: auto;
-  margin: 20px;
+  padding: 40px;
+  margin-top: 1%;
 }
 
 

@@ -6,7 +6,6 @@ import { faSearch, faEye } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
-
 //FARMER
 const DTableImagesA = () => {
   const [inputValue, setInputValue] = useState("");
@@ -14,8 +13,9 @@ const DTableImagesA = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   //Para ver las imagenes analizadas de una cama
   const location = useLocation();
-  const { nameGreenhouse, numberBed, idBed } = location.state || [];
   const navigate = useNavigate();
+  
+  const { nameGreenhouse, numberBed, idBed } = location.state || [];
 
   const columns = [
     {
@@ -27,9 +27,7 @@ const DTableImagesA = () => {
     {
       name: "Nombre de lo detectado",
       cell: (row) => {
-        const detected = [...row.detected.plagues, ...row.detected.diseases]; // Combinar arrays de plagas y enfermedades
-        console.log("Plagas" + row.detected.plagues);
-        console.log("Enfermedades" + row.detected.diseases);
+        const detected = [...row.detected.plagues, ...row.detected.diseases]; 
         return detected.join(", "); // Unir todo en un solo string separado por comas
       },
       sortable: true,
@@ -78,8 +76,6 @@ const DTableImagesA = () => {
     navigate(`/homeFarmer/invernaderos/camas/imagenes-analizadas/ver-imagen`, {
       state: {
         idAnalizedImage: row.id_analizedImage,
-        // detected: row.detected,
-        // imageUrl: row.image,
         idBed: idBed,
       },
     });
@@ -96,12 +92,12 @@ const DTableImagesA = () => {
     }
   }, [isLoaded]);
 
-  const handleChooseImage = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      sendImageToBackend(file);
-    }
-  };
+  // const handleChooseImage = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     sendImageToBackend(file);
+  //   }
+  // };
 
   const sendImageToBackend = async (e) => {
     e.preventDefault();
@@ -247,21 +243,30 @@ const DTableImagesA = () => {
           />
         </div>
         </div>
-        <div className="image-uploader-container-f">
+        <div className="image-uploader-container-f"
+           style={{ textAlign: "center" }}>
           <div
             className="image-uploader-f"
-            {...getRootProps({ onClick: (event) => event.stopPropagation() })}
-            style={{
-              height: "auto",
-              width: "300px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              padding: "20px"
-            }}
+            {...getRootProps({
+              onClick: (event) => {
+                event.stopPropagation();
+                const input = document.getElementById("fileInput");
+                if (input) input.click();
+              },
+              style: {
+                cursor: isDragActive ? "grabbing" : "pointer",
+                height: "auto",
+                width: "300px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                padding: "20px",
+                margin: "0 auto",
+              },
+            })}
           >
-            <input {...getInputProps()} />
+            <input {...getInputProps()} id="fileInput" style={{ display: "none" }} />
             {isDragActive ? (
               <p>Suelta la imagen aquí...</p>
             ) : (
@@ -284,20 +289,28 @@ const DTableImagesA = () => {
                 }}
               />
             )}
+            </div>
+            {acceptedFiles[0] && (
             <button
               type="button"
               className="buttonImage"
               onClick={sendImageToBackend}
+              style={{
+                marginTop: "20px",
+                display: "block",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
             >
               Analizar imagen
             </button>
-          </div>
+          )}
         </div>
       </div>
       {isAnalyzing && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
-          <p> Analizando imagen...</p>
+          <p>Analizando imagen...</p>
         </div>
       )}
     </div>

@@ -12,7 +12,7 @@ const DeleteWorker = ({ onCancelClick, idWorker }) => {
     })
       .then((response) => {
         if (response.status === 200) {
-          toast.success(`Se ha eliminado al trabajor`, {
+          toast.success(`Se ha eliminado al trabajador`, {
             position: "top-center",
             autoClose: 2000,
             theme: "colored",

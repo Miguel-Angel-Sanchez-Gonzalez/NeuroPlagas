@@ -121,6 +121,7 @@ const DTableImagesA = () => {
       formData.append("image", acceptedFiles[0]);
       //setAcceptedFiles([]);
       console.log(formData);
+      setIsLoading(true);
       const response = await fetch(
         `http://localhost:3000/analyzeimage/web/${idBed}`,
         {
@@ -131,7 +132,6 @@ const DTableImagesA = () => {
       console.log(response);
       if (response.status === 200) {
         setIsLoaded(false);
-        setIsLoading(true); // Indicar que se están cargando las imágenes
         toast.success(`Se ha analizado la imagen`, {
           position: "top-center",
           autoClose: 2000,
@@ -144,6 +144,8 @@ const DTableImagesA = () => {
         autoClose: 2000,
         theme: "colored",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -166,8 +168,6 @@ const DTableImagesA = () => {
     navigate(`/homeAdmin/invernaderos/camas/imagenes-analizadas/ver-imagen`, {
       state: {
         idAnalizedImage: row.id_analizedImage,
-        // detected: row.detected,
-        // imageUrl: row.image,
         idBed: idBed,
       },
     });
@@ -293,6 +293,12 @@ const DTableImagesA = () => {
           </div>
         </div>
       </div>
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
+          <p>Analizando imágen...</p>
+        </div>
+      )}
     </div>
   );
 };

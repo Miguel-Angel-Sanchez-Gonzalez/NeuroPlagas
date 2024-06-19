@@ -56,11 +56,7 @@ const DTableImagesAW = () => {
     },
     {
       name: "Fecha",
-      selector: (row) => new Date(row.date).toLocaleDateString('es-ES', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      }),
+      selector: (row) => row.date,
       sortable: true,
       width: "150px",
     },

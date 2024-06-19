@@ -55,11 +55,7 @@ const DTableImagesA = () => {
     },
     {
       name: "Fecha",
-      selector: (row) => new Date(row.date).toLocaleDateString('es-ES', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      }),
+      selector: (row) => row.date,
       sortable: true,
       width: "150px",
     },
@@ -301,7 +297,7 @@ const DTableImagesA = () => {
       {isAnalyzing && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
-          <p>Analizando imagen...</p>
+          <p> Analizando imagen...</p>
         </div>
       )}
     </div>

@@ -297,7 +297,7 @@ const DTableImagesA = () => {
       {isAnalyzing && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
-          <p>Analizando imagen...</p>
+          <p> Analizando imagen...</p>
         </div>
       )}
     </div>

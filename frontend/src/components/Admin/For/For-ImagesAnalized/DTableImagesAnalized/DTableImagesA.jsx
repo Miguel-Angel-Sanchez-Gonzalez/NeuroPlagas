@@ -76,6 +76,7 @@ const DTableImagesA = () => {
 
   const [imagesAnalized, setImagesAnalized] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   
   useEffect(() => {
     const getImageAByIdBed = async () => {
@@ -121,7 +122,7 @@ const DTableImagesA = () => {
       formData.append("image", acceptedFiles[0]);
       //setAcceptedFiles([]);
       console.log(formData);
-      setIsLoading(true);
+      setIsAnalyzing(true);
       const response = await fetch(
         `http://localhost:3000/analyzeimage/web/${idBed}`,
         {
@@ -145,7 +146,7 @@ const DTableImagesA = () => {
         theme: "colored",
       });
     } finally {
-      setIsLoading(false);
+      setIsAnalyzing(false);
     }
   };
 
@@ -293,10 +294,10 @@ const DTableImagesA = () => {
           </div>
         </div>
       </div>
-      {isLoading && (
+      {isAnalyzing && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
-          <p>Analizando imágen...</p>
+          <p>Analizando imagen...</p>
         </div>
       )}
     </div>

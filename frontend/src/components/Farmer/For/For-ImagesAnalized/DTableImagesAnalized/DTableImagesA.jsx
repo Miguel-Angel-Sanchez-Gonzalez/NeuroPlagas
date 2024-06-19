@@ -91,6 +91,7 @@ const DTableImagesA = () => {
   //const [showDataTableBeds, setshowDataTableBeds] = useState(false); //Form para ver las camas de un invernadero
   const [imagesAnalized, setImagesAnalized] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   
 
   useEffect(() => {
@@ -113,6 +114,7 @@ const DTableImagesA = () => {
       formData.append("image", acceptedFiles[0]);
       //setAcceptedFiles([]);
       console.log(formData);
+      setIsAnalyzing(true);
       const response = await fetch(
         `http://localhost:3000/analyzeimage/web/${idBed}`,
         {
@@ -135,6 +137,8 @@ const DTableImagesA = () => {
         autoClose: 2000,
         theme: "colored",
       });
+    } finally {
+      setIsAnalyzing(false);
     }
   };
 
@@ -294,6 +298,12 @@ const DTableImagesA = () => {
           </div>
         </div>
       </div>
+      {isAnalyzing && (
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
+          <p>Analizando imagen...</p>
+        </div>
+      )}
     </div>
   );
 };

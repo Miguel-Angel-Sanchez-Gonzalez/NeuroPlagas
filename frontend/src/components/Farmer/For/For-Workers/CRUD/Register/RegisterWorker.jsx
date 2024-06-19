@@ -300,7 +300,7 @@ const RegisterWorker = ({ onCancelClick }) => {
               {values.correo &&
                 !validateEmail(values.correo) &&
                 isFormSubmitted && (
-                  <p className="error-message-worker">
+                  <p className="error-message-farmer">
                     Correo electrónico inválido.
                   </p>
                 )}

@@ -110,8 +110,8 @@
   margin-top: 5px;
   margin-left: 5px;
   text-align: left;
-  color: #c62426;
-  font-size: 14px;
+  color: hsl(359, 69%, 46%);
+  font-size: medium;
 }
 .error-message-worker-r {
   margin-top: 17px;

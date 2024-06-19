@@ -22,11 +22,7 @@ const DTableNotifications = () => {
   const columns = [
     {
       name: "Fecha",
-      selector: (row) => new Date(row.fecha).toLocaleDateString('es-ES', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      }),
+      selector: (row) => row.fecha,
       sortable: true,
       width: "140px",
     },

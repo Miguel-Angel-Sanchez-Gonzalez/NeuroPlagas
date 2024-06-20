@@ -33,10 +33,10 @@ const DTableNotifications = () => {
       width: "200px",
     },
     {
-      name: "Número de cama",
+      name: "Cama",
       selector: (row) => row.numero_cama,
       sortable: true,
-      width: "155px",
+      width: "110px",
     },
     {
       name: "Tipo de cultivo",
@@ -54,7 +54,7 @@ const DTableNotifications = () => {
       name: "Amenazas detectadas",
       selector: (row) => row.nombres_detectados,
       sortable: true,
-      width: "auto",
+      width: "200px",
     },
     {
       name: "Cambiar estado",

@@ -33,10 +33,10 @@ const DTableNotifications = () => {
       width: "200px",
     },
     {
-      name: "Número de cama",
+      name: "Cama",
       selector: (row) => row.numero_cama,
       sortable: true,
-      width: "155px",
+      width: "110px",
     },
     {
       name: "Tipo de cultivo",
@@ -54,7 +54,7 @@ const DTableNotifications = () => {
       name: "Amenazas detectadas",
       selector: (row) => row.nombres_detectados,
       sortable: true,
-      width: "auto",
+      width: "200px",
     },
     {
       name: "Cambiar estado",
@@ -148,7 +148,7 @@ const DTableNotifications = () => {
           <div>
             <h3>Notificaciones</h3>
             <label className="description-plagues">
-              Actualmente mostrando notificaciones{" "}
+              Actualmente mostrando not   ificaciones{" "}
               <span className="rol-farmer2">{status.toLowerCase()}</span>
             </label>
           </div>

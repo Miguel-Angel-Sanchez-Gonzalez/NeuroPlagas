@@ -27,7 +27,7 @@ const DTableAssgndGreenhouse = () => {
       name: "Nombre del invernadero",
       selector: (row) => row.nombre,
       sortable: true,
-      width: "350px",
+      width: "300px",
     },
     {
       name: "Tipo de invernadero",

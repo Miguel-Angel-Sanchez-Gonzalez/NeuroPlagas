@@ -17,13 +17,13 @@
 .dashboard-farmer {
   display: flex;
   gap: 10px;
-  height: auto;
+  height: max-content;
   width: 100%; /* Asegura que el dashboard no se extienda más allá del ancho del .farmer */
   overflow: auto; /* Añade desplazamiento si es necesario */
 }
 
 .table-container-farmer {
-  width: 78%; /* Asegúrate de que la suma de este ancho y el de otros elementos no exceda el 100% */
+  width: 75%; /* Asegúrate de que la suma de este ancho y el de otros elementos no exceda el 100% */
   /* overflow: auto; Permite desplazamiento si el contenido interno es muy ancho */
   margin: 20px;
 }

@@ -73,3 +73,11 @@
   transform: scale(1, 1);
   cursor: pointer;
 }
+
+.table-notifications-farmer .rdt_TableCell div[data-tag="allowRowEvents"] {
+  width: 100%;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { HiMenu } from "react-icons/hi";
-import './NavbarAdmin.css';
-import ProfileAdmin from '../ProfileAdmin/ProfileAdmin';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../../../UserContext';
+import "./NavbarAdmin.css";
+import ProfileAdmin from "../ProfileAdmin/ProfileAdmin";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../../../UserContext";
 
 const NavbarAdmin = ({ onConfigureProfileClick }) => {
   const { user, updateUser, logoutUser } = useContext(UserContext);
@@ -15,10 +15,10 @@ const NavbarAdmin = ({ onConfigureProfileClick }) => {
   useEffect(() => {
     // Actualiza el contexto con los datos de localStorage al cargar el componente
     const storedUser = {
-      username: localStorage.getItem('username') || '',
-      lastname: localStorage.getItem('lastname') || '',
-      secondLastname: localStorage.getItem('secondlastname') || '',
-      email: localStorage.getItem('email') || ''
+      username: localStorage.getItem("username") || "",
+      lastname: localStorage.getItem("lastname") || "",
+      secondLastname: localStorage.getItem("secondlastname") || "",
+      email: localStorage.getItem("email") || "",
     };
     updateUser(storedUser);
   }, []);
@@ -29,7 +29,7 @@ const NavbarAdmin = ({ onConfigureProfileClick }) => {
 
   const handleLogout = () => {
     logoutUser();
-    navigate('/login');
+    navigate("/login");
   };
 
   const handleProfileFormCancel = () => {
@@ -38,11 +38,11 @@ const NavbarAdmin = ({ onConfigureProfileClick }) => {
 
   return (
     <div>
-      <div className='menu--nav-admin'>
+      <div className="menu--nav-admin">
         <img src="/images/tomatito.png" alt="" /> {/*Imagen*/}
         <h2>Tomi-Plagas y Enfermedades </h2> {/*Titulo*/}
-        <div className='notify-admin' ref={menuRef}>
-          <HiMenu className='icon' onClick={toggleMenu} />
+        <div className="notify-admin" ref={menuRef}>
+          <HiMenu className="icon" onClick={toggleMenu} />
           {menuVisible && (
             <div className="menu-options-admin">
               <p onClick={onConfigureProfileClick}>Configurar perfil</p>
@@ -50,14 +50,16 @@ const NavbarAdmin = ({ onConfigureProfileClick }) => {
             </div>
           )}
         </div>
-        <div className='user-info-admin'>
+        <div className="user-info-admin">
           <label>{`${user.username} ${user.lastname} ${user.secondLastname}`}</label>
           <br />
           <label>{user.email}</label>
         </div>
       </div>
 
-      {showProfileAdmin && <ProfileAdmin onCancelClick={handleProfileFormCancel} />}
+      {showProfileAdmin && (
+        <ProfileAdmin onCancelClick={handleProfileFormCancel} />
+      )}
     </div>
   );
 };

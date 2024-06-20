@@ -15,8 +15,7 @@ const DTableImagesA = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { nameGreenhouse, nameFarmer, idBed, numberBed } =
-    location.state || [];
+  const { nameGreenhouse, nameFarmer, idBed, numberBed } = location.state || [];
 
   const columns = [
     {
@@ -28,7 +27,7 @@ const DTableImagesA = () => {
     {
       name: "Nombre de lo detectado",
       cell: (row) => {
-        const detected = [...row.detected.plagues, ...row.detected.diseases]; 
+        const detected = [...row.detected.plagues, ...row.detected.diseases];
         return detected.join(", "); // Unir todo en un solo string separado por comas
       },
       sortable: true,
@@ -62,10 +61,12 @@ const DTableImagesA = () => {
       name: "Imagen",
       cell: (row) => (
         <div className="icons-container">
-          <FontAwesomeIcon icon={faEye} 
-          onClick={() => handleShowCardImages(row)} 
-          className="view-icon" 
-          size="lg" />
+          <FontAwesomeIcon
+            icon={faEye}
+            onClick={() => handleShowCardImages(row)}
+            className="view-icon"
+            size="lg"
+          />
         </div>
       ),
       width: "90px",
@@ -75,7 +76,7 @@ const DTableImagesA = () => {
   const [imagesAnalized, setImagesAnalized] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  
+
   useEffect(() => {
     const getImageAByIdBed = async () => {
       try {
@@ -94,8 +95,13 @@ const DTableImagesA = () => {
           setFilteredImagesA([]); // Si no se encuentran imágenes, establecer filteredImagesA como un array vacío
         }
       } catch (error) {
-        console.error("Error al obtener las imágenes analizadas de la cama:", error);
-        toast.error("Hubo un problema al cargar las imágenes analizadas. Por favor, inténtelo nuevamente más tarde.");
+        console.error(
+          "Error al obtener las imágenes analizadas de la cama:",
+          error
+        );
+        toast.error(
+          "Hubo un problema al cargar las imágenes analizadas. Por favor, inténtelo nuevamente más tarde."
+        );
       } finally {
         setIsLoading(false); // Indicar que se han terminado de cargar las imágenes (ya sea con éxito o error)
       }
@@ -104,8 +110,7 @@ const DTableImagesA = () => {
     if (!isLoaded) {
       getImageAByIdBed();
     }
-  }, [isLoaded]);
-
+  }, [isLoaded, idBed]);
 
   const onDrop = useCallback((acceptedFiles) => {
     console.log(acceptedFiles[0]);
@@ -118,7 +123,6 @@ const DTableImagesA = () => {
     try {
       const formData = new FormData();
       formData.append("image", acceptedFiles[0]);
-      //setAcceptedFiles([]);
       console.log(formData);
       setIsAnalyzing(true);
       const response = await fetch(
@@ -172,7 +176,6 @@ const DTableImagesA = () => {
     });
   };
 
-
   const paginacionOpciones = {
     rowsPerPageText: "Filas por página",
     rangeSeparatorText: "de",
@@ -185,16 +188,11 @@ const DTableImagesA = () => {
       <div className="content-container">
         <div className="table-container">
           <h1 className="h2green-bed-imageA">
-            Invernadero{" "}
-            <span className="name-bed">
-              {nameGreenhouse}
-            </span> 
+            Invernadero <span className="name-bed">{nameGreenhouse}</span>
             <span>, </span>
-              Cama
-              <span> </span>
-            <span className="name-bed">
-               {numberBed}
-            </span>
+            Cama
+            <span> </span>
+            <span className="name-bed">{numberBed}</span>
           </h1>
           <h4 className="h4farmer-bed-imageA">
             Agricultor responsable:{" "}
@@ -233,7 +231,8 @@ const DTableImagesA = () => {
               noDataComponent={
                 isLoading ? (
                   <div className="no-beds-message">
-                    Espere un momento, las imágenes analizadas se están cargando...
+                    Espere un momento, las imágenes analizadas se están
+                    cargando...
                   </div>
                 ) : (
                   <div className="no-beds-message">
@@ -244,8 +243,10 @@ const DTableImagesA = () => {
             />
           </div>
         </div>
-        <div className="image-uploader-container" 
-          style={{ textAlign: "center" }}>
+        <div
+          className="image-uploader-container"
+          style={{ textAlign: "center" }}
+        >
           <div
             className="image-uploader"
             {...getRootProps({
@@ -267,13 +268,19 @@ const DTableImagesA = () => {
               },
             })}
           >
-            <input {...getInputProps()} id="fileInput" style={{ display: "none" }} />
+            <input
+              {...getInputProps()}
+              id="fileInput"
+              style={{ display: "none" }}
+            />
             {isDragActive ? (
               <p>Suelta la imagen aquí...</p>
             ) : (
               <div>
                 <h3>Analiza una imagen</h3>
-                <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar</p>
+                <p>
+                  Arrastra y suelta una imagen aquí o haz clic para seleccionar
+                </p>
               </div>
             )}
             {acceptedFiles[0] && (

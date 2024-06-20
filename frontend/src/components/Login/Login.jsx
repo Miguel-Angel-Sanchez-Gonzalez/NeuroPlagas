@@ -7,7 +7,6 @@ import PasswordRecovery from "../LoginRecoveryPassword/PasswordRecovery/Password
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [setIsLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showRecovery, setShowRecovery] = useState(false);
   const [loadingUserData, setLoadingUserData] = useState(false);
@@ -16,7 +15,6 @@ const Login = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      // setIsLoggedIn(true);
       navigateBasedOnRole();
     }
   }, []);
@@ -24,7 +22,6 @@ const Login = () => {
   const fetchUserData = () => {
     const data2 = {
       username: localStorage.getItem("username"),
-      password: localStorage.getItem("password"),
       role: localStorage.getItem("userRole"),
     };
 
@@ -43,7 +40,7 @@ const Login = () => {
       })
       .then((result) => {
         console.log("La data del usuario es:");
-        console.log(result);
+        console.log("Result ", result);
         if (result.rol === "farmer") {
           localStorage.setItem("idFarmer", result.id_agricultor);
         }
@@ -55,13 +52,11 @@ const Login = () => {
         localStorage.setItem("lastname", result.primer_apellido);
         localStorage.setItem("secondlastname", result.segundo_apellido);
         localStorage.setItem("email", result.correo_electronico);
-        //setIsLoggedIn(true);
         navigateBasedOnRole();
       })
       .catch((error) => {
         console.error("Error:", error);
         setErrorMessage("Error al obtener los datos del usuario");
-        setIsLoggedIn(false);
       })
       .finally(() => {
         setLoadingUserData(false);
@@ -76,6 +71,8 @@ const Login = () => {
       username: username,
       password: password,
     };
+
+    const response = fetch(``);
 
     fetch("http://localhost:3000/login", {
       method: "POST",

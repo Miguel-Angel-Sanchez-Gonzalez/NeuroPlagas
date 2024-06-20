@@ -82,7 +82,7 @@ const DTableImagesAW = () => {
     if (!isLoaded) {
       getImageAByIdBed();
     }
-  }, [isLoaded]);
+  }, [isLoaded, idBed]);
 
   const handleChooseImage = (event) => {
     const file = event.target.files[0];

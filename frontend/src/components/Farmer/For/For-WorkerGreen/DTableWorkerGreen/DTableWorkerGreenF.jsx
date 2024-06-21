@@ -14,6 +14,8 @@ const DTableWorkerGreenF = ({ isLoading, noGreenworkerMessage }) => {
   const [modalState, setModalState] = useState({ idWorker: "", idFarmer: "" });
   const [nameWorker, setNameWorker] = useState("");
   const [idWorkerGreenhouse, setIDWorkerGreenhouse] = useState("");
+  const [options, setOptions] = useState([]);
+
   const location = useLocation();
   const { idWorker: paramIdWorker, idFarmer: paramIdFarmer } = useParams();
 
@@ -113,8 +115,11 @@ const DTableWorkerGreenF = ({ isLoading, noGreenworkerMessage }) => {
     }
   };
 
-  const handleAsignGreenhouse = () => {
-    setShowSelectGreenhouse(true);
+  const handleAsignGreenhouse = async () => {
+    const greenAssgnExist = await getGreenhouses();
+    if (greenAssgnExist) {
+      setShowSelectGreenhouse(true);
+    }
   };
 
   const handleDeleteGreenhouse = (row) => {
@@ -125,6 +130,29 @@ const DTableWorkerGreenF = ({ isLoading, noGreenworkerMessage }) => {
   const handleCancelClick = () => {
     setShowDeleteWorkerGreen(false);
   };
+
+  async function getGreenhouses() {
+    try {
+        const response = await fetch('http://localhost:3000/greenhouse');
+        const data = await response.json();
+        if (data.length === 0) {
+          return false;
+        } else {
+          setOptions(data.map(farmer => ({
+            label: farmer.nombre,
+            value: farmer.id_agricultor
+          })));
+          return true;
+        }
+    } catch (error) {
+      toast.warn(" Para poder asignar invernaderos necesitas registrar uno.", {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+    });
+      return false;
+    }
+  }
 
   const paginacionOpciones = {
     rowsPerPageText: "Filas por página",

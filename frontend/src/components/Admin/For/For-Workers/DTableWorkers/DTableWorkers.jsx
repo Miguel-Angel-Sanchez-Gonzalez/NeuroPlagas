@@ -16,6 +16,7 @@ const DTableWorkers = () => {
   const [filteredWorkers, setFilteredWorkers] = useState([]);
   const [idWorker, setIDWorker] = useState("");
   const [isDataLoaded, setDataLoaded] = useState(false);
+  const [options, setOptions] = useState([]);
 
   const navigate = useNavigate();
 
@@ -155,8 +156,12 @@ const DTableWorkers = () => {
     }
   };
 
-  const handleRegisterClick = () => {
-    setShowRegisterWorker(true);
+  const handleRegisterClick = async () => {
+    const farmersExist = await getFarmers();
+    if (farmersExist) {
+      setShowRegisterWorker(true);
+    }
+    
   };
 
   const handleCancelClick = () => {
@@ -188,15 +193,33 @@ const DTableWorkers = () => {
         },
       });
     } catch (error) {
-      console.error(
-        "Error al navegar a la sección de lo invernaderos asignados a un trabajador:",
-        error
-      );
-      alert(
-        "Error al intentar mostrar los invernaderos asignados a un trabajador"
-      );
+      console.error("Error al navegar a la sección de camas:", error);
+      alert("Error al intentar mostrar las camas del invernadero");
     }
   };
+
+  async function getFarmers() {
+    try {
+        const response = await fetch(`http://localhost:3000/farmer/getNameFarmers`);
+        const data = await response.json();
+        if (data.length === 0) {
+          return false;
+        } else {
+          setOptions(data.map(farmer => ({
+            label: farmer.nombre,
+            value: farmer.id_agricultor
+          })));
+          return true;
+        }
+    } catch (error) {
+        toast.warn("No se pueden registrar trabajadores porque aún no se han registrado agricultores", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+      });
+      return false;
+    }
+  }
 
   const paginacionOpciones = {
     rowsPerPageText: "Filas por página",

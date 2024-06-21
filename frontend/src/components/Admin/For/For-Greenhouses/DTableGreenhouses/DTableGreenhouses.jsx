@@ -19,6 +19,7 @@ const DTableGreenhouses = () => {
   const [filteredGreenhouses, setFilteredGreenhouses] = useState([]);
   const [idGreenhouse, setIDGreenhouse] = useState("");
   const [isDataLoaded, setDataLoaded] = useState(false);
+  const [options, setOptions] = useState([]);
 
   const navigate = useNavigate();
 
@@ -145,8 +146,11 @@ const DTableGreenhouses = () => {
     }
   };
 
-  const handleRegisterClick = () => {
-    setshowRegisterGreenh(true);
+  const handleRegisterClick = async () => {
+    const farmersExist = await getFarmers();
+    if (farmersExist) {
+      setshowRegisterGreenh(true);
+    }
   };
 
   const handleCancelClick = () => {
@@ -180,6 +184,30 @@ const DTableGreenhouses = () => {
       alert("Error al intentar mostrar las camas del invernadero");
     }
   };
+
+  async function getFarmers() {
+    try {
+        const response = await fetch(`http://localhost:3000/farmer/getNameFarmers`);
+        const data = await response.json();
+        if (data.length === 0) {
+          return false;
+        } else {
+          setOptions(data.map(farmer => ({
+            label: farmer.nombre,
+            value: farmer.id_agricultor
+          })));
+          return true;
+        }
+    } catch (error) {
+        toast.warn("No se pueden registrar invernaderos porque aún no se han registrado agricultores", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+      });
+      return false;
+    }
+  }
+
 
   const paginacionOpciones = {
     rowsPerPageText: "Filas por página",

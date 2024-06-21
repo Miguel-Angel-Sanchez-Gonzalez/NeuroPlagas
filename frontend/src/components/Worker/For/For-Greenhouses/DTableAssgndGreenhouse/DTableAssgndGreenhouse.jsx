@@ -4,13 +4,10 @@ import "./DTableAssgndGreenhouse.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faEye} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-//Invernaderos asignados del trabajador
 
 const DTableAssgndGreenhouse = () => {
   const [inputValue, setInputValue] = useState("");
   const [filteredGreenhouses, setFilteredGreenhouses] = useState([]);
-  const [idGreenhouse, setIDGreenhouse] = useState("");
   const [isDataLoaded, setDataLoaded] = useState(false);
 
   const navigate = useNavigate();
@@ -68,36 +65,45 @@ const DTableAssgndGreenhouse = () => {
       width: "100px",
     },
   ];
+
   const [greenhouses, setGreenhouses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (!isDataLoaded) {
-      getGreenhousesByIdWorker();
-    }
-  }, [isDataLoaded]);
 
   const getGreenhousesByIdWorker = async () => {
     try {
       setIsLoading(true);
       const idWorker = localStorage.getItem("idWorker");
       const response = await fetch(`http://localhost:3000/worker/getgreenhouses/${idWorker}`);
-      if (response.status === 200) {
+  
+      if (response.ok) {
         const data = await response.json();
-        setGreenhouses(data);
-        setFilteredGreenhouses(data);
-      } else if (response.status === 404) { 
+        if (Array.isArray(data)) {
+          setGreenhouses(data);
+          setFilteredGreenhouses(data);
+        } else {
+          console.error("Datos inesperados:", data);
+          setGreenhouses([]);
+          setFilteredGreenhouses([]);
+        }
+      } else if (response.status === 404) {
         setGreenhouses([]);
         setFilteredGreenhouses([]);
+      } else {
+        console.error(`Error en la respuesta: ${response.status}`);
       }
       setDataLoaded(true);
     } catch (error) {
       console.error("Error al cargar los datos de los invernaderos:", error);
-      toast.error("Hubo un problema al cargar los datos de los invernaderos. Por favor, inténtelo nuevamente más tarde.");
     } finally {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!isDataLoaded) {
+      getGreenhousesByIdWorker();
+    }
+  }, [isDataLoaded]);
 
   const handleFilter = (event) => {
     const value = event.target.value.toLowerCase();
@@ -115,12 +121,7 @@ const DTableAssgndGreenhouse = () => {
     }
   };
 
-  // const handleCancelClick = () => {
-  //   setDataLoaded(false);
-  // };
-
   const handleShowBeds = (row) => {
-    setIDGreenhouse(row.id_invernadero);
     navigate(`/homeWorker/invernaderos/camas`, {
       state: {
         idGreenhouse: row.id_invernadero,
@@ -175,7 +176,7 @@ const DTableAssgndGreenhouse = () => {
             </div>
           ) : (
             <div className="no-beds-message">
-              Aún no se han registrado invernaderos.
+              Aún no se han asignado invernaderos.
             </div>
           )}
         />

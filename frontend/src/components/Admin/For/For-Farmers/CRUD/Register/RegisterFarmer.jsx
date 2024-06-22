@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 const RegisterFarmer = ({ onCancelClick }) => {
   const [records, setRecords] = useState("");
   const [emailExists, setEmailExists] = useState(false);
+  const [nameUserExists, setNameUserExists] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false); // Nuevo estado para controlar el enfoque en los inputs
   const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Nuevo estado para rastrear si el formulario se ha enviado
   const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +31,9 @@ const RegisterFarmer = ({ onCancelClick }) => {
     }));
     if (name === "correo") {
       setEmailExists(false);
+    }
+    if (name === "nombreUsuario") {
+      setNameUserExists(false);
     }
     if (name === "contrasenia") {
       setPasswordError("");
@@ -67,6 +71,29 @@ const RegisterFarmer = ({ onCancelClick }) => {
         error
       );
       alert("Error al verificar la existencia del correo electrónico");
+    }
+  };
+
+  const checkUserExists = async (userName) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/login/userNameExistence`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userName: userName }),
+        }
+      );
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error(
+        "Error al verificar la existencia del nombre de usuario:",
+        error
+      );
+      alert("Error al verificar la existencia del nombre de usuario");
     }
   };
 
@@ -126,6 +153,13 @@ const RegisterFarmer = ({ onCancelClick }) => {
       const emailExists = await checkEmailExists(values.correo);
       if (emailExists) {
         setEmailExists(true);
+        return;
+      }
+
+      //Validando que el nombre de usuario ya exista
+      const nameUserExists = await checkUserExists(values.nombreUsuario);
+      if (nameUserExists) {
+        setNameUserExists(true);
         return;
       }
 
@@ -364,8 +398,19 @@ const RegisterFarmer = ({ onCancelClick }) => {
                 value={values.nombreUsuario}
                 onChange={handleInputChange}
                 onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
+                onBlur={async () => {
+                  handleInputBlur();
+                  if (values.nombreUsuario) {
+                      const nameUserExists = await checkUserExists(values.nombreUsuario);
+                      setNameUserExists(nameUserExists);
+                      
+                    }
+                  }
+                }
               />
+              {nameUserExists && (
+                <p className="email-exists-Fr">El nombre de usuario ya existe.</p>
+              )}
             </div>
             <div className="column-register-farmer">
               <label
@@ -431,13 +476,7 @@ const RegisterFarmer = ({ onCancelClick }) => {
             <p className="error-message-farmer-r">{records}</p>
           )}
         </div>
-        {loadingMessage && (
-          <AddNotification
-            message={loadingMessage}
-            onClose={() => setLoadingMessage("")}
-            className="farmer-notification"
-          />
-        )}
+        
       </div>
     </div>
   );

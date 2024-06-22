@@ -6,7 +6,7 @@
     padding-top: 33px;
     flex-direction: column;
     gap: 2.3rem;
-    height: auto;
+    height: 90vh;
     transition: box-shadow 0.3s ease; /* Agrega una transición suave al sombreado */
   }
 

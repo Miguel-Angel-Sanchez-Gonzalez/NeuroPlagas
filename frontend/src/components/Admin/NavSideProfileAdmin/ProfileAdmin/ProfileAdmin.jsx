@@ -7,11 +7,14 @@ const ProfileAdmin = ({ onCancelClick }) => {
   const { user, updateUser } = useContext(UserContext);
   const [records, setRecords] = useState('');
   const [emailExists, setEmailExists] = useState(false);
+  const [nameUserExists, setNameUserExists] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [passwordError, setPasswordError] = useState('');
   const [originalEmail, setOriginalEmail] = useState('');
+  const [originalNameUser, setOriginalNameU] = useState("");
+
 
   const [values, setValues] = useState({
     nombre: user.username,
@@ -31,6 +34,9 @@ const ProfileAdmin = ({ onCancelClick }) => {
     }));
     if (name === "correo") {
       setEmailExists(false);
+    }
+    if (name === "nombreUsuario") {
+      setNameUserExists(false);
     }
     if (name === "contrasenia") {
       setPasswordError("");
@@ -73,6 +79,30 @@ const ProfileAdmin = ({ onCancelClick }) => {
     }
   };
 
+  const checkUserExists = async (userName) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/login/userNameExistence`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userName: userName }),
+        }
+      );
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error(
+        "Error al verificar la existencia del nombre de usuario:",
+        error
+      );
+      alert("Error al verificar la existencia del nombre de usuario");
+    }
+  };
+
+
   const validateEmail = (email) => {
     const emailPattern =
       /^[^\s@]+@(gmail\.com|hotmail\.com|yahoo\.com|outlook\.com|itoaxaca\.edu.mx)$/;
@@ -111,6 +141,7 @@ const ProfileAdmin = ({ onCancelClick }) => {
         if (response.status === 200) {
           const data = await response.json();
           console.log(data[0]);
+          setOriginalNameU(data[0].nombre_usuario);
           setOriginalEmail(data[0].correo_electronico);
           setValues({
             nombre: data[0].nombre,
@@ -154,6 +185,8 @@ const ProfileAdmin = ({ onCancelClick }) => {
   const onConfirmClick = async () => {
     setIsFormSubmitted(true);
 
+    // ESPACIO DE VALIDACIONES
+    // Validación 1: Campos no vacíos
     for (const key in values) {
       if (values[key] === "") {
         setRecords('Por favor complete todos los campos.');
@@ -161,26 +194,34 @@ const ProfileAdmin = ({ onCancelClick }) => {
       }
     }
 
+    // Validación 2: Correo con formato válido
     if (!validateEmail(values.correo)) {
+      //setRecords('El correo electrónico no es válido.');
       return;
     }
 
+    // Validar si el correo electrónico fue modificado
     if (values.correo !== originalEmail) {
-      try {
-        const emailExists = await checkEmailExists(values.correo);
-        if (emailExists) {
-          setEmailExists(true);
-          return;
-        } else {
-          setEmailExists(false);
-        }
-      } catch (error) {
-        toast.error('Error al verificar la existencia del correo electrónico.', {
-          position: "top-center",
-          autoClose: 2000,
-          theme: "colored",
-        });
-        console.error('Error al verificar la existencia del correo electrónico:', error);
+      // Realizar la verificación de existencia del nuevo correo electrónico
+      const emailExists = await checkEmailExists(values.correo);
+      if (emailExists) {
+        setEmailExists(true);
+      
+        return;
+      } else {
+        setEmailExists(false);
+      }
+    }
+
+    // Validar si el nombre de usuario fue modificado
+    if (values.nombreUsuario !== originalNameUser) {
+      // Realizar la verificación de existencia del nuevo correo electrónico
+      const nameUserExists = await checkUserExists(values.nombreUsuario);
+      if (nameUserExists) {
+        setNameUserExists(true);
+        return;
+      } else {
+        setNameUserExists(false);
       }
     }
 
@@ -195,7 +236,6 @@ const ProfileAdmin = ({ onCancelClick }) => {
       return;
     }
 
-    setIsLoading(true);
     updateAdminData();
   };
 
@@ -435,11 +475,22 @@ const ProfileAdmin = ({ onCancelClick }) => {
                 value={values.nombreUsuario}
                 onChange={handleInputChange}
                 onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
+                onBlur={async () => {
+                  handleInputBlur();
+                  if (values.nombreUsuario) {
+                      const nameUserExists = await checkUserExists(values.nombreUsuario);
+                      setNameUserExists(nameUserExists);
+                      
+                    }
+                  }
+                }
                 style={
                   values.nombreUsuario ? { backgroundColor: "#EFF6FF" } : null
                 }
               />
+              {nameUserExists && values.nombreUsuario !== originalNameUser && (
+                <p className="email-exists-Fr">El nombre de usuario ya está en uso.</p>
+              )}
             </div>
             <div className="column-admin-profile">
               <label

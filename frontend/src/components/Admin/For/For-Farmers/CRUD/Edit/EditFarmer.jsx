@@ -7,12 +7,15 @@ import AddNotification from "../../../../../LoginNotifications/AddNotification";
 const EditFarmer = ({ onCancelClick, idFarmer }) => {
   const [records, setRecords] = useState("");
   const [emailExists, setEmailExists] = useState(false);
+  const [nameUserExists, setNameUserExists] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false); // Nuevo estado para controlar el enfoque en los inputs
   const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Nuevo estado para rastrear si el formulario se ha enviado
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [originalEmail, setOriginalEmail] = useState("");
+  const [originalNameUser, setOriginalNameU] = useState("");
+
 
   const [values, setValues] = useState({
     nombre: "",
@@ -32,6 +35,9 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
     }));
     if (name === "correo") {
       setEmailExists(false);
+    }
+    if (name === "nombreUsuario") {
+      setNameUserExists(false);
     }
     if (name === "contrasenia") {
       setPasswordError("");
@@ -69,6 +75,29 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
         error
       );
       throw error;
+    }
+  };
+
+  const checkUserExists = async (userName) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/login/userNameExistence`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userName: userName }),
+        }
+      );
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error(
+        "Error al verificar la existencia del nombre de usuario:",
+        error
+      );
+      alert("Error al verificar la existencia del nombre de usuario");
     }
   };
 
@@ -116,6 +145,7 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
       if (response.status === 200) {
         const data = await response.json();
         console.log("Data del agricultor", data);
+        setOriginalNameU(data.nombre_usuario);
         setOriginalEmail(data.correo_electronico);
         // Actualizar el estado con los datos del agricultor
         setValues({
@@ -179,6 +209,17 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
           return;
         } else {
           setEmailExists(false);
+        }
+      }
+
+      if (values.nombreUsuario !== originalNameUser) {
+        // Realizar la verificación de existencia del nuevo correo electrónico
+        const nameUserExists = await checkUserExists(values.nombreUsuario);
+        if (nameUserExists) {
+          setNameUserExists(true);
+          return;
+        } else {
+          setNameUserExists(false);
         }
       }
 
@@ -413,11 +454,22 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
                 value={values.nombreUsuario}
                 onChange={handleInputChange}
                 onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
+                onBlur={async () => {
+                  handleInputBlur();
+                  if (values.nombreUsuario) {
+                      const nameUserExists = await checkUserExists(values.nombreUsuario);
+                      setNameUserExists(nameUserExists);
+                      
+                    }
+                  }
+                }
                 style={
                   values.nombreUsuario ? { backgroundColor: "#EFF6FF" } : null
                 }
               />
+              {nameUserExists && values.nombreUsuario !== originalNameUser && (
+                <p className="email-exists-Fr">El nombre de usuario ya está en uso.</p>
+              )}
             </div>
             <div className="column-edit-farmer">
               <label
@@ -487,13 +539,6 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
             <p className="error-message-farmer-e">{records}</p>
           )}
         </div>
-        {loadingMessage && (
-          <AddNotification
-            message={loadingMessage}
-            onClose={() => setLoadingMessage("")}
-            className="farmer-notification"
-          />
-        )}
       </div>
     </div>
   );

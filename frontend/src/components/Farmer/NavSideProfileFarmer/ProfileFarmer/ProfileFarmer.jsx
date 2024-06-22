@@ -8,20 +8,22 @@ const ProfileFarmer = ({ onCancelClick, idFarmer }) => {
   const { user, updateUser } = useContext(UserContext);
   const [records, setRecords] = useState("");
   const [emailExists, setEmailExists] = useState(false);
+  const [nameUserExists, setNameUserExists] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false); // Nuevo estado para controlar el enfoque en los inputs
   const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Nuevo estado para rastrear si el formulario se ha enviado
   const [isLoading, setIsLoading] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [originalEmail, setOriginalEmail] = useState("");
+  const [originalNameUser, setOriginalNameU] = useState("");
 
   const [values, setValues] = useState({
-    nombre: "",
-    primerApellido: "",
-    segundoApellido: "",
+    nombre: user.username,
+    primerApellido: user.lastname,
+    segundoApellido: user.secondLastname,
     telefono: "",
-    correo: "",
-    nombreUsuario: "",
-    contrasenia: "",
+    correo: user.email,
+    nombreUsuario: user.username,
+    contrasenia: ""
   });
 
   const [valuesFarmer, setValuesFarmer] = useState({
@@ -36,6 +38,9 @@ const ProfileFarmer = ({ onCancelClick, idFarmer }) => {
     });
     if (name === "correo") {
       setEmailExists(false);
+    }
+    if (name === "nombreUsuario") {
+      setNameUserExists(false);
     }
     if (name === "contrasenia") {
       setPasswordError("");
@@ -65,6 +70,29 @@ const ProfileFarmer = ({ onCancelClick, idFarmer }) => {
     );
     const data = await response.json();
     return data.exists;
+  };
+
+  const checkUserExists = async (userName) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/login/userNameExistence`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userName: userName }),
+        }
+      );
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error(
+        "Error al verificar la existencia del nombre de usuario:",
+        error
+      );
+      alert("Error al verificar la existencia del nombre de usuario");
+    }
   };
 
   const validateEmail = (email) => {
@@ -110,6 +138,7 @@ const ProfileFarmer = ({ onCancelClick, idFarmer }) => {
       if (response.status === 200) {
         const data = await response.json();
         console.log("Data del agricultor ", data);
+        setOriginalNameU(data.nombre_usuario);
         setOriginalEmail(data.correo_electronico);
         setValues({
           nombre: data.nombre,
@@ -159,10 +188,22 @@ const ProfileFarmer = ({ onCancelClick, idFarmer }) => {
       const emailExists = await checkEmailExists(values.correo);
       if (emailExists) {
         setEmailExists(true);
-        // setRecords('El correo electrónico ya está en uso.');
+      
         return;
       } else {
         setEmailExists(false);
+      }
+    }
+
+    // Validar si el nombre de usuario fue modificado
+    if (values.nombreUsuario !== originalNameUser) {
+      // Realizar la verificación de existencia del nuevo correo electrónico
+      const nameUserExists = await checkUserExists(values.nombreUsuario);
+      if (nameUserExists) {
+        setNameUserExists(true);
+        return;
+      } else {
+        setNameUserExists(false);
       }
     }
 
@@ -410,11 +451,22 @@ const ProfileFarmer = ({ onCancelClick, idFarmer }) => {
                 placeholder="Ingrese su nombre de usuario"
                 onChange={handleInputChange}
                 onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
+                onBlur={async () => {
+                  handleInputBlur();
+                  if (values.nombreUsuario) {
+                      const nameUserExists = await checkUserExists(values.nombreUsuario);
+                      setNameUserExists(nameUserExists);
+                      
+                    }
+                  }
+                }
                 style={
                   values.nombreUsuario ? { backgroundColor: "#EFF6FF" } : null
                 }
               />
+              {nameUserExists && values.nombreUsuario !== originalNameUser && (
+                <p className="email-exists-Fr">El nombre de usuario ya está en uso.</p>
+              )}
             </div>
             <div className="column-edit-worker">
               <label

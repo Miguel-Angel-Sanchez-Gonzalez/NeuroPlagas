@@ -8,6 +8,7 @@ const RegisterWorker = ({ onCancelClick }) => {
   const [records, setRecords] = useState('');
   const [idFarmer, setIdFarmer] = useState('');
   const [emailExists, setEmailExists] = useState(false);
+  const [nameUserExists, setNameUserExists] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false); // Nuevo estado para controlar el enfoque en los inputs
   const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Nuevo estado para rastrear si el formulario se ha enviado
   const [isLoading, setIsLoading] = useState(false);
@@ -33,12 +34,18 @@ const RegisterWorker = ({ onCancelClick }) => {
     if (name === 'correo') {
       setEmailExists(false);
     }
+    if (name === "nombreUsuario") {
+      setNameUserExists(false);
+    }
+    if (name === "contrasenia") {
+      setPasswordError("");
+    }
   };
 
 
   const handleInputFocus = () => {
     setIsInputFocused(true); // Actualiza el estado cuando un input recibe enfoque
-    setRecords(''); // Borra el mensaje de error
+    setRecords(""); // Borra el mensaje de error
   };
 
   const handleInputBlur = () => {
@@ -64,6 +71,29 @@ const RegisterWorker = ({ onCancelClick }) => {
 
   };
   
+  const checkUserExists = async (userName) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/login/userNameExistence`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userName: userName }),
+        }
+      );
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error(
+        "Error al verificar la existencia del nombre de usuario:",
+        error
+      );
+      alert("Error al verificar la existencia del nombre de usuario");
+    }
+  };
+
   //VALIDACIONES
   const validateEmail = (email) => {
     // Que el correo sea Gmail, Hotmail, Yahoo o Outlook
@@ -116,14 +146,16 @@ const RegisterWorker = ({ onCancelClick }) => {
     }
 
     //Validando que el correo exista
-    try {
-      const emailExists = await checkEmailExists(values.correo);
+    const emailExists = await checkEmailExists(values.correo);
       if (emailExists) {
         setEmailExists(true);
         return;
       }
-    } catch (error) {
-      console.error('Error al validar la existencia del correo electrónico:', error);
+  
+    //Validando que el nombre de usuario ya exista
+    const nameUserExists = await checkUserExists(values.nombreUsuario);
+    if (nameUserExists) {
+      setNameUserExists(true);
       return;
     }
   
@@ -320,8 +352,19 @@ const RegisterWorker = ({ onCancelClick }) => {
                   placeholder="Ingrese su nombre de usuario"
                   onChange={handleInputChange}
                   onFocus={handleInputFocus} 
-                  onBlur={handleInputBlur} 
+                  onBlur={async () => {
+                    handleInputBlur();
+                    if (values.nombreUsuario) {
+                        const nameUserExists = await checkUserExists(values.nombreUsuario);
+                        setNameUserExists(nameUserExists);
+                        
+                      }
+                    }
+                  }
                 />
+                {nameUserExists && (
+                <p className="email-exists-Fr">El nombre de usuario ya existe.</p>
+              )}
             </div>
             <div className="column-register-worker">
                 <label className={`label-worker-r ${isFormSubmitted && !values.contrasenia && 'red-label'}`}>
@@ -334,11 +377,26 @@ const RegisterWorker = ({ onCancelClick }) => {
                   placeholder="Contraseña"
                   minLength="8"
                   onChange={(e) => handleInputChange(e)}
-                  onFocus={handleInputFocus} 
-                  onBlur={handleInputBlur} 
+                  onFocus={handleInputFocus}
+                  onBlur={async () => {
+                    if (values.contrasenia) {
+                      const validationMessage = validatePassword(
+                        values.contrasenia
+                      );
+                      if (validationMessage !== true) {
+                        setPasswordError(validationMessage);
+                      }
+                    }
+                  }}
                 />
-                {isFormSubmitted && !values.contrasenia && <p className="error-password">Por favor ingrese una contraseña.</p>}
-                {passwordError && <p className="error-password">{passwordError}</p>}
+                {isFormSubmitted && !values.contrasenia && (
+                  <p className="error-password">
+                    Por favor ingrese una contraseña.
+                  </p>
+                )}
+                {passwordError && (
+                  <p className="error-password">{passwordError}</p>
+                )}
             </div>
           </div>
           <div className="password-rules-worker-r">

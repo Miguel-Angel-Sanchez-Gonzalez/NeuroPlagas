@@ -73,11 +73,14 @@ const UpdatePassword = ({ onCancel, onPasswordUpdate, idWorker }) => {
         throw new Error(errorMessage);
       }
     } catch (error) {
-      toast.error(`Error al actualizar la contraseña: La contraseña actual no es correcta `, {
-        position: "top-center",
-        autoClose: 2000,
-        theme: "colored",
-      });
+      toast.error(
+        `Error al actualizar la contraseña: La contraseña actual no es correcta `,
+        {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "colored",
+        }
+      );
     } finally {
       setIsLoading(false);
     }
@@ -91,11 +94,22 @@ const UpdatePassword = ({ onCancel, onPasswordUpdate, idWorker }) => {
         </div>
       )}
       <div className="centrar-worker">
-        <h5 className="h5edit-worker">*Campos requeridos</h5>
-        <h4 className="h4profile">Actualizar Contraseña</h4>
+        <h4 className="h4profile">Actualizar contraseña</h4>
+        <div className="password-rules-worker-e">
+          <label className="label-worker-rules-password">La contraseña debe tener los siguientes aspectos:</label>
+          <br />
+          <label className="label-worker-rules-password">*La contraseña debe ser mínimo de 8 caracteres.</label>
+          <br />
+          <label className="label-worker-rules-password">
+            *Debe incluir al menos: una mayúscula, número y un símbolo (Todos son válidos).
+          </label>
+          <br />
+          <br />
+          <h5 className="h5edit-worker">*Campos requeridos</h5>
+        </div>
         <div className="form-section-profile">
           <div className="column-worker-profile">
-            <label className="titles-datos-worker">Contraseña Actual*</label>
+            <label className="titles-datos-worker">Contraseña actual*</label>
             <div className="password-input-container">
               <input
                 className="inputs-profile-worker"
@@ -116,7 +130,7 @@ const UpdatePassword = ({ onCancel, onPasswordUpdate, idWorker }) => {
         </div>
         <div className="form-section-profile">
           <div className="column-worker-profile">
-            <label className="titles-datos-worker">Nueva Contraseña*</label>
+            <label className="titles-datos-worker">Nueva contraseña*</label>
             <div className="password-input-container">
               <input
                 className="inputs-profile-worker"
@@ -137,7 +151,7 @@ const UpdatePassword = ({ onCancel, onPasswordUpdate, idWorker }) => {
         </div>
         <div className="form-section-profile">
           <div className="column-worker-profile">
-            <label className="titles-datos-worker">Confirmar Nueva Contraseña*</label>
+            <label className="titles-datos-worker">Confirmar nueva contraseña*</label>
             <div className="password-input-container">
               <input
                 className="inputs-profile-worker"
@@ -155,14 +169,6 @@ const UpdatePassword = ({ onCancel, onPasswordUpdate, idWorker }) => {
               </button>
             </div>
           </div>
-        </div>
-        <div className="password-rules-worker-e">
-          <label>*La contraseña debe ser mínimo de 8 caracteres.</label>
-          <br />
-          <label>
-            *Debe incluir al menos: una mayúscula, número y un símbolo (Todos
-            son válidos).
-          </label>
         </div>
         {passwordError && (
           <p className="error-msg-profile-worker">{passwordError}</p>

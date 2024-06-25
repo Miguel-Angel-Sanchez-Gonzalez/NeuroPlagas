@@ -148,7 +148,7 @@ const DTableNotifications = () => {
           <div>
             <h3>Notificaciones</h3>
             <label className="description-plagues">
-              Actualmente mostrando not   ificaciones{" "}
+              Actualmente mostrando notificaciones{" "}
               <span className="rol-farmer2">{status.toLowerCase()}</span>
             </label>
           </div>

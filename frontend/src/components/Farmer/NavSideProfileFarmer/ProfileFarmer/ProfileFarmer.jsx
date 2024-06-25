@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { toast } from "react-toastify";
-import "./ProfileFarmer";
+import "./ProfileFarmer.css";
 // import AddNotification from "../../../../../LoginNotifications/AddNotification";
 import { UserContext } from "../../../../UserContext";
 import UpdatePasswordF from "../UpdatePasswordF/UpdatePasswordF"
@@ -286,7 +286,7 @@ const ProfileFarmer = ({ onCancelClick, idFarmer }) => {
             setShowUpdatePassword(false);
             getFarmerById();
           }}
-          idWorker = {idFarmer}
+          idFarmer = {idFarmer}
         />
       ) : (
         <>

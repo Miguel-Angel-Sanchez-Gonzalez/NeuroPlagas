@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { toast } from "react-toastify";
-//import "./ProfileWorker.css";
+import "./ProfileWorker.css";
 // import AddNotification from "../../../../../LoginNotifications/AddNotification";
 import { UserContext } from "../../../../UserContext";
 import UpdatePassword from "../UpdatePassword/UpdatePassword";

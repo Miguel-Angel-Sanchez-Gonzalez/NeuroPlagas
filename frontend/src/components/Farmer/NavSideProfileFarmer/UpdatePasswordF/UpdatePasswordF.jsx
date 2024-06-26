@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./UpdatePasswordF.css";
@@ -94,14 +94,19 @@ const UpdatePasswordF = ({ onCancel, onPasswordUpdate, idFarmer }) => {
         </div>
       )}
       <div className="centrar-worker">
-        <h4 className="h4profile">Actualizar contraseña</h4>
+        <h4 className="h4profile">Actualizar contraseña Migue</h4>
         <div className="password-rules-worker-e">
-          <label className="label-worker-rules-password">La contraseña debe tener los siguientes aspectos:</label>
-          <br />
-          <label className="label-worker-rules-password">*La contraseña debe ser mínimo de 8 caracteres.</label>
+          <label className="label-worker-rules-password">
+            La contraseña debe tener los siguientes aspectos:
+          </label>
           <br />
           <label className="label-worker-rules-password">
-            *Debe incluir al menos: una mayúscula, número y un símbolo (Todos son válidos).
+            *La contraseña debe ser mínimo de 8 caracteres.
+          </label>
+          <br />
+          <label className="label-worker-rules-password">
+            *Debe incluir al menos: una mayúscula, número y un símbolo (Todos
+            son válidos).
           </label>
           <br />
           <br />
@@ -151,7 +156,9 @@ const UpdatePasswordF = ({ onCancel, onPasswordUpdate, idFarmer }) => {
         </div>
         <div className="form-section-profile">
           <div className="column-worker-profile">
-            <label className="titles-datos-worker">Confirmar nueva contraseña*</label>
+            <label className="titles-datos-worker">
+              Confirmar nueva contraseña*
+            </label>
             <div className="password-input-container">
               <input
                 className="inputs-profile-worker"

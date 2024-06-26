@@ -1,20 +1,19 @@
-import React, { useState, useEffect, useContext } from 'react';
-import './ProfileAdmin.css';
+import React, { useState, useEffect, useContext } from "react";
+import "./ProfileAdmin.css";
 import { toast } from "react-toastify";
-import { UserContext } from '../../../../UserContext';
+import { UserContext } from "../../../../UserContext";
 
 const ProfileAdmin = ({ onCancelClick }) => {
   const { user, updateUser } = useContext(UserContext);
-  const [records, setRecords] = useState('');
+  const [records, setRecords] = useState("");
   const [emailExists, setEmailExists] = useState(false);
   const [nameUserExists, setNameUserExists] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [passwordError, setPasswordError] = useState('');
-  const [originalEmail, setOriginalEmail] = useState('');
+  const [passwordError, setPasswordError] = useState("");
+  const [originalEmail, setOriginalEmail] = useState("");
   const [originalNameUser, setOriginalNameU] = useState("");
-
 
   const [values, setValues] = useState({
     nombre: user.username,
@@ -23,7 +22,7 @@ const ProfileAdmin = ({ onCancelClick }) => {
     telefono: "",
     correo: user.email,
     nombreUsuario: user.username,
-    contrasenia: ""
+    contrasenia: "",
   });
 
   const handleInputChange = (e) => {
@@ -101,7 +100,6 @@ const ProfileAdmin = ({ onCancelClick }) => {
       alert("Error al verificar la existencia del nombre de usuario");
     }
   };
-
 
   const validateEmail = (email) => {
     const emailPattern =
@@ -189,7 +187,7 @@ const ProfileAdmin = ({ onCancelClick }) => {
     // Validación 1: Campos no vacíos
     for (const key in values) {
       if (values[key] === "") {
-        setRecords('Por favor complete todos los campos.');
+        setRecords("Por favor complete todos los campos.");
         return;
       }
     }
@@ -206,7 +204,7 @@ const ProfileAdmin = ({ onCancelClick }) => {
       const emailExists = await checkEmailExists(values.correo);
       if (emailExists) {
         setEmailExists(true);
-      
+
         return;
       } else {
         setEmailExists(false);
@@ -226,7 +224,7 @@ const ProfileAdmin = ({ onCancelClick }) => {
     }
 
     if (!validatePhone(values.telefono)) {
-      setRecords('Teléfono no válido (10 dígitos).');
+      setRecords("Teléfono no válido (10 dígitos).");
       return;
     }
 
@@ -248,21 +246,21 @@ const ProfileAdmin = ({ onCancelClick }) => {
       phone: values.telefono,
       email: values.correo,
       nameUser: values.nombreUsuario,
-      password: values.contrasenia
+      password: values.contrasenia,
     };
 
     try {
       const response = await fetch(`http://localhost:3000/admin/`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
       if (response.ok) {
         onCancelClick();
         setIsLoading(false);
-        toast.success('El administrador se actualizó correctamente.', {
+        toast.success("El administrador se actualizó correctamente.", {
           position: "top-center",
           autoClose: 2000,
           theme: "colored",
@@ -271,22 +269,20 @@ const ProfileAdmin = ({ onCancelClick }) => {
               username: data.name,
               lastname: data.surname,
               secondLastname: data.secondSurname,
-              email: data.email
+              email: data.email,
             });
-          }
-          
+          },
         });
-
       } else {
-        toast.error('No se pudo actualizar al administrador.', {
+        toast.error("No se pudo actualizar al administrador.", {
           position: "top-center",
           autoClose: 2000,
           theme: "colored",
         });
       }
     } catch (error) {
-      console.error('Error al actualizar al administrador:', error);
-      toast.error('Error al actualizar al administrador.', {
+      console.error("Error al actualizar al administrador:", error);
+      toast.error("Error al actualizar al administrador.", {
         position: "top-center",
         autoClose: 2000,
         theme: "colored",
@@ -478,18 +474,20 @@ const ProfileAdmin = ({ onCancelClick }) => {
                 onBlur={async () => {
                   handleInputBlur();
                   if (values.nombreUsuario) {
-                      const nameUserExists = await checkUserExists(values.nombreUsuario);
-                      setNameUserExists(nameUserExists);
-                      
-                    }
+                    const nameUserExists = await checkUserExists(
+                      values.nombreUsuario
+                    );
+                    setNameUserExists(nameUserExists);
                   }
-                }
+                }}
                 style={
                   values.nombreUsuario ? { backgroundColor: "#EFF6FF" } : null
                 }
               />
               {nameUserExists && values.nombreUsuario !== originalNameUser && (
-                <p className="email-exists-Fr">El nombre de usuario ya está en uso.</p>
+                <p className="email-exists-Fr">
+                  El nombre de usuario ya está en uso.
+                </p>
               )}
             </div>
             <div className="column-admin-profile">

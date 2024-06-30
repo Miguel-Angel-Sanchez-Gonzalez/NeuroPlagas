@@ -293,8 +293,8 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
   return (
     <div>
       {isLoading && (
-        <div className="loading-overlay">
-          <div className="loading-spinner"></div>
+        <div className="loading-overlay2">
+          <div className="loading-spinner2"></div>
         </div>
       )}
   
@@ -309,25 +309,25 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
         />
       ) : (
         <>
-          <div className="edit-worker-container">
-            <div className="centrar-worker">
-              <h4 className="h4edit-worker">Editar trabajador</h4>
-              <h5 className="h5edit-worker">*Campos requeridos</h5>
-              <label className="label-dato-worker">
+          <div className="edit-worker-container2">
+            <div className="centrar-worker2">
+              <h4 className="h4edit-worker2">Editar trabajador</h4>
+              <h5 className="h5edit-worker2">*Campos requeridos</h5>
+              <label className="label-dato-worker2">
                 Edite sus datos personales
               </label>
-              <div className="form-sec-worker-edit">
-                <div className="column-edit-worker">
+              <div className="form-sec-worker-edit2">
+                <div className="column-edit-worker2">
                   <label
-                    className={`label-worker-e ${
-                      isFormSubmitted && !values.nombre && "red-label"
+                    className={`label-worker-e2 ${
+                      isFormSubmitted && !values.nombre && "red-label2"
                     }`}
                   >
                     Nombre*
                   </label>
                   <input
-                    className={`inputs-edit-worker ${
-                      isFormSubmitted && !values.nombre && "red-input"
+                    className={`inputs-edit-worker2 ${
+                      isFormSubmitted && !values.nombre && "red-input2"
                     }`}
                     type="text"
                     required
@@ -342,7 +342,7 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
                     }
                   />
                 </div>
-                <div className="column-edit-worker">
+                <div className="column-edit-worker2">
                   <label
                     className={`label-worker-e ${
                       isFormSubmitted && !values.primerApellido && "red-label"
@@ -351,7 +351,7 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
                     Primer apellido*
                   </label>
                   <input
-                    className={`inputs-edit-worker ${
+                    className={`inputs-edit-worker2 ${
                       isFormSubmitted && !values.primerApellido && "red-input"
                     }`}
                     type="text"
@@ -369,7 +369,7 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
                     }
                   />
                 </div>
-                <div className="column-edit-worker">
+                <div className="column-edit-worker2">
                   <label
                     className={`label-worker-e ${
                       isFormSubmitted && !values.segundoApellido && "red-label"
@@ -378,7 +378,7 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
                     Segundo apellido*
                   </label>
                   <input
-                    className={`inputs-edit-worker ${
+                    className={`inputs-edit-worker2 ${
                       isFormSubmitted && !values.segundoApellido && "red-input"
                     }`}
                     type="text"
@@ -397,8 +397,8 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
                   />
                 </div>
               </div>
-              <div className="form-sec-worker-edit">
-                <div className="column-edit-worker">
+              <div className="form-sec-worker-edit2">
+                <div className="column-edit-worker2">
                   <label
                     className={`label-worker-e ${
                       isFormSubmitted && !values.correo && "red-label"
@@ -407,7 +407,7 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
                     Correo*
                   </label>
                   <input
-                    className={`inputs-edit-worker ${
+                    className={`inputs-edit-worker2 ${
                       isFormSubmitted && !values.correo && "red-input"
                     }`}
                     type="text"
@@ -433,7 +433,7 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
                     <p className="email-exists-Fr">El correo ya está en uso.</p>
                   )}
                 </div>
-                <div className="column-edit-worker">
+                <div className="column-edit-worker2">
                   <label
                     className={`label-worker-e ${
                       isFormSubmitted && !values.telefono && "red-label"
@@ -442,7 +442,7 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
                     Teléfono*
                   </label>
                   <input
-                    className={`inputs-edit-worker ${
+                    className={`inputs-edit-worker2 ${
                       isFormSubmitted && !values.telefono && "red-input"
                     }`}
                     type="text"
@@ -470,12 +470,12 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
                 <div></div>
               </div>
               <div className="espacio">
-                <label className="label-dato-worker">
+                <label className="label-dato-worker2">
                   Edite sus datos de inicio de sesión
                 </label>
               </div>
-              <div className="form-sec-worker-edit">
-                <div className="column-edit-worker">
+              <div className="form-sec-worker-edit2">
+                <div className="column-edit-worker2">
                   <label
                     className={`label-worker-e ${
                       isFormSubmitted && !values.nombreUsuario && "red-label"
@@ -484,7 +484,7 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
                     Nombre de usuario*
                   </label>
                   <input
-                    className={`inputs-edit-worker2 ${
+                    className={`inputs-edit-worker22 ${
                       isFormSubmitted && !values.nombreUsuario && "red-input"
                     }`}
                     type="text"
@@ -516,32 +516,32 @@ const ProfileWorker = ({ onCancelClick, idWorker }) => {
                       </p>
                     )}
                 </div>
-                <div className="column-edit-worker">
+                <div className="column-edit-worker2">
                   <label
                     className="label-worker-change-password"
                     onClick={() => setShowUpdatePassword(true)}
                   >
                     Cambiar contraseña<br />
-                    <span className="password-invite-text">
+                    <span className="password-invite-text-worker">
                       ¿Desea cambiar la contraseña?
                     </span>
                   </label>
                 </div>
               </div>
-              <div className="btn-cont-admin-worker-e">
+              <div className="btn-cont-worker-e2">
                 <button
-                  className="button-worker"
+                  className="button-worker2"
                   type="submit"
                   onClick={onConfirmClick}
                 >
                   Guardar
                 </button>
-                <button className="button-worker " onClick={onCancelClick}>
+                <button className="button-worker2" onClick={onCancelClick}>
                   Cancelar
                 </button>
               </div>
               {records && !isInputFocused && (
-                <p className="error-message-worker-e">{records}</p>
+                <p className="error-message-worker-e2">{records}</p>
               )}
             </div>
           </div>

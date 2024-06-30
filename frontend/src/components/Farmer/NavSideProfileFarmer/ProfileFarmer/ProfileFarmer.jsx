@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import "./ProfileFarmer.css";
 // import AddNotification from "../../../../../LoginNotifications/AddNotification";
 import { UserContext } from "../../../../UserContext";
-import UpdatePasswordF from "../UpdatePasswordF/UpdatePasswordF"
+import UpdatePasswordF from "../UpdatePasswordF/UpdatePasswordF";
 
 const ProfileFarmer = ({ onCancelClick, idFarmer }) => {
   const { user, updateUser } = useContext(UserContext);
@@ -274,249 +274,260 @@ const ProfileFarmer = ({ onCancelClick, idFarmer }) => {
   return (
     <div>
       {isLoading && (
-        <div className="loading-overlay">
-          <div className="loading-spinner"></div>
+        <div className="loading-overlay2">
+          <div className="loading-spinner2"></div>
         </div>
       )}
 
-{showUpdatePassword ? (
+      {showUpdatePassword ? (
         <UpdatePasswordF
           onCancel={() => setShowUpdatePassword(false)}
           onPasswordUpdate={() => {
             setShowUpdatePassword(false);
             getFarmerById();
           }}
-          idFarmer = {idFarmer}
+          idFarmer={idFarmer}
         />
       ) : (
         <>
-
-
-      <div className="edit-worker-container">
-        <div className="centrar-worker">
-          <h4 className="h4edit-worker">Editar agricultor</h4>
-          <h5 className="h5edit-worker">*Campos requeridos</h5>
-          <label className="label-dato-worker">
-            Edite sus datos personales
-          </label>
-          <div className="form-sec-worker-edit">
-            <div className="column-edit-worker">
-              <label
-                className={`label-worker-e ${
-                  isFormSubmitted && !values.nombre && "red-label"
-                }`}
-              >
-                Nombre*
+          <div className="edit-farmer-container2">
+            <div className="centrar-farmer2">
+              <h4 className="h4edit-farmer2">Editar agricultor</h4>
+              <h5 className="h5edit-farmer2">*Campos requeridos</h5>
+              <label className="label-dato-farmer2">
+                Edite sus datos personales
               </label>
-              <input
-                className={`inputs-edit-worker ${
-                  isFormSubmitted && !values.nombre && "red-input"
-                }`}
-                type="text"
-                required
-                name="nombre"
-                placeholder="Ingrese su nombre"
-                value={values.nombre}
-                onChange={handleInputChange}
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                style={values.nombre ? { backgroundColor: "#EFF6FF" } : null}
-              />
-            </div>
-            <div className="column-edit-worker">
-              <label
-                className={`label-worker-e ${
-                  isFormSubmitted && !values.primerApellido && "red-label"
-                }`}
-              >
-                Primer apellido*
-              </label>
-              <input
-                className={`inputs-edit-worker ${
-                  isFormSubmitted && !values.primerApellido && "red-input"
-                }`}
-                type="text"
-                required
-                name="primerApellido"
-                value={values.primerApellido}
-                placeholder="Ingrese su primer apellido"
-                onChange={handleInputChange}
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                style={
-                  values.primerApellido ? { backgroundColor: "#EFF6FF" } : null
-                }
-              />
-            </div>
-            <div className="column-edit-worker">
-              <label
-                className={`label-worker-e ${
-                  isFormSubmitted && !values.segundoApellido && "red-label"
-                }`}
-              >
-                Segundo apellido*
-              </label>
-              <input
-                className={`inputs-edit-worker ${
-                  isFormSubmitted && !values.segundoApellido && "red-input"
-                }`}
-                type="text"
-                required
-                name="segundoApellido"
-                value={values.segundoApellido}
-                placeholder="Ingrese su segundo apellido"
-                onChange={handleInputChange}
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                style={
-                  values.segundoApellido ? { backgroundColor: "#EFF6FF" } : null
-                }
-              />
-            </div>
-          </div>
-          <div className="form-sec-worker-edit">
-            <div className="column-edit-worker">
-              <label
-                className={`label-worker-e ${
-                  isFormSubmitted && !values.correo && "red-label"
-                }`}
-              >
-                Correo*
-              </label>
-              <input
-                className={`inputs-edit-worker ${
-                  isFormSubmitted && !values.correo && "red-input"
-                }`}
-                type="text"
-                required
-                name="correo"
-                value={values.correo}
-                placeholder="ejemplo@gmail.com"
-                onChange={handleInputChange}
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                style={values.correo ? { backgroundColor: "#EFF6FF" } : null}
-              />
-              {values.correo &&
-                !validateEmail(values.correo) &&
-                isFormSubmitted && (
-                  <p className="error-message-farmer">
-                    Correo electrónico inválido.
-                  </p>
-                )}
-              {emailExists && values.correo !== originalEmail && (
-                <p className="email-exists-Fr">El correo ya está en uso.</p>
-              )}
-            </div>
-            <div className="column-edit-worker">
-              <label
-                className={`label-worker-e ${
-                  isFormSubmitted && !values.telefono && "red-label"
-                }`}
-              >
-                Teléfono*
-              </label>
-              <input
-                className={`inputs-edit-worker ${
-                  isFormSubmitted && !values.telefono && "red-input"
-                }`}
-                type="text"
-                required
-                name="telefono"
-                value={values.telefono}
-                placeholder="Ingrese su número telefónico"
-                onChange={(e) => {
-                  // Filtra solo dígitos y limita a 10 caracteres
-                  const phoneNumber = e.target.value
-                    .replace(/\D/g, "")
-                    .slice(0, 10);
-                  setValues((prevState) => ({
-                    ...prevState,
-                    telefono: phoneNumber,
-                  }));
-                }}
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                style={values.telefono ? { backgroundColor: "#EFF6FF" } : null}
-              />
-            </div>
-            <div></div>
-          </div>
-          <div className="espacio">
-            <label className="label-dato-worker">
-              Edite sus datos de inicio de sesión
-            </label>
-          </div>
-          <div className="form-sec-worker-edit">
-            <div className="column-edit-worker">
-              <label
-                className={`label-worker-e ${
-                  isFormSubmitted && !values.nombreUsuario && "red-label"
-                }`}
-              >
-                Nombre de usuario*
-              </label>
-              <input
-                className={`inputs-edit-worker2 ${
-                  isFormSubmitted && !values.nombreUsuario && "red-input"
-                }`}
-                type="text"
-                required
-                name="nombreUsuario"
-                value={values.nombreUsuario}
-                placeholder="Ingrese su nombre de usuario"
-                onChange={handleInputChange}
-                onFocus={handleInputFocus}
-                onBlur={async () => {
-                  handleInputBlur();
-                  if (values.nombreUsuario) {
-                    const nameUserExists = await checkUserExists(
+              <div className="form-sec-farmer-edit2">
+                <div className="column-edit-farmer">
+                  <label
+                    className={`label-farmer-e2 ${
+                      isFormSubmitted && !values.nombre && "red-label2"
+                    }`}
+                  >
+                    Nombre*
+                  </label>
+                  <input
+                    className={`inputs-edit-farmer2 ${
+                      isFormSubmitted && !values.nombre && "red-input2"
+                    }`}
+                    type="text"
+                    required
+                    name="nombre"
+                    placeholder="Ingrese su nombre"
+                    value={values.nombre}
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                    style={
+                      values.nombre ? { backgroundColor: "#EFF6FF" } : null
+                    }
+                  />
+                </div>
+                <div className="column-edit-farmer">
+                  <label
+                    className={`label-farmer-e ${
+                      isFormSubmitted && !values.primerApellido && "red-label"
+                    }`}
+                  >
+                    Primer apellido*
+                  </label>
+                  <input
+                    className={`inputs-edit-farmer ${
+                      isFormSubmitted && !values.primerApellido && "red-input"
+                    }`}
+                    type="text"
+                    required
+                    name="primerApellido"
+                    value={values.primerApellido}
+                    placeholder="Ingrese su primer apellido"
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                    style={
+                      values.primerApellido
+                        ? { backgroundColor: "#EFF6FF" }
+                        : null
+                    }
+                  />
+                </div>
+                <div className="column-edit-farmer">
+                  <label
+                    className={`label-farmer-e ${
+                      isFormSubmitted && !values.segundoApellido && "red-label"
+                    }`}
+                  >
+                    Segundo apellido*
+                  </label>
+                  <input
+                    className={`inputs-edit-farmer ${
+                      isFormSubmitted && !values.segundoApellido && "red-input"
+                    }`}
+                    type="text"
+                    required
+                    name="segundoApellido"
+                    value={values.segundoApellido}
+                    placeholder="Ingrese su segundo apellido"
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                    style={
+                      values.segundoApellido
+                        ? { backgroundColor: "#EFF6FF" }
+                        : null
+                    }
+                  />
+                </div>
+              </div>
+              <div className="form-sec-farmer-edit">
+                <div className="column-edit-farmer">
+                  <label
+                    className={`label-farmer-e ${
+                      isFormSubmitted && !values.correo && "red-label"
+                    }`}
+                  >
+                    Correo*
+                  </label>
+                  <input
+                    className={`inputs-edit-farmer ${
+                      isFormSubmitted && !values.correo && "red-input"
+                    }`}
+                    type="text"
+                    required
+                    name="correo"
+                    value={values.correo}
+                    placeholder="ejemplo@gmail.com"
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                    style={
+                      values.correo ? { backgroundColor: "#EFF6FF" } : null
+                    }
+                  />
+                  {values.correo &&
+                    !validateEmail(values.correo) &&
+                    isFormSubmitted && (
+                      <p className="error-message-farmer">
+                        Correo electrónico inválido.
+                      </p>
+                    )}
+                  {emailExists && values.correo !== originalEmail && (
+                    <p className="email-exists-Fr">El correo ya está en uso.</p>
+                  )}
+                </div>
+                <div className="column-edit-farmer">
+                  <label
+                    className={`label-farmer-e ${
+                      isFormSubmitted && !values.telefono && "red-label"
+                    }`}
+                  >
+                    Teléfono*
+                  </label>
+                  <input
+                    className={`inputs-edit-farmer ${
+                      isFormSubmitted && !values.telefono && "red-input"
+                    }`}
+                    type="text"
+                    required
+                    name="telefono"
+                    value={values.telefono}
+                    placeholder="Ingrese su número telefónico"
+                    onChange={(e) => {
+                      // Filtra solo dígitos y limita a 10 caracteres
+                      const phoneNumber = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 10);
+                      setValues((prevState) => ({
+                        ...prevState,
+                        telefono: phoneNumber,
+                      }));
+                    }}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                    style={
+                      values.telefono ? { backgroundColor: "#EFF6FF" } : null
+                    }
+                  />
+                </div>
+                <div></div>
+              </div>
+              <div className="espacio">
+                <label className="label-dato-farmer2">
+                  Edite sus datos de inicio de sesión
+                </label>
+              </div>
+              <div className="form-sec-farmer-edit">
+                <div className="column-edit-farmer">
+                  <label
+                    className={`label-farmer-e ${
+                      isFormSubmitted && !values.nombreUsuario && "red-label"
+                    }`}
+                  >
+                    Nombre de usuario*
+                  </label>
+                  <input
+                    className={`inputs-edit-farmer22 ${
+                      isFormSubmitted && !values.nombreUsuario && "red-input"
+                    }`}
+                    type="text"
+                    required
+                    name="nombreUsuario"
+                    value={values.nombreUsuario}
+                    placeholder="Ingrese su nombre de usuario"
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                    onBlur={async () => {
+                      handleInputBlur();
+                      if (values.nombreUsuario) {
+                        const nameUserExists = await checkUserExists(
+                          values.nombreUsuario
+                        );
+                        setNameUserExists(nameUserExists);
+                      }
+                    }}
+                    style={
                       values.nombreUsuario
-                    );
-                    setNameUserExists(nameUserExists);
-                  }
-                }}
-                style={
-                  values.nombreUsuario ? { backgroundColor: "#EFF6FF" } : null
-                }
-              />
-              {nameUserExists && values.nombreUsuario !== originalNameUser && (
-                <p className="email-exists-Fr">
-                  El nombre de usuario ya está en uso.
-                </p>
+                        ? { backgroundColor: "#EFF6FF" }
+                        : null
+                    }
+                  />
+                  {nameUserExists &&
+                    values.nombreUsuario !== originalNameUser && (
+                      <p className="email-exists-Fr">
+                        El nombre de usuario ya está en uso.
+                      </p>
+                    )}
+                </div>
+                <div className="column-edit-farmer">
+                  <label
+                    className="label-farmer-change-password"
+                    onClick={() => setShowUpdatePassword(true)}
+                  >
+                    Cambiar contraseña
+                    <br />
+                    <span className="password-invite-text-farmer">
+                      ¿Desea cambiar la contraseña?
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div className="btn-cont-farmer-e2">
+                <button
+                  className="button-farmer2"
+                  type="submit"
+                  onClick={onConfirmClick}
+                >
+                  Guardar
+                </button>
+                <button className="button-farmer2" onClick={onCancelClick}>
+                  Cancelar
+                </button>
+              </div>
+              {records && !isInputFocused && (
+                <p className="error-message-farmer-e2">{records}</p>
               )}
             </div>
-            <div className="column-edit-worker">
-            <label
-              className="label-worker-change-password"
-              onClick={() => setShowUpdatePassword(true)}
-            >
-              Cambiar contraseña
-              <br />
-              <span className="password-invite-text">
-                ¿Desea cambiar la contraseña?
-              </span>
-            </label>
           </div>
-          </div>
-          <div className="btn-cont-admin-worker-e">
-            <button
-              className="button-worker"
-              type="submit"
-              onClick={onConfirmClick}
-            >
-              Guardar
-            </button>
-            <button className="button-worker " onClick={onCancelClick}>
-              Cancelar
-            </button>
-          </div>
-          {records && !isInputFocused && (
-            <p className="error-message-worker-e">{records}</p>
-          )}
-        </div>
-      </div>
-      </>
+        </>
       )}
     </div>
   );

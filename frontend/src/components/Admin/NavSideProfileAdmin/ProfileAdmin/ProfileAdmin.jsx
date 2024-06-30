@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import "./ProfileAdmin.css";
 import { toast } from "react-toastify";
 import { UserContext } from "../../../../UserContext";
+import "./ProfileAdmin.css";
 
 const ProfileAdmin = ({ onCancelClick }) => {
   const { user, updateUser } = useContext(UserContext);
@@ -294,29 +294,29 @@ const ProfileAdmin = ({ onCancelClick }) => {
   return (
     <div>
       {isLoading && (
-        <div className="loading-overlay">
-          <div className="loading-spinner"></div>
+        <div className="loading-overlay2">
+          <div className="loading-spinner2"></div>
         </div>
       )}
-      <div className="profile-admin-form">
-        <div className="centrar-admin">
-          <h4 className="h4profile">Editar perfil</h4>
-          <h5 className="h5profile">*Campos requeridos</h5>
-          <label className="titles-datos-admin">
+      <div className="profile-admin-form2">
+        <div className="centrar-admin2">
+          <h4 className="h4profile2">Editar perfil</h4>
+          <h5 className="h5profile2">*Campos requeridos</h5>
+          <label className="titles-datos-admin2">
             Edite sus datos personales
           </label>
-          <div className="form-section-profile">
-            <div className="column-admin-profile">
+          <div className="form-section-profile2">
+            <div className="column-admin-profile2">
               <label
-                className={`titles-admin ${
-                  isFormSubmitted && !values.nombre && "red-label"
+                className={`titles-admin22 ${
+                  isFormSubmitted && !values.nombre && "red-label2"
                 }`}
               >
                 Nombre*
               </label>
               <input
-                className={`inputs-profile-admin ${
-                  isFormSubmitted && !values.nombre && "red-input"
+                className={`inputs-profile-admin22 ${
+                  isFormSubmitted && !values.nombre && "red-input2"
                 }`}
                 type="text"
                 required
@@ -329,17 +329,17 @@ const ProfileAdmin = ({ onCancelClick }) => {
                 style={values.nombre ? { backgroundColor: "#EFF6FF" } : null}
               />
             </div>
-            <div className="column-admin-profile">
+            <div className="column-admin-profile2">
               <label
-                className={`titles-admin ${
-                  isFormSubmitted && !values.primerApellido && "red-label"
+                className={`titles-admin2 ${
+                  isFormSubmitted && !values.primerApellido && "red-label2"
                 }`}
               >
                 Primer apellido*
               </label>
               <input
-                className={`inputs-profile-admin ${
-                  isFormSubmitted && !values.primerApellido && "red-input"
+                className={`inputs-profile-admin22 ${
+                  isFormSubmitted && !values.primerApellido && "red-input2"
                 }`}
                 type="text"
                 required
@@ -354,17 +354,17 @@ const ProfileAdmin = ({ onCancelClick }) => {
                 }
               />
             </div>
-            <div className="column-admin-profile">
+            <div className="column-admin-profile2">
               <label
-                className={`titles-admin ${
-                  isFormSubmitted && !values.segundoApellido && "red-label"
+                className={`titles-admin2 ${
+                  isFormSubmitted && !values.segundoApellido && "red-label2"
                 }`}
               >
                 Segundo apellido*
               </label>
               <input
-                className={`inputs-profile-admin ${
-                  isFormSubmitted && !values.segundoApellido && "red-input"
+                className={`inputs-profile-admin22 ${
+                  isFormSubmitted && !values.segundoApellido && "red-input2"
                 }`}
                 type="text"
                 required
@@ -380,18 +380,18 @@ const ProfileAdmin = ({ onCancelClick }) => {
               />
             </div>
           </div>
-          <div className="form-section-profile">
-            <div className="column-admin-profile">
+          <div className="form-section-profile2">
+            <div className="column-admin-profile2">
               <label
-                className={`titles-admin ${
-                  isFormSubmitted && !values.correo && "red-label"
+                className={`titles-admin2 ${
+                  isFormSubmitted && !values.correo && "red-label2"
                 }`}
               >
                 Correo*
               </label>
               <input
-                className={`inputs-profile-admin ${
-                  isFormSubmitted && !values.correo && "red-input"
+                className={`inputs-profile-admin22 ${
+                  isFormSubmitted && !values.correo && "red-input2"
                 }`}
                 type="email"
                 required
@@ -414,17 +414,17 @@ const ProfileAdmin = ({ onCancelClick }) => {
                 <p className="email-exists-Fr">El correo ya está en uso.</p>
               )}
             </div>
-            <div className="column-admin-profile">
+            <div className="column-admin-profile2">
               <label
-                className={`titles-admin ${
-                  isFormSubmitted && !values.telefono && "red-label"
+                className={`titles-admin2 ${
+                  isFormSubmitted && !values.telefono && "red-label2"
                 }`}
               >
                 Teléfono*
               </label>
               <input
-                className={`inputs-profile-admin ${
-                  isFormSubmitted && !values.telefono && "red-input"
+                className={`inputs-profile-admin22 ${
+                  isFormSubmitted && !values.telefono && "red-input2"
                 }`}
                 type="text"
                 required
@@ -448,21 +448,21 @@ const ProfileAdmin = ({ onCancelClick }) => {
             <div></div>
           </div>
 
-          <h4 className="titles-datos-admin">
+          <h4 className="titles-datos-admin2">
             Configure los datos de inicio de sesión
           </h4>
-          <div className="form-section-profile">
-            <div className="column-admin-profile">
+          <div className="form-section-profile2">
+            <div className="column-admin-profile2">
               <label
-                className={`titles-admin ${
-                  isFormSubmitted && !values.nombreUsuario && "red-label"
+                className={`titles-admin2 ${
+                  isFormSubmitted && !values.nombreUsuario && "red-label2"
                 }`}
               >
                 Nombre de usuario*
               </label>
               <input
-                className={`inputs-profile-admin2 ${
-                  isFormSubmitted && !values.nombreUsuario && "red-input"
+                className={`inputs-profile-admin22 ${
+                  isFormSubmitted && !values.nombreUsuario && "red-input2"
                 }`}
                 type="text"
                 required
@@ -490,17 +490,17 @@ const ProfileAdmin = ({ onCancelClick }) => {
                 </p>
               )}
             </div>
-            <div className="column-admin-profile">
+            <div className="column-admin-profile2">
               <label
-                className={`titles-admin ${
-                  isFormSubmitted && !values.contrasenia && "red-label"
+                className={`titles-admin2 ${
+                  isFormSubmitted && !values.contrasenia && "red-label2"
                 }`}
               >
                 Contraseña*
               </label>
               <input
-                className={`inputs-profile-admin2 ${
-                  isFormSubmitted && !values.contrasenia && "red-input"
+                className={`inputs-profile-admin22 ${
+                  isFormSubmitted && !values.contrasenia && "red-input2"
                 }`}
                 type="password"
                 required
@@ -533,7 +533,7 @@ const ProfileAdmin = ({ onCancelClick }) => {
               )}
             </div>
           </div>
-          <div className="password-rules-admin">
+          <div className="password-rules-admin2">
             <label>*La contraseña debe ser mínimo de 8 caracteres.</label>
             <br />
             <label>
@@ -541,20 +541,20 @@ const ProfileAdmin = ({ onCancelClick }) => {
               son válidos).
             </label>
           </div>
-          <div className="button-container-profile">
+          <div className="button-container-profile2">
             <button
-              className="button-admin"
+              className="button-admin2"
               type="submit"
               onClick={onConfirmClick}
             >
               Guardar
             </button>
-            <button className="button-admin " onClick={onCancelClick}>
+            <button className="button-admin2 " onClick={onCancelClick}>
               Cancelar
             </button>
           </div>
           {records && !isInputFocused && (
-            <p className="error-msg-profile-admin">{records}</p>
+            <p className="error-msg-profile-admin2">{records}</p>
           )}
         </div>
       </div>

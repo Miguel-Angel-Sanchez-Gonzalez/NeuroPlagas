@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import "./UpdatePasswordF.css";
+import "./UpdatePasswordA.css";
 
-const UpdatePasswordF = ({ onCancel, onPasswordUpdate, idFarmer }) => {
+const UpdatePasswordA = ({ onCancel, onPasswordUpdate, idFarmer }) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -12,6 +12,7 @@ const UpdatePasswordF = ({ onCancel, onPasswordUpdate, idFarmer }) => {
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [showUpdatePassword, setShowUpdatePassword] = useState(false);
 
   const validatePassword = (password) => {
     const hasUpperCase = /[A-Z]/.test(password);
@@ -93,31 +94,31 @@ const UpdatePasswordF = ({ onCancel, onPasswordUpdate, idFarmer }) => {
           <div className="loading-spinner"></div>
         </div>
       )}
-      <div className="centrar-worker">
+      <div className="centrar-admin">
         <h4 className="h4profile">Actualizar contraseña</h4>
-        <div className="password-rules-worker-e">
-          <label className="label-worker-rules-password">
+        <div className="password-rules-admin-e">
+          <label className="label-admin-rules-password">
             La contraseña debe tener los siguientes aspectos:
           </label>
           <br />
-          <label className="label-worker-rules-password">
+          <label className="label-admin-rules-password">
             *La contraseña debe ser mínimo de 8 caracteres.
           </label>
           <br />
-          <label className="label-worker-rules-password">
+          <label className="label-admin-rules-password">
             *Debe incluir al menos: una mayúscula, número y un símbolo (Todos
             son válidos).
           </label>
           <br />
           <br />
-          <h5 className="h5edit-worker">*Campos requeridos</h5>
+          <h5 className="h5edit-admin">*Campos requeridos</h5>
         </div>
         <div className="form-section-profile">
-          <div className="column-worker-profile">
-            <label className="titles-datos-worker">Contraseña actual*</label>
+          <div className="column-admin-profile">
+            <label className="titles-datos-admin">Contraseña actual*</label>
             <div className="password-input-container">
               <input
-                className="inputs-profile-worker"
+                className="inputs-profile-admin"
                 type={showOldPassword ? "text" : "password"}
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
@@ -134,11 +135,11 @@ const UpdatePasswordF = ({ onCancel, onPasswordUpdate, idFarmer }) => {
           </div>
         </div>
         <div className="form-section-profile">
-          <div className="column-worker-profile">
-            <label className="titles-datos-worker">Nueva contraseña*</label>
+          <div className="column-admin-profile">
+            <label className="titles-datos-admin">Nueva contraseña*</label>
             <div className="password-input-container">
               <input
-                className="inputs-profile-worker"
+                className="inputs-profile-admin"
                 type={showNewPassword ? "text" : "password"}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
@@ -155,13 +156,13 @@ const UpdatePasswordF = ({ onCancel, onPasswordUpdate, idFarmer }) => {
           </div>
         </div>
         <div className="form-section-profile">
-          <div className="column-worker-profile">
-            <label className="titles-datos-worker">
+          <div className="column-admin-profile">
+            <label className="titles-datos-admin">
               Confirmar nueva contraseña*
             </label>
             <div className="password-input-container">
               <input
-                className="inputs-profile-worker"
+                className="inputs-profile-admin"
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -178,13 +179,13 @@ const UpdatePasswordF = ({ onCancel, onPasswordUpdate, idFarmer }) => {
           </div>
         </div>
         {passwordError && (
-          <p className="error-msg-profile-worker">{passwordError}</p>
+          <p className="error-msg-profile-admin">{passwordError}</p>
         )}
         <div className="button-container-profile">
-          <button className="button-worker" onClick={handlePasswordUpdate}>
+          <button className="button-admin" onClick={handlePasswordUpdate}>
             Guardar
           </button>
-          <button className="button-worker" onClick={onCancel}>
+          <button className="button-admin" onClick={onCancel}>
             Cancelar
           </button>
         </div>
@@ -193,4 +194,4 @@ const UpdatePasswordF = ({ onCancel, onPasswordUpdate, idFarmer }) => {
   );
 };
 
-export default UpdatePasswordF;
+export default UpdatePasswordA;

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { toast } from "react-toastify";
 import { UserContext } from "../../../../UserContext";
 import "./ProfileAdmin.css";
+import UpdatePasswordA from "../UpdatePasswordA/UpdatePasswordA";
 
 const ProfileAdmin = ({ onCancelClick }) => {
   const { user, updateUser } = useContext(UserContext);
@@ -14,6 +15,7 @@ const ProfileAdmin = ({ onCancelClick }) => {
   const [passwordError, setPasswordError] = useState("");
   const [originalEmail, setOriginalEmail] = useState("");
   const [originalNameUser, setOriginalNameU] = useState("");
+  const [showUpdatePassword, setShowUpdatePassword] = useState(false);
 
   const [values, setValues] = useState({
     nombre: user.username,
@@ -133,42 +135,43 @@ const ProfileAdmin = ({ onCancelClick }) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/admin/`);
-        if (response.status === 200) {
-          const data = await response.json();
-          console.log(data[0]);
-          setOriginalNameU(data[0].nombre_usuario);
-          setOriginalEmail(data[0].correo_electronico);
-          setValues({
-            nombre: data[0].nombre,
-            primerApellido: data[0].primer_apellido,
-            segundoApellido: data[0].segundo_apellido,
-            telefono: data[0].telefono,
-            correo: data[0].correo_electronico,
-            nombreUsuario: data[0].nombre_usuario,
-            contrasenia: data[0].contrasenia,
-          });
-        } else {
-          toast.error("Error al obtener al administrador.", {
-            position: "top-center",
-            autoClose: 2000,
-            theme: "colored",
-          });
-        }
-      } catch (error) {
+    getDataAdmin();
+  }, []);
+
+  const getDataAdmin = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/admin/`);
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log(data[0]);
+        setOriginalNameU(data[0].nombre_usuario);
+        setOriginalEmail(data[0].correo_electronico);
+        setValues({
+          nombre: data[0].nombre,
+          primerApellido: data[0].primer_apellido,
+          segundoApellido: data[0].segundo_apellido,
+          telefono: data[0].telefono,
+          correo: data[0].correo_electronico,
+          nombreUsuario: data[0].nombre_usuario,
+          contrasenia: data[0].contrasenia,
+        });
+      } else {
         toast.error("Error al obtener al administrador.", {
           position: "top-center",
           autoClose: 2000,
           theme: "colored",
         });
-        console.error("Error al obtener al administrador:", error);
-        setIsLoading(false);
       }
-    };
-    fetchData();
-  }, []);
+    } catch (error) {
+      toast.error("Error al obtener al administrador.", {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
+      console.error("Error al obtener al administrador:", error);
+      setIsLoading(false);
+    }
+  };
 
   const data = {
     name: values.nombre,
@@ -298,266 +301,256 @@ const ProfileAdmin = ({ onCancelClick }) => {
           <div className="loading-spinner2"></div>
         </div>
       )}
-      <div className="profile-admin-form2">
-        <div className="centrar-admin2">
-          <h4 className="h4profile2">Editar perfil</h4>
-          <h5 className="h5profile2">*Campos requeridos</h5>
-          <label className="titles-datos-admin2">
-            Edite sus datos personales
-          </label>
-          <div className="form-section-profile2">
-            <div className="column-admin-profile2">
-              <label
-                className={`titles-admin22 ${
-                  isFormSubmitted && !values.nombre && "red-label2"
-                }`}
-              >
-                Nombre*
-              </label>
-              <input
-                className={`inputs-profile-admin22 ${
-                  isFormSubmitted && !values.nombre && "red-input2"
-                }`}
-                type="text"
-                required
-                name="nombre"
-                placeholder="Ingrese su nombre"
-                value={values.nombre}
-                onChange={handleInputChange}
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                style={values.nombre ? { backgroundColor: "#EFF6FF" } : null}
-              />
-            </div>
-            <div className="column-admin-profile2">
-              <label
-                className={`titles-admin2 ${
-                  isFormSubmitted && !values.primerApellido && "red-label2"
-                }`}
-              >
-                Primer apellido*
-              </label>
-              <input
-                className={`inputs-profile-admin22 ${
-                  isFormSubmitted && !values.primerApellido && "red-input2"
-                }`}
-                type="text"
-                required
-                name="primerApellido"
-                placeholder="Ingrese su primer apellido"
-                value={values.primerApellido}
-                onChange={handleInputChange}
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                style={
-                  values.primerApellido ? { backgroundColor: "#EFF6FF" } : null
-                }
-              />
-            </div>
-            <div className="column-admin-profile2">
-              <label
-                className={`titles-admin2 ${
-                  isFormSubmitted && !values.segundoApellido && "red-label2"
-                }`}
-              >
-                Segundo apellido*
-              </label>
-              <input
-                className={`inputs-profile-admin22 ${
-                  isFormSubmitted && !values.segundoApellido && "red-input2"
-                }`}
-                type="text"
-                required
-                name="segundoApellido"
-                placeholder="Ingrese su segundo apellido"
-                value={values.segundoApellido}
-                onChange={handleInputChange}
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                style={
-                  values.segundoApellido ? { backgroundColor: "#EFF6FF" } : null
-                }
-              />
-            </div>
-          </div>
-          <div className="form-section-profile2">
-            <div className="column-admin-profile2">
-              <label
-                className={`titles-admin2 ${
-                  isFormSubmitted && !values.correo && "red-label2"
-                }`}
-              >
-                Correo*
-              </label>
-              <input
-                className={`inputs-profile-admin22 ${
-                  isFormSubmitted && !values.correo && "red-input2"
-                }`}
-                type="email"
-                required
-                name="correo"
-                placeholder="ejemplo@gmail.com"
-                value={values.correo}
-                onChange={handleInputChange}
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                style={values.correo ? { backgroundColor: "#EFF6FF" } : null}
-              />
-              {values.correo &&
-                !validateEmail(values.correo) &&
-                isFormSubmitted && (
-                  <p className="error-message-farmer">
-                    Correo electrónico inválido.
-                  </p>
-                )}
-              {emailExists && values.correo !== originalEmail && (
-                <p className="email-exists-Fr">El correo ya está en uso.</p>
-              )}
-            </div>
-            <div className="column-admin-profile2">
-              <label
-                className={`titles-admin2 ${
-                  isFormSubmitted && !values.telefono && "red-label2"
-                }`}
-              >
-                Teléfono*
-              </label>
-              <input
-                className={`inputs-profile-admin22 ${
-                  isFormSubmitted && !values.telefono && "red-input2"
-                }`}
-                type="text"
-                required
-                name="telefono"
-                placeholder="Ingrese su número telefónico"
-                value={values.telefono}
-                onChange={(e) => {
-                  const phoneNumber = e.target.value
-                    .replace(/\D/g, "")
-                    .slice(0, 10);
-                  setValues((prevState) => ({
-                    ...prevState,
-                    telefono: phoneNumber,
-                  }));
-                }}
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                style={values.telefono ? { backgroundColor: "#EFF6FF" } : null}
-              />
-            </div>
-            <div></div>
-          </div>
 
-          <h4 className="titles-datos-admin2">
-            Configure los datos de inicio de sesión
-          </h4>
-          <div className="form-section-profile2">
-            <div className="column-admin-profile2">
-              <label
-                className={`titles-admin2 ${
-                  isFormSubmitted && !values.nombreUsuario && "red-label2"
-                }`}
-              >
-                Nombre de usuario*
+      {showUpdatePassword ? (
+        <UpdatePasswordA
+          onCancel={() => setShowUpdatePassword(false)}
+          onPasswordUpdate={() => {
+            setShowUpdatePassword(false);
+            getDataAdmin();
+          }}
+          idFarmer={1293}
+        />
+      ) : (
+        <>
+          <div className="profile-admin-form2">
+            <div className="centrar-admin2">
+              <h4 className="h4profile2">Editar administrador</h4>
+              <h5 className="h5profile2">*Campos requeridos</h5>
+              <label className="titles-datos-admin2">
+                Edite sus datos personales
               </label>
-              <input
-                className={`inputs-profile-admin22 ${
-                  isFormSubmitted && !values.nombreUsuario && "red-input2"
-                }`}
-                type="text"
-                required
-                name="nombreUsuario"
-                placeholder="Ingrese su nombre de usuario"
-                value={values.nombreUsuario}
-                onChange={handleInputChange}
-                onFocus={handleInputFocus}
-                onBlur={async () => {
-                  handleInputBlur();
-                  if (values.nombreUsuario) {
-                    const nameUserExists = await checkUserExists(
-                      values.nombreUsuario
-                    );
-                    setNameUserExists(nameUserExists);
-                  }
-                }}
-                style={
-                  values.nombreUsuario ? { backgroundColor: "#EFF6FF" } : null
-                }
-              />
-              {nameUserExists && values.nombreUsuario !== originalNameUser && (
-                <p className="email-exists-Fr">
-                  El nombre de usuario ya está en uso.
-                </p>
-              )}
-            </div>
-            <div className="column-admin-profile2">
-              <label
-                className={`titles-admin2 ${
-                  isFormSubmitted && !values.contrasenia && "red-label2"
-                }`}
-              >
-                Contraseña*
-              </label>
-              <input
-                className={`inputs-profile-admin22 ${
-                  isFormSubmitted && !values.contrasenia && "red-input2"
-                }`}
-                type="password"
-                required
-                name="contrasenia"
-                placeholder="Contraseña"
-                value={values.contrasenia}
-                onChange={(e) => handleInputChange(e)}
-                onFocus={handleInputFocus}
-                onBlur={async () => {
-                  if (values.contrasenia) {
-                    const validationMessage = validatePassword(
-                      values.contrasenia
-                    );
-                    if (validationMessage !== true) {
-                      setPasswordError(validationMessage);
+              <div className="form-section-profile2">
+                <div className="column-admin-profile2">
+                  <label
+                    className={`titles-admin2 ${
+                      isFormSubmitted && !values.nombre && "red-label2"
+                    }`}
+                  >
+                    Nombre*
+                  </label>
+                  <input
+                    className={`inputs-profile-admin22 ${
+                      isFormSubmitted && !values.nombre && "red-input2"
+                    }`}
+                    type="text"
+                    required
+                    name="nombre"
+                    placeholder="Ingrese su nombre"
+                    value={values.nombre}
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                    style={
+                      values.nombre ? { backgroundColor: "#EFF6FF" } : null
                     }
-                  }
-                }}
-                style={
-                  values.contrasenia ? { backgroundColor: "#EFF6FF" } : null
-                }
-              />
-              {isFormSubmitted && !values.contrasenia && (
-                <p className="error-password">
-                  Por favor ingrese una contraseña.
-                </p>
-              )}
-              {passwordError && (
-                <p className="error-password">{passwordError}</p>
+                  />
+                </div>
+                <div className="column-admin-profile2">
+                  <label
+                    className={`titles-admin2 ${
+                      isFormSubmitted && !values.primerApellido && "red-label2"
+                    }`}
+                  >
+                    Primer apellido*
+                  </label>
+                  <input
+                    className={`inputs-profile-admin22 ${
+                      isFormSubmitted && !values.primerApellido && "red-input2"
+                    }`}
+                    type="text"
+                    required
+                    name="primerApellido"
+                    placeholder="Ingrese su primer apellido"
+                    value={values.primerApellido}
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                    style={
+                      values.primerApellido
+                        ? { backgroundColor: "#EFF6FF" }
+                        : null
+                    }
+                  />
+                </div>
+                <div className="column-admin-profile2">
+                  <label
+                    className={`titles-admin2 ${
+                      isFormSubmitted && !values.segundoApellido && "red-label2"
+                    }`}
+                  >
+                    Segundo apellido*
+                  </label>
+                  <input
+                    className={`inputs-profile-admin22 ${
+                      isFormSubmitted && !values.segundoApellido && "red-input2"
+                    }`}
+                    type="text"
+                    required
+                    name="segundoApellido"
+                    placeholder="Ingrese su segundo apellido"
+                    value={values.segundoApellido}
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                    style={
+                      values.segundoApellido
+                        ? { backgroundColor: "#EFF6FF" }
+                        : null
+                    }
+                  />
+                </div>
+              </div>
+              <div className="form-section-profile2">
+                <div className="column-admin-profile2">
+                  <label
+                    className={`titles-admin2 ${
+                      isFormSubmitted && !values.correo && "red-label2"
+                    }`}
+                  >
+                    Correo*
+                  </label>
+                  <input
+                    className={`inputs-profile-admin22 ${
+                      isFormSubmitted && !values.correo && "red-input2"
+                    }`}
+                    type="email"
+                    required
+                    name="correo"
+                    placeholder="ejemplo@gmail.com"
+                    value={values.correo}
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                    style={
+                      values.correo ? { backgroundColor: "#EFF6FF" } : null
+                    }
+                  />
+                  {values.correo &&
+                    !validateEmail(values.correo) &&
+                    isFormSubmitted && (
+                      <p className="error-message-admin">
+                        Correo electrónico inválido.
+                      </p>
+                    )}
+                  {emailExists && values.correo !== originalEmail && (
+                    <p className="email-exists-Fr">El correo ya está en uso.</p>
+                  )}
+                </div>
+                <div className="column-admin-profile2">
+                  <label
+                    className={`titles-admin2 ${
+                      isFormSubmitted && !values.telefono && "red-label2"
+                    }`}
+                  >
+                    Teléfono*
+                  </label>
+                  <input
+                    className={`inputs-profile-admin22 ${
+                      isFormSubmitted && !values.telefono && "red-input2"
+                    }`}
+                    type="text"
+                    required
+                    name="telefono"
+                    placeholder="Ingrese su número telefónico"
+                    value={values.telefono}
+                    onChange={(e) => {
+                      const phoneNumber = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 10);
+                      setValues((prevState) => ({
+                        ...prevState,
+                        telefono: phoneNumber,
+                      }));
+                    }}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                    style={
+                      values.telefono ? { backgroundColor: "#EFF6FF" } : null
+                    }
+                  />
+                </div>
+                <div></div>
+              </div>
+              <div className="espacio">
+                <h4 className="titles-datos-admin2">
+                  Edite sus datos de inicio de sesión
+                </h4>
+              </div>
+              <div className="form-section-profile2">
+                <div className="column-admin-profile2">
+                  <label
+                    className={`titles-admin2 ${
+                      isFormSubmitted && !values.nombreUsuario && "red-label2"
+                    }`}
+                  >
+                    Nombre de usuario*
+                  </label>
+                  <input
+                    className={`inputs-profile-admin22 ${
+                      isFormSubmitted && !values.nombreUsuario && "red-input2"
+                    }`}
+                    type="text"
+                    required
+                    name="nombreUsuario"
+                    placeholder="Ingrese su nombre de usuario"
+                    value={values.nombreUsuario}
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                    onBlur={async () => {
+                      handleInputBlur();
+                      if (values.nombreUsuario) {
+                        const nameUserExists = await checkUserExists(
+                          values.nombreUsuario
+                        );
+                        setNameUserExists(nameUserExists);
+                      }
+                    }}
+                    style={
+                      values.nombreUsuario
+                        ? { backgroundColor: "#EFF6FF" }
+                        : null
+                    }
+                  />
+                  {nameUserExists &&
+                    values.nombreUsuario !== originalNameUser && (
+                      <p className="email-exists-Fr">
+                        El nombre de usuario ya está en uso.
+                      </p>
+                    )}
+                </div>
+                <div className="column-edit-admin">
+                  <label
+                    className="label-admin-change-password"
+                    onClick={() => setShowUpdatePassword(true)}
+                  >
+                    Cambiar contraseña
+                    <br />
+                    <span className="password-invite-text-admin">
+                      ¿Desea cambiar la contraseña?
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div className="button-container-profile2">
+                <button
+                  className="button-admin2"
+                  type="submit"
+                  onClick={onConfirmClick}
+                >
+                  Guardar
+                </button>
+                <button className="button-admin2 " onClick={onCancelClick}>
+                  Cancelar
+                </button>
+              </div>
+              {records && !isInputFocused && (
+                <p className="error-msg-profile-admin2">{records}</p>
               )}
             </div>
           </div>
-          <div className="password-rules-admin2">
-            <label>*La contraseña debe ser mínimo de 8 caracteres.</label>
-            <br />
-            <label>
-              *Debe incluir al menos: una mayúscula, número y un símbolo (Todos
-              son válidos).
-            </label>
-          </div>
-          <div className="button-container-profile2">
-            <button
-              className="button-admin2"
-              type="submit"
-              onClick={onConfirmClick}
-            >
-              Guardar
-            </button>
-            <button className="button-admin2 " onClick={onCancelClick}>
-              Cancelar
-            </button>
-          </div>
-          {records && !isInputFocused && (
-            <p className="error-msg-profile-admin2">{records}</p>
-          )}
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };

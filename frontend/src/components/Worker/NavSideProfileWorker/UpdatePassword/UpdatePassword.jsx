@@ -116,6 +116,7 @@ const UpdatePassword = ({ onCancel, onPasswordUpdate, idWorker }) => {
                 type={showOldPassword ? "text" : "password"}
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
+                placeholder="Ingrese su contraseña actual"
                 required
               />
               <button
@@ -137,6 +138,7 @@ const UpdatePassword = ({ onCancel, onPasswordUpdate, idWorker }) => {
                 type={showNewPassword ? "text" : "password"}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Ingrese su nueva contraseña"
                 required
               />
               <button
@@ -158,6 +160,7 @@ const UpdatePassword = ({ onCancel, onPasswordUpdate, idWorker }) => {
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Vuelva a ingresar su nueva contraseña"
                 required
               />
               <button

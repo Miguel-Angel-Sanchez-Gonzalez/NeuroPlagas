@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./UpdatePasswordA.css";
 
-const UpdatePasswordA = ({ onCancel, onPasswordUpdate, idFarmer }) => {
+const UpdatePasswordA = ({ onCancel, onPasswordUpdate }) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -50,7 +50,7 @@ const UpdatePasswordA = ({ onCancel, onPasswordUpdate, idFarmer }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/farmer/changepassword/${idFarmer}`,
+        `http://localhost:3000/admin/changepassword/`,
         {
           method: "PATCH",
           headers: {

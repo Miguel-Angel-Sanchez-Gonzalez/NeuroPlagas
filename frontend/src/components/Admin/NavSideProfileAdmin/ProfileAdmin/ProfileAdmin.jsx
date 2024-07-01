@@ -309,7 +309,6 @@ const ProfileAdmin = ({ onCancelClick }) => {
             setShowUpdatePassword(false);
             getDataAdmin();
           }}
-          idFarmer={1293}
         />
       ) : (
         <>

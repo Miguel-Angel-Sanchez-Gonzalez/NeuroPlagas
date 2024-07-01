@@ -15,10 +15,10 @@
   border-radius: 5px;
   color: #000000;
   cursor: pointer;
-  display: flex;
+  display: table-cell;
   align-items: center;
   justify-content: space-between;
-  width: 98%;
+  width: 1%;
   font-size: 14.5px;
 }
 

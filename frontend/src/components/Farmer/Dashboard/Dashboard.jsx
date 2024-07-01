@@ -265,8 +265,8 @@ const Dashboard = () => {
     <div className="main-div bg-gray-100">
       {/* Filtros */}
       <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 mb-3">
-        <Text className="text-lg-medium md:mt-4">Seleccione invernadero</Text>
-        <ComboBoxGreenHouse onChange={handleSelectionChange} />
+        <Text className="text-lg-medium md:mt-0">Seleccione invernadero</Text>
+        <ComboBoxGreenHouse  onChange={handleSelectionChange} />
         <Text className="text-lg-medium md:mt-4">Seleccione una fecha</Text>
         <DatePicker
           className="md:mt-4"

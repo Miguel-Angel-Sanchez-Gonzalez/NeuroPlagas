@@ -10,6 +10,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showRecovery, setShowRecovery] = useState(false);
   const [loadingUserData, setLoadingUserData] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -131,6 +132,10 @@ const Login = () => {
     return null; // Renderiza nada para evitar la breve renderización del componente Login
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="login-container">
       <img
@@ -143,30 +148,30 @@ const Login = () => {
         alt="Woman farmer"
         className="img-women"
       />
-      <form className="login-form">
+      <form className="login-form" onSubmit={handleLogin}>
         <label className="login-label">Bienvenido de nuevo</label>
         <label className="login-label1">Iniciar sesión</label>
         <div className="input-datos">
           <input
-            onChange={(event) => {
-              setUsername(event.target.value);
-            }}
+            onChange={(event) => setUsername(event.target.value)}
             type="text"
             required
-          ></input>
+          />
           <label>Ingresa tu nombre de usuario</label>
         </div>
         <div className="input-datos">
           <input
-            onChange={(event) => {
-              setPassword(event.target.value);
-            }}
-            type="password"
+            onChange={(event) => setPassword(event.target.value)}
+            type={showPassword ? "text" : "password"}
             required
-          ></input>
+          />
           <label>Contraseña</label>
+          <i
+            className={`uil ${showPassword ? "uil-eye" : "uil-eye-slash"} toggle`}
+            onClick={togglePasswordVisibility}
+          ></i>
         </div>
-        <button className="login-button" onClick={handleLogin}>
+        <button className="login-button" type="submit">
           Iniciar sesión
         </button>
         <label className="login-abajo" onClick={handleRecoveryClick}>

@@ -252,7 +252,7 @@ const EditWorker = ({ onCancelClick, idWorker }) => {
   const updateWorkerData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:3000/worker/${idWorker}`, {
+      const response = await fetch(`http://localhost:3000/admin/updateWorker/${idWorker}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

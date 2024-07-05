@@ -177,8 +177,7 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
     phone: values.telefono,
     email: values.correo,
     nameUser: values.nombreUsuario,
-    password: values.contrasenia,
-    role: "farmer",
+    password: values.contrasenia
   };
 
   const onConfirmClick = async () => {
@@ -247,7 +246,7 @@ const EditFarmer = ({ onCancelClick, idFarmer }) => {
   const updateFarmerData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:3000/farmer/${idFarmer}`, {
+      const response = await fetch(`http://localhost:3000/admin/updateFarmer/${idFarmer}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

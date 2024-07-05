@@ -246,7 +246,7 @@ const EditWorker = ({ onCancelClick, idWorker }) => {
 
   const updateWorkerData = () => {
     setIsLoading(true);
-    fetch(`http://localhost:3000/worker/${idWorker}`, {
+    fetch(`http://localhost:3000/admin/updateWorker/${idWorker}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

@@ -15,7 +15,6 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
   const [otpInput, setOTPInput] = useState(["", "", "", ""]);
   const inputRefs = useRef([]);
   const [alertMessage, setAlertMessage] = useState('');
-  
 
   useEffect(() => {
     inputRefs.current[0].focus();
@@ -36,9 +35,18 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
     }
   }, [isResendButtonDisabled]);
 
+  useEffect(() => {
+    if (otpInput.join("").length === 4) {
+      handleVerifyOTP();
+    }
+  }, [otpInput]);
+
   const handleVerifyOTP = () => {
     const cleanedOtpInput = otpInput.join("").trim();
-    const cleanedGeneratedOTP = String(generatedOTP).trim();
+    const cleanedGeneratedOTP = otpGenerated.trim();
+
+    console.log("OTP Input:", cleanedOtpInput); // Agregado para depuración
+    console.log("Generated OTP:", cleanedGeneratedOTP); // Agregado para depuración
 
     if (cleanedOtpInput === cleanedGeneratedOTP) {
       setIsOTPVerified(true);
@@ -51,19 +59,20 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
   const handleChange = (index, event) => {
     const { value } = event.target;
     if (isNaN(value)) return; // Solo aceptar números
-  
-    const newOTPInput = [...otpInput];
-    newOTPInput[index] = value;
-    setOTPInput(newOTPInput);
-  
-    if (index > 0 && (value === "" || value === undefined)) {   // Si el valor es vacío o no está definido y no es el primer input,
-      inputRefs.current[index - 1].focus();                     // mover al input anterior
-    } else if (value !== "" && index < 3) {                     // Si se ingresa un dígito y no es el último input, 
-      inputRefs.current[index + 1].focus();                     // pasar al siguiente
-    }
+
+    setOTPInput((prevOtpInput) => {
+      const newOTPInput = [...prevOtpInput];
+      newOTPInput[index] = value;
+
+      if (index > 0 && (value === "" || value === undefined)) {
+        inputRefs.current[index - 1].focus(); // Mover al input anterior
+      } else if (value !== "" && index < 3) {
+        inputRefs.current[index + 1].focus(); // Pasar al siguiente input
+      }
+
+      return newOTPInput;
+    });
   };
-  
-  
 
   const handleResendOTP = () => {
     setIsLoading(true);
@@ -81,7 +90,6 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
       })
       .then(() => {
         setIsLoading(false);
-        //alert("Código reenviado correctamente");
         setAlertMessage('Se ha reenviado un nuevo código correctamente');
       })
       .catch((error) => {
@@ -117,14 +125,12 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
                     maxLength="1"
                     value={digit}
                     onChange={(e) => handleChange(index, e)}
+                    style={{ fontWeight: 'bold' }} // Establecer el texto en negritas
                   />
                 ))}
               </div>
-                <button onClick={handleVerifyOTP} className="button-otp-verify">
-                  Verificar
-                </button>
             </div>
-          
+
             <div className="button-container-opt">
               <button
                 onClick={handleResendOTP}
@@ -135,12 +141,12 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
               </button>
               <button onClick={handleClose} className="button-otp">Cancelar</button>
             </div>
-          
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      {isResendButtonDisabled && (
-        <p className="resend-info">Por favor, espera un momento para volver a enviar el código. Tiempo restante: {Math.floor(timeLeft / 60)}:{timeLeft % 60 < 10 ? '0' : ''}{timeLeft % 60}</p>
-      )}
-        </div>
+
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+            {isResendButtonDisabled && (
+              <p className="resend-info">Por favor, espera un momento para volver a enviar el código. Tiempo restante: {Math.floor(timeLeft / 60)}:{timeLeft % 60 < 10 ? '0' : ''}{timeLeft % 60}</p>
+            )}
+          </div>
         </>
       ) : (
         <Reset onClose={onClose} email={email}/>

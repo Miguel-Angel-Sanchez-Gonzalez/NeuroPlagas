@@ -43,7 +43,7 @@
   border-radius: 15px;
 }
 
-.formulario {
+.otp-input-fields {
   width: 100%; /* Ajustado el ancho del formulario al 60% */
   height: auto;
   display: flex;
@@ -86,7 +86,7 @@
 }
 
 
-.button-container-opt {
+.button-container-otp {
   margin-top: 20px;
   display: flex;
   justify-content: space-between; 

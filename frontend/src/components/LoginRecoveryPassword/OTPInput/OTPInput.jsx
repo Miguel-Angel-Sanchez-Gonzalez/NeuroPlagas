@@ -1,37 +1,35 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./OTPInput.css";
-import Reset from "../Reset/Reset"; // Asegúrate de importar el componente Reset desde el archivo correcto
-import LoginNotification from '../../LoginNotifications/LoginNotifications';
+import Reset from "../Reset/Reset";
+import LoginNotification from "../../LoginNotifications/LoginNotifications";
 
-const OTPInput = ({ onClose, generatedOTP, email }) => {
+const OTPInput = ({ onClose, generatedOTP, email, otpGenerationTime }) => {
   const [otpGenerated, setOTPGenerated] = useState(String(generatedOTP).trim());
+  const [otpGenerationTimeState, setOtpGenerationTimeState] = useState(otpGenerationTime); // Actualiza el tiempo de generación del OTP
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isOTPVerified, setIsOTPVerified] = useState(false);
   const [isResendButtonDisabled, setIsResendButtonDisabled] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(120); // Tiempo restante en segundos (120 segundos = 2 minutos)
-  const [otpGenerationTime, setOTPGenerationTime] = useState(Date.now()); // Momento en que se generó el código OTP
+  const [timeLeft, setTimeLeft] = useState(120);
   const [otpInput, setOTPInput] = useState(["", "", "", ""]);
   const inputRefs = useRef([]);
-  const [alertMessage, setAlertMessage] = useState('');
+  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     inputRefs.current[0].focus();
-    // Si el botón de reenvío está deshabilitado, comienza la cuenta regresiva
     if (isResendButtonDisabled) {
       const timer = setInterval(() => {
         setTimeLeft((prevTimeLeft) => {
-          // Si el tiempo restante llega a cero, detén el temporizador
           if (prevTimeLeft === 0) {
             clearInterval(timer);
-            setIsResendButtonDisabled(false); // Habilita el botón de reenvío
-            return 120; // Reinicia el tiempo restante a 2 minutos
+            setIsResendButtonDisabled(false);
+            return 120;
           }
-          return prevTimeLeft - 1; // Reduce el tiempo restante en 1 segundo
+          return prevTimeLeft - 1;
         });
-      }, 1000); // Actualiza el tiempo cada segundo
-      return () => clearInterval(timer); // Limpia el temporizador al desmontar el componente
+      }, 1000);
+      return () => clearInterval(timer);
     }
   }, [isResendButtonDisabled]);
 
@@ -45,12 +43,22 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
     const cleanedOtpInput = otpInput.join("").trim();
     const cleanedGeneratedOTP = otpGenerated.trim();
 
-    console.log("OTP Input:", cleanedOtpInput); // Agregado para depuración
-    console.log("Generated OTP:", cleanedGeneratedOTP); // Agregado para depuración
+    console.log("Ingresado: ", cleanedOtpInput);
+    console.log("Generado:", cleanedGeneratedOTP);
+
+    // Verificar la vigencia del OTP
+    const currentTime = Date.now();
+    const otpValidityDuration = 2 * 60 * 1000; // 2 minutos en milisegundos
+
+    if (currentTime - otpGenerationTimeState > otpValidityDuration) {
+      setErrorMessage("El código OTP ha caducado");
+      return;
+    }
 
     if (cleanedOtpInput === cleanedGeneratedOTP) {
       setIsOTPVerified(true);
       setErrorMessage("");
+
     } else {
       setErrorMessage("El código OTP ingresado es incorrecto");
     }
@@ -58,16 +66,16 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
 
   const handleChange = (index, event) => {
     const { value } = event.target;
-    if (isNaN(value)) return; // Solo aceptar números
+    if (isNaN(value)) return;
 
     setOTPInput((prevOtpInput) => {
       const newOTPInput = [...prevOtpInput];
       newOTPInput[index] = value;
 
       if (index > 0 && (value === "" || value === undefined)) {
-        inputRefs.current[index - 1].focus(); // Mover al input anterior
+        inputRefs.current[index - 1].focus();
       } else if (value !== "" && index < 3) {
-        inputRefs.current[index + 1].focus(); // Pasar al siguiente input
+        inputRefs.current[index + 1].focus();
       }
 
       return newOTPInput;
@@ -79,23 +87,27 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
 
     const OTP = Math.floor(Math.random() * 9000 + 1000);
     setOTPGenerated(String(OTP).trim());
-
+    setOTPInput(["", "", "", ""]);
     setIsResendButtonDisabled(true);
-    setOTPGenerationTime(Date.now()); // Registrar el momento en que se generó el nuevo código OTP
+    const generationTime = Date.now();
+    setOtpGenerationTimeState(generationTime); // Actualiza el tiempo de generación del OTP
+    setTimeLeft(120);
+
+    const data = {
+      recipient_email: email,
+      OTP: OTP,
+    };
 
     axios
-      .post("http://localhost:3000/login/send_recovery_email", {
-        OTP,
-        recipient_email: email,
-      })
+      .post("http://localhost:3000/login/send_recovery_email", data)
       .then(() => {
         setIsLoading(false);
-        setAlertMessage('Se ha reenviado un nuevo código correctamente');
+        setAlertMessage("El código de recuperación se envió correctamente");
       })
       .catch((error) => {
+        console.error("Error al enviar el correo de recuperación:", error);
         setIsLoading(false);
-        console.error("Error al enviar el nuevo código OTP:", error);
-        setAlertMessage('Error al enviar el nuevo código OTP, asegurate que el correo sea vigente');
+        setAlertMessage("Error al enviar el correo de recuperación");
       });
   };
 
@@ -104,54 +116,50 @@ const OTPInput = ({ onClose, generatedOTP, email }) => {
   };
 
   return (
-    <div className="otp-input-container">
+    <div>
       {isLoading && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
         </div>
       )}
-      {!isOTPVerified ? (
-        <>
-          <div>
-            <h2 className="otp-input-title">Verificación de email</h2>
-            <p className="indicaciones">Ingresa el código OTP enviado a tu correo electrónico:</p>
-            <div className="formulario">
-              <div className="inputs-otp">
-                {otpInput.map((digit, index) => (
-                  <input
-                    key={index}
-                    ref={(ref) => (inputRefs.current[index] = ref)}
-                    type="text"
-                    maxLength="1"
-                    value={digit}
-                    onChange={(e) => handleChange(index, e)}
-                    style={{ fontWeight: 'bold' }} // Establecer el texto en negritas
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div className="button-container-opt">
-              <button
-                onClick={handleResendOTP}
-                className={`button-otp ${isResendButtonDisabled ? 'disabled' : ''}`}
-                disabled={isResendButtonDisabled}
-              >
-                {isLoading ? 'Reenviando...' : 'Reenviar código'}
-              </button>
-              <button onClick={handleClose} className="button-otp">Cancelar</button>
-            </div>
-
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-            {isResendButtonDisabled && (
-              <p className="resend-info">Por favor, espera un momento para volver a enviar el código. Tiempo restante: {Math.floor(timeLeft / 60)}:{timeLeft % 60 < 10 ? '0' : ''}{timeLeft % 60}</p>
-            )}
-          </div>
-        </>
+      {isOTPVerified ? (
+        <Reset onClose={onClose} email={email} />
       ) : (
-        <Reset onClose={onClose} email={email}/>
+        <div className="otp-input-container">
+          <h2 className="otp-input-title">Verificación OTP</h2>
+          <p className="indicaciones">Ingresa el código OTP enviado a tu correo electrónico:</p>
+          <div className="otp-input-fields">
+            <div className="inputs-otp">
+              {otpInput.map((digit, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  maxLength="1"
+                  value={digit}
+                  onChange={(e) => handleChange(index, e)}
+                  ref={(el) => (inputRefs.current[index] = el)}
+                />
+              ))}
+            </div>
+          </div>
+          <p className="error-message">{errorMessage}</p>
+
+          <div className="button-container-otp">
+            <button className="button-otp" onClick={handleResendOTP} disabled={isResendButtonDisabled}>
+              Reenviar OTP {isResendButtonDisabled && `(${timeLeft}s)`}
+            </button>
+
+            <button className="button-otp" onClick={handleClose}>Cerrar</button>
+          </div>
+
+          {alertMessage && (
+            <LoginNotification
+              message={alertMessage}
+              onClose={() => setAlertMessage("")}
+            />
+          )}
+        </div>
       )}
-      {alertMessage && <LoginNotification message={alertMessage} onClose={() => setAlertMessage('')} />}
     </div>
   );
 };

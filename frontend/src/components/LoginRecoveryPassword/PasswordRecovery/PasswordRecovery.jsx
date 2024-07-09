@@ -2,23 +2,25 @@ import React, { useState } from 'react';
 import './PasswordRecovery.css';
 import OTPInput from '../OTPInput/OTPInput';
 import LoginNotification from '../../LoginNotifications/LoginNotifications';
+import { toast } from "react-toastify";
 
 const PasswordRecovery = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [generatedOTP, setGeneratedOTP] = useState('');
+  const [otpGenerationTime, setOtpGenerationTime] = useState(null);
   const [isPasswordRecoveryOpen, setIsPasswordRecoveryOpen] = useState(true);
   const [isOTPInputOpen, setIsOTPInputOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
-  const [isInputFocused, setIsInputFocused] = useState(false); // Nuevo estado para rastrear si el input está enfocado
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   const handleInputFocus = () => {
-    setIsInputFocused(true); // Cuando el input recibe foco, establece el estado como true
+    setIsInputFocused(true);
   };
 
   const handleInputBlur = () => {
-    setIsInputFocused(false); // Cuando el input pierde el foco, establece el estado como false
+    setIsInputFocused(false);
   };
 
   const validateEmail = (email) => {
@@ -34,57 +36,77 @@ const PasswordRecovery = ({ onClose }) => {
         email: email 
       };
 
-      fetch('http://localhost:3000/login/check_email_existence',{
+      fetch('http://localhost:3000/login/check_email_existence', {
         method: 'POST',
         headers: {
-        'Content-Type': 'application/json'
+          'Content-Type': 'application/json'
         },
-          body: JSON.stringify(data)
+        body: JSON.stringify(data)
       })
         .then(response => response.json())
         .then(result => {
           if (result.exists) {
-
             const OTP = Math.floor(Math.random() * 9000 + 1000);
+            const generationTime = Date.now();
             setGeneratedOTP(OTP);
+            setOtpGenerationTime(generationTime);
 
             const data2 = {
               recipient_email: email,
               OTP: OTP
-            }
+            };
 
-            fetch('http://localhost:3000/login/send_recovery_email',{
+            fetch('http://localhost:3000/login/send_recovery_email', {
               method: 'POST',
               headers: {
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
               },
-                body: JSON.stringify(data2)
+              body: JSON.stringify(data2)
             })
               .then(() => {
                 setIsPasswordRecoveryOpen(false);
                 setIsOTPInputOpen(true);
                 setIsLoading(false);
-                setAlertMessage('El código de recuperación se envió correctamente');
+                toast.success(`El código de recuperación se envió correctamente`, {
+                  position: "top-center",
+                  autoClose: 2000,
+                  theme: "colored",
+                });
               })
               .catch((error) => {
                 console.error("Error al enviar el correo de recuperación:", error);
-                setAlertMessage('Error al enviar el correo de recuperación');
-                setErrorMessage('Error al enviar el correo de recuperación');
                 setIsLoading(false);
+                toast.error(`Error al enviar el correo de recuperación ${error}`, {
+                  position: "top-center",
+                  autoClose: 2000,
+                  theme: "colored",
+                });
               });
-
           } else {
-            setErrorMessage('El correo electrónico ingresado no corresponde a ningún usuario registrado');
+            toast.warning(`El correo electrónico ingresado no corresponde a ningún usuario registrado.`, {
+              position: "top-center",
+              autoClose: 2000,
+              theme: "colored",
+            });
             setIsLoading(false);
           }
         })
         .catch((error) => {
           console.error("Error al verificar el correo electrónico en la BD:", error);
-          setErrorMessage('Error al verificar el correo electrónico en la BD');
+          toast.error(`Error al verificar el correo electrónico en la BD: ${error}`, {
+            position: "top-center",
+            autoClose: 2000,
+            theme: "colored",
+          });
           setIsLoading(false);
         });
     } else {
-      setErrorMessage('Por favor, ingresa un correo electrónico válido');
+      toast.error(`Por favor, ingresa un correo electrónico válido.`, {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
+      setIsLoading(false);
     }
   };
 
@@ -105,8 +127,8 @@ const PasswordRecovery = ({ onClose }) => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              onFocus={handleInputFocus} // Maneja el evento onFocus para establecer el estado como true
-              onBlur={handleInputBlur}   // Maneja el evento onBlur para establecer el estado como false
+              onFocus={handleInputFocus}
+              onBlur={handleInputBlur}
               required
             />
           </div>
@@ -120,7 +142,7 @@ const PasswordRecovery = ({ onClose }) => {
         </div>
       )}
       {isOTPInputOpen && (
-        <OTPInput onClose={onClose} generatedOTP={generatedOTP} email={email} />
+        <OTPInput onClose={onClose} generatedOTP={generatedOTP} email={email} otpGenerationTime={otpGenerationTime} />
       )}
       {alertMessage && <LoginNotification message={alertMessage} onClose={() => setAlertMessage('')} />}
     </div>

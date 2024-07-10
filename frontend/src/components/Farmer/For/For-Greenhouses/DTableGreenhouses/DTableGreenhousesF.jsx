@@ -187,7 +187,7 @@ const DTableGreenhousesF = () => {
            <label className="description-green">
            Lista de todos los invernaderos registrados en el sistema.
            </label>
-           </div>
+          </div>
          <div className="header-table-green-ad">
          <FontAwesomeIcon
              icon={faSearch}
@@ -243,7 +243,7 @@ const DTableGreenhousesF = () => {
           />
         )}
       </div>
-      </div>
+    </div>
   );
 };
 

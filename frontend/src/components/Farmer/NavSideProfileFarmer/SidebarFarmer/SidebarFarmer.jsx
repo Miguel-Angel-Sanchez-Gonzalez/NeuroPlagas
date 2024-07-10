@@ -4,15 +4,15 @@ import { Link, useLocation } from "react-router-dom";
 import "./SidebarFarmer.css";
 import {faWarehouse, faPersonDigging, faChartBar, faBug, faVirus, faBell,} from "@fortawesome/free-solid-svg-icons";
 
-const SidebarAdmin = () => {
+const SidebarFarmer = () => {
   const { pathname } = useLocation();
 
   return (
-    <div className="menu-admin">
-      <div className="menu-list-admin">
+    <div className="menu-farmer">
+      <div className="menu-list-farmer">
         <Link
           to="/homeFarmer/notificaciones"
-          className={`item-admin ${
+          className={`item-farmer ${
             pathname.includes("notificaciones") ? "active" : ""
           }`}
         >
@@ -21,7 +21,7 @@ const SidebarAdmin = () => {
         </Link>
         <Link
           to="/homeFarmer/invernaderos"
-          className={`item-admin ${
+          className={`item-farmer ${
             pathname.includes("invernaderos") ? "active" : ""
           }`}
         >
@@ -30,7 +30,7 @@ const SidebarAdmin = () => {
         </Link>
         <Link
           to="/homeFarmer/trabajadores"
-          className={`item-admin ${
+          className={`item-farmer ${
             pathname.includes("trabajadores") ? "active" : ""
           }`}
         >
@@ -39,7 +39,7 @@ const SidebarAdmin = () => {
         </Link>
         <Link
           to="/homeFarmer/reportes"
-          className={`item-admin ${
+          className={`item-farmer ${
             pathname.includes("reportes") ? "active" : ""
           }`}
         >
@@ -48,7 +48,7 @@ const SidebarAdmin = () => {
         </Link>
         <Link
           to="/homeFarmer/plagas"
-          className={`item-admin ${
+          className={`item-farmer ${
             pathname.includes("plagas") ? "active" : ""
           }`}
         >
@@ -57,7 +57,7 @@ const SidebarAdmin = () => {
         </Link>
         <Link
           to="/homeFarmer/enfermedades"
-          className={`item-admin ${
+          className={`item-farmer ${
             pathname.includes("enfermedades") ? "active" : ""
           }`}
         >
@@ -69,4 +69,4 @@ const SidebarAdmin = () => {
   );
 };
 
-export default SidebarAdmin;
+export default SidebarFarmer;

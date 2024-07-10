@@ -63,7 +63,7 @@
 
 .user-info-worker {
   position: absolute;
-  right: 110px; /* Centra horizontalmente */
+  right: 90px; /* Centra horizontalmente */
   transform: translateY(-10%); /* Ajusta el centro */
   font-weight: 600;
 }

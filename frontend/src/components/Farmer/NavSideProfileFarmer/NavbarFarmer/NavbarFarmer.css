@@ -63,7 +63,7 @@
 
 .user-info-farmer {
   position: absolute;
-  right: 140px; /* Centra horizontalmente */
+  right: 90px; /* Centra horizontalmente */
   transform: translateY(-10%); /* Ajusta el centro */
   font-weight: 600;
 }

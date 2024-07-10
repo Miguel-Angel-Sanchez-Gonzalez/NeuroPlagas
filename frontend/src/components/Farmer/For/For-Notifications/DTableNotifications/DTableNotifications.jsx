@@ -186,13 +186,13 @@ const DTableNotifications = () => {
             )
           }
         />
-      </div>
       {showChangeStatusNotify && selectedNotification && (
         <ChangeStatusNotify
           onCancelClick={handleCancelClick}
           notification={selectedNotification}
         />
       )}
+    </div>
     </div>
   );
 };

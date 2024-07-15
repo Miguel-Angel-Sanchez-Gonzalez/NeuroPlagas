@@ -11,12 +11,14 @@ import {
   Dialog,
   DialogPanel,
   ProgressBar,
-  Legend
+  Legend,
+  BarChart,
 } from "@tremor/react";
 import { useEffect, useState } from "react";
 import "./Dashboard.css";
 import ComboBoxGreenHouse from "./ComboBoxGreenHouse/ComboBoxGreenHouse";
-import { RiQuestionnaireFill } from '@remixicon/react';
+import { RiQuestionnaireFill } from "@remixicon/react";
+import GraphicSwitch from "../Farmer/Dashboard/GraphicSwitch/GraphicSwitch";
 
 const Dashboard = () => {
   const [chartData, setChartData] = useState([]);
@@ -29,14 +31,32 @@ const Dashboard = () => {
   const [plagasData, setPlagasData] = useState([]);
   const [enfermedadesData, setEnfermedadesData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [noDataMessage, setNoDataMessage] = useState(""); 
+  const [noDataMessage, setNoDataMessage] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
+  const [status, setStatus] = useState("LineChart");
+  const [typeGraphic, setTypeGraphic] = useState("Líneas");
 
   const addCommasToNumber = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  const handleSelectionChange = (selectedGreenhouseName, selectedGreenhouseId) => {
+  const handleStatusChange = async (newStatus) => {
+    setStatus(newStatus);
+
+    if (newStatus === "LineChart") {
+      setTypeGraphic("Líneas");
+    } else {
+      setTypeGraphic("Barras");
+    }
+  };
+
+  const dataFormatter = (number) =>
+    Intl.NumberFormat("us").format(number).toString();
+
+  const handleSelectionChange = (
+    selectedGreenhouseName,
+    selectedGreenhouseId
+  ) => {
     setSelectedGreenhouseId(selectedGreenhouseId);
     setSelectedGreenhouseName(selectedGreenhouseName);
     setSelectedDate(null); // Clear the selected date when changing greenhouse
@@ -142,12 +162,16 @@ const Dashboard = () => {
       return new Date(year, month - 1, day);
     };
 
-    fetch(`http://localhost:3000/dashboard/totalPlaguesDiseases/${selectedGreenhouseId}`)
+    fetch(
+      `http://localhost:3000/dashboard/totalPlaguesDiseases/${selectedGreenhouseId}`
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.message) {
           setChartData([]);
-          setNoDataMessage("Sin datos periódicos de detecciones en este invernadero"); // Establecer mensaje de "sin datos"
+          setNoDataMessage(
+            "Sin datos periódicos de detecciones en este invernadero"
+          ); // Establecer mensaje de "sin datos"
         } else {
           const transformedData = data.map((item) => ({
             date: item.fecha,
@@ -173,7 +197,7 @@ const Dashboard = () => {
       const [day, month, year] = dateString.split("-");
       return new Date(year, month - 1, day);
     };
-  
+
     if (!date) {
       // Si la fecha es null, cargar el historial completo de detecciones
       fetch(
@@ -183,16 +207,20 @@ const Dashboard = () => {
         .then((data) => {
           if (data.message) {
             setChartData([]);
-            setNoDataMessage("Sin datos periódicos de detecciones en este invernadero");
+            setNoDataMessage(
+              "Sin datos periódicos de detecciones en este invernadero"
+            );
           } else {
             const transformedData = data.map((item) => ({
               date: item.fecha,
               Plagas: parseInt(item.Cantidad_Plagas),
               Enfermedades: parseInt(item.Cantidad_Enfermedades),
             }));
-  
+
             // Ordenar los datos por fecha
-            transformedData.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+            transformedData.sort(
+              (a, b) => parseDate(a.date) - parseDate(b.date)
+            );
             setChartData(transformedData);
             setNoDataMessage(""); // Limpiar mensaje de "sin datos" si hay datos
           }
@@ -202,30 +230,37 @@ const Dashboard = () => {
         });
       return;
     }
-  
+
     if (selectedGreenhouseId && date) {
-      const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+      const formattedDate = `${date.getDate()}-${
+        date.getMonth() + 1
+      }-${date.getFullYear()}`;
       console.log("Fecha formateada:", formattedDate);
-  
-      fetch(`http://localhost:3000/dashboard/getTotalPlaguesDiseasesDetectedByDate/${selectedGreenhouseId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ date: formattedDate }),
-      })
+
+      fetch(
+        `http://localhost:3000/dashboard/getTotalPlaguesDiseasesDetectedByDate/${selectedGreenhouseId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ date: formattedDate }),
+        }
+      )
         .then((response) => response.json())
         .then((data) => {
           if (data.message || data.length === 0) {
             setChartData([]);
-            setNoDataMessage("Sin datos de detección para la fecha seleccionada");
+            setNoDataMessage(
+              "Sin datos de detección para la fecha seleccionada"
+            );
           } else {
             const transformedData = data.map((item) => ({
               date: item.fecha,
               Plagas: parseInt(item.Cantidad_Plagas),
               Enfermedades: parseInt(item.Cantidad_Enfermedades),
             }));
-  
+
             setChartData(transformedData);
             setNoDataMessage(""); // Limpiar mensaje de "sin datos" si hay datos
           }
@@ -235,26 +270,28 @@ const Dashboard = () => {
         });
     }
   };
-  
-  
 
   // Calcula el porcentaje de amenazas tratadas
   const totalAmenazas = parseInt(numTratadas) + parseInt(numSinVer);
-  const porcentajeTratadas = totalAmenazas > 0 ? (parseInt(numTratadas) / totalAmenazas) * 100 : 0;
-  const porcentajeSinVer = totalAmenazas > 0 ? (parseInt(numSinVer) / totalAmenazas) * 100 : 0;
+  const porcentajeTratadas =
+    totalAmenazas > 0 ? (parseInt(numTratadas) / totalAmenazas) * 100 : 0;
+  const porcentajeSinVer =
+    totalAmenazas > 0 ? (parseInt(numSinVer) / totalAmenazas) * 100 : 0;
 
   return (
     <div className="main-div bg-gray-100">
       {/* Filtros */}
       <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 mb-3">
-        <Text className="text-lg-medium md:mt-0">Seleccione invernadero</Text>
+        <span className="switch-label2">Seleccione invernadero</span>
         <ComboBoxGreenHouse onChange={handleSelectionChange} />
-        <Text className="text-lg-medium md:mt-4">Seleccione una fecha</Text>
+        <span className="switch-label2">Seleccione una fecha</span>
         <DatePicker
           className="md:mt-4"
           maxDate={new Date()}
           onValueChange={handleDateChange}
         />
+        <span className="switch-label2">Cambiar gráfico</span>
+        <GraphicSwitch onChange={handleStatusChange} />
         <Button
           variant="secondary"
           icon={RiQuestionnaireFill}
@@ -280,8 +317,15 @@ const Dashboard = () => {
               día actual. Las fechas futuras no están disponibles para la
               selección.
             </p>
+            <p className="mt-2 leading-6 text-tremor-default text-tremor-content dark:text-dark-tremor-content">
+              <strong>Cambiar Tipo de Gráfico:</strong> Use el interruptor
+              para cambiar el tipo de gráfico del historial de
+              detecciones. Por defecto, se muestra un gráfico de líneas, pero
+              puede cambiarlo a un gráfico de barras según su preferencia. Esta
+              opción le permite ver el dashboard de la manera que más le agrade.
+            </p>
             <Button className="mt-8 w-full" onClick={() => setIsOpen(false)}>
-              Entendido!
+              ¡Entendido!
             </Button>
           </DialogPanel>
         </Dialog>
@@ -308,7 +352,11 @@ const Dashboard = () => {
                 <span> {porcentajeTratadas.toFixed(1)}% Tratado</span>
                 <span>{porcentajeSinVer.toFixed(1)}% Sin ver</span>
               </p>
-              <ProgressBar value={porcentajeTratadas} color="teal" className="mt-3" />
+              <ProgressBar
+                value={porcentajeTratadas}
+                color="teal"
+                className="mt-3"
+              />
             </Card>
           </div>
 
@@ -333,26 +381,40 @@ const Dashboard = () => {
           </div>
 
           {/* Fila 3 */}
-          <Card>
-            <Title className="text-medium">
-              Historial de Detección de Plagas y Enfermedades
-            </Title>
-            {chartData.length > 0 ? (
-              <LineChart
-                className="mt-6"
-                data={chartData}
-                index="date"
-                categories={["Plagas", "Enfermedades"]}
-                colors={["violet", "indigo"]}
-                yAxisWidth={100}
-                valueFormatter={addCommasToNumber}
-              />
-            ) : (
-              <Text className="text-lg-medium text-center mt-8">
-                {noDataMessage}
-              </Text>
-            )}
-          </Card>
+
+          <div className="center-pane">
+            <Card>
+              <Title>Historial de Detecciones</Title>
+              {noDataMessage ? (
+                <Text>{noDataMessage}</Text>
+              ) : (
+                <>
+                  {status === "LineChart" && (
+                    <LineChart
+                      data={chartData}
+                      index="date"
+                      categories={["Plagas", "Enfermedades"]}
+                      colors={["violet", "cyan"]}
+                      valueFormatter={dataFormatter}
+                      yAxisWidth={40}
+                      className="custom-linechart"
+                    />
+                  )}
+                  {status === "BarChart" && (
+                    <BarChart
+                      data={chartData}
+                      index="date"
+                      categories={["Plagas", "Enfermedades"]}
+                      colors={["violet", "cyan"]}
+                      valueFormatter={dataFormatter}
+                      yAxisWidth={40}
+                      className="custom-barchart"
+                    />
+                  )}
+                </>
+              )}
+            </Card>
+          </div>
         </>
       ) : (
         <Text className="text-lg-medium text-center mt-8">
@@ -361,7 +423,6 @@ const Dashboard = () => {
       )}
     </div>
   );
-
 };
 
 const Section = ({ children }) => (

@@ -23,6 +23,12 @@
   color: #1f2937; /* text-gray-800 in Tailwind */
 }
 
+.switch-label2 {
+  font-size: 15px;
+  font-weight: unset;
+  padding: 5px;
+}
+
 
 
 .card {

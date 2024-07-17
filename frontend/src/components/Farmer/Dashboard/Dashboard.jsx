@@ -12,11 +12,13 @@ import {
   DialogPanel,
   ProgressBar,
   Legend,
+  BarChart,
 } from "@tremor/react";
 import { useState } from "react";
 import "./Dashboard.css";
 import ComboBoxGreenHouse from "./ComboBoxGreenHouse/ComboBoxGreenHouse";
 import { RiQuestionnaireFill } from "@remixicon/react";
+import GraphicSwitch from "../Dashboard/GraphicSwitch/GraphicSwitch"
 //FARMER
 const Dashboard = () => {
   const [chartData, setChartData] = useState([]);
@@ -31,10 +33,25 @@ const Dashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [noDataMessage, setNoDataMessage] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
+  const [status, setStatus] = useState("LineChart");
+  const [typeGraphic, setTypeGraphic] = useState("Líneas");
 
   const addCommasToNumber = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
+
+  const handleStatusChange = async (newStatus) => {
+    setStatus(newStatus);
+
+    if (newStatus === "LineChart") {
+      setTypeGraphic("Líneas");
+    } else {
+      setTypeGraphic("Barras");
+    }
+  };
+
+  const dataFormatter = (number) =>
+    Intl.NumberFormat("us").format(number).toString();
 
   const handleSelectionChange = (
     selectedGreenhouseName,
@@ -273,6 +290,8 @@ const Dashboard = () => {
           maxDate={new Date()}
           onValueChange={handleDateChange}
         />
+        <span className="switch-label2">Cambiar gráfico</span>
+        <GraphicSwitch onChange={handleStatusChange} />
         <Button
           variant="secondary"
           icon={RiQuestionnaireFill}
@@ -281,7 +300,7 @@ const Dashboard = () => {
           Ayuda
         </Button>
         <Dialog open={isOpen} onClose={() => setIsOpen(false)} static={true}>
-          <DialogPanel>
+        <DialogPanel>
             <h3 className="text-lg font-semibold text-tremor-content-strong dark:text-dark-tremor-content-strong">
               Ayuda para el Usuario
             </h3>
@@ -298,8 +317,15 @@ const Dashboard = () => {
               día actual. Las fechas futuras no están disponibles para la
               selección.
             </p>
+            <p className="mt-2 leading-6 text-tremor-default text-tremor-content dark:text-dark-tremor-content">
+              <strong>Cambiar Tipo de Gráfico:</strong> Use el interruptor
+              para cambiar el tipo de gráfico del historial de
+              detecciones. Por defecto, se muestra un gráfico de líneas, pero
+              puede cambiarlo a un gráfico de barras según su preferencia. Esta
+              opción le permite ver el dashboard de la manera que más le agrade.
+            </p>
             <Button className="mt-8 w-full" onClick={() => setIsOpen(false)}>
-              Entendido!
+              ¡Entendido!
             </Button>
           </DialogPanel>
         </Dialog>
@@ -356,25 +382,36 @@ const Dashboard = () => {
 
           {/* Fila 3 */}
           <Card>
-            <Title className="text-medium">
-              Historial de Detección de Plagas y Enfermedades
-            </Title>
-            {chartData.length > 0 ? (
-              <LineChart
-                className="mt-6"
-                data={chartData}
-                index="date"
-                categories={["Plagas", "Enfermedades"]}
-                colors={["violet", "indigo"]}
-                yAxisWidth={100}
-                valueFormatter={addCommasToNumber}
-              />
-            ) : (
-              <Text className="text-lg-medium text-center mt-8">
-                {noDataMessage}
-              </Text>
-            )}
-          </Card>
+              <Title>Historial de Detecciones</Title>
+              {noDataMessage ? (
+                <Text>{noDataMessage}</Text>
+              ) : (
+                <>
+                  {status === "LineChart" && (
+                    <LineChart
+                      data={chartData}
+                      index="date"
+                      categories={["Plagas", "Enfermedades"]}
+                      colors={["violet", "cyan"]}
+                      valueFormatter={dataFormatter}
+                      yAxisWidth={40}
+                      className="custom-linechart"
+                    />
+                  )}
+                  {status === "BarChart" && (
+                    <BarChart
+                      data={chartData}
+                      index="date"
+                      categories={["Plagas", "Enfermedades"]}
+                      colors={["violet", "cyan"]}
+                      valueFormatter={dataFormatter}
+                      yAxisWidth={40}
+                      className="custom-barchart"
+                    />
+                  )}
+                </>
+              )}
+            </Card>
         </>
       ) : (
         <Text className="text-lg-medium text-center mt-8">

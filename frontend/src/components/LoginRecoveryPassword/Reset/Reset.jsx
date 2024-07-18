@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import "./Reset.css";
-import LoginNotification from '../../LoginNotifications/LoginNotifications';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Reset = ({ onClose, email }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  //const [message, setMessage] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [alertMessage, setAlertMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
 
   const handleClose = () => {
     onClose();
@@ -33,19 +31,36 @@ const Reset = ({ onClose, email }) => {
         .then(result => {
           if (result) {
             console.log('Actualización de la contraseña del user correcta');
-            setSuccessMessage('Se ha cambiado la contraseña correctamente.');
-            //handleClose();
+            toast.success('Se ha cambiado la contraseña correctamente.', {
+              position: "top-center",
+              autoClose: 2000,
+              theme: "colored",
+              onClose: () => handleClose()
+            });
           } else {
             console.log('Error al actualizar la contraseña del user');
-            setAlertMessage('Error al cambiar la contraseña.');
+            toast.error('Error al cambiar la contraseña.', {
+              position: "top-center",
+              autoClose: 2000,
+              theme: "colored",
+            });
           }
         })
         .catch(error => {
           console.log(error);
+          toast.error('Error al cambiar la contraseña.', {
+            position: "top-center",
+            autoClose: 2000,
+            theme: "colored",
+          });
         });
 
     } else {
-      setAlertMessage('Las contraseñas no coinciden. Por favor, inténtalo de nuevo.');
+      toast.error('Las contraseñas no coinciden. Por favor, inténtalo de nuevo.', {
+        position: "top-center",
+        autoClose: 2000,
+        theme: "colored",
+      });
     }
   };
 
@@ -84,15 +99,13 @@ const Reset = ({ onClose, email }) => {
         </div>
         <div className="password-reset">
           <label>Elige una contraseña segura.</label>
-      </div>
+        </div>
       </div>
       <div className='button-container-reset'>
         <button onClick={handleChangePassword} className="reset-button ">Cambiar contraseña</button>
         <button onClick={handleClose} className="reset-button ">Cancelar</button>
       </div>
-      {/* {message && <p className='error-message'>{message}</p>} */}
-      {alertMessage && <LoginNotification message={alertMessage} onClose={() => setAlertMessage('')} />}
-      {successMessage && <LoginNotification message={successMessage} onClose={() => handleClose()} />}
+      <ToastContainer />
     </div>
   );
 }

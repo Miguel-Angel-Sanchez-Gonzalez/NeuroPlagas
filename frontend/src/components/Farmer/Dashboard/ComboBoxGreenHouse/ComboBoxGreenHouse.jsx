@@ -9,15 +9,13 @@ const ComboBoxGreenHouse = ({ onChange }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch data from the endpoint
-    fetch(`http://localhost:3000/greenhouse/farmer/${idFarmer}`)
-      .then((response) => {
+    const fetchGreenhouses = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/greenhouse/farmer/${idFarmer}`);
         if (!response.ok) {
           throw new Error('El agricultor aún no tiene invernaderos.');
         }
-        return response.json();
-      })
-      .then((data) => {
+        const data = await response.json();
         if (data.message === "El agricultor no tiene invernaderos") {
           setError("El agricultor aún no tiene invernaderos.");
           setGreenhouses([]);
@@ -25,12 +23,14 @@ const ComboBoxGreenHouse = ({ onChange }) => {
           setGreenhouses(data);
           setError(null);
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error al cargar los invernaderos:", error);
         setError("Hubo un error al cargar los invernaderos.");
-      });
-  }, []);
+      }
+    };
+
+    fetchGreenhouses();
+  }, [idFarmer]);
 
   const handleOptionClick = (greenhouse) => {
     setSelectedGreenhouse(greenhouse.nombre);
@@ -60,7 +60,9 @@ const ComboBoxGreenHouse = ({ onChange }) => {
               </div>
             ))
           ) : (
-            <div className="dropdown-option-gren">Sin invernaderos</div>
+            <div className="dropdown-option-gren">
+              Sin invernaderos
+            </div>
           )}
         </div>
       )}

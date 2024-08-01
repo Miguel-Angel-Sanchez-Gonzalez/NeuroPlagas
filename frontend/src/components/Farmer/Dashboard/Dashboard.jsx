@@ -59,7 +59,7 @@ const Dashboard = () => {
   ) => {
     setSelectedGreenhouseId(selectedGreenhouseId);
     setSelectedGreenhouseName(selectedGreenhouseName);
-    setSelectedDate(null); // Clear the selected date when changing greenhouse
+    setSelectedDate(null); 
 
     // Fetch Obtiene numero de plagas
     fetch(

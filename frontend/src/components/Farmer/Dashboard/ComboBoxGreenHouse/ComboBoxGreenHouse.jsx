@@ -6,17 +6,30 @@ const ComboBoxGreenHouse = ({ onChange }) => {
   const [selectedGreenhouse, setSelectedGreenhouse] = useState("");
   const [isActive, setIsActive] = useState(false);
   const idFarmer = localStorage.getItem("idFarmer");
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     // Fetch data from the endpoint
-
     fetch(`http://localhost:3000/greenhouse/farmer/${idFarmer}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setGreenhouses(data);
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('El agricultor aún no tiene invernaderos.');
+        }
+        return response.json();
       })
-      .catch((error) =>
-        console.error("Error al cargar los invernaderos:", error)
-      );
+      .then((data) => {
+        if (data.message === "El agricultor no tiene invernaderos") {
+          setError("El agricultor aún no tiene invernaderos.");
+          setGreenhouses([]);
+        } else {
+          setGreenhouses(data);
+          setError(null);
+        }
+      })
+      .catch((error) => {
+        console.error("Error al cargar los invernaderos:", error);
+        setError("Hubo un error al cargar los invernaderos.");
+      });
   }, []);
 
   const handleOptionClick = (greenhouse) => {
@@ -32,19 +45,23 @@ const ComboBoxGreenHouse = ({ onChange }) => {
         style={selectedGreenhouse ? { backgroundColor: "#EFF6FF" } : null}
         onClick={() => setIsActive(!isActive)}
       >
-        {selectedGreenhouse || "Invernaderos"}
+        {selectedGreenhouse || (error ? "Sin invernaderos" : "Invernaderos")}
       </div>
       {isActive && (
         <div className="dropdown-content-greenhouse">
-          {greenhouses.map((greenhouse) => (
-            <div
-              key={greenhouse.id_invernadero}
-              onClick={() => handleOptionClick(greenhouse)}
-              className="dropdown-option-gren"
-            >
-              {greenhouse.nombre}
-            </div>
-          ))}
+          {greenhouses.length > 0 ? (
+            greenhouses.map((greenhouse) => (
+              <div
+                key={greenhouse.id_invernadero}
+                onClick={() => handleOptionClick(greenhouse)}
+                className="dropdown-option-gren"
+              >
+                {greenhouse.nombre}
+              </div>
+            ))
+          ) : (
+            <div className="dropdown-option-gren">Sin invernaderos</div>
+          )}
         </div>
       )}
     </div>
